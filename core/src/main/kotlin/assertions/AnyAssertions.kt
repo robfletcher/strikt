@@ -1,6 +1,6 @@
 package assertions
 
-fun <T : Any> T?.isNull(): T? {
+fun <T> T?.isNull(): T? {
   if (this == null) {
     return this
   } else {
@@ -8,7 +8,7 @@ fun <T : Any> T?.isNull(): T? {
   }
 }
 
-fun <T : Any> T?.isNotNull(): T {
+fun <T> T?.isNotNull(): T {
   if (this == null) {
     throw AssertionError("Expected $this not to be null")
   } else {

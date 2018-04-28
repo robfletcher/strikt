@@ -5,25 +5,39 @@ import org.jetbrains.spek.api.dsl.*
 
 internal object ExpectBlockBasicsSpec : Spek({
 
-  describe("assertions made on a target in a block") {
-    on("asserting null is null") {
-      it("passes") {
-        shouldPass {
-          val target: String? = null
-          expect(target) {
-            isNull()
-          }
+  describe("isNull assertion") {
+    it("passes if the target is null") {
+      shouldPass {
+        val target: String? = null
+        expect(target) {
+          isNull()
         }
       }
     }
+    it("fails if the target is not null") {
+      shouldFail {
+        val target = "covfefe"
+        expect(target) {
+          isNull()
+        }
+      }
+    }
+  }
 
-    on("asserting null is not null") {
-      it("fails") {
-        shouldFail {
-          val target: String? = null
-          expect(target) {
-            isNotNull()
-          }
+  describe("isNotNull assertion") {
+    it("fails if the target is null") {
+      shouldFail {
+        val target: String? = null
+        expect(target) {
+          isNotNull()
+        }
+      }
+    }
+    it("passes if the target is not null") {
+      shouldPass {
+        val target = "covfefe"
+        expect(target) {
+          isNotNull()
         }
       }
     }
