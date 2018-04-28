@@ -25,6 +25,9 @@ dependencies {
   testCompile "org.jetbrains.spek:spek-api:1.1.5"
   testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+"
   testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+
+  // enables running in IntelliJ using JUnit runner
+  testRuntime "org.junit.platform:junit-platform-launcher:+"
 }
 
 junitPlatform {

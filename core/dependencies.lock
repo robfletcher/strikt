@@ -41,6 +41,10 @@
         "org.jetbrains.spek:spek-junit-platform-engine": {
             "locked": "1.1.5",
             "requested": "1.1.5"
+        },
+        "org.junit.platform:junit-platform-launcher": {
+            "locked": "1.2.0-M1",
+            "requested": "+"
         }
     }
 }
