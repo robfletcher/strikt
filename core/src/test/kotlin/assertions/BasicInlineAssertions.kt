@@ -33,4 +33,31 @@ internal object BasicInlineAssertions : Spek({
       }
     }
   }
+
+  describe("isA assertion") {
+    it("fails if the target is null") {
+      shouldFail {
+        val target: Any? = null
+        expect(target).isA<String>()
+      }
+    }
+    it("fails if the target is a different type") {
+      shouldFail {
+        val target: Any? = 1L
+        expect(target).isA<String>()
+      }
+    }
+    it("passes if the target is the same exact type") {
+      shouldPass {
+        val target: Any? = "covfefe"
+        expect(target).isA<String>()
+      }
+    }
+    it("passes if the target is a sub-type") {
+      shouldPass {
+        val target: Any? = 1L
+        expect(target).isA<Number>()
+      }
+    }
+  }
 })
