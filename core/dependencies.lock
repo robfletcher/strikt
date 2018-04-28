@@ -1,0 +1,46 @@
+{
+    "compile": {
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
+            "locked": "1.2.40",
+            "requested": "1.2.40"
+        }
+    },
+    "runtime": {
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
+            "locked": "1.2.40",
+            "requested": "1.2.40"
+        }
+    },
+    "testCompile": {
+        "org.jetbrains.kotlin:kotlin-reflect": {
+            "locked": "1.2.40",
+            "requested": "1.2.+"
+        },
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
+            "locked": "1.2.40",
+            "requested": "1.2.40"
+        },
+        "org.jetbrains.spek:spek-api": {
+            "locked": "1.1.5",
+            "requested": "1.1.5"
+        }
+    },
+    "testRuntime": {
+        "org.jetbrains.kotlin:kotlin-reflect": {
+            "locked": "1.2.40",
+            "requested": "1.2.+"
+        },
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
+            "locked": "1.2.40",
+            "requested": "1.2.40"
+        },
+        "org.jetbrains.spek:spek-api": {
+            "locked": "1.1.5",
+            "requested": "1.1.5"
+        },
+        "org.jetbrains.spek:spek-junit-platform-engine": {
+            "locked": "1.1.5",
+            "requested": "1.1.5"
+        }
+    }
+}

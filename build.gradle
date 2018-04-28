@@ -1,0 +1,30 @@
+buildscript {
+  repositories {
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath "org.junit.platform:junit-platform-gradle-plugin:1.1.1"
+    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.40"
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
+    classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
+  }
+}
+
+allprojects {
+  apply plugin: "nebula.dependency-lock"
+}
+
+subprojects {
+  apply from: "$rootDir/gradle/kotlin.gradle"
+  apply from: "$rootDir/gradle/dokka.gradle"
+  apply from: "$rootDir/gradle/spek.gradle"
+
+  repositories {
+    jcenter()
+  }
+
+  dependencyLock {
+    configurationNames = ["compile", "runtime", "testCompile", "testRuntime"]
+  }
+}

@@ -1,0 +1,14 @@
+rootProject.name = "kotlin-assertions"
+
+include "core"
+
+def setBuildFile(project) {
+  project.buildFileName = "${project.name}.gradle"
+  project.children.each {
+    setBuildFile(it)
+  }
+}
+
+rootProject.children.each {
+  setBuildFile it
+}
