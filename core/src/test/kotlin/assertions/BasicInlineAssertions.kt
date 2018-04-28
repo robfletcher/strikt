@@ -59,5 +59,17 @@ internal object BasicInlineAssertions : Spek({
         expect(target).isA<Number>()
       }
     }
+    it("passes if the multiple isA assertions pass") {
+      shouldPass {
+        val target: Any? = 1L
+        expect(target).isA<Number>().isA<Long>()
+      }
+    }
+    it("fails if the chained isA does not hold") {
+      shouldFail {
+        val target: Any? = 1L
+        expect(target).isA<Number>().isA<Int>()
+      }
+    }
   }
 })
