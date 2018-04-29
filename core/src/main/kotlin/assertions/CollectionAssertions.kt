@@ -11,7 +11,7 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
     }
   }
 
-fun <T : Iterable<E>, E> Assertion<T>.allMatch(block: Assertion<E>.() -> Unit) =
+fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Unit) =
   apply {
     evaluate { target ->
       val results = mutableListOf<Result>()
@@ -21,13 +21,13 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(block: Assertion<E>.() -> Unit) =
             predicate(element).let(results::add)
           }
         }
-        compoundAssertion.block()
+        compoundAssertion.predicate()
       }
 
       if (results.all { it is Success }) {
-        Result.success(target, results)
+        Result.success(target, "all elements match predicate", results)
       } else {
-        Result.failure(target, results)
+        Result.failure(target, "all elements match predicate", results)
       }
     }
   }
