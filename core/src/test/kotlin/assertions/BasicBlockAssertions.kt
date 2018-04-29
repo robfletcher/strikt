@@ -83,10 +83,15 @@ internal fun shouldPass(function: (() -> Unit)) {
 }
 
 internal fun shouldFail(function: (() -> Unit)) {
+  var caught = false
   try {
     function.invoke()
-    throw AssertionError("Should have failed")
   } catch (e: AssertionError) {
     // expected
+    caught = true
+    println(e.message)
+  }
+  if (!caught) {
+    throw AssertionError("Should have failed")
   }
 }

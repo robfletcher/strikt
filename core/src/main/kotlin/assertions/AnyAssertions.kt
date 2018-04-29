@@ -1,10 +1,12 @@
 package assertions
 
-fun <T> Assertion<T?>.isNull() {
+fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
   if (target != null) {
     throw AssertionError("Expected $target to be null")
+  } else {
+    @Suppress("UNCHECKED_CAST")
+    this as Assertion<Nothing>
   }
-}
 
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
   if (target == null) {
