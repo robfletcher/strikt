@@ -7,13 +7,13 @@ internal object BasicInlineAssertions : Spek({
   describe("isNull assertion") {
     it("passes if the target is null") {
       shouldPass {
-        val target: String? = null
+        val target: Any? = null
         expect(target).isNull()
       }
     }
     it("fails if the target is not null") {
       shouldFail {
-        val target = "covfefe"
+        val target: Any? = "covfefe"
         expect(target).isNull()
       }
     }
@@ -22,13 +22,13 @@ internal object BasicInlineAssertions : Spek({
   describe("isNotNull assertion") {
     it("fails if the target is null") {
       shouldFail {
-        val target: String? = null
+        val target: Any? = null
         expect(target).isNotNull()
       }
     }
     it("passes if the target is not null") {
       shouldPass {
-        val target = "covfefe"
+        val target: Any? = "covfefe"
         expect(target).isNotNull()
       }
     }
@@ -43,31 +43,31 @@ internal object BasicInlineAssertions : Spek({
     }
     it("fails if the target is a different type") {
       shouldFail {
-        val target: Any? = 1L
+        val target = 1L
         expect(target).isA<String>()
       }
     }
     it("passes if the target is the same exact type") {
       shouldPass {
-        val target: Any? = "covfefe"
+        val target = "covfefe"
         expect(target).isA<String>()
       }
     }
     it("passes if the target is a sub-type") {
       shouldPass {
-        val target: Any? = 1L
+        val target: Any = 1L
         expect(target).isA<Number>()
       }
     }
     it("passes if the multiple isA assertions pass") {
       shouldPass {
-        val target: Any? = 1L
+        val target: Any = 1L
         expect(target).isA<Number>().isA<Long>()
       }
     }
     it("fails if the chained isA does not hold") {
       shouldFail {
-        val target: Any? = 1L
+        val target: Any = 1L
         expect(target).isA<Number>().isA<Int>()
       }
     }

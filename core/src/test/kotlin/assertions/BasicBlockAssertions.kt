@@ -15,7 +15,7 @@ internal object BasicBlockAssertions : Spek({
     }
     it("fails if the target is not null") {
       shouldFail {
-        val target = "covfefe"
+        val target: Any? = "covfefe"
         expect(target) {
           isNull()
         }
@@ -26,7 +26,7 @@ internal object BasicBlockAssertions : Spek({
   describe("isNotNull assertion") {
     it("fails if the target is null") {
       shouldFail {
-        val target: String? = null
+        val target: Any? = null
         expect(target) {
           isNotNull()
         }
@@ -34,7 +34,7 @@ internal object BasicBlockAssertions : Spek({
     }
     it("passes if the target is not null") {
       shouldPass {
-        val target = "covfefe"
+        val target: Any? = "covfefe"
         expect(target) {
           isNotNull()
         }
