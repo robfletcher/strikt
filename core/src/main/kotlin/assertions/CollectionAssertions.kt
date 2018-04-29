@@ -3,7 +3,7 @@ package assertions
 fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
   apply {
     evaluate { target ->
-      if (expected == target.size) {
+      if (target.size == expected) {
         Success(target, "has size $expected")
       } else {
         Failure(target, "has size $expected but is ${target.size}")
@@ -11,14 +11,23 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
     }
   }
 
-fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Unit) =
+fun <T : Iterable<E>, E> Assertion<T>.allMatch(block: Assertion<E>.() -> Unit) =
   apply {
     evaluate { target ->
-      target.all {
-        // TODO: this should report mismatches not blow up on first one
-        FailFastAssertion(it).predicate()
-        true
+      val results = mutableListOf<Result>()
+      target.forEach { element ->
+        val compoundAssertion = object : Assertion<E> {
+          override fun evaluate(predicate: (E) -> Result) {
+            predicate(element).let(results::add)
+          }
+        }
+        compoundAssertion.block()
       }
-      Success(target, "all elements match")
+
+      if (results.all { it is Success<*> }) {
+        Success(target, results.flatMap { it.descriptions })
+      } else {
+        Failure(target, results.flatMap { it.descriptions })
+      }
     }
   }
