@@ -13,7 +13,7 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
     Assertion(target)
   }
 
-inline fun <reified T : Any> Assertion<*>.isA(): Assertion<T> =
+inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
   when (target) {
     null -> throw AssertionError("Expected $target to be an instance of ${T::class.java.name} but it is null")
     is T -> Assertion(target)
