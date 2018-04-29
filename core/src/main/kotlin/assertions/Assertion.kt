@@ -1,5 +1,8 @@
 package assertions
 
+import java.io.StringWriter
+import java.io.Writer
+
 interface Assertion<T> {
   fun evaluate(predicate: (T) -> Result)
 }
@@ -7,55 +10,83 @@ interface Assertion<T> {
 internal class FailFastAssertion<T>(private val target: T) : Assertion<T> {
   override fun evaluate(predicate: (T) -> Result) {
     predicate(target).let { result ->
-      when (result) {
-        is Success<*> -> "✔ ${result.actual}:\n${result.descriptions.join()}".let { message ->
-          println(message)
-        }
-        is Failure<*> -> "✘ ${result.actual}:\n${result.descriptions.join()}".let { message ->
-          println(message)
-          throw AssertionError(message)
-        }
+      val message = StringWriter()
+        .also { writer -> result.describeTo(writer) }
+        .toString()
+      println(message)
+      if (result is Failure) {
+        throw AssertionError(message)
       }
     }
   }
 }
 
-internal class GroupingAssertion<T>(private val target: T) : Assertion<T> {
-  override fun evaluate(predicate: (T) -> Result) {
-    TODO("not implemented")
+interface Result {
+  val success: Boolean
+  fun describeTo(sink: Writer, indent: Int)
+  fun describeTo(sink: Writer) {
+    describeTo(sink, 0)
   }
 }
 
-sealed class Result {
-  abstract val descriptions: List<Description>
+interface Success : Result
+interface Failure : Result
+
+interface ResultWithActual<T> : Result {
+  abstract val actual: T
 }
 
-data class Success<T>(val actual: T, override val descriptions: List<Description>) : Result() {
-  constructor(actual: T, description: String) : this(actual, listOf(Pass(description)))
+interface AtomicResult<T> : ResultWithActual<T> {
+  abstract val description: String
 }
 
-data class Failure<T>(val actual: T, override val descriptions: List<Description>) : Result() {
-  constructor(actual: T, description: String) : this(actual, listOf(Fail(description)))
+interface CompoundResult<T> : ResultWithActual<T> {
+  abstract val results: Iterable<Result>
+}
+
+data class AtomicSuccess<T>(override val actual: T, override val description: String) : AtomicResult<T>, Success {
+  override val success = true
+
+  override fun describeTo(sink: Writer, indent: Int) {
+    (0 until indent).forEach { sink.append(' ') }
+    sink.write("✔ $actual $description".padStart(indent))
+  }
+}
+
+data class AtomicFailure<T>(override val actual: T, override val description: String) : AtomicResult<T>, Failure {
+  override val success = false
+
+  override fun describeTo(sink: Writer, indent: Int) {
+    (0 until indent).forEach { sink.append(' ') }
+    sink.write("✘ $actual $description".padStart(indent))
+  }
+}
+
+data class CompoundSuccess<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Success {
+  override val success = true
+
+  override fun describeTo(sink: Writer, indent: Int) {
+    (0 until indent).forEach { sink.append(' ') }
+    sink.write("✔ $actual".padStart(indent))
+    results.forEach {
+      sink.append("\n")
+      it.describeTo(sink, indent + 2)
+    }
+  }
+}
+
+data class CompoundFailure<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
+  override val success = false
+
+  override fun describeTo(sink: Writer, indent: Int) {
+    (0 until indent).forEach { sink.append(' ') }
+    sink.write("✘ $actual".padStart(indent))
+    results.forEach {
+      sink.append("\n")
+      it.describeTo(sink, indent + 2)
+    }
+  }
 }
 
 // TODO: may want to consider using this and catching any unexpected exceptions
 // data class Error(val exception: Throwable) : Result<Nothing>()
-
-sealed class Description() {
-  abstract val message: String
-}
-
-data class Pass(override val message: String) : Description() {
-  override fun toString(): String {
-    return "✔ $message"
-  }
-}
-
-data class Fail(override val message: String) : Description() {
-  override fun toString(): String {
-    return "✘ $message"
-  }
-}
-
-private fun Iterable<Description>.join() =
-  joinToString("\n") { it.toString() }

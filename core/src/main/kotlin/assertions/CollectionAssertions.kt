@@ -4,9 +4,9 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
   apply {
     evaluate { target ->
       if (target.size == expected) {
-        Success(target, "has size $expected")
+        AtomicSuccess(target, "has size $expected")
       } else {
-        Failure(target, "has size $expected but is ${target.size}")
+        AtomicFailure(target, "has size $expected but is ${target.size}")
       }
     }
   }
@@ -24,10 +24,10 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(block: Assertion<E>.() -> Unit) =
         compoundAssertion.block()
       }
 
-      if (results.all { it is Success<*> }) {
-        Success(target, results.flatMap { it.descriptions })
+      if (results.all { it is AtomicSuccess<*> }) {
+        CompoundSuccess(target, results)
       } else {
-        Failure(target, results.flatMap { it.descriptions })
+        CompoundFailure(target, results)
       }
     }
   }
