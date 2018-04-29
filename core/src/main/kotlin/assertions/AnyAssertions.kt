@@ -20,7 +20,7 @@ open class Assertion<T : Any> internal constructor(protected val target: T?) {
   fun <ST : T> isA(type: KClass<ST>): Assertion<ST> =
     when {
       target == null          -> throw AssertionError("Expected $target to be an instance of $type but it is null")
-      type.isInstance(target) -> Assertion(target as ST)
+      type.isInstance(target) -> @Suppress("UNCHECKED_CAST") Assertion(target as ST)
       else                    -> throw AssertionError("Expected $target to be an instance of $type but it is a ${target.javaClass.name}")
     }
 
