@@ -4,9 +4,9 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   apply {
     evaluate { target ->
       if (target.length == expected) {
-        Success
+        Success(target, "has length $expected")
       } else {
-        Failure(target, "Expected length of $target to be $expected but was ${target.length}")
+        Failure(target, "has length $expected but is ${target.length}")
       }
     }
   }
@@ -15,9 +15,9 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
   apply {
     evaluate { target ->
       if (target.all { it.isLowerCase() }) {
-        Success
+        Success(target, "is lower case")
       } else {
-        Failure(target, "Expected $target to be lower case")
+        Failure(target, "is lower case")
       }
     }
   }
@@ -26,9 +26,9 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   apply {
     evaluate { target ->
       if (target.startsWith(expected)) {
-        Success
+        Success(target, "starts with '$expected'")
       } else {
-        Failure(target, "Expected $target to start with $expected")
+        Failure(target, "starts with '$expected'")
       }
     }
   }

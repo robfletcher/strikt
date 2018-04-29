@@ -3,8 +3,8 @@ package assertions
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
   evaluate { target ->
     when (target) {
-      null -> Success
-      else -> Failure(target, "Expected $target to be null")
+      null -> Success(target, "is null")
+      else -> Failure(target, "is null")
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -14,9 +14,9 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
   evaluate { target ->
     if (target == null) {
-      Failure(target, "Expected $target not to be null")
+      Failure(target, "is not null")
     } else {
-      Success
+      Success(target, "is not null")
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -26,9 +26,9 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
   evaluate { target ->
     when (target) {
-      null -> Failure(target, "Expected $target to be an instance of ${T::class.java.name} but it is null")
-      is T -> Success
-      else -> Failure(target, "Expected $target to be an instance of ${T::class.java.name} but it is a ${target.javaClass.name}")
+      null -> Failure(target, "is an instance of ${T::class.java.name} but it is null")
+      is T -> Success(target, "is an instance of ${T::class.java.name}")
+      else -> Failure(target, "is an instance of ${T::class.java.name} but it is a ${target.javaClass.name}")
     }
   }
   @Suppress("UNCHECKED_CAST")

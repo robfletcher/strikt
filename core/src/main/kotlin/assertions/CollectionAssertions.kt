@@ -4,9 +4,9 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
   apply {
     evaluate { target ->
       if (expected == target.size) {
-        Success
+        Success(target, "has size $expected")
       } else {
-        Failure(target, "Expected size of $target to be $expected but was ${target.size}")
+        Failure(target, "has size $expected but is ${target.size}")
       }
     }
   }
@@ -19,6 +19,6 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Uni
         FailFastAssertion(it).predicate()
         true
       }
-      Success
+      Success(target, "all elements match")
     }
   }
