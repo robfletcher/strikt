@@ -1,7 +1,7 @@
 package assertions
 
-fun <T : Any> expect(target: T?, block: Assertion<T>.() -> Unit) {
+fun <T> expect(target: T, block: Assertion<T>.() -> Unit) {
   Assertion(target).apply(block)
 }
 
-fun <T : Any> expect(target: T?): Assertion<T> = Assertion(target)
+fun <T> expect(target: T): Assertion<T> = Assertion(target)
