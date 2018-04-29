@@ -7,38 +7,52 @@ interface Result {
   fun describeTo(sink: Writer) {
     describeTo(sink, 0)
   }
+
+  companion object {
+    fun <T> success(actual: T, description: String): Success =
+      AtomicSuccess(actual, description)
+
+    fun <T> failure(actual: T, description: String): Failure =
+      AtomicFailure(actual, description)
+
+    fun <T> success(actual: T, results: Iterable<Result>): Success =
+      CompoundSuccess(actual, results)
+
+    fun <T> failure(actual: T, results: Iterable<Result>): Failure =
+      CompoundFailure(actual, results)
+  }
 }
 
 interface Success : Result
 interface Failure : Result
 
-interface ResultWithActual<T> : Result {
+private interface ResultWithActual<T> : Result {
   val actual: T
 }
 
-interface AtomicResult<T> : ResultWithActual<T> {
+private interface AtomicResult<T> : ResultWithActual<T> {
   val description: String
 }
 
-interface CompoundResult<T> : ResultWithActual<T> {
+private interface CompoundResult<T> : ResultWithActual<T> {
   val results: Iterable<Result>
 }
 
-data class AtomicSuccess<T>(override val actual: T, override val description: String) : AtomicResult<T>, Success {
+private data class AtomicSuccess<T>(override val actual: T, override val description: String) : AtomicResult<T>, Success {
   override fun describeTo(sink: Writer, indent: Int) {
     (0 until indent).forEach { sink.append(' ') }
     sink.write("✔ $actual $description".padStart(indent))
   }
 }
 
-data class AtomicFailure<T>(override val actual: T, override val description: String) : AtomicResult<T>, Failure {
+private data class AtomicFailure<T>(override val actual: T, override val description: String) : AtomicResult<T>, Failure {
   override fun describeTo(sink: Writer, indent: Int) {
     (0 until indent).forEach { sink.append(' ') }
     sink.write("✘ $actual $description".padStart(indent))
   }
 }
 
-data class CompoundSuccess<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Success {
+private data class CompoundSuccess<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Success {
   override fun describeTo(sink: Writer, indent: Int) {
     (0 until indent).forEach { sink.append(' ') }
     sink.write("✔ $actual".padStart(indent))
@@ -49,7 +63,7 @@ data class CompoundSuccess<T>(override val actual: T, override val results: Iter
   }
 }
 
-data class CompoundFailure<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
+private data class CompoundFailure<T>(override val actual: T, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
   override fun describeTo(sink: Writer, indent: Int) {
     (0 until indent).forEach { sink.append(' ') }
     sink.write("✘ $actual".padStart(indent))
