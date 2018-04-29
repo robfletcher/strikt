@@ -89,7 +89,6 @@ internal fun shouldFail(function: (() -> Unit)) {
   } catch (e: AssertionError) {
     // expected
     caught = true
-    println(e.message)
   }
   if (!caught) {
     throw AssertionError("Should have failed")
