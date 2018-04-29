@@ -5,9 +5,9 @@ import java.io.Writer
 interface Result {
   val description: String
 
-  fun describeTo(sink: Writer, indent: Int)
-  fun describeTo(sink: Writer) {
-    describeTo(sink, 0)
+  fun describeTo(writer: Writer, indent: Int)
+  fun describeTo(writer: Writer) {
+    describeTo(writer, 0)
   }
 
   companion object {
@@ -37,37 +37,37 @@ private interface CompoundResult<T> : AtomicResult<T> {
 }
 
 private data class AtomicSuccess<T>(override val actual: T, override val description: String) : AtomicResult<T>, Success {
-  override fun describeTo(sink: Writer, indent: Int) {
-    (0 until indent).forEach { sink.append(' ') }
-    sink.write("✔ $actual $description".padStart(indent))
+  override fun describeTo(writer: Writer, indent: Int) {
+    (0 until indent).forEach { writer.append(' ') }
+    writer.write("✔ $actual $description".padStart(indent))
   }
 }
 
 private data class AtomicFailure<T>(override val actual: T, override val description: String) : AtomicResult<T>, Failure {
-  override fun describeTo(sink: Writer, indent: Int) {
-    (0 until indent).forEach { sink.append(' ') }
-    sink.write("✘ $actual $description".padStart(indent))
+  override fun describeTo(writer: Writer, indent: Int) {
+    (0 until indent).forEach { writer.append(' ') }
+    writer.write("✘ $actual $description".padStart(indent))
   }
 }
 
 private data class CompoundSuccess<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Success {
-  override fun describeTo(sink: Writer, indent: Int) {
-    (0 until indent).forEach { sink.append(' ') }
-    sink.write("✔ $actual $description".padStart(indent))
+  override fun describeTo(writer: Writer, indent: Int) {
+    (0 until indent).forEach { writer.append(' ') }
+    writer.write("✔ $actual $description".padStart(indent))
     results.forEach {
-      sink.append("\n")
-      it.describeTo(sink, indent + 2)
+      writer.append("\n")
+      it.describeTo(writer, indent + 2)
     }
   }
 }
 
 private data class CompoundFailure<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
-  override fun describeTo(sink: Writer, indent: Int) {
-    (0 until indent).forEach { sink.append(' ') }
-    sink.write("✘ $actual $description".padStart(indent))
+  override fun describeTo(writer: Writer, indent: Int) {
+    (0 until indent).forEach { writer.append(' ') }
+    writer.write("✘ $actual $description".padStart(indent))
     results.forEach {
-      sink.append("\n")
-      it.describeTo(sink, indent + 2)
+      writer.append("\n")
+      it.describeTo(writer, indent + 2)
     }
   }
 }
