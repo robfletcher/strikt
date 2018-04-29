@@ -7,7 +7,7 @@ internal object BasicBlockAssertions : Spek({
   describe("isNull assertion") {
     it("passes if the target is null") {
       shouldPass {
-        val target: String? = null
+        val target: Any? = null
         expect(target) {
           isNull()
         }

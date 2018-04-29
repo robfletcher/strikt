@@ -17,7 +17,7 @@ internal object SpecializedAssertions : Spek({
     it("allows more specialized assertions") {
       shouldPass {
         val target: Any = "covfefe"
-        expect(target).isString().hasLength(7)
+        expect(target).isA<String>().hasLength(7)
       }
     }
   }
