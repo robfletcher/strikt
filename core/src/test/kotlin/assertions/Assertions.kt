@@ -19,6 +19,7 @@ internal object Assertions : Spek({
           expect(subject).isNull()
         }
       }
+      @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
         val subject: Any? = null
         expect(subject)
@@ -41,6 +42,7 @@ internal object Assertions : Spek({
           expect(subject).isNotNull()
         }
       }
+      @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
         val subject: Any? = "covfefe"
         expect(subject)
@@ -75,6 +77,7 @@ internal object Assertions : Spek({
           expect(subject).isA<Number>()
         }
       }
+      @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
         val subject: Any = 1L
         expect(subject)
@@ -84,6 +87,7 @@ internal object Assertions : Spek({
           .isA<Long>()
           .also { assert(it is Assertion<Long>) }
       }
+      @Suppress("USELESS_IS_CHECK")
       it("allows specialized assertions after establishing type") {
         passes {
           val subject: Any = "covfefe"
