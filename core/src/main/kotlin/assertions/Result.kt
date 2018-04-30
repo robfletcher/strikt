@@ -64,7 +64,7 @@ private data class AtomicFailure<T>(override val actual: T, override val descrip
 private data class CompoundSuccess<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Success {
   override fun describeTo(writer: Writer, indent: Int) {
     (0 until indent).forEach { writer.append(' ') }
-    writer.write("✔ $actual $description: ".padStart(indent))
+    writer.write("✔ $actual $description:".padStart(indent))
     results.forEach {
       writer.append("\n")
       it.describeTo(writer, indent + 2)
@@ -79,7 +79,7 @@ private data class CompoundSuccess<T>(override val actual: T, override val descr
 private data class CompoundFailure<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
   override fun describeTo(writer: Writer, indent: Int) {
     (0 until indent).forEach { writer.append(' ') }
-    writer.write("✘ $actual $description: ".padStart(indent))
+    writer.write("✘ $actual $description:".padStart(indent))
     results.forEach {
       writer.append("\n")
       it.describeTo(writer, indent + 2)
@@ -93,3 +93,11 @@ private data class CompoundFailure<T>(override val actual: T, override val descr
 
 // TODO: may want to consider using this and catching any unexpected exceptions
 // data class Error(val exception: Throwable) : Result<Nothing>()
+
+fun Iterable<Result>.describeTo(writer: Writer) {
+  firstOrNull()?.describeTo(writer)
+  drop(1).forEach {
+    writer.append('\n')
+    it.describeTo(writer)
+  }
+}

@@ -1,6 +1,10 @@
 package assertions
 
-class AssertionFailed(val results: Collection<Result>) : AssertionError() {
+import java.io.StringWriter
+
+class AssertionFailed(val results: Collection<Result>) : AssertionError(
+  StringWriter().also { writer -> results.describeTo(writer) }.toString()
+) {
   constructor(result: Result) : this(listOf(result))
 
   val assertionCount = results.sumBy { it.assertionCount }

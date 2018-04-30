@@ -22,6 +22,17 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
     }
   }
 
+fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
+  apply {
+    evaluate { target ->
+      if (target.all { it.isUpperCase() }) {
+        Result.success(target, "is upper case")
+      } else {
+        Result.failure(target, "is upper case")
+      }
+    }
+  }
+
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   apply {
     evaluate { target ->

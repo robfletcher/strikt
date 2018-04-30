@@ -6,7 +6,7 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
       if (target.size == expected) {
         Result.success(target, "has size $expected")
       } else {
-        Result.failure(target, "has size $expected but is ${target.size}")
+        Result.failure(target, "has size $expected")
       }
     }
   }
