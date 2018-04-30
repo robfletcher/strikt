@@ -2,18 +2,18 @@ package assertions
 
 fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("has size $expected") { subject ->
       if (subject.size == expected) {
-        Result.success(subject, "has size $expected")
+        success(subject)
       } else {
-        Result.failure(subject, "has size $expected")
+        failure(subject)
       }
     }
   }
 
 fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Unit) =
   apply {
-    evaluate { subject ->
+    evaluate("all elements match predicate") { subject ->
       val results = mutableListOf<Result>()
       subject.forEach { element ->
         val compoundAssertion = CollectingAssertion(element)
@@ -22,9 +22,9 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Uni
       }
 
       if (results.all { it is Success }) {
-        Result.success(subject, "all elements match predicate", results)
+        success(subject, results)
       } else {
-        Result.failure(subject, "all elements match predicate", results)
+        failure(subject, results)
       }
     }
   }

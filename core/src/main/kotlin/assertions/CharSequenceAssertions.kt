@@ -2,44 +2,44 @@ package assertions
 
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("has length $expected") { subject ->
       if (subject.length == expected) {
-        Result.success(subject, "has length $expected")
+        success(subject)
       } else {
-        Result.failure(subject, "has length $expected but is ${subject.length}")
+        failure(subject)
       }
     }
   }
 
 fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("is lower case") { subject ->
       if (subject.all { it.isLowerCase() }) {
-        Result.success(subject, "is lower case")
+        success(subject)
       } else {
-        Result.failure(subject, "is lower case")
+        failure(subject)
       }
     }
   }
 
 fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("is upper case") { subject ->
       if (subject.all { it.isUpperCase() }) {
-        Result.success(subject, "is upper case")
+        success(subject)
       } else {
-        Result.failure(subject, "is upper case")
+        failure(subject)
       }
     }
   }
 
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("starts with '$expected'") { subject ->
       if (subject.startsWith(expected)) {
-        Result.success(subject, "starts with '$expected'")
+        success(subject)
       } else {
-        Result.failure(subject, "starts with '$expected'")
+        failure(subject)
       }
     }
   }

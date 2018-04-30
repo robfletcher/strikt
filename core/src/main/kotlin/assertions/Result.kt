@@ -2,6 +2,11 @@ package assertions
 
 import java.io.Writer
 
+sealed class Status {
+  object Success : Status()
+  object Failure : Status()
+}
+
 interface Result {
   val description: String
   val assertionCount: Int

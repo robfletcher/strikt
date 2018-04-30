@@ -1,10 +1,10 @@
 package assertions
 
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
-  evaluate { subject ->
+  evaluate("is null") { subject ->
     when (subject) {
-      null -> Result.success(subject, "is null")
-      else -> Result.failure(subject, "is null")
+      null -> success(subject)
+      else -> failure(subject)
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -12,10 +12,10 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
 }
 
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
-  evaluate { subject ->
+  evaluate("is not null") { subject ->
     when (subject) {
-      null -> Result.failure(subject, "is not null")
-      else -> Result.success(subject, "is not null")
+      null -> failure(subject)
+      else -> success(subject)
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -23,11 +23,11 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
 }
 
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
-  evaluate { subject ->
+  evaluate("is an instance of ${T::class.java.name}") { subject ->
     when (subject) {
-      null -> Result.failure(subject, "is an instance of ${T::class.java.name} but it is null")
-      is T -> Result.success(subject, "is an instance of ${T::class.java.name}")
-      else -> Result.failure(subject, "is an instance of ${T::class.java.name} but it is a ${subject.javaClass.name}")
+      null -> failure(subject)
+      is T -> success(subject)
+      else -> failure(subject)
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -36,10 +36,10 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
 
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
   apply {
-    evaluate { subject ->
+    evaluate("is equal to $expected") { subject ->
       when (subject) {
-        expected -> Result.success(subject, "is equal to $expected")
-        else     -> Result.failure(subject, "is equal to $expected")
+        expected -> success(subject)
+        else     -> failure(subject)
       }
     }
   }
