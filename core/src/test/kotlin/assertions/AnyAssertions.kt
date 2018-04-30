@@ -94,4 +94,32 @@ internal object AnyAssertions : Spek({
       }
     }
   }
+
+  describe("isEqualTo assertion") {
+    it("passes if the subject matches the expectation") {
+      passes {
+        expect("covfefe").isEqualTo("covfefe")
+      }
+    }
+    it("fails if the subject does not match the expectation") {
+      fails {
+        expect("covfefe").isEqualTo("COVFEFE")
+      }
+    }
+    it("fails if the subject is a different type to the expectation") {
+      fails {
+        expect(1).isEqualTo(1L)
+      }
+    }
+    it("can be used on a null subject") {
+      fails {
+        expect(null).isEqualTo("covfefe")
+      }
+    }
+    it("can be used with a null expected value") {
+      fails {
+        expect("covfefe").isEqualTo(null)
+      }
+    }
+  }
 })

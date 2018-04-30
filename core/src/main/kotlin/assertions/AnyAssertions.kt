@@ -13,10 +13,9 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
 
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
   evaluate { subject ->
-    if (subject == null) {
-      Result.failure(subject, "is not null")
-    } else {
-      Result.success(subject, "is not null")
+    when (subject) {
+      null -> Result.failure(subject, "is not null")
+      else -> Result.success(subject, "is not null")
     }
   }
   @Suppress("UNCHECKED_CAST")
@@ -34,3 +33,13 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
   @Suppress("UNCHECKED_CAST")
   return this as Assertion<T>
 }
+
+fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
+  apply {
+    evaluate { subject ->
+      when (subject) {
+        expected -> Result.success(subject, "is equal to $expected")
+        else     -> Result.failure(subject, "is equal to $expected")
+      }
+    }
+  }
