@@ -10,20 +10,12 @@ internal class FailFastAssertion<T>(private val subject: T) : Assertion<T> {
   override fun evaluate(description: String, predicate: Reporter.(T) -> Unit) {
     val reporter = object : Reporter {
       override fun aggregate(status: Status, results: Iterable<Result>) {
-        if (status === Status.Success) {
-          Result.success(subject, description, results)
-        } else {
-          Result.failure(subject, description, results)
-        }
+        result(status, description, subject, results)
           .also(this::logAndFail)
       }
 
       override fun report(status: Status) {
-        if (status === Status.Success) {
-          Result.success(subject, description)
-        } else {
-          Result.failure(subject, description)
-        }
+        result(status, description, subject)
           .also(this::logAndFail)
       }
 
@@ -32,7 +24,7 @@ internal class FailFastAssertion<T>(private val subject: T) : Assertion<T> {
           .also(result::describeTo)
           .toString()
           .let(::println)
-        if (result is Failure) {
+        if (result.status === Status.Failure) {
           throw AssertionFailed(result)
         }
       }
@@ -47,25 +39,13 @@ internal class CollectingAssertion<T>(private val subject: T) : Assertion<T> {
   override fun evaluate(description: String, predicate: Reporter.(T) -> Unit) {
     val reporter = object : Reporter {
       override fun aggregate(status: Status, results: Iterable<Result>) {
-        if (status === Status.Success) {
-          Result.success(subject, description, results)
-        } else {
-          Result.failure(subject, description, results)
-        }
-          .also {
-            _results.add(it)
-          }
+        result(status, description, subject, results)
+          .also { _results.add(it) }
       }
 
       override fun report(status: Status) {
-        if (status === Status.Success) {
-          Result.success(subject, description)
-        } else {
-          Result.failure(subject, description)
-        }
-          .also {
-            _results.add(it)
-          }
+        result(status, description, subject)
+          .also { _results.add(it) }
       }
     }
     reporter.predicate(subject)

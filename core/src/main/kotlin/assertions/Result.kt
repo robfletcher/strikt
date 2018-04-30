@@ -5,71 +5,69 @@ import java.io.Writer
 sealed class Status {
   object Success : Status()
   object Failure : Status()
+  // TODO: may want an `Error` too
 }
 
 interface Result {
+  val status: Status
   val description: String
+  val actual: Any?
   val assertionCount: Int
   val passCount: Int
   val failureCount: Int
 
   fun describeTo(writer: Writer, indent: Int)
+
   fun describeTo(writer: Writer) {
     describeTo(writer, 0)
   }
+}
 
-  companion object {
-    fun <T> success(actual: T, description: String): Success =
-      AtomicSuccess(actual, description)
+internal fun <T> result(status: Status, description: String, actual: T): Result =
+  AtomicResult(status, description, actual)
 
-    fun <T> failure(actual: T, description: String): Failure =
-      AtomicFailure(actual, description)
+internal fun <T> result(status: Status, description: String, actual: T, results: Iterable<Result>): Result =
+  CompoundResult(status, description, actual, results)
 
-    fun <T> success(actual: T, description: String, results: Iterable<Result>): Success =
-      CompoundSuccess(actual, description, results)
+private data class AtomicResult(
+  override val status: Status,
+  override val description: String,
+  override val actual: Any?
+) : Result {
+  override fun describeTo(writer: Writer, indent: Int) {
+    writer.append("".padStart(indent))
+    writer.append(when (status) {
+      Status.Success -> "✔ "
+      Status.Failure -> "✘ "
+    })
+    writer.write("$actual $description")
+  }
 
-    fun <T> failure(actual: T, description: String, results: Iterable<Result>): Failure =
-      CompoundFailure(actual, description, results)
+  override val assertionCount = 1
+  override val passCount = when (status) {
+    Status.Success -> 1
+    Status.Failure -> 0
+  }
+  override val failureCount = when (status) {
+    Status.Success -> 0
+    Status.Failure -> 1
   }
 }
 
-interface Success : Result
-interface Failure : Result
-
-private interface AtomicResult<T> : Result {
-  val actual: T
-}
-
-private interface CompoundResult<T> : AtomicResult<T> {
+private data class CompoundResult(
+  override val status: Status,
+  override val description: String,
+  override val actual: Any?,
   val results: Iterable<Result>
-}
-
-private data class AtomicSuccess<T>(override val actual: T, override val description: String) : AtomicResult<T>, Success {
+) : Result {
   override fun describeTo(writer: Writer, indent: Int) {
-    (0 until indent).forEach { writer.append(' ') }
-    writer.write("✔ $actual $description".padStart(indent))
-  }
-
-  override val assertionCount = 1
-  override val passCount = 1
-  override val failureCount = 0
-}
-
-private data class AtomicFailure<T>(override val actual: T, override val description: String) : AtomicResult<T>, Failure {
-  override fun describeTo(writer: Writer, indent: Int) {
-    (0 until indent).forEach { writer.append(' ') }
-    writer.write("✘ $actual $description".padStart(indent))
-  }
-
-  override val assertionCount = 1
-  override val passCount = 0
-  override val failureCount = 1
-}
-
-private data class CompoundSuccess<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Success {
-  override fun describeTo(writer: Writer, indent: Int) {
-    (0 until indent).forEach { writer.append(' ') }
-    writer.write("✔ $actual $description:".padStart(indent))
+    writer.append("".padStart(indent))
+    writer.append(when (status) {
+      Status.Success -> "✔ "
+      Status.Failure -> "✘ "
+    })
+    writer.append("$actual $description")
+    writer.append(":")
     results.forEach {
       writer.append("\n")
       it.describeTo(writer, indent + 2)
@@ -81,25 +79,7 @@ private data class CompoundSuccess<T>(override val actual: T, override val descr
   override val failureCount = results.sumBy { it.failureCount }
 }
 
-private data class CompoundFailure<T>(override val actual: T, override val description: String, override val results: Iterable<Result>) : CompoundResult<T>, Failure {
-  override fun describeTo(writer: Writer, indent: Int) {
-    (0 until indent).forEach { writer.append(' ') }
-    writer.write("✘ $actual $description:".padStart(indent))
-    results.forEach {
-      writer.append("\n")
-      it.describeTo(writer, indent + 2)
-    }
-  }
-
-  override val assertionCount = results.sumBy { it.assertionCount }
-  override val passCount = results.sumBy { it.passCount }
-  override val failureCount = results.sumBy { it.failureCount }
-}
-
-// TODO: may want to consider using this and catching any unexpected exceptions
-// data class Error(val exception: Throwable) : Result<Nothing>()
-
-fun Iterable<Result>.describeTo(writer: Writer) {
+internal fun Iterable<Result>.describeTo(writer: Writer) {
   firstOrNull()?.describeTo(writer)
   drop(1).forEach {
     writer.append('\n')

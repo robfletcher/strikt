@@ -6,7 +6,7 @@ fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> =
   CollectingAssertion(subject)
     .apply(block)
     .apply {
-      if (results.any { it is Failure }) {
+      if (results.any { it.status === Status.Failure }) {
         throw AssertionFailed(results)
       }
     }
