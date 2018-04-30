@@ -3,7 +3,7 @@ package assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 
-object CollectionInlineAssertions : Spek({
+object CollectionAssertions : Spek({
   describe("hasSize assertion") {
     it("fails if the target size is not the expected size") {
       fails {

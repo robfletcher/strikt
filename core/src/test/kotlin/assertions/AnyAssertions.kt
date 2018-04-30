@@ -3,7 +3,8 @@ package assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 
-internal object BasicInlineAssertions : Spek({
+internal object AnyAssertions : Spek({
+
   describe("isNull assertion") {
     it("passes if the target is null") {
       passes {
@@ -16,6 +17,13 @@ internal object BasicInlineAssertions : Spek({
         val target: Any? = "covfefe"
         expect(target).isNull()
       }
+    }
+    it("down-casts the result") {
+      val target: Any? = null
+      expect(target)
+        .also { assert(it is Assertion<Any?>) }
+        .isNull()
+        .also { assert(it is Assertion<Nothing>) }
     }
   }
 
@@ -31,6 +39,13 @@ internal object BasicInlineAssertions : Spek({
         val target: Any? = "covfefe"
         expect(target).isNotNull()
       }
+    }
+    it("down-casts the result") {
+      val target: Any? = "covfefe"
+      expect(target)
+        .also { assert(it is Assertion<Any?>) }
+        .isNotNull()
+        .also { assert(it is Assertion<Any>) }
     }
   }
 
@@ -59,16 +74,23 @@ internal object BasicInlineAssertions : Spek({
         expect(target).isA<Number>()
       }
     }
-    it("passes if the multiple isA assertions pass") {
-      passes {
-        val target: Any = 1L
-        expect(target).isA<Number>().isA<Long>()
-      }
+    it("down-casts the result") {
+      val target: Any = 1L
+      expect(target)
+        .also { assert(it is Assertion<Any>) }
+        .isA<Number>()
+        .also { assert(it is Assertion<Number>) }
+        .isA<Long>()
+        .also { assert(it is Assertion<Long>) }
     }
-    it("fails if the chained isA does not hold") {
-      fails {
-        val target: Any = 1L
-        expect(target).isA<Number>().isA<Int>()
+    it("allows specialized assertions after establishing type") {
+      passes {
+        val target: Any = "covfefe"
+        expect(target)
+          .also { assert(it is Assertion<Any>) }
+          .isA<String>()
+          .also { assert(it is Assertion<String>) }
+          .hasLength(7) // only available on Assertion<CharSequence>
       }
     }
   }
