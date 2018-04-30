@@ -6,7 +6,7 @@ import org.jetbrains.spek.api.dsl.*
 object CollectionInlineAssertions : Spek({
   describe("hasSize assertion") {
     it("fails if the target size is not the expected size") {
-      shouldFail {
+      fails {
         val target = setOf("catflap", "rubberplant", "marzipan")
         expect(target).hasSize(1)
       }
@@ -15,7 +15,7 @@ object CollectionInlineAssertions : Spek({
 
   describe("allMatch assertion") {
     it("passes if all elements conform") {
-      shouldPass {
+      passes {
         val target = setOf("catflap", "rubberplant", "marzipan")
         expect(target).allMatch {
           isLowerCase()
@@ -23,12 +23,18 @@ object CollectionInlineAssertions : Spek({
       }
     }
     it("fails if any element does not conform") {
-      shouldFail {
+      fails {
         val target = setOf("catflap", "rubberplant", "marzipan")
         expect(target).allMatch {
+          isLowerCase()
           startsWith('c')
         }
       }
+        .let { failure ->
+          assert(failure.assertionCount == 6) { "Expected 6 assertions but found ${failure.assertionCount}" }
+          assert(failure.passCount == 4) { "Expected 4 passed assertions but found ${failure.passCount}" }
+          assert(failure.failureCount == 2) { "Expected 2 failed assertions but found ${failure.failureCount}" }
+        }
     }
   }
 })

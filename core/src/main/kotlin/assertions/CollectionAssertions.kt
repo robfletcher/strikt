@@ -16,12 +16,9 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Uni
     evaluate { target ->
       val results = mutableListOf<Result>()
       target.forEach { element ->
-        val compoundAssertion = object : Assertion<E> {
-          override fun evaluate(predicate: (E) -> Result) {
-            predicate(element).let(results::add)
-          }
-        }
+        val compoundAssertion = CollectingAssertion(element)
         compoundAssertion.predicate()
+        results.addAll(compoundAssertion.results)
       }
 
       if (results.all { it is Success }) {

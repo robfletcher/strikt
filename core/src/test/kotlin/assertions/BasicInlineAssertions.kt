@@ -6,13 +6,13 @@ import org.jetbrains.spek.api.dsl.*
 internal object BasicInlineAssertions : Spek({
   describe("isNull assertion") {
     it("passes if the target is null") {
-      shouldPass {
+      passes {
         val target: Any? = null
         expect(target).isNull()
       }
     }
     it("fails if the target is not null") {
-      shouldFail {
+      fails {
         val target: Any? = "covfefe"
         expect(target).isNull()
       }
@@ -21,13 +21,13 @@ internal object BasicInlineAssertions : Spek({
 
   describe("isNotNull assertion") {
     it("fails if the target is null") {
-      shouldFail {
+      fails {
         val target: Any? = null
         expect(target).isNotNull()
       }
     }
     it("passes if the target is not null") {
-      shouldPass {
+      passes {
         val target: Any? = "covfefe"
         expect(target).isNotNull()
       }
@@ -36,37 +36,37 @@ internal object BasicInlineAssertions : Spek({
 
   describe("isA assertion") {
     it("fails if the target is null") {
-      shouldFail {
+      fails {
         val target: Any? = null
         expect(target).isA<String>()
       }
     }
     it("fails if the target is a different type") {
-      shouldFail {
+      fails {
         val target = 1L
         expect(target).isA<String>()
       }
     }
     it("passes if the target is the same exact type") {
-      shouldPass {
+      passes {
         val target = "covfefe"
         expect(target).isA<String>()
       }
     }
     it("passes if the target is a sub-type") {
-      shouldPass {
+      passes {
         val target: Any = 1L
         expect(target).isA<Number>()
       }
     }
     it("passes if the multiple isA assertions pass") {
-      shouldPass {
+      passes {
         val target: Any = 1L
         expect(target).isA<Number>().isA<Long>()
       }
     }
     it("fails if the chained isA does not hold") {
-      shouldFail {
+      fails {
         val target: Any = 1L
         expect(target).isA<Number>().isA<Int>()
       }

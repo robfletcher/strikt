@@ -7,14 +7,14 @@ internal object CharSequenceBlockAssertions : Spek({
 
   describe("hasLength assertion") {
     it("passes if the target has the expected length") {
-      shouldPass {
+      passes {
         expect("covfefe") {
           hasLength(7)
         }
       }
     }
     it("fails if the target does not have the expected length") {
-      shouldFail {
+      fails {
         expect("covfefe") {
           hasLength(1)
         }

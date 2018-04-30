@@ -14,8 +14,19 @@ internal class FailFastAssertion<T>(private val target: T) : Assertion<T> {
         .toString()
       println(message)
       if (result is Failure) {
-        throw AssertionError(message)
+        throw AssertionFailed(result)
       }
     }
   }
+}
+
+internal class CollectingAssertion<T>(private val target: T) : Assertion<T> {
+  private val _results = mutableListOf<Result>()
+
+  override fun evaluate(predicate: (T) -> Result) {
+    predicate(target).let(_results::add)
+  }
+
+  val results: List<Result>
+    get() = _results
 }

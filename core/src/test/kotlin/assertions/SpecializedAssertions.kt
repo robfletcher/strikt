@@ -7,7 +7,7 @@ internal object SpecializedAssertions : Spek({
 
   describe("assertion chain on a string target") {
     it("allows more specialized assertions") {
-      shouldPass {
+      passes {
         expect("covfefe").hasLength(7)
       }
     }
@@ -15,7 +15,7 @@ internal object SpecializedAssertions : Spek({
 
   describe("downcasting an unspecified type to one with a more specialized assertion") {
     it("allows more specialized assertions") {
-      shouldPass {
+      passes {
         val target: Any = "covfefe"
         expect(target).isA<String>().hasLength(7)
       }
