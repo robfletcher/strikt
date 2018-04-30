@@ -3,7 +3,7 @@ package assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 
-object ExceptionDetail : Spek({
+object Reporting : Spek({
 
   describe("assertion failure messages") {
     on("evaluating a block assertion with multiple failures") {

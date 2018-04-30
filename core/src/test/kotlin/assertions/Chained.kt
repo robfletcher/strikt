@@ -3,7 +3,7 @@ package assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 
-internal object ChainedAssertions : Spek({
+internal object Chained : Spek({
   describe("isNotNull assertion") {
     it("stops on the first failed assertion in the chain") {
       fails {

@@ -3,7 +3,7 @@ package assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 
-internal object BlockAssertions : Spek({
+internal object Block : Spek({
   describe("assertions in blocks") {
     it("evaluates all assertions in the block even if some fail") {
       fails {
