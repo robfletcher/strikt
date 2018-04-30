@@ -7,8 +7,8 @@ internal object ChainedAssertions : Spek({
   describe("isNotNull assertion") {
     it("stops on the first failed assertion in the chain") {
       fails {
-        val target: Any? = null
-        expect(target).isNotNull().isA<String>()
+        val subject: Any? = null
+        expect(subject).isNotNull().isA<String>()
       }.let { e ->
         assert(e.assertionCount == 1) { "Expected 1 assertion but found ${e.assertionCount}" }
         assert(e.passCount == 0) { "Expected 0 passed assertions but found ${e.passCount}" }

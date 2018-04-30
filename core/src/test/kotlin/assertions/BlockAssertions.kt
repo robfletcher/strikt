@@ -7,8 +7,8 @@ internal object BlockAssertions : Spek({
   describe("assertions in blocks") {
     it("evaluates all assertions in the block even if some fail") {
       fails {
-        val target: Any? = "covfefe"
-        expect(target) {
+        val subject: Any? = "covfefe"
+        expect(subject) {
           isNull()
           isNotNull()
           isA<String>()

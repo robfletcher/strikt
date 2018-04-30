@@ -5,10 +5,10 @@ import org.jetbrains.spek.api.dsl.*
 
 object CollectionAssertions : Spek({
   describe("hasSize assertion") {
-    it("fails if the target size is not the expected size") {
+    it("fails if the subject size is not the expected size") {
       fails {
-        val target = setOf("catflap", "rubberplant", "marzipan")
-        expect(target).hasSize(1)
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).hasSize(1)
       }
     }
   }
@@ -16,16 +16,16 @@ object CollectionAssertions : Spek({
   describe("allMatch assertion") {
     it("passes if all elements conform") {
       passes {
-        val target = setOf("catflap", "rubberplant", "marzipan")
-        expect(target).allMatch {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).allMatch {
           isLowerCase()
         }
       }
     }
     it("fails if any element does not conform") {
       fails {
-        val target = setOf("catflap", "rubberplant", "marzipan")
-        expect(target).allMatch {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).allMatch {
           isLowerCase()
           startsWith('c')
         }
