@@ -3,7 +3,7 @@ package assertions.assertions
 import assertions.api.Assertion
 
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
-  evaluate("is null") { subject ->
+  atomic("is null") { subject ->
     when (subject) {
       null -> success()
       else -> failure()
@@ -14,7 +14,7 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
 }
 
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
-  evaluate("is not null") { subject ->
+  atomic("is not null") { subject ->
     when (subject) {
       null -> failure()
       else -> success()
@@ -25,7 +25,7 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
 }
 
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
-  evaluate("is an instance of ${T::class.java.name}") { subject ->
+  atomic("is an instance of ${T::class.java.name}") { subject ->
     when (subject) {
       null -> failure()
       is T -> success()
@@ -38,7 +38,7 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
 
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
   apply {
-    evaluate("is equal to $expected") { subject ->
+    atomic("is equal to $expected") { subject ->
       when (subject) {
         expected -> success()
         else     -> failure()
