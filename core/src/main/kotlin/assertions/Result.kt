@@ -2,9 +2,9 @@ package assertions
 
 import java.io.Writer
 
-sealed class Status {
-  object Success : Status()
-  object Failure : Status()
+enum class Status {
+  Success,
+  Failure
   // TODO: may want an `Error` too
 }
 

@@ -21,7 +21,7 @@ fun <T : Iterable<E>, E> Assertion<T>.allMatch(predicate: Assertion<E>.() -> Uni
         results.addAll(compoundAssertion.results)
       }
 
-      if (results.all { it.status === Status.Success }) {
+      if (results.all { it.status == Status.Success }) {
         success(results)
       } else {
         failure(results)

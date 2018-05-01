@@ -24,7 +24,7 @@ internal class FailFastAssertion<T>(private val subject: T) : Assertion<T> {
           .also(result::describeTo)
           .toString()
           .let(::println)
-        if (result.status === Status.Failure) {
+        if (result.status == Status.Failure) {
           throw AssertionFailed(result)
         }
       }
