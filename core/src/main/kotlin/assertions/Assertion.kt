@@ -1,56 +1,44 @@
 package assertions
 
-import java.io.StringWriter
-
 interface Assertion<T> {
-  fun evaluate(description: String, predicate: Reporter.(T) -> Unit)
+  fun evaluate(description: String, predicate: AssertionContext.(T) -> Unit)
 }
 
-internal class FailFastAssertion<T>(private val subject: T) : Assertion<T> {
-  override fun evaluate(description: String, predicate: Reporter.(T) -> Unit) {
-    val reporter = object : Reporter {
-      override fun aggregate(status: Status, results: Iterable<Result>) {
-        result(status, description, subject, results)
-          .also(this::logAndFail)
-      }
+interface AssertionContext {
+  fun success()
+  fun failure()
+  fun aggregating(block: AssertionContext.(AggregatingReporter) -> Unit)
+}
 
-      override fun report(status: Status) {
-        result(status, description, subject)
-          .also(this::logAndFail)
-      }
+internal class ReportingAssertion<T>(
+  private val reporter: Reporter,
+  private val subject: T
+) : Assertion<T> {
+  override fun evaluate(description: String, predicate: AssertionContext.(T) -> Unit) {
+    object : AssertionContext {
 
-      private fun logAndFail(result: Result) {
-        StringWriter()
-          .also(result::describeTo)
-          .toString()
-          .let(::println)
-        if (result.status == Status.Failure) {
-          throw AssertionFailed(result)
+      val aggregatingReporter = AggregatingReporter()
+
+      override fun success() {
+        if (aggregatingReporter.results.isEmpty()) {
+          reporter.report(result(Status.Success, description, subject))
+        } else {
+          reporter.report(result(Status.Success, description, subject, aggregatingReporter.results))
         }
       }
-    }
-    reporter.predicate(subject)
-  }
-}
 
-internal class CollectingAssertion<T>(private val subject: T) : Assertion<T> {
-  private val _results = mutableListOf<Result>()
-
-  override fun evaluate(description: String, predicate: Reporter.(T) -> Unit) {
-    val reporter = object : Reporter {
-      override fun aggregate(status: Status, results: Iterable<Result>) {
-        result(status, description, subject, results)
-          .also { _results.add(it) }
+      override fun failure() {
+        if (aggregatingReporter.results.isEmpty()) {
+          reporter.report(result(Status.Failure, description, subject))
+        } else {
+          reporter.report(result(Status.Failure, description, subject, aggregatingReporter.results))
+        }
       }
 
-      override fun report(status: Status) {
-        result(status, description, subject)
-          .also { _results.add(it) }
+      override fun aggregating(block: AssertionContext.(AggregatingReporter) -> Unit) {
+        block(aggregatingReporter)
       }
     }
-    reporter.predicate(subject)
+      .predicate(subject)
   }
-
-  val results: List<Result>
-    get() = _results
 }

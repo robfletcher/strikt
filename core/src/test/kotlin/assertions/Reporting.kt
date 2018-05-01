@@ -12,8 +12,8 @@ object Reporting : Spek({
         val subject = setOf("catflap", "rubberplant", "marzipan")
         expect(subject) {
           hasSize(0)
-          allMatch { isUpperCase() }
-          allMatch { startsWith('c') }
+          all { isUpperCase() }
+          all { startsWith('c') }
         }
       }
 

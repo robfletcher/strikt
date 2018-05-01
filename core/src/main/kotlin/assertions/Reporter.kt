@@ -1,24 +1,30 @@
 package assertions
 
+import java.io.StringWriter
+
 interface Reporter {
+  fun report(result: Result)
+}
 
-  fun aggregate(status: Status, results: Iterable<Result>)
+internal class FailFastReporter : Reporter {
+  override fun report(result: Result) {
+    StringWriter()
+      .also(result::describeTo)
+      .toString()
+      .let(::println)
+    if (result.status == Status.Failure) {
+      throw AssertionFailed(result)
+    }
+  }
+}
 
-  fun report(status: Status)
+class AggregatingReporter : Reporter {
+  private val _results = mutableListOf<Result>()
 
-  fun success(results: Iterable<Result>) {
-    aggregate(Status.Success, results)
+  override fun report(result: Result) {
+    _results.add(result)
   }
 
-  fun failure(results: Iterable<Result>) {
-    aggregate(Status.Failure, results)
-  }
-
-  fun success() {
-    report(Status.Success)
-  }
-
-  fun failure() {
-    report(Status.Failure)
-  }
+  val results: List<Result>
+    get() = _results
 }

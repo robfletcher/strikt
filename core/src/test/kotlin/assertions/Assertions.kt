@@ -156,11 +156,11 @@ internal object Assertions : Spek({
   }
 
   describe("assertions on ${Iterable::class.simpleName}") {
-    describe("allMatch assertion") {
+    describe("all assertion") {
       it("passes if all elements conform") {
         passes {
           val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).allMatch {
+          expect(subject).all {
             isLowerCase()
           }
         }
@@ -168,7 +168,7 @@ internal object Assertions : Spek({
       it("fails if any element does not conform") {
         fails {
           val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).allMatch {
+          expect(subject).all {
             isLowerCase()
             startsWith('c')
           }
