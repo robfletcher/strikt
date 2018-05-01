@@ -2,15 +2,16 @@ package assertions
 
 interface Assertion<T> {
   fun evaluate(description: String, predicate: AssertionContext.(T) -> Unit)
+  fun evaluateNested(description: String, predicate: NestedAssertionContext.(T) -> Unit)
 }
 
 interface AssertionContext {
   fun success()
   fun failure()
+}
 
-  // TODO: should be a sub-interface for nested assertions only (different `evaluate`)?
+interface NestedAssertionContext : AssertionContext {
   fun <T> expect(subject: T): Assertion<T>
-
   fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T>
   val anyFailed: Boolean
   val allFailed: Boolean
@@ -24,23 +25,27 @@ internal class ReportingAssertion<T>(
 ) : Assertion<T> {
   override fun evaluate(description: String, predicate: AssertionContext.(T) -> Unit) {
     object : AssertionContext {
-
-      val aggregatingReporter = AggregatingReporter()
-
       override fun success() {
-        if (aggregatingReporter.results.isEmpty()) {
-          reporter.report(result(Status.Success, description, subject))
-        } else {
-          reporter.report(result(Status.Success, description, subject, aggregatingReporter.results))
-        }
+        reporter.report(result(Status.Success, description, subject))
       }
 
       override fun failure() {
-        if (aggregatingReporter.results.isEmpty()) {
-          reporter.report(result(Status.Failure, description, subject))
-        } else {
-          reporter.report(result(Status.Failure, description, subject, aggregatingReporter.results))
-        }
+        reporter.report(result(Status.Failure, description, subject))
+      }
+    }
+      .predicate(subject)
+  }
+
+  override fun evaluateNested(description: String, predicate: NestedAssertionContext.(T) -> Unit) {
+    object : NestedAssertionContext {
+      private val aggregatingReporter = AggregatingReporter()
+
+      override fun success() {
+        reporter.report(result(Status.Success, description, subject, aggregatingReporter.results))
+      }
+
+      override fun failure() {
+        reporter.report(result(Status.Failure, description, subject, aggregatingReporter.results))
       }
 
       override fun <T> expect(subject: T): Assertion<T> {
