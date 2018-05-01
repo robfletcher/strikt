@@ -10,7 +10,7 @@ fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
   return ReportingAssertion(reporter, subject)
     .apply(block)
     .apply {
-      if (reporter.results.any { it.status == Status.Failure }) {
+      if (reporter.anyFailed) {
         throw AssertionFailed(reporter.results)
       }
     }

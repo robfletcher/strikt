@@ -27,4 +27,16 @@ class AggregatingReporter : Reporter {
 
   val results: List<Result>
     get() = _results
+
+  val anyFailed: Boolean
+    get() = _results.any { it.status == Status.Failure }
+
+  val allFailed: Boolean
+    get() = _results.all { it.status == Status.Failure }
+
+  val anySucceeded: Boolean
+    get() = _results.any { it.status == Status.Success }
+
+  val allSucceeded: Boolean
+    get() = _results.all { it.status == Status.Success }
 }
