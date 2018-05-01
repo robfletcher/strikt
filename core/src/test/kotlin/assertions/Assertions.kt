@@ -130,6 +130,26 @@ internal object Assertions : Spek({
         }
       }
     }
+
+    describe("isNotEqualTo assertion") {
+      it("fails if the subject matches the expectation") {
+        fails {
+          expect("covfefe").isNotEqualTo("covfefe")
+        }
+      }
+      it("passes if the subject does not match the expectation") {
+        expect("covfefe").isNotEqualTo("COVFEFE")
+      }
+      it("passes if the subject is a different type to the expectation") {
+        expect(1).isNotEqualTo(1L)
+      }
+      it("can be used on a null subject") {
+        expect(null).isNotEqualTo("covfefe")
+      }
+      it("can be used with a null expected value") {
+        expect("covfefe").isNotEqualTo(null)
+      }
+    }
   }
 
   describe("assertions on ${CharSequence::class.simpleName}") {
