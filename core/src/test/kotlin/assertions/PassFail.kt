@@ -1,5 +1,7 @@
 package assertions
 
+import assertions.internal.AssertionFailed
+
 internal fun passes(function: () -> Unit) {
   function.invoke()
 }

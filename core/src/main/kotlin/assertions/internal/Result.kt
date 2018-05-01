@@ -1,14 +1,8 @@
-package assertions
+package assertions.internal
 
 import java.io.Writer
 
-enum class Status {
-  Success,
-  Failure
-  // TODO: may want an `Error` too
-}
-
-interface Result {
+internal interface Result {
   val status: Status
   val description: String
   val actual: Any?
@@ -28,6 +22,12 @@ internal fun <T> result(status: Status, description: String, actual: T): Result 
 
 internal fun <T> result(status: Status, description: String, actual: T, results: Iterable<Result>): Result =
   CompoundResult(status, description, actual, results)
+
+internal enum class Status {
+  Success,
+  Failure
+  // TODO: may want an `Error` too
+}
 
 private data class AtomicResult(
   override val status: Status,

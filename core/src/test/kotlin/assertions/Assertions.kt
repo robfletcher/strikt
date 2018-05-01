@@ -1,5 +1,8 @@
 package assertions
 
+import assertions.api.Assertion
+import assertions.api.expect
+import assertions.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 

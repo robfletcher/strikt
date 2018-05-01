@@ -1,8 +1,8 @@
-package assertions
+package assertions.internal
 
 import java.io.StringWriter
 
-interface Reporter {
+internal interface Reporter {
   fun report(result: Result)
 }
 
@@ -18,7 +18,7 @@ internal class FailFastReporter : Reporter {
   }
 }
 
-class AggregatingReporter : Reporter {
+internal class AggregatingReporter : Reporter {
   private val _results = mutableListOf<Result>()
 
   override fun report(result: Result) {

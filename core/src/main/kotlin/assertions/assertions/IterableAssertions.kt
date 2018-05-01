@@ -1,4 +1,6 @@
-package assertions
+package assertions.assertions
+
+import assertions.api.Assertion
 
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
   apply {

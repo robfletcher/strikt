@@ -1,4 +1,6 @@
-package assertions
+package assertions.assertions
+
+import assertions.api.Assertion
 
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
   evaluate("is null") { subject ->

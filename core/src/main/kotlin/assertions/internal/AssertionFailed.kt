@@ -1,8 +1,8 @@
-package assertions
+package assertions.internal
 
 import java.io.StringWriter
 
-class AssertionFailed(val results: Collection<Result>) : AssertionError(
+internal class AssertionFailed(val results: Collection<Result>) : AssertionError(
   StringWriter().also { writer -> results.describeTo(writer) }.toString()
 ) {
   constructor(result: Result) : this(listOf(result))

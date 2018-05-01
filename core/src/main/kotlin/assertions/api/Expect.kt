@@ -1,4 +1,9 @@
-package assertions
+package assertions.api
+
+import assertions.internal.AggregatingReporter
+import assertions.internal.AssertionFailed
+import assertions.internal.FailFastReporter
+import assertions.internal.ReportingAssertion
 
 fun <T> expect(subject: T): Assertion<T> {
   val reporter = FailFastReporter()

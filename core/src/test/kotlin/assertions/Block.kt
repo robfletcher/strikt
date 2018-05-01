@@ -1,5 +1,9 @@
 package assertions
 
+import assertions.api.expect
+import assertions.assertions.isA
+import assertions.assertions.isNotNull
+import assertions.assertions.isNull
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 

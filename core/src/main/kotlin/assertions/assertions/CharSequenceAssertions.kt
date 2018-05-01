@@ -1,4 +1,6 @@
-package assertions
+package assertions.assertions
+
+import assertions.api.Assertion
 
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   apply {
