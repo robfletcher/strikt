@@ -7,7 +7,15 @@ interface Assertion<T> {
 interface AssertionContext {
   fun success()
   fun failure()
-  fun aggregating(block: AssertionContext.(AggregatingReporter) -> Unit)
+
+  // TODO: should be a sub-interface for nested assertions only (different `evaluate`)?
+  fun <T> expect(subject: T): Assertion<T>
+
+  fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T>
+  val anyFailed: Boolean
+  val allFailed: Boolean
+  val anySucceeded: Boolean
+  val allSucceeded: Boolean
 }
 
 internal class ReportingAssertion<T>(
@@ -35,9 +43,26 @@ internal class ReportingAssertion<T>(
         }
       }
 
-      override fun aggregating(block: AssertionContext.(AggregatingReporter) -> Unit) {
-        block(aggregatingReporter)
+      override fun <T> expect(subject: T): Assertion<T> {
+        return ReportingAssertion(aggregatingReporter, subject)
       }
+
+      override fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
+        return ReportingAssertion(aggregatingReporter, subject)
+          .apply(block)
+      }
+
+      override val anyFailed: Boolean
+        get() = aggregatingReporter.anyFailed
+
+      override val allFailed: Boolean
+        get() = aggregatingReporter.allFailed
+
+      override val anySucceeded: Boolean
+        get() = aggregatingReporter.anySucceeded
+
+      override val allSucceeded: Boolean
+        get() = aggregatingReporter.allSucceeded
     }
       .predicate(subject)
   }
