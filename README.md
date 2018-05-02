@@ -31,7 +31,8 @@ expect(subject)
 Produces the output: 
 
 ```
-✘ "covfefe" has length 7
+✔ "covfefe" is a java.lang.String
+✘ "covfefe" has length 1
 ```
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
@@ -54,7 +55,8 @@ expect(subject) {
 Produces the output:
 
 ```
-✘ "covfefe" has length 7
+✔ "covfefe" is a java.lang.String
+✘ "covfefe" has length 1
 ✘ "covfefe" is upper case
 ```
 
