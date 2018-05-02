@@ -2,8 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/robfletcher/kirk/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kirk/tree/master)
 
-Kirk is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
-It's very much inspired by AssertJ, Atrium and Hamcrest.
+Kirk is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
+It's very much inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
 However, none of those provided exactly what I wanted so I decided to create my own assertions library.
 
 The design goals I had in mind were:
@@ -12,9 +12,9 @@ The design goals I had in mind were:
 - Easy "soft assertions" out of the box.
 - A simple API for composing custom assertions.
 - Legible syntax that an IDE can help with.
-- Use Kotlin's nice language features without getting overly-clever (torturing everything into an infix function syntax, or trying to recreate Spock's assertion syntax in a language that can't really do it, for example).
-- A rich selection of assertions that apply to common types without a tangled heirarchy of classes and self-referential generic types, (it turns out Kotlin's extension functions make this pretty easy to accomplish).
-- Simple setup -- one dependency, one (well, two) imports and you're up and running.
+- Use Kotlin's nice language features without getting overly-clever (torturing everything into an infix function syntax, or trying to recreate [Spock](http://spockframework.org/)'s assertion syntax in a language that can't really do it, for example).
+- A rich selection of assertions that apply to common types without a tangled hierarchy of classes and self-referential generic types, (it turns out Kotlin's extension functions make this pretty easy to accomplish).
+- Simple setup -- one dependency, one (okay, two) imports and you're up and running.
 
 ## Assertion styles
 
@@ -90,7 +90,7 @@ Produces the output:
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
 The `greaterThan(1)` assertion _was_ evaluated since it was not part of the chain.
 
-## Flow-sensitive typing
+## Flow typed assertions
 
 Chained assertions return an `Assertion<T>` object with a generic type representing the (declared) type of the assertion subject.
 Some assertions will return a _different_ type to the one they were called on.
@@ -177,10 +177,10 @@ expect(subject) {
 ## Writing your own assertion functions
 
 One of the aims of Kirk is that implementing your own assertions is _really, really_ easy.
-Assertion functions are extension functions on the interface `Assertion<T>`.
+Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
 
-Assertions come in two basic flavors, atomic and nested.
-Atomic assertions check just one thing and produce a single message on failure.
+Assertions come in two basic flavors; atomic and nested.
+Atomic assertions produce a single message on failure.
 `isNull`, `isEqualTo`, `isA<T>` and so on are all examples of atomic assertions.
 Nested assertions check several things about the subject and produce a group of messages that are _nested_ under the main message on failure.
 Examples of nested assertions would be those that apply to every element of a collection, such as `all`, or assertions that do field-by-field object comparisons.  
