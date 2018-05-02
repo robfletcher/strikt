@@ -23,8 +23,7 @@ dokka {
   outputFormat = "html"
   jdkVersion = 8
   kotlinTasks {
-    // TODO: calculate this by finding sub-projects with Kotlin tasks
-    [project("kirk-core").compileKotlin]
+    subprojects.compileKotlin
   }
 }
 
