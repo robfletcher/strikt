@@ -2,10 +2,6 @@ package kirk
 
 import kirk.internal.AssertionFailed
 
-internal fun passes(function: () -> Unit) {
-  function.invoke()
-}
-
 internal fun fails(function: () -> Unit): AssertionFailed {
   try {
     function.invoke()
