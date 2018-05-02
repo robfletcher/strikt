@@ -1,4 +1,4 @@
-package assertions.internal
+package kirk.internal
 
 import java.io.StringWriter
 

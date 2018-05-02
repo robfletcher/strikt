@@ -1,10 +1,10 @@
-package assertions
+package kirk
 
-import assertions.api.expect
-import assertions.assertions.all
-import assertions.assertions.hasSize
-import assertions.assertions.isUpperCase
-import assertions.assertions.startsWith
+import kirk.api.expect
+import kirk.assertions.all
+import kirk.assertions.hasSize
+import kirk.assertions.isUpperCase
+import kirk.assertions.startsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 

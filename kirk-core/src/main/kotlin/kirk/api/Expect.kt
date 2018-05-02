@@ -1,10 +1,10 @@
-package assertions.api
+package kirk.api
 
-import assertions.assertions.isA
-import assertions.internal.AggregatingReporter
-import assertions.internal.AssertionFailed
-import assertions.internal.FailFastReporter
-import assertions.internal.ReportingAssertion
+import kirk.assertions.isA
+import kirk.internal.AggregatingReporter
+import kirk.internal.AssertionFailed
+import kirk.internal.FailFastReporter
+import kirk.internal.ReportingAssertion
 
 /**
  * Start a chain of assertions over [subject].

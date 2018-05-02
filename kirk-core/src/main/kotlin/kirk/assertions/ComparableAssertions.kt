@@ -1,6 +1,6 @@
-package assertions.assertions
+package kirk.assertions
 
-import assertions.api.Assertion
+import kirk.api.Assertion
 
 fun <T : Comparable<T>> Assertion<T>.isGreaterThan(expected: T): Assertion<T> =
   atomic("is greater than $expected") {

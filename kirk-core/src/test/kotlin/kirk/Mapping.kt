@@ -1,7 +1,7 @@
-package assertions
+package kirk
 
-import assertions.api.expect
-import assertions.assertions.isEqualTo
+import kirk.api.expect
+import kirk.assertions.isEqualTo
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import java.time.LocalDate

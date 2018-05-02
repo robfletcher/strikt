@@ -1,8 +1,8 @@
-package assertions
+package kirk
 
-import assertions.api.Assertion
-import assertions.api.expect
-import assertions.assertions.*
+import kirk.api.Assertion
+import kirk.api.expect
+import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import java.time.LocalDate

@@ -1,6 +1,6 @@
-package assertions.assertions
+package kirk.assertions
 
-import assertions.api.Assertion
+import kirk.api.Assertion
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].

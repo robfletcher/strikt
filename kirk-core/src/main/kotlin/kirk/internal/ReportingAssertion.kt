@@ -1,8 +1,8 @@
-package assertions.internal
+package kirk.internal
 
-import assertions.api.Assertion
-import assertions.api.AtomicAssertionContext
-import assertions.api.NestedAssertionContext
+import kirk.api.Assertion
+import kirk.api.AtomicAssertionContext
+import kirk.api.NestedAssertionContext
 
 internal class ReportingAssertion<T>(
   private val reporter: Reporter,

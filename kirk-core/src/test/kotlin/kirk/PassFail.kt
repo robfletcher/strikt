@@ -1,6 +1,6 @@
-package assertions
+package kirk
 
-import assertions.internal.AssertionFailed
+import kirk.internal.AssertionFailed
 
 internal fun passes(function: () -> Unit) {
   function.invoke()

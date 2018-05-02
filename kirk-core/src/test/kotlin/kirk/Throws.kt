@@ -1,7 +1,7 @@
-package assertions
+package kirk
 
-import assertions.api.throws
-import assertions.assertions.isA
+import kirk.api.throws
+import kirk.assertions.isA
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 

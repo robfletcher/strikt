@@ -1,4 +1,4 @@
-package assertions.api
+package kirk.api
 
 /**
  * Holds a subject of type [T] that you can then make assertions about.

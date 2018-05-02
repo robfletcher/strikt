@@ -1,6 +1,6 @@
-package assertions.assertions
+package kirk.assertions
 
-import assertions.api.Assertion
+import kirk.api.Assertion
 
 /**
  * Asserts that the subject has a [Collection.size] of exactly [expected].
