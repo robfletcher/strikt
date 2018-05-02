@@ -8,13 +8,15 @@ internal class ReportingAssertion<T>(
   private val reporter: Reporter,
   private val subject: T
 ) : Assertion<T> {
-  override fun atomic(description: String, assertion: AtomicAssertionContext.(T) -> Unit) {
-    AtomicAssertionContextImpl(reporter, description, subject).assertion(subject)
-  }
+  override fun atomic(description: String, assertion: AtomicAssertionContext.(T) -> Unit) =
+    apply {
+      AtomicAssertionContextImpl(reporter, description, subject).assertion(subject)
+    }
 
-  override fun nested(description: String, assertions: NestedAssertionContext.(T) -> Unit) {
-    NestedAssertionContextImpl(reporter, description, subject).assertions(subject)
-  }
+  override fun nested(description: String, assertions: NestedAssertionContext.(T) -> Unit) =
+    apply {
+      NestedAssertionContextImpl(reporter, description, subject).assertions(subject)
+    }
 }
 
 private class AtomicAssertionContextImpl<T>(val reporter: Reporter, val description: String, val subject: T) : AtomicAssertionContext {

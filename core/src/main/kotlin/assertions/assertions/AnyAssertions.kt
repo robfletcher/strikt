@@ -5,49 +5,43 @@ import assertions.api.Assertion
 /**
  * Asserts that the subject is `null`.
  */
-fun <T> Assertion<T?>.isNull(): Assertion<Nothing> {
+@Suppress("UNCHECKED_CAST")
+fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
   atomic("is null") { subject ->
     when (subject) {
       null -> success()
       else -> failure()
     }
-  }
-  @Suppress("UNCHECKED_CAST")
-  return this as Assertion<Nothing>
-}
+  } as Assertion<Nothing>
 
 /**
  * Asserts that the subject is not `null`.
  *
  * @return an assertion for a non-`null` subject.
  */
-fun <T> Assertion<T?>.isNotNull(): Assertion<T> {
+@Suppress("UNCHECKED_CAST")
+fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
   atomic("is not null") { subject ->
     when (subject) {
       null -> failure()
       else -> success()
     }
-  }
-  @Suppress("UNCHECKED_CAST")
-  return this as Assertion<T>
-}
+  } as Assertion<T>
 
 /**
  * Asserts that the subject is an instance of [T].
  *
  * @return an assertion for [T].
  */
-inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
   atomic("is an instance of ${T::class.java.name}") { subject ->
     when (subject) {
       null -> failure()
       is T -> success()
       else -> failure()
     }
-  }
-  @Suppress("UNCHECKED_CAST")
-  return this as Assertion<T>
-}
+  } as Assertion<T>
 
 /**
  * Asserts that the subject is equal to [expected] according to the standard
@@ -56,12 +50,10 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> {
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
-  apply {
-    atomic("is equal to $expected") { subject ->
-      when (subject) {
-        expected -> success()
-        else     -> failure()
-      }
+  atomic("is equal to $expected") { subject ->
+    when (subject) {
+      expected -> success()
+      else     -> failure()
     }
   }
 
@@ -72,11 +64,9 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
-  apply {
-    atomic("is equal to $expected") { subject ->
-      when (subject) {
-        expected -> failure()
-        else     -> success()
-      }
+  atomic("is equal to $expected") { subject ->
+    when (subject) {
+      expected -> failure()
+      else     -> success()
     }
   }
