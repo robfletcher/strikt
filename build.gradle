@@ -5,7 +5,7 @@ buildscript {
   }
   dependencies {
     classpath "org.junit.platform:junit-platform-gradle-plugin:1.1.1"
-    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.40"
+    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
     classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
   }

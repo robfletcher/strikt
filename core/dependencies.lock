@@ -1,14 +1,14 @@
 {
     "compile": {
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.2.40",
-            "requested": "1.2.40"
+            "locked": "1.2.41",
+            "requested": "1.2.41"
         }
     },
     "runtime": {
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.2.40",
-            "requested": "1.2.40"
+            "locked": "1.2.41",
+            "requested": "1.2.41"
         }
     },
     "testCompile": {
@@ -17,8 +17,8 @@
             "requested": "1.2.+"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.2.40",
-            "requested": "1.2.40"
+            "locked": "1.2.41",
+            "requested": "1.2.41"
         },
         "org.jetbrains.spek:spek-api": {
             "locked": "1.1.5",
@@ -31,8 +31,8 @@
             "requested": "1.2.+"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.2.40",
-            "requested": "1.2.40"
+            "locked": "1.2.41",
+            "requested": "1.2.41"
         },
         "org.jetbrains.spek:spek-api": {
             "locked": "1.1.5",
