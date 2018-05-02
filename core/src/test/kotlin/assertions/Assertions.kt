@@ -192,14 +192,82 @@ internal object Assertions : Spek({
         fails {
           val subject = setOf("catflap", "rubberplant", "marzipan")
           expect(subject).all {
-            isLowerCase()
             startsWith('c')
           }
         }
           .let { failure ->
-            assert(failure.assertionCount == 6) { "Expected 6 assertions but found ${failure.assertionCount}" }
-            assert(failure.passCount == 4) { "Expected 4 passed assertions but found ${failure.passCount}" }
+            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
+            assert(failure.passCount == 1) { "Expected 1 passed assertion but found ${failure.passCount}" }
             assert(failure.failureCount == 2) { "Expected 2 failed assertions but found ${failure.failureCount}" }
+          }
+      }
+    }
+
+    describe("any assertion") {
+      it("passes if all elements conform") {
+        passes {
+          val subject = setOf("catflap", "rubberplant", "marzipan")
+          expect(subject).any {
+            isLowerCase()
+          }
+        }
+      }
+      it("passes if any one element conforms") {
+        passes {
+          val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
+          expect(subject).any {
+            isLowerCase()
+          }
+        }
+      }
+      it("fails if no elements conform") {
+        fails {
+          val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+          expect(subject).any {
+            isLowerCase()
+          }
+        }
+          .let { failure ->
+            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
+            assert(failure.passCount == 0) { "Expected 0 passed assertions but found ${failure.passCount}" }
+            assert(failure.failureCount == 3) { "Expected 3 failed assertions but found ${failure.failureCount}" }
+          }
+      }
+    }
+
+    describe("none assertion") {
+      it("passes if no elements conform") {
+        passes {
+          val subject = setOf("catflap", "rubberplant", "marzipan")
+          expect(subject).none {
+            isUpperCase()
+          }
+        }
+      }
+      it("fails if some elements conforms") {
+        fails {
+          val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
+          expect(subject).none {
+            isUpperCase()
+          }
+        }
+          .let { failure ->
+            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
+            assert(failure.passCount == 2) { "Expected 2 passed assertions but found ${failure.passCount}" }
+            assert(failure.failureCount == 1) { "Expected 1 failed assertion but found ${failure.failureCount}" }
+          }
+      }
+      it("fails if all elements conform") {
+        fails {
+          val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+          expect(subject).none {
+            isUpperCase()
+          }
+        }
+          .let { failure ->
+            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
+            assert(failure.passCount == 3) { "Expected 3 passed assertions but found ${failure.passCount}" }
+            assert(failure.failureCount == 0) { "Expected 0 failed assertions but found ${failure.failureCount}" }
           }
       }
     }

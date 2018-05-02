@@ -153,7 +153,7 @@ Let's imagine we're implementing an assertion function for `java.time.LocalDate`
 
 ```kotlin
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
-  atomic("is St. Tib's Day") { subject ->
+  atomic("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> success()
       else               -> failure()
@@ -163,8 +163,9 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
 Breaking this down: 
 
 1. We declare the assertion function applies only to `Assertion<LocalDate>`.
-2. We use an `atomic` assertion as we're just applying a single check.
-3. if `subject` is the value we want we call `success()` otherwise we call `failure()`
+2. Note that the function also returns `Assertion<LocalDate>` so we can include this assertion as part of a chain.
+3. We use an `atomic` assertion as we're just applying a single check.
+4. If `subject` is the value we want we call `success()` otherwise we call `failure()`
 
 If this assertion fails it will produce a message like:
 
@@ -172,6 +173,24 @@ If this assertion fails it will produce a message like:
 ✘ 2018-05-01 is St. Tib's Day 
 ```
 
-#### Where does this API come from?
+#### Where do `subject`, `success()` and `failure()` come from?
 
-You might wonder where the `success()` and `failure()` methods come from.
+The method `atomic` accepts a description for the assertion being made and a lambda function `AtomicAssertionContext<T>.() -> Unit`.
+That `AtomicAssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `success()` or `failure()` method.
+
+### Nested assertions
+
+Nested assertions are implemented in a very similar way to atomic assertions.
+The only differences are that you use the `nested` method instead of `atomic` and the receiver is a `NestedAssertionContext<T>` which has a few extra capabilities.
+
+`NestedAssertionContext<T>` has the following properties and methods:
+
+- `subject`, `success()` and `failure()` are the same as in `AtomicAssertionContext<T>`.
+- `expect(E)` and `expect(E, Assertion<E>.() -> Unit)` let you make nested assertions using either chains or blocks.
+- `allFailed`, `anyFailed`, `allSucceeded` and `anySucceeded` are boolean properties that report on the outcome of any nested assertions.
+
+A nested assertion will use several `expect` chains or blocks to make assertions then make a decision about whether the _overall_ assertion has passed or failed based on the outcome of those nested assertions.
+For example, `all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed.
+On the other hand `any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if just one of those nested assertions passed. 
+
+Nested assertions can also be very useful for custom assertions that apply to the domain objects of your own applications.
