@@ -7,10 +7,9 @@ import kirk.api.Assertion
  */
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   atomic("has length $expected") {
-    if (subject.length == expected) {
-      pass()
-    } else {
-      fail()
+    when (subject.length) {
+      expected -> pass()
+      else     -> fail()
     }
   }
 
@@ -19,10 +18,9 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
  */
 fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
   atomic("is lower case") {
-    if (subject.all { it.isLowerCase() }) {
-      pass()
-    } else {
-      fail()
+    when {
+      subject.all { it.isLowerCase() } -> pass()
+      else                             -> fail()
     }
   }
 
@@ -31,10 +29,9 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
  */
 fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
   atomic("is upper case") {
-    if (subject.all { it.isUpperCase() }) {
-      pass()
-    } else {
-      fail()
+    when {
+      subject.all { it.isUpperCase() } -> pass()
+      else                             -> fail()
     }
   }
 
@@ -43,9 +40,20 @@ fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
  */
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   atomic("starts with '$expected'") {
-    if (subject.startsWith(expected)) {
-      pass()
-    } else {
-      fail()
+    when {
+      subject.startsWith(expected) -> pass()
+      else                         -> fail()
+    }
+  }
+
+/**
+ * Asserts that the subject is a full match for the [expected] regular
+ * expression.
+ */
+fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
+  atomic("matches the regular expression /${expected.pattern}/") {
+    when {
+      subject.matches(expected) -> pass()
+      else                      -> fail()
     }
   }

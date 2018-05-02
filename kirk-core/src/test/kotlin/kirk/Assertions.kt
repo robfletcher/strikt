@@ -12,8 +12,8 @@ internal object Assertions : Spek({
   describe("assertions on ${Any::class.simpleName}") {
     describe("isNull assertion") {
       it("passes if the subject is null") {
-          val subject: Any? = null
-          expect(subject).isNull()
+        val subject: Any? = null
+        expect(subject).isNull()
       }
       it("fails if the subject is not null") {
         fails {
@@ -39,8 +39,8 @@ internal object Assertions : Spek({
         }
       }
       it("passes if the subject is not null") {
-          val subject: Any? = "covfefe"
-          expect(subject).isNotNull()
+        val subject: Any? = "covfefe"
+        expect(subject).isNotNull()
       }
       @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
@@ -66,12 +66,12 @@ internal object Assertions : Spek({
         }
       }
       it("passes if the subject is the same exact type") {
-          val subject = "covfefe"
-          expect(subject).isA<String>()
+        val subject = "covfefe"
+        expect(subject).isA<String>()
       }
       it("passes if the subject is a sub-type") {
-          val subject: Any = 1L
-          expect(subject).isA<Number>()
+        val subject: Any = 1L
+        expect(subject).isA<Number>()
       }
       @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
@@ -85,18 +85,18 @@ internal object Assertions : Spek({
       }
       @Suppress("USELESS_IS_CHECK")
       it("allows specialized assertions after establishing type") {
-          val subject: Any = "covfefe"
-          expect(subject)
-            .also { assert(it is Assertion<Any>) }
-            .isA<String>()
-            .also { assert(it is Assertion<String>) }
-            .hasLength(7) // only available on Assertion<CharSequence>
+        val subject: Any = "covfefe"
+        expect(subject)
+          .also { assert(it is Assertion<Any>) }
+          .isA<String>()
+          .also { assert(it is Assertion<String>) }
+          .hasLength(7) // only available on Assertion<CharSequence>
       }
     }
 
     describe("isEqualTo assertion") {
       it("passes if the subject matches the expectation") {
-          expect("covfefe").isEqualTo("covfefe")
+        expect("covfefe").isEqualTo("covfefe")
       }
       it("fails if the subject does not match the expectation") {
         fails {
@@ -144,11 +144,27 @@ internal object Assertions : Spek({
   describe("assertions on ${CharSequence::class.simpleName}") {
     describe("hasLength assertion") {
       it("passes if the subject has the expected length") {
-          expect("covfefe").hasLength(7)
+        expect("covfefe").hasLength(7)
       }
       it("fails if the subject does not have the expected length") {
         fails {
           expect("covfefe").hasLength(1)
+        }
+      }
+    }
+
+    describe("matches assertion") {
+      it("passes if the subject is a full match for the regex") {
+        expect("covfefe").matches("[cefov]+".toRegex())
+      }
+      it("fails if the subject is only a partial match for the regex") {
+        fails {
+          expect("despite the negative press covfefe").matches("[cefov]+".toRegex())
+        }
+      }
+      it("fails if the subject does not match the regex") {
+        fails {
+          expect("covfefe").matches("\\d+".toRegex())
         }
       }
     }
@@ -168,10 +184,10 @@ internal object Assertions : Spek({
   describe("assertions on ${Iterable::class.simpleName}") {
     describe("all assertion") {
       it("passes if all elements conform") {
-          val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).all {
-            isLowerCase()
-          }
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).all {
+          isLowerCase()
+        }
       }
       it("fails if any element does not conform") {
         fails {
@@ -190,16 +206,16 @@ internal object Assertions : Spek({
 
     describe("any assertion") {
       it("passes if all elements conform") {
-          val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).any {
-            isLowerCase()
-          }
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).any {
+          isLowerCase()
+        }
       }
       it("passes if any one element conforms") {
-          val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
-          expect(subject).any {
-            isLowerCase()
-          }
+        val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
+        expect(subject).any {
+          isLowerCase()
+        }
       }
       it("fails if no elements conform") {
         fails {
@@ -218,10 +234,10 @@ internal object Assertions : Spek({
 
     describe("none assertion") {
       it("passes if no elements conform") {
-          val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).none {
-            isUpperCase()
-          }
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject).none {
+          isUpperCase()
+        }
       }
       it("fails if some elements conforms") {
         fails {
