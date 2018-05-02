@@ -11,7 +11,7 @@ interface Assertion<T> {
    *
    * @param description a description for the assertion.
    * @param assertion the assertion implementation that should result in a call
-   * to [AtomicAssertionContext.success] or [AtomicAssertionContext.failure].
+   * to [AtomicAssertionContext.pass] or [AtomicAssertionContext.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun atomic(description: String, assertion: AtomicAssertionContext<T>.() -> Unit): Assertion<T>
@@ -24,8 +24,8 @@ interface Assertion<T> {
    * @param description a description for the overall assertion.
    * @param assertions the assertion implementation that should perform a group
    * of assertions using [NestedAssertionContext.expect] and finall result in a
-   * call to [NestedAssertionContext.success] or
-   * [NestedAssertionContext.failure].
+   * call to [NestedAssertionContext.pass] or
+   * [NestedAssertionContext.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit): Assertion<T>
@@ -43,12 +43,12 @@ interface AtomicAssertionContext<T> {
   /**
    * Report that the assertion succeeded.
    */
-  fun success()
+  fun pass()
 
   /**
    * Report that the assertion failed.
    */
-  fun failure()
+  fun fail()
 }
 
 /**

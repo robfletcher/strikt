@@ -155,8 +155,8 @@ Let's imagine we're implementing an assertion function for `java.time.LocalDate`
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
   atomic("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
-      MonthDay.of(2, 29) -> success()
-      else               -> failure()
+      MonthDay.of(2, 29) -> pass()
+      else               -> fail()
     }
   }
 ```
@@ -165,7 +165,7 @@ Breaking this down:
 1. We declare the assertion function applies only to `Assertion<LocalDate>`.
 2. Note that the function also returns `Assertion<LocalDate>` so we can include this assertion as part of a chain.
 3. We use an `atomic` assertion as we're just applying a single check.
-4. If `subject` is the value we want we call `success()` otherwise we call `failure()`
+4. If `subject` is the value we want we call `pass()` otherwise we call `fail()`
 
 If this assertion fails it will produce a message like:
 
@@ -173,10 +173,10 @@ If this assertion fails it will produce a message like:
 ✘ 2018-05-01 is St. Tib's Day 
 ```
 
-#### Where do `subject`, `success()` and `failure()` come from?
+#### Where do `subject`, `pass()` and `fail()` come from?
 
 The method `atomic` accepts a description for the assertion being made and a lambda function `AtomicAssertionContext<T>.() -> Unit`.
-That `AtomicAssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `success()` or `failure()` method.
+That `AtomicAssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 
 ### Nested assertions
 
@@ -185,7 +185,7 @@ The only differences are that you use the `nested` method instead of `atomic` an
 
 `NestedAssertionContext<T>` has the following properties and methods:
 
-- `subject`, `success()` and `failure()` are the same as in `AtomicAssertionContext<T>`.
+- `subject`, `pass()` and `fail()` are the same as in `AtomicAssertionContext<T>`.
 - `expect(E)` and `expect(E, Assertion<E>.() -> Unit)` let you make nested assertions using either chains or blocks.
 - `allFailed`, `anyFailed`, `allSucceeded` and `anySucceeded` are boolean properties that report on the outcome of any nested assertions.
 

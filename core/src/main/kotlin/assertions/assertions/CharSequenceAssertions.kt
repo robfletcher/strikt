@@ -8,9 +8,9 @@ import assertions.api.Assertion
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   atomic("has length $expected") {
     if (subject.length == expected) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }
 
@@ -20,9 +20,9 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
 fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
   atomic("is lower case") { 
     if (subject.all { it.isLowerCase() }) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }
 
@@ -32,9 +32,9 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
 fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
   atomic("is upper case") { 
     if (subject.all { it.isUpperCase() }) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }
 
@@ -44,8 +44,8 @@ fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   atomic("starts with '$expected'") { 
     if (subject.startsWith(expected)) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }

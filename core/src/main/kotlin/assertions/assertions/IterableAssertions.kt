@@ -11,9 +11,9 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
       expect(it, predicate)
     }
     if (allSucceeded) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }
 
@@ -27,9 +27,9 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
       expect(it, predicate)
     }
     if (anySucceeded) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }
 
@@ -42,8 +42,8 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
       expect(it, predicate)
     }
     if (allFailed) {
-      success()
+      pass()
     } else {
-      failure()
+      fail()
     }
   }

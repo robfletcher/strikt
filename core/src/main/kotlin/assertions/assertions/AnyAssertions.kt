@@ -9,8 +9,8 @@ import assertions.api.Assertion
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
   atomic("is null") {
     when (subject) {
-      null -> success()
-      else -> failure()
+      null -> pass()
+      else -> fail()
     }
   } as Assertion<Nothing>
 
@@ -23,8 +23,8 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
   atomic("is not null") {
     when (subject) {
-      null -> failure()
-      else -> success()
+      null -> fail()
+      else -> pass()
     }
   } as Assertion<T>
 
@@ -37,9 +37,9 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
   atomic("is an instance of ${T::class.java.name}") {
     when (subject) {
-      null -> failure()
-      is T -> success()
-      else -> failure()
+      null -> fail()
+      is T -> pass()
+      else -> fail()
     }
   } as Assertion<T>
 
@@ -52,8 +52,8 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
   atomic("is equal to $expected") {
     when (subject) {
-      expected -> success()
-      else     -> failure()
+      expected -> pass()
+      else     -> fail()
     }
   }
 
@@ -66,7 +66,7 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
 fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
   atomic("is equal to $expected") {
     when (subject) {
-      expected -> failure()
-      else     -> success()
+      expected -> fail()
+      else     -> pass()
     }
   }

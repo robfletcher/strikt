@@ -24,11 +24,11 @@ private class AtomicAssertionContextImpl<T>(
   val reporter: Reporter,
   val description: String
 ) : AtomicAssertionContext<T> {
-  override fun success() {
+  override fun pass() {
     reporter.report(result(Status.Success, description, subject))
   }
 
-  override fun failure() {
+  override fun fail() {
     reporter.report(result(Status.Failure, description, subject))
   }
 }
@@ -40,11 +40,11 @@ private class NestedAssertionContextImpl<T>(
 ) : NestedAssertionContext<T> {
   private val nestedReporter = AggregatingReporter()
 
-  override fun success() {
+  override fun pass() {
     reporter.report(result(Status.Success, description, subject, nestedReporter.results))
   }
 
-  override fun failure() {
+  override fun fail() {
     reporter.report(result(Status.Failure, description, subject, nestedReporter.results))
   }
 
