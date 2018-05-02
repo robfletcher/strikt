@@ -1,12 +1,12 @@
 # Kirk
 
 [![CircleCI](https://circleci.com/gh/robfletcher/kirk/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kirk/tree/master)
+[API docs](api/kirk/)
 
 Kirk is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
 It's very much inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
 However, none of those provided exactly what I wanted so I decided to create my own assertions library.
 
-[API docs](api/kirk/)
 
 The design goals I had in mind were:
 
