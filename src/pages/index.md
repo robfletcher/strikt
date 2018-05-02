@@ -6,6 +6,8 @@ Kirk is an assertion library for Kotlin intended for use with a test runner such
 It's very much inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
 However, none of those provided exactly what I wanted so I decided to create my own assertions library.
 
+[API docs](api/kirk/)
+
 The design goals I had in mind were:
 
 - An assertion API that takes advantage of Kotlin's strong type system.
