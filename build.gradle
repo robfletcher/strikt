@@ -17,6 +17,17 @@ allprojects {
   apply plugin: "nebula.dependency-lock"
 }
 
+apply plugin: "org.jetbrains.dokka"
+
+dokka {
+  outputFormat = "html"
+  jdkVersion = 8
+  kotlinTasks {
+    // TODO: calculate this by finding sub-projects with Kotlin tasks
+    [project("kirk-core").compileKotlin]
+  }
+}
+
 apply plugin: "org.ajoberstar.grgit"
 apply plugin: "org.ajoberstar.git-publish"
 
@@ -24,7 +35,7 @@ gitPublish {
   branch = "gh-pages"
   contents {
     from "src/pages"
-    from(":kirk-core:dokka") {
+    from(dokka) {
       into "api"
     }
   }

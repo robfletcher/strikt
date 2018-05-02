@@ -41,7 +41,8 @@ fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
 /**
  * Asserts that [action] throws an exception of type [E] when executed.
  *
- * @return an assertion over the thrown exception.
+ * @return an assertion over the thrown exception, allowing further assertions
+ * about messages, root causes, etc.
  */
 inline fun <reified E : Throwable> throws(
   action: () -> Unit
