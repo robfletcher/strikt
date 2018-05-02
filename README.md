@@ -1,5 +1,7 @@
 # Kotlin Assertions
 
+[![CircleCI](https://circleci.com/gh/robfletcher/kotlin-assertions/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kotlin-assertions/tree/master)
+
 (Yes, this needs a better name)
 
 This is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
@@ -8,7 +10,9 @@ However, none of those provided exactly what I wanted so I decided to create my 
 
 Two different styles of assertion are supported for different use-cases.
 
-## Chained assertions
+## Assertion styles
+
+### Chained assertions
 
 Chained assertions use a fluent API.
 They fail fast.
@@ -19,6 +23,7 @@ Each assertion in the chain returns an `Assertion` object that supports further 
 ```kotlin
 val subject = "covfefe"
 expect(subject)
+  .isA<String>()
   .hasLength(1)
   .isUpperCase()
 ```
@@ -31,7 +36,7 @@ Produces the output:
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
-## Grouped assertions
+### Grouped assertions
 
 Grouped assertions are declared in a block whose receiver is an assertion on a target object.
 Grouped assertions do _not_ fail fast.
@@ -40,6 +45,7 @@ That is, all assertions in the block are evaluated and the result of the "compou
 ```kotlin
 val subject = "covfefe"
 expect(subject) {
+  isA<String>()
   hasLength(1)
   isUpperCase()
 }
@@ -52,16 +58,34 @@ Produces the output:
 ✘ "covfefe" is upper case
 ```
 
-Both assertions are applied and since both fail there are two errors logged.
+All assertions are applied and since two fail there are two errors logged.
 
 Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
 
-## Flow-sensitive assertion types
+```kotlin
+val subject = 1L
+expect(subject) {
+  lessThan(1).isA<Int>()
+  greaterThan(1)
+}
+```
+
+Produces the output:
+
+```
+✘ 1 is less than 1
+✘ 1 is greater than 1
+```
+
+Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
+The `greaterThan(1)` assertion _was_ evaluated since it was not part of the chain.
+
+## Flow-sensitive typing
 
 Chained assertions return an `Assertion<T>` object with a generic type representing the (declared) type of the assertion subject.
-Some assertion types will return a different type to the one they were called on.
+Some assertions will return a _different_ type to the one they were called on.
 For example, if the subject of an assertion is a nullable type (in other words it's an `Assertion<T?>`) the assertion methods `isNull()` and `isNotNull()` are available.
-The return type of `isNotNull()` is `Assertion<T>` because we now know the subject is not null.
+The return type of `isNotNull()` is `Assertion<T>` because we now _know_ the subject is not null.
 You will find IDE code-completion will no longer offer the `isNull()` and `isNotNull()` assertion methods.
 
 Another example comes when testing values with broad types and making assertions about their specific runtime type.
@@ -111,4 +135,43 @@ Produces the output:
 ```
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
- 
+
+## Writing your own assertion functions
+
+One of the aims of this library is that implementing your own assertions is _really, really_ easy.
+Assertion functions are extension functions on the interface `Assertion<T>`.
+
+Assertions come in two basic flavors, atomic and nested.
+Atomic assertions check just one thing and produce a single message on failure.
+`isNull`, `isEqualTo`, `isA<T>` and so on are all examples of atomic assertions.
+Nested assertions check several things about the subject and produce a group of messages that are _nested_ under the main message on failure.
+Examples of nested assertions would be those that apply to every element of a collection, such as `all`, or assertions that do field-by-field object comparisons.  
+
+### Atomic assertions
+
+Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
+
+```kotlin
+fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
+  atomic("is St. Tib's Day") { subject ->
+    when (MonthDay.from(subject)) {
+      MonthDay.of(2, 29) -> success()
+      else               -> failure()
+    }
+  }
+```
+Breaking this down: 
+
+1. We declare the assertion function applies only to `Assertion<LocalDate>`.
+2. We use an `atomic` assertion as we're just applying a single check.
+3. if `subject` is the value we want we call `success()` otherwise we call `failure()`
+
+If this assertion fails it will produce a message like:
+
+```
+✘ 2018-05-01 is St. Tib's Day 
+```
+
+#### Where does this API come from?
+
+You might wonder where the `success()` and `failure()` methods come from.

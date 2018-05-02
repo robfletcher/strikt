@@ -14,7 +14,7 @@ interface Assertion<T> {
    * to [AtomicAssertionContext.success] or [AtomicAssertionContext.failure].
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun atomic(description: String, assertion: AtomicAssertionContext.(T) -> Unit): Assertion<T>
+  fun atomic(description: String, assertion: AtomicAssertionContext<T>.() -> Unit): Assertion<T>
 
   /**
    * Used by assertion implementations to evaluate a group of conditions that
@@ -28,13 +28,18 @@ interface Assertion<T> {
    * [NestedAssertionContext.failure].
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun nested(description: String, assertions: NestedAssertionContext.(T) -> Unit): Assertion<T>
+  fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit): Assertion<T>
 }
 
 /**
  * Allows reporting of success or failure by assertion implementations.
  */
-interface AtomicAssertionContext {
+interface AtomicAssertionContext<T> {
+  /**
+   * The assertion subject.
+   */
+  val subject: T
+
   /**
    * Report that the assertion succeeded.
    */
@@ -52,7 +57,7 @@ interface AtomicAssertionContext {
  * This class is used for more complex assertions such as on all elements of a
  * collection or multiple fields of an object.
  */
-interface NestedAssertionContext : AtomicAssertionContext {
+interface NestedAssertionContext<T> : AtomicAssertionContext<T> {
   /**
    * Start a chain of assertions under the current group.
    *
@@ -60,7 +65,7 @@ interface NestedAssertionContext : AtomicAssertionContext {
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <T> expect(subject: T): Assertion<T>
+  fun <E> expect(subject: E): Assertion<E>
 
   /**
    * Evaluate a block of assertions under the current group.
@@ -71,7 +76,7 @@ interface NestedAssertionContext : AtomicAssertionContext {
    * be evaluated regardless of whether preceding ones pass or fail.
    * @return an assertion for [subject].
    */
-  fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T>
+  fun <E> expect(subject: E, block: Assertion<E>.() -> Unit): Assertion<E>
 
   /**
    * Returns `true` if any assertions in this group failed, `false` otherwise.

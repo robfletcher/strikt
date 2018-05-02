@@ -8,18 +8,22 @@ internal class ReportingAssertion<T>(
   private val reporter: Reporter,
   private val subject: T
 ) : Assertion<T> {
-  override fun atomic(description: String, assertion: AtomicAssertionContext.(T) -> Unit) =
+  override fun atomic(description: String, assertion: AtomicAssertionContext<T>.() -> Unit) =
     apply {
-      AtomicAssertionContextImpl(reporter, description, subject).assertion(subject)
+      AtomicAssertionContextImpl(subject, reporter, description).assertion()
     }
 
-  override fun nested(description: String, assertions: NestedAssertionContext.(T) -> Unit) =
+  override fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit) =
     apply {
-      NestedAssertionContextImpl(reporter, description, subject).assertions(subject)
+      NestedAssertionContextImpl(subject, reporter, description).assertions()
     }
 }
 
-private class AtomicAssertionContextImpl<T>(val reporter: Reporter, val description: String, val subject: T) : AtomicAssertionContext {
+private class AtomicAssertionContextImpl<T>(
+  override val subject: T,
+  val reporter: Reporter,
+  val description: String
+) : AtomicAssertionContext<T> {
   override fun success() {
     reporter.report(result(Status.Success, description, subject))
   }
@@ -29,7 +33,11 @@ private class AtomicAssertionContextImpl<T>(val reporter: Reporter, val descript
   }
 }
 
-private class NestedAssertionContextImpl<T>(val reporter: Reporter, val description: String, val subject: T) : NestedAssertionContext {
+private class NestedAssertionContextImpl<T>(
+  override val subject: T,
+  val reporter: Reporter,
+  val description: String
+) : NestedAssertionContext<T> {
   private val nestedReporter = AggregatingReporter()
 
   override fun success() {

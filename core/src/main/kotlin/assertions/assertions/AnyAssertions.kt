@@ -7,7 +7,7 @@ import assertions.api.Assertion
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
-  atomic("is null") { subject ->
+  atomic("is null") {
     when (subject) {
       null -> success()
       else -> failure()
@@ -21,7 +21,7 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
-  atomic("is not null") { subject ->
+  atomic("is not null") {
     when (subject) {
       null -> failure()
       else -> success()
@@ -35,7 +35,7 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
  */
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
-  atomic("is an instance of ${T::class.java.name}") { subject ->
+  atomic("is an instance of ${T::class.java.name}") {
     when (subject) {
       null -> failure()
       is T -> success()
@@ -50,7 +50,7 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
-  atomic("is equal to $expected") { subject ->
+  atomic("is equal to $expected") {
     when (subject) {
       expected -> success()
       else     -> failure()
@@ -64,7 +64,7 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
-  atomic("is equal to $expected") { subject ->
+  atomic("is equal to $expected") {
     when (subject) {
       expected -> failure()
       else     -> success()
