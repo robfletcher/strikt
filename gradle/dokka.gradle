@@ -5,4 +5,3 @@ dokka {
   outputDirectory = "$buildDir/javadoc"
   jdkVersion = 8
 }
-tasks.getByName("build").doLast { dokka }

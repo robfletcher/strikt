@@ -1,3 +1,15 @@
+apply from: "$rootDir/gradle/kotlin.gradle"
+apply from: "$rootDir/gradle/dokka.gradle"
+apply from: "$rootDir/gradle/spek.gradle"
+
+repositories {
+  jcenter()
+}
+
+dependencyLock {
+  configurationNames = ["compile", "runtime", "testCompile", "testRuntime"]
+}
+
 junitPlatformTest {
   enableAssertions = true
 }

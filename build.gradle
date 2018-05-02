@@ -8,6 +8,8 @@ buildscript {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
     classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
+    classpath "org.ajoberstar:grgit:2.2.0"
+    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
   }
 }
 
@@ -15,16 +17,16 @@ allprojects {
   apply plugin: "nebula.dependency-lock"
 }
 
-subprojects {
-  apply from: "$rootDir/gradle/kotlin.gradle"
-  apply from: "$rootDir/gradle/dokka.gradle"
-  apply from: "$rootDir/gradle/spek.gradle"
+apply plugin: "org.ajoberstar.grgit"
+apply plugin: "org.ajoberstar.git-publish"
 
-  repositories {
-    jcenter()
+gitPublish {
+  branch = "gh-pages"
+  contents {
+    from "src/pages"
+    from(":kirk-core:dokka") {
+      into "api"
+    }
   }
-
-  dependencyLock {
-    configurationNames = ["compile", "runtime", "testCompile", "testRuntime"]
-  }
+  commitMessage = "Publishing docs"
 }
