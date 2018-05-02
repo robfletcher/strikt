@@ -17,6 +17,10 @@ internal class ReportingAssertion<T>(
     apply {
       NestedAssertionContextImpl(subject, reporter, description).assertions()
     }
+
+  override fun <R> map(function: T.() -> R): Assertion<R> {
+    return ReportingAssertion(reporter, subject.function())
+  }
 }
 
 private class AtomicAssertionContextImpl<T>(

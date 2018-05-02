@@ -29,6 +29,13 @@ interface Assertion<T> {
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit): Assertion<T>
+
+  /**
+   * Maps the assertion subject to the result of [function].
+   * For example, if [function] is a property reference on [T]
+   */
+  // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
+  fun <R> map(function: T.() -> R): Assertion<R>
 }
 
 /**

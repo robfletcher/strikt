@@ -151,6 +151,21 @@ throws<TooMuchFlaxException> {
 
 The `throws<E>` function returns an `Assertion<E>` so you can chain assertions about the exception after it.
 
+## Mapping assertions using lambdas
+
+In order to map the assertion chain to a property or method result of the current subject you can use the `map` method.
+The method takes a lambda whose receiver is the current subject and returns an `Assertion<R>` where `R` is whatever the lambda returns.
+
+This is sometimes useful for making assertions about the properties of an object or the values returned by methods.
+
+```kotlin
+val subject = Person("David", LocalDate.of(1947, 1, 8))
+expect(subject) {
+  map { name }.isEqualTo("David")
+  map { birthDate }.map { year }.isEqualTo(1947)
+}
+```
+
 ## Writing your own assertion functions
 
 One of the aims of this library is that implementing your own assertions is _really, really_ easy.
