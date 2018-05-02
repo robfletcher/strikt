@@ -138,6 +138,19 @@ Produces the output:
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
 
+## Asserting exceptions are thrown
+
+To assert that some code throws an exception you can use the `throws<E>` function.
+For example:
+
+```kotlin
+throws<TooMuchFlaxException> {
+  service.computeMeaning()
+}
+```
+
+The `throws<E>` function returns an `Assertion<E>` so you can chain assertions about the exception after it.
+
 ## Writing your own assertion functions
 
 One of the aims of this library is that implementing your own assertions is _really, really_ easy.

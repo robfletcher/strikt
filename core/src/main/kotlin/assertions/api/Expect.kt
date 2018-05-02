@@ -1,5 +1,6 @@
 package assertions.api
 
+import assertions.assertions.isA
 import assertions.internal.AggregatingReporter
 import assertions.internal.AssertionFailed
 import assertions.internal.FailFastReporter
@@ -35,4 +36,21 @@ fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
         throw AssertionFailed(reporter.results)
       }
     }
+}
+
+/**
+ * Asserts that [action] throws an exception of type [E] when executed.
+ *
+ * @return an assertion over the thrown exception.
+ */
+inline fun <reified E : Throwable> throws(
+  action: () -> Unit
+): Assertion<E> {
+  val thrown = try {
+    action()
+    null
+  } catch (e: Throwable) {
+    e
+  }
+  return expect(thrown).isA()
 }

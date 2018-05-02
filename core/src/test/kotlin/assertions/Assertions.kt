@@ -272,5 +272,4 @@ internal object Assertions : Spek({
       }
     }
   }
-
 })
