@@ -1,16 +1,14 @@
-# Kotlin Assertions
+# Kirk
 
-[![CircleCI](https://circleci.com/gh/robfletcher/kotlin-assertions/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kotlin-assertions/tree/master)
+[![CircleCI](https://circleci.com/gh/robfletcher/kirk/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kirk/tree/master)
 
-(Yes, this needs a better name)
-
-This is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
+Kirk is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
 It's very much inspired by AssertJ, Atrium and Hamcrest.
 However, none of those provided exactly what I wanted so I decided to create my own assertions library.
 
-Two different styles of assertion are supported for different use-cases.
-
 ## Assertion styles
+
+Two different styles of assertion are supported for different use-cases.
 
 ### Chained assertions
 
@@ -168,7 +166,7 @@ expect(subject) {
 
 ## Writing your own assertion functions
 
-One of the aims of this library is that implementing your own assertions is _really, really_ easy.
+One of the aims of Kirk is that implementing your own assertions is _really, really_ easy.
 Assertion functions are extension functions on the interface `Assertion<T>`.
 
 Assertions come in two basic flavors, atomic and nested.

@@ -1,4 +1,4 @@
-rootProject.name = "kotlin-assertions"
+rootProject.name = "kirk"
 
 include "core"
 
