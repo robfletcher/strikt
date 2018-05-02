@@ -306,5 +306,32 @@ internal object Assertions : Spek({
         }
       }
     }
+    describe("isGreaterThanOrEqualTo assertion") {
+      it("passes if the subject is greater than the expected value") {
+        expect(1).isGreaterThanOrEqualTo(0)
+      }
+      it("passes if the subject is equal to the expected value") {
+        expect(1).isGreaterThanOrEqualTo(1)
+      }
+      it("fails if the subject is less than the expected value") {
+        fails {
+          expect(LocalDate.of(2018, 5, 1)).isGreaterThanOrEqualTo(LocalDate.of(2018, 5, 2))
+        }
+      }
+    }
+
+    describe("isLessThanOrEqualTo assertion") {
+      it("passes if the subject is less than the expected value") {
+        expect(0).isLessThanOrEqualTo(1)
+      }
+      it("passes if the subject is equal to the expected value") {
+        expect(1).isLessThanOrEqualTo(1)
+      }
+      it("fails if the subject is greater than the expected value") {
+        fails {
+          expect(LocalDate.of(2018, 5, 2)).isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
+        }
+      }
+    }
   }
 })
