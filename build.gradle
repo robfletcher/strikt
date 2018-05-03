@@ -8,23 +8,26 @@ buildscript {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
     classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
-    classpath "org.ajoberstar:grgit:2.2.0"
-    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
+//    classpath "org.ajoberstar:grgit:2.2.0"
+//    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
     classpath "com.netflix.nebula:nebula-publishing-plugin:7.0.10"
-    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
+    classpath "io.spring.gradle:spring-release-plugin:0.15.0"
+    classpath "io.spring.gradle:spring-bintray-plugin:0.9.0"
   }
 }
+
+group = "io.github.robfletcher"
+version = "0.1.0"
+
+apply plugin: "io.spring.release"
 
 allprojects {
   apply plugin: "nebula.dependency-lock"
   apply plugin: "org.jetbrains.dokka"
-
-  group = "io.github.robfletcher"
-  version = "0.1-SNAPSHOT"
 }
 
-apply plugin: "org.ajoberstar.grgit"
-apply plugin: "org.ajoberstar.git-publish"
+//apply plugin: "org.ajoberstar.grgit"
+//apply plugin: "org.ajoberstar.git-publish"
 
 dokka {
   outputFormat = "gfm"
@@ -34,27 +37,27 @@ dokka {
   }
 }
 
-gitPublish {
-  branch = "gh-pages"
-  contents {
-    from "src/pages"
-    from(dokka) {
-      into "api"
-    }
-  }
-  commitMessage = "Publishing docs"
-}
+//gitPublish {
+//  branch = "gh-pages"
+//  contents {
+//    from "src/pages"
+//    from(dokka) {
+//      into "api"
+//    }
+//    includes = ["packages.md"]
+//  }
+//  commitMessage = "Publishing docs"
+//}
 
 subprojects {
   apply plugin: "nebula.maven-publish"
-  apply plugin: "nebula.nebula-bintray"
   apply plugin: "nebula.source-jar"
+  apply plugin: "io.spring.bintray"
 
   dokka {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
     jdkVersion = 8
-    includes = ["packages.md"]
   }
 
   task(dokkaJar, type: Jar) {
@@ -73,13 +76,15 @@ subprojects {
   }
 
   bintray {
-    pkg {
-      userOrg = "robfletcher"
-      repo = "maven"
-      websiteUrl = "http://robfletcher.github.io/${project.name}/"
-      issueTrackerUrl = "https://github.com/robfletcher/${project.name}/issues"
-      vcsUrl = "https://github.com/robfletcher/${project.name}.git"
-      labels = ["testing", "kotlin"]
-    }
+    bintrayUser = System.getenv("BINTRAY_USER")
+    bintrayKey= System.getenv("BINTRAY_KEY")
+    org = "robfletcher"
+    repo = "maven"
+    publication = "nebula"
+    websiteUrl = "http://robfletcher.github.io/${project.name}/"
+    issueTrackerUrl = "https://github.com/robfletcher/${project.name}/issues"
+    vcsUrl = "https://github.com/robfletcher/${project.name}.git"
+    licenses = ["Apache 2.0"]
+    labels = ["testing", "kotlin"]
   }
 }
