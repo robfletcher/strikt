@@ -87,7 +87,7 @@ subprojects {
     websiteUrl = "http://robfletcher.github.io/${rootProject.name}/"
     issueTrackerUrl = "https://github.com/robfletcher/${rootProject.name}/issues"
     vcsUrl = "https://github.com/robfletcher/${rootProject.name}.git"
-    licenses = ["Apache 2.0"]
+    licenses = ["Apache-2.0"]
     labels = ["testing", "kotlin"]
   }
 }
