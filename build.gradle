@@ -57,12 +57,12 @@ subprojects {
   }
 
   dependencies {
-    testCompile "org.jetbrains.spek:spek-api:+" lock "1.1.5"
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock "1.2.41"
-    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock "1.1.5"
+    testCompile "org.jetbrains.spek:spek-api:+" lock '1.1.5'
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock '1.1.5'
 
     // enables running in IntelliJ using JUnit runner
-    testRuntime "org.junit.platform:junit-platform-launcher:+" lock "1.2.0-M1"
+    testRuntime "org.junit.platform:junit-platform-launcher:+" lock '1.2.0-M1'
   }
 
   compileKotlin {
