@@ -11,17 +11,16 @@ buildscript {
 //    classpath "org.ajoberstar:grgit:2.2.0"
 //    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
     classpath "com.netflix.nebula:nebula-publishing-plugin:7.0.10"
-    classpath "io.spring.gradle:spring-release-plugin:0.15.0"
-    classpath "io.spring.gradle:spring-bintray-plugin:0.9.0"
+    classpath "io.spring.gradle:spring-release-plugin:0.17.0"
+    classpath "io.spring.gradle:spring-bintray-plugin:0.10.1"
   }
 }
-
-group = "io.github.robfletcher"
-version = "0.1.0"
 
 apply plugin: "io.spring.release"
 
 allprojects {
+  group = "io.github.robfletcher.kirk"
+
   apply plugin: "nebula.dependency-lock"
   apply plugin: "org.jetbrains.dokka"
 }
@@ -67,6 +66,10 @@ subprojects {
     from(dokka)
   }
 
+  project.afterEvaluate {
+    assemble.dependsOn sourceJar, dokkaJar
+  }
+
   publishing {
     publications {
       nebula(MavenPublication) {
@@ -77,13 +80,13 @@ subprojects {
 
   bintray {
     bintrayUser = System.getenv("BINTRAY_USER")
-    bintrayKey= System.getenv("BINTRAY_KEY")
+    bintrayKey = System.getenv("BINTRAY_KEY")
     org = "robfletcher"
     repo = "maven"
     publication = "nebula"
-    websiteUrl = "http://robfletcher.github.io/${project.name}/"
-    issueTrackerUrl = "https://github.com/robfletcher/${project.name}/issues"
-    vcsUrl = "https://github.com/robfletcher/${project.name}.git"
+    websiteUrl = "http://robfletcher.github.io/${rootProject.name}/"
+    issueTrackerUrl = "https://github.com/robfletcher/${rootProject.name}/issues"
+    vcsUrl = "https://github.com/robfletcher/${rootProject.name}.git"
     licenses = ["Apache 2.0"]
     labels = ["testing", "kotlin"]
   }
