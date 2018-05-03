@@ -15,24 +15,24 @@ buildscript {
   }
 }
 
-group = "io.github.robfletcher"
-version = "0.1-SNAPSHOT"
-
 allprojects {
   apply plugin: "nebula.dependency-lock"
   apply plugin: "org.jetbrains.dokka"
+
+  group = "io.github.robfletcher"
+  version = "0.1-SNAPSHOT"
 }
 
+apply plugin: "org.ajoberstar.grgit"
+apply plugin: "org.ajoberstar.git-publish"
+
 dokka {
-  outputFormat = "html"
+  outputFormat = "gfm"
   jdkVersion = 8
   kotlinTasks {
     subprojects.compileKotlin
   }
 }
-
-apply plugin: "org.ajoberstar.grgit"
-apply plugin: "org.ajoberstar.git-publish"
 
 gitPublish {
   branch = "gh-pages"
@@ -54,6 +54,7 @@ subprojects {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
     jdkVersion = 8
+    includes = ["packages.md"]
   }
 
   task(dokkaJar, type: Jar) {

@@ -40,6 +40,10 @@ interface Assertion<T> {
 
 /**
  * Allows reporting of success or failure by assertion implementations.
+ *
+ * This class is the receiver of the lambda passed to [Assertion.atomic].
+ *
+ * @see Assertion.atomic
  */
 interface AtomicAssertionContext<T> {
   /**
@@ -63,6 +67,10 @@ interface AtomicAssertionContext<T> {
  * success or failure.
  * This class is used for more complex assertions such as on all elements of a
  * collection or multiple fields of an object.
+ *
+ * This class is the receiver of the lambda passed to [Assertion.nested].
+
+ * @see Assertion.nested
  */
 interface NestedAssertionContext<T> : AtomicAssertionContext<T> {
   /**
