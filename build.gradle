@@ -10,14 +10,18 @@ buildscript {
     classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
     classpath "org.ajoberstar:grgit:2.2.0"
     classpath "org.ajoberstar:gradle-git-publish:0.4.1"
+    classpath "com.netflix.nebula:nebula-publishing-plugin:7.0.10"
+    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
   }
 }
 
+group = "io.github.robfletcher"
+version = "0.1-SNAPSHOT"
+
 allprojects {
   apply plugin: "nebula.dependency-lock"
+  apply plugin: "org.jetbrains.dokka"
 }
-
-apply plugin: "org.jetbrains.dokka"
 
 dokka {
   outputFormat = "html"
@@ -39,4 +43,42 @@ gitPublish {
     }
   }
   commitMessage = "Publishing docs"
+}
+
+subprojects {
+  apply plugin: "nebula.maven-publish"
+  apply plugin: "nebula.nebula-bintray"
+  apply plugin: "nebula.source-jar"
+
+  dokka {
+    outputFormat = "html"
+    outputDirectory = "$buildDir/javadoc"
+    jdkVersion = 8
+  }
+
+  task(dokkaJar, type: Jar) {
+    group = "documentation"
+    description = "Assembles Kotlin docs with Dokka"
+    classifier = "javadoc"
+    from(dokka)
+  }
+
+  publishing {
+    publications {
+      nebula(MavenPublication) {
+        artifact tasks.dokkaJar
+      }
+    }
+  }
+
+  bintray {
+    pkg {
+      userOrg = "robfletcher"
+      repo = "maven"
+      websiteUrl = "http://robfletcher.github.io/${project.name}/"
+      issueTrackerUrl = "https://github.com/robfletcher/${project.name}/issues"
+      vcsUrl = "https://github.com/robfletcher/${project.name}.git"
+      labels = ["testing", "kotlin"]
+    }
+  }
 }
