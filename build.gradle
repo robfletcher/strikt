@@ -7,10 +7,10 @@ buildscript {
     classpath "org.junit.platform:junit-platform-gradle-plugin:1.2.0"
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
-    classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
+    classpath "io.spring.gradle:dependency-lock:0.1.1"
+    classpath "io.spring.gradle:spring-release-plugin:0.17.1"
 //    classpath "org.ajoberstar:grgit:2.2.0"
 //    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
-    classpath "io.spring.gradle:spring-release-plugin:0.17.1"
   }
 }
 
@@ -19,7 +19,6 @@ apply plugin: "io.spring.release"
 allprojects {
   group = "io.github.robfletcher.${rootProject.name}"
 
-  apply plugin: "nebula.dependency-lock"
   apply plugin: "org.jetbrains.dokka"
 }
 
@@ -47,7 +46,43 @@ dokka {
 //}
 
 subprojects {
+  apply plugin: "nebula.kotlin"
+  apply plugin: "spring.lock"
   apply plugin: "io.spring.publishing"
+  apply plugin: "org.junit.platform.gradle.plugin"
+
+  repositories {
+    jcenter()
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
+  }
+
+  dependencies {
+    testCompile "org.jetbrains.spek:spek-api:+" lock "1.1.5"
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock "1.2.41"
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock "1.1.5"
+
+    // enables running in IntelliJ using JUnit runner
+    testRuntime "org.junit.platform:junit-platform-launcher:+" lock "1.2.0-M1"
+  }
+
+  compileKotlin {
+    kotlinOptions {
+      languageVersion = "1.2"
+      jvmTarget = "1.8"
+    }
+  }
+
+  junitPlatform {
+    filters {
+      engines {
+        include "spek"
+      }
+    }
+  }
+
+  junitPlatformTest {
+    enableAssertions = true
+  }
 
   dokka {
     outputFormat = "html"
@@ -79,10 +114,7 @@ subprojects {
     bintrayKey = System.getenv("BINTRAY_KEY")
     org = "robfletcher"
     repo = "maven"
-    publication = "nebula"
     websiteUrl = "http://robfletcher.github.io/${rootProject.name}/"
-    issueTrackerUrl = "https://github.com/robfletcher/${rootProject.name}/issues"
-    vcsUrl = "https://github.com/robfletcher/${rootProject.name}.git"
     licenses = ["Apache-2.0"]
     labels = ["testing", "kotlin"]
   }
