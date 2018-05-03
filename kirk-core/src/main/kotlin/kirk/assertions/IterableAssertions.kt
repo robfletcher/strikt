@@ -10,7 +10,7 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
     subject.forEach {
       expect(it, predicate)
     }
-    if (allSucceeded) {
+    if (allPassed) {
       pass()
     } else {
       fail()
@@ -26,7 +26,7 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
     subject.forEach {
       expect(it, predicate)
     }
-    if (anySucceeded) {
+    if (anyPassed) {
       pass()
     } else {
       fail()

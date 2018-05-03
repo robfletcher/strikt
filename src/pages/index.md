@@ -224,7 +224,7 @@ The only differences are that you use the `nested` method instead of `atomic` an
 
 - `subject`, `pass()` and `fail()` are the same as in `AtomicAssertionContext<T>`.
 - `expect(E)` and `expect(E, Assertion<E>.() -> Unit)` let you make nested assertions using either chains or blocks.
-- `allFailed`, `anyFailed`, `allSucceeded` and `anySucceeded` are boolean properties that report on the outcome of any nested assertions.
+- `allFailed`, `anyFailed`, `allPassed` and `anyPassed` are boolean properties that report on the outcome of any nested assertions.
 
 A nested assertion will use several `expect` chains or blocks to make assertions then make a decision about whether the _overall_ assertion has passed or failed based on the outcome of those nested assertions.
 For example, `all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed.

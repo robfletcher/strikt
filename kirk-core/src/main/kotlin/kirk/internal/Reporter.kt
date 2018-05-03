@@ -34,9 +34,9 @@ internal class AggregatingReporter : Reporter {
   val allFailed: Boolean
     get() = _results.all { it.status == Status.Failure }
 
-  val anySucceeded: Boolean
+  val anyPassed: Boolean
     get() = _results.any { it.status == Status.Success }
 
-  val allSucceeded: Boolean
+  val allPassed: Boolean
     get() = _results.all { it.status == Status.Success }
 }

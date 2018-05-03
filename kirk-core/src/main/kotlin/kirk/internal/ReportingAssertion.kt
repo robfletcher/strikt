@@ -67,9 +67,9 @@ private class NestedAssertionContextImpl<T>(
   override val allFailed: Boolean
     get() = nestedReporter.allFailed
 
-  override val anySucceeded: Boolean
-    get() = nestedReporter.anySucceeded
+  override val anyPassed: Boolean
+    get() = nestedReporter.anyPassed
 
-  override val allSucceeded: Boolean
-    get() = nestedReporter.allSucceeded
+  override val allPassed: Boolean
+    get() = nestedReporter.allPassed
 }

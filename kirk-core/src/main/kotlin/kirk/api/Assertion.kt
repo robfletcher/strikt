@@ -104,9 +104,9 @@ interface NestedAssertionContext<T> : AtomicAssertionContext<T> {
   /**
    * Returns `true` if any assertions in this group passed, `false` otherwise.
    */
-  val anySucceeded: Boolean
+  val anyPassed: Boolean
   /**
    * Returns `true` if _all_ assertions in this group passed, `false` otherwise.
    */
-  val allSucceeded: Boolean
+  val allPassed: Boolean
 }
