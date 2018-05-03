@@ -10,16 +10,14 @@ buildscript {
     classpath "com.netflix.nebula:gradle-dependency-lock-plugin:5.0.4"
 //    classpath "org.ajoberstar:grgit:2.2.0"
 //    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
-    classpath "com.netflix.nebula:nebula-publishing-plugin:7.0.10"
-    classpath "io.spring.gradle:spring-release-plugin:0.17.0"
-    classpath "io.spring.gradle:spring-bintray-plugin:0.10.1"
+    classpath "io.spring.gradle:spring-release-plugin:0.17.1"
   }
 }
 
 apply plugin: "io.spring.release"
 
 allprojects {
-  group = "io.github.robfletcher.kirk"
+  group = "io.github.robfletcher.${rootProject.name}"
 
   apply plugin: "nebula.dependency-lock"
   apply plugin: "org.jetbrains.dokka"
@@ -49,9 +47,7 @@ dokka {
 //}
 
 subprojects {
-  apply plugin: "nebula.maven-publish"
-  apply plugin: "nebula.source-jar"
-  apply plugin: "io.spring.bintray"
+  apply plugin: "io.spring.publishing"
 
   dokka {
     outputFormat = "html"
