@@ -78,3 +78,5 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
       }
     }
   }
+
+// TODO: containsExactly

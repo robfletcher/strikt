@@ -15,6 +15,19 @@ The design goals I had in mind were:
 - A rich selection of assertions that apply to common types without a tangled hierarchy of classes and self-referential generic types, (it turns out Kotlin's extension functions make this pretty easy to accomplish).
 - Simple setup -- one dependency, one (okay, two) imports and you're up and running.
 
+## Installation
+
+Currently Kirk is hosted on Bintray.
+Add the following to your `build.gradle`.
+
+```groovy
+repositories { 
+  maven { url "https://dl.bintray.com/robfletcher/maven" } 
+}
+
+testCompile "io.github.robfletcher.kirk:kirk-core:0.1.0"
+```
+
 ## Assertion styles
 
 Two different styles of assertion are supported for different use-cases.
