@@ -178,6 +178,28 @@ internal object Assertions : Spek({
           expect(subject).hasSize(1)
         }
       }
+
+      describe("isEmpty assertion") {
+        it("passes if collection is empty") {
+          expect(emptyList<Any>()).isEmpty()
+        }
+        it("fails if the collection is not empty") {
+          fails {
+            expect(listOf("catflap", "rubberplant", "marzipan")).isEmpty()
+          }
+        }
+      }
+
+      describe("isNotEmpty assertion") {
+        it("fails if collection is empty") {
+          fails {
+            expect(emptyList<Any>()).isNotEmpty()
+          }
+        }
+        it("passes if the collection is not empty") {
+          expect(listOf("catflap", "rubberplant", "marzipan")).isNotEmpty()
+        }
+      }
     }
   }
 

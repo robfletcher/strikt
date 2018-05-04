@@ -61,14 +61,13 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
       0    -> fail() // TODO: really need a message here
       else -> {
         elements.forEach { element ->
-          expect(subject)
-            .assert("contains $element") {
-              if (subject.contains(element)) {
-                pass()
-              } else {
-                fail()
-              }
+          expect(subject).assert("contains $element") {
+            if (subject.contains(element)) {
+              pass()
+            } else {
+              fail()
             }
+          }
         }
         if (allPassed) {
           pass()
@@ -80,3 +79,4 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
   }
 
 // TODO: containsExactly
+// TODO: containsInOrder
