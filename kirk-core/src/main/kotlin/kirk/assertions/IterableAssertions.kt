@@ -8,13 +8,12 @@ import java.util.*
  */
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
   assert("all elements match predicate") {
-    subject.forEach {
-      expect(it, predicate)
-    }
-    if (allPassed) {
-      pass()
-    } else {
-      fail()
+    compose {
+      subject.forEach {
+        expect(it, predicate)
+      }
+    } results {
+      if (allPassed) pass() else fail()
     }
   }
 
@@ -24,13 +23,12 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
  */
 fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
   assert("at least one element matches predicate") {
-    subject.forEach {
-      expect(it, predicate)
-    }
-    if (anyPassed) {
-      pass()
-    } else {
-      fail()
+    compose {
+      subject.forEach {
+        expect(it, predicate)
+      }
+    } results {
+      if (anyPassed) pass() else fail()
     }
   }
 
@@ -39,13 +37,12 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
  */
 fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
   assert("no elements match predicate") {
-    subject.forEach {
-      expect(it, predicate)
-    }
-    if (allFailed) {
-      pass()
-    } else {
-      fail()
+    compose {
+      subject.forEach {
+        expect(it, predicate)
+      }
+    } results {
+      if (allFailed) pass() else fail()
     }
   }
 
@@ -60,19 +57,18 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {
-        elements.forEach { element ->
-          expect(subject).assert("contains $element") {
-            if (subject.contains(element)) {
-              pass()
-            } else {
-              fail()
+        compose {
+          elements.forEach { element ->
+            expect(subject).assert("contains $element") {
+              if (subject.contains(element)) {
+                pass()
+              } else {
+                fail()
+              }
             }
           }
-        }
-        if (allPassed) {
-          pass()
-        } else {
-          fail()
+        } results {
+          if (allPassed) pass() else fail()
         }
       }
     }

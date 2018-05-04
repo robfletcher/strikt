@@ -53,32 +53,33 @@ interface AssertionContext<T> {
   fun fail()
 
   /**
-   * Start a chain of assertions under the current group.
+   * Allows an assertion to be composed of multiple sub-assertions such as on
+   * fields of an object or elements of a collection.
    *
-   * Simpler assertions will not need this but if you want to make
-   * "sub-assertions" about multiple properties of an object, or all elements of
-   * a collection for example, you can do so with `expect` and then use
-   * [allFailed], [anyFailed], [allPassed] and [anyPassed] to make a decision
-   * about the overall result.
-   * The results of assertions chained from this method are included under the
-   * overall assertion result.
+   * The results of assertions made inside the [assertions] block are included
+   * under the overall assertion result.
+   *
+   * @return the results of assertions made inside the [assertions] block.
+   */
+  fun compose(assertions: ComposedAssertionContext.() -> Unit): ComposedAssertionResults
+}
+
+/**
+ * Allows assertions to be composed, or nested, using
+ * [AssertionContext.compose].
+ */
+interface ComposedAssertionContext {
+  /**
+   * Start a chain of assertions in the current nested context.
    *
    * @param subject the subject of the chain of assertions, usually a property
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <E> expect(subject: E): Assertion<E>
+  fun <T> expect(subject: T): Assertion<T>
 
   /**
-   * Evaluate a block of assertions under the current group.
-   *
-   * Simpler assertions will not need this but if you want to make
-   * "sub-assertions" about multiple properties of an object, or all elements of
-   * a collection for example, you can do so with `expect` and then use
-   * [allFailed], [anyFailed], [allPassed] and [anyPassed] to make a decision
-   * about the overall result.
-   * The results of assertions chained from this method are included under the
-   * overall assertion result.
+   * Evaluate a block of assertions in the current nested context.
    *
    * @param subject the subject of the block of assertions, usually a property
    * or element of the subject of the surrounding assertion.
@@ -86,34 +87,5 @@ interface AssertionContext<T> {
    * be evaluated regardless of whether preceding ones pass or fail.
    * @return an assertion for [subject].
    */
-  fun <E> expect(subject: E, block: Assertion<E>.() -> Unit): Assertion<E>
-
-  /**
-   * Returns `true` if any nested assertions evaluated using [expect] failed,
-   * `false` otherwise.
-   *
-   * @see expect
-   */
-  val anyFailed: Boolean
-  /**
-   * Returns `true` if _all_ nested assertions evaluated using [expect] failed,
-   * `false` otherwise.
-   *
-   * @see expect
-   */
-  val allFailed: Boolean
-  /**
-   * Returns `true` if any nested assertions evaluated using [expect] passed,
-   * `false` otherwise.
-   *
-   * @see expect
-   */
-  val anyPassed: Boolean
-  /**
-   * Returns `true` if _all_ nested assertions evaluated using [expect] passed,
-   * `false` otherwise.
-   *
-   * @see expect
-   */
-  val allPassed: Boolean
+  fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T>
 }

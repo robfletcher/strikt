@@ -1,21 +1,8 @@
 package kirk.internal
 
+import kirk.api.Result
+import kirk.api.Status
 import java.io.Writer
-
-internal interface Result {
-  val status: Status
-  val description: String
-  val actual: Any?
-  val assertionCount: Int
-  val passCount: Int
-  val failureCount: Int
-
-  fun describeTo(writer: Writer, indent: Int)
-
-  fun describeTo(writer: Writer) {
-    describeTo(writer, 0)
-  }
-}
 
 internal fun <T> result(status: Status, description: String, actual: T): Result =
   AtomicResult(status, description, actual)
@@ -23,50 +10,44 @@ internal fun <T> result(status: Status, description: String, actual: T): Result 
 internal fun <T> result(status: Status, description: String, actual: T, results: Iterable<Result>): Result =
   CompoundResult(status, description, actual, results)
 
-internal enum class Status {
-  Success,
-  Failure
-  // TODO: may want an `Error` too
-}
-
 private data class AtomicResult(
   override val status: Status,
   override val description: String,
-  override val actual: Any?
+  override val subject: Any?
 ) : Result {
   override fun describeTo(writer: Writer, indent: Int) {
     writer.append("".padStart(indent))
     writer.append(when (status) {
-      Status.Success -> "✔ "
-      Status.Failure -> "✘ "
+      Status.Passed -> "✔ "
+      Status.Failed -> "✘ "
     })
-    writer.write("$actual $description")
+    writer.write("$subject $description")
   }
 
   override val assertionCount = 1
   override val passCount = when (status) {
-    Status.Success -> 1
-    Status.Failure -> 0
+    Status.Passed -> 1
+    Status.Failed -> 0
   }
   override val failureCount = when (status) {
-    Status.Success -> 0
-    Status.Failure -> 1
+    Status.Passed -> 0
+    Status.Failed -> 1
   }
 }
 
 private data class CompoundResult(
   override val status: Status,
   override val description: String,
-  override val actual: Any?,
+  override val subject: Any?,
   val results: Iterable<Result>
 ) : Result {
   override fun describeTo(writer: Writer, indent: Int) {
     writer.append("".padStart(indent))
     writer.append(when (status) {
-      Status.Success -> "✔ "
-      Status.Failure -> "✘ "
+      Status.Passed -> "✔ "
+      Status.Failed -> "✘ "
     })
-    writer.append("$actual $description")
+    writer.append("$subject $description")
     writer.append(":")
     results.forEach {
       writer.append("\n")

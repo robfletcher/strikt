@@ -1,5 +1,7 @@
 package kirk.internal
 
+import kirk.api.Result
+import kirk.api.Status
 import java.io.StringWriter
 
 internal interface Reporter {
@@ -12,7 +14,7 @@ internal class FailFastReporter : Reporter {
       .also(result::describeTo)
       .toString()
       .let(::println)
-    if (result.status == Status.Failure) {
+    if (result.status == Status.Failed) {
       throw AssertionFailed(result)
     }
   }
@@ -29,14 +31,14 @@ internal class AggregatingReporter : Reporter {
     get() = _results
 
   val anyFailed: Boolean
-    get() = _results.any { it.status == Status.Failure }
+    get() = _results.any { it.status == Status.Failed }
 
   val allFailed: Boolean
-    get() = _results.all { it.status == Status.Failure }
+    get() = _results.all { it.status == Status.Failed }
 
   val anyPassed: Boolean
-    get() = _results.any { it.status == Status.Success }
+    get() = _results.any { it.status == Status.Passed }
 
   val allPassed: Boolean
-    get() = _results.all { it.status == Status.Success }
+    get() = _results.all { it.status == Status.Passed }
 }

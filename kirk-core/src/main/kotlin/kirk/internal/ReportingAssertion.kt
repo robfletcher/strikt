@@ -1,7 +1,6 @@
 package kirk.internal
 
-import kirk.api.Assertion
-import kirk.api.AssertionContext
+import kirk.api.*
 
 internal class ReportingAssertion<T>(
   private val reporter: Reporter,
@@ -22,24 +21,25 @@ private class AssertionContextImpl<T>(
   val reporter: Reporter,
   val description: String
 ) : AssertionContext<T> {
-  private val nestedReporter = AggregatingReporter()
-
   override fun pass() {
-    if (nestedReporter.results.isEmpty()) {
-      reporter.report(result(Status.Success, description, subject))
-    } else {
-      reporter.report(result(Status.Success, description, subject, nestedReporter.results))
-    }
+    reporter.report(result(Status.Passed, description, subject))
   }
 
   override fun fail() {
-    if (nestedReporter.results.isEmpty()) {
-      reporter.report(result(Status.Failure, description, subject))
-    } else {
-      reporter.report(result(Status.Failure, description, subject, nestedReporter.results))
-    }
+    reporter.report(result(Status.Failed, description, subject))
   }
 
+  override fun compose(assertions: ComposedAssertionContext.() -> Unit): ComposedAssertionResults =
+    AggregatingReporter().let { nestedReporter ->
+      ComposedAssertionContextImpl(nestedReporter)
+        .apply(assertions)
+        .let {
+          ComposedAssertionResultsImpl(reporter, nestedReporter, description, subject)
+        }
+    }
+}
+
+private class ComposedAssertionContextImpl(private val nestedReporter: AggregatingReporter) : ComposedAssertionContext {
   override fun <T> expect(subject: T): Assertion<T> {
     return ReportingAssertion(nestedReporter, subject)
   }
@@ -48,16 +48,24 @@ private class AssertionContextImpl<T>(
     return ReportingAssertion(nestedReporter, subject)
       .apply(block)
   }
+}
 
-  override val anyFailed: Boolean
-    get() = nestedReporter.anyFailed
+private class ComposedAssertionResultsImpl(
+  private val reporter: Reporter,
+  private val nestedReporter: AggregatingReporter,
+  private val description: String,
+  private val subject: Any?
+) : ComposedAssertionResults {
+  override fun pass() {
+    reporter.report(result(Status.Passed, description, subject, nestedReporter.results))
+  }
 
-  override val allFailed: Boolean
-    get() = nestedReporter.allFailed
+  override fun fail() {
+    reporter.report(result(Status.Failed, description, subject, nestedReporter.results))
+  }
 
-  override val anyPassed: Boolean
-    get() = nestedReporter.anyPassed
-
-  override val allPassed: Boolean
-    get() = nestedReporter.allPassed
+  override val anyFailed = nestedReporter.anyFailed
+  override val allFailed = nestedReporter.allFailed
+  override val anyPassed = nestedReporter.anyPassed
+  override val allPassed = nestedReporter.allPassed
 }

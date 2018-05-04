@@ -1,5 +1,6 @@
 package kirk.internal
 
+import kirk.api.Result
 import java.io.StringWriter
 
 internal class AssertionFailed(val results: Collection<Result>) : AssertionError(
