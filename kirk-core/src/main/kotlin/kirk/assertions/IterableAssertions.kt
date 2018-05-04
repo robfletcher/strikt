@@ -23,7 +23,7 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
  * [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
-  assert("at least one element matching predicate") {
+  assert("at least one element matches predicate") {
     subject.forEach {
       expect(it, predicate)
     }
