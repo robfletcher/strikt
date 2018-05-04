@@ -22,20 +22,6 @@ interface Assertion<T> {
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit): Assertion<T>
 
   /**
-   * Used by assertion implementations to evaluate a group of conditions that
-   * may individually pass or fail and result in the passing or failure of the
-   * overall assertion.
-   *
-   * @param description a description for the overall assertion.
-   * @param assertions the assertion implementation that should perform a group
-   * of assertions using [NestedAssertionContext.expect] and finall result in a
-   * call to [NestedAssertionContext.pass] or
-   * [NestedAssertionContext.fail].
-   * @return this assertion, in order to facilitate a fluent API.
-   */
-  fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit): Assertion<T>
-
-  /**
    * Maps the assertion subject to the result of [function].
    * For example, if [function] is a property reference on [T]
    */
@@ -65,21 +51,17 @@ interface AssertionContext<T> {
    * Report that the assertion failed.
    */
   fun fail()
-}
 
-/**
- * Allows grouping of assertions under a single main assertion and reporting of
- * success or failure.
- * This class is used for more complex assertions such as on all elements of a
- * collection or multiple fields of an object.
- *
- * This class is the receiver of the lambda passed to [Assertion.nested].
-
- * @see Assertion.nested
- */
-interface NestedAssertionContext<T> : AssertionContext<T> {
   /**
    * Start a chain of assertions under the current group.
+   *
+   * Simpler assertions will not need this but if you want to make
+   * "sub-assertions" about multiple properties of an object, or all elements of
+   * a collection for example, you can do so with `expect` and then use
+   * [allFailed], [anyFailed], [allPassed] and [anyPassed] to make a decision
+   * about the overall result.
+   * The results of assertions chained from this method are included under the
+   * overall assertion result.
    *
    * @param subject the subject of the chain of assertions, usually a property
    * or element of the subject of the surrounding assertion.
@@ -90,6 +72,14 @@ interface NestedAssertionContext<T> : AssertionContext<T> {
   /**
    * Evaluate a block of assertions under the current group.
    *
+   * Simpler assertions will not need this but if you want to make
+   * "sub-assertions" about multiple properties of an object, or all elements of
+   * a collection for example, you can do so with `expect` and then use
+   * [allFailed], [anyFailed], [allPassed] and [anyPassed] to make a decision
+   * about the overall result.
+   * The results of assertions chained from this method are included under the
+   * overall assertion result.
+   *
    * @param subject the subject of the block of assertions, usually a property
    * or element of the subject of the surrounding assertion.
    * @param block a closure that can perform multiple assertions that will all
@@ -99,19 +89,31 @@ interface NestedAssertionContext<T> : AssertionContext<T> {
   fun <E> expect(subject: E, block: Assertion<E>.() -> Unit): Assertion<E>
 
   /**
-   * Returns `true` if any assertions in this group failed, `false` otherwise.
+   * Returns `true` if any nested assertions evaluated using [expect] failed,
+   * `false` otherwise.
+   *
+   * @see expect
    */
   val anyFailed: Boolean
   /**
-   * Returns `true` if _all_ assertions in this group failed, `false` otherwise.
+   * Returns `true` if _all_ nested assertions evaluated using [expect] failed,
+   * `false` otherwise.
+   *
+   * @see expect
    */
   val allFailed: Boolean
   /**
-   * Returns `true` if any assertions in this group passed, `false` otherwise.
+   * Returns `true` if any nested assertions evaluated using [expect] passed,
+   * `false` otherwise.
+   *
+   * @see expect
    */
   val anyPassed: Boolean
   /**
-   * Returns `true` if _all_ assertions in this group passed, `false` otherwise.
+   * Returns `true` if _all_ nested assertions evaluated using [expect] passed,
+   * `false` otherwise.
+   *
+   * @see expect
    */
   val allPassed: Boolean
 }

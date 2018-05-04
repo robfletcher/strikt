@@ -7,7 +7,7 @@ import java.util.*
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
-  nested("all elements match predicate") {
+  assert("all elements match predicate") {
     subject.forEach {
       expect(it, predicate)
     }
@@ -23,7 +23,7 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
  * [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
-  nested("at least one element matching predicate") {
+  assert("at least one element matching predicate") {
     subject.forEach {
       expect(it, predicate)
     }
@@ -38,7 +38,7 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
-  nested("no elements match predicate") {
+  assert("no elements match predicate") {
     subject.forEach {
       expect(it, predicate)
     }
@@ -56,7 +56,7 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  nested("contains the elements ${Arrays.toString(elements)}") {
+  assert("contains the elements ${Arrays.toString(elements)}") {
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {

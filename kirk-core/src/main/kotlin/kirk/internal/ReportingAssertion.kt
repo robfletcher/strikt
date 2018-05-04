@@ -2,7 +2,6 @@ package kirk.internal
 
 import kirk.api.Assertion
 import kirk.api.AssertionContext
-import kirk.api.NestedAssertionContext
 
 internal class ReportingAssertion<T>(
   private val reporter: Reporter,
@@ -11,11 +10,6 @@ internal class ReportingAssertion<T>(
   override fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
       AssertionContextImpl(subject, reporter, description).assertion()
-    }
-
-  override fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit) =
-    apply {
-      NestedAssertionContextImpl(subject, reporter, description).assertions()
     }
 
   override fun <R> map(function: T.() -> R): Assertion<R> {
@@ -28,28 +22,22 @@ private class AssertionContextImpl<T>(
   val reporter: Reporter,
   val description: String
 ) : AssertionContext<T> {
-  override fun pass() {
-    reporter.report(result(Status.Success, description, subject))
-  }
-
-  override fun fail() {
-    reporter.report(result(Status.Failure, description, subject))
-  }
-}
-
-private class NestedAssertionContextImpl<T>(
-  override val subject: T,
-  val reporter: Reporter,
-  val description: String
-) : NestedAssertionContext<T> {
   private val nestedReporter = AggregatingReporter()
 
   override fun pass() {
-    reporter.report(result(Status.Success, description, subject, nestedReporter.results))
+    if (nestedReporter.results.isEmpty()) {
+      reporter.report(result(Status.Success, description, subject))
+    } else {
+      reporter.report(result(Status.Success, description, subject, nestedReporter.results))
+    }
   }
 
   override fun fail() {
-    reporter.report(result(Status.Failure, description, subject, nestedReporter.results))
+    if (nestedReporter.results.isEmpty()) {
+      reporter.report(result(Status.Failure, description, subject))
+    } else {
+      reporter.report(result(Status.Failure, description, subject, nestedReporter.results))
+    }
   }
 
   override fun <T> expect(subject: T): Assertion<T> {

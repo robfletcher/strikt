@@ -232,17 +232,15 @@ That `AssertionContext<T>` receiver provides the lambda everything it needs to a
 
 ### Nested assertions
 
-Nested assertions check several things about the subject and produce a group of messages that are _nested_ under the main message on failure.
-Examples of nested assertions would be those that apply to every element of a collection, such as `all`, or assertions that do field-by-field object comparisons.  
+For more complex assertion implementations you can "nest" assertions inside your overall assertion.
+Nested assertions results are reported under the overall result which can be very useful for providing detailed diagnostic information in case of a failure.
 
-Nested assertions are implemented in a very similar way to atomic assertions.
-The only differences are that you use the `nested` method instead of `atomic` and the receiver is a `NestedAssertionContext<T>` which has a few extra capabilities.
+Nested assertions are useful for things like:
 
-`NestedAssertionContext<T>` has the following properties and methods:
+- applying assertions to multiple properties of an object, for example for a field-by-field comparison.
+- applying assertions to all elements of a collection or entries in a map, reporting on individual elements.
 
-- `subject`, `pass()` and `fail()` are the same as in `AssertionContext<T>`.
-- `expect(E)` and `expect(E, Assertion<E>.() -> Unit)` let you make nested assertions using either chains or blocks.
-- `allFailed`, `anyFailed`, `allPassed` and `anyPassed` are boolean properties that report on the outcome of any nested assertions.
+Nested assertions are implemented by using `AssertionContext<T>.expect` to perform assertions inside of the lambda passed to `assert` and then using the properties `allFailed`, `anyFailed`, `allPassed` and `anyPassed` to make a decision about the overall result.
 
 A nested assertion will use several `expect` chains or blocks to make assertions then make a decision about whether the _overall_ assertion has passed or failed based on the outcome of those nested assertions.
 For example, `all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed.
