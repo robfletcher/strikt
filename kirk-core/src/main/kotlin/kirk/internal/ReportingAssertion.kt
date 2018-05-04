@@ -1,16 +1,16 @@
 package kirk.internal
 
 import kirk.api.Assertion
-import kirk.api.AtomicAssertionContext
+import kirk.api.AssertionContext
 import kirk.api.NestedAssertionContext
 
 internal class ReportingAssertion<T>(
   private val reporter: Reporter,
   private val subject: T
 ) : Assertion<T> {
-  override fun atomic(description: String, assertion: AtomicAssertionContext<T>.() -> Unit) =
+  override fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AtomicAssertionContextImpl(subject, reporter, description).assertion()
+      AssertionContextImpl(subject, reporter, description).assertion()
     }
 
   override fun nested(description: String, assertions: NestedAssertionContext<T>.() -> Unit) =
@@ -23,11 +23,11 @@ internal class ReportingAssertion<T>(
   }
 }
 
-private class AtomicAssertionContextImpl<T>(
+private class AssertionContextImpl<T>(
   override val subject: T,
   val reporter: Reporter,
   val description: String
-) : AtomicAssertionContext<T> {
+) : AssertionContext<T> {
   override fun pass() {
     reporter.report(result(Status.Success, description, subject))
   }

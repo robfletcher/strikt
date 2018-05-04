@@ -62,7 +62,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
       else -> {
         elements.forEach { element ->
           expect(subject)
-            .atomic("contains $element") {
+            .assert("contains $element") {
               if (subject.contains(element)) {
                 pass()
               } else {

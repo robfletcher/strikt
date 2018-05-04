@@ -30,7 +30,8 @@ testCompile "io.github.robfletcher.kirk:kirk-core:0.1.0"
 
 ## Assertion styles
 
-Two different styles of assertion are supported for different use-cases.
+Two different styles of assertion -- chained and block -- are supported for different use-cases.
+You can mix and match both in the same test and even nest chained assertions inside block assertions.
 
 ### Chained assertions
 
@@ -57,10 +58,10 @@ Produces the output:
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
-### Grouped assertions
+### Block assertions
 
-Grouped assertions are declared in a block whose receiver is an assertion on a target object.
-Grouped assertions do _not_ fail fast.
+Block assertions are declared in a block whose receiver is an assertion on a target object.
+Block assertions do _not_ fail fast.
 That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
 
 ```kotlin
@@ -82,6 +83,8 @@ Produces the output:
 
 All assertions are applied and since two fail there are two errors logged.
 
+### Chained assertions inside block assertions
+
 Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
 
 ```kotlin
@@ -100,7 +103,7 @@ Produces the output:
 ```
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
-The `greaterThan(1)` assertion _was_ evaluated since it was not part of the chain.
+The `greaterThan(1)` assertion _was_ evaluated since it was not part of the same chain.
 
 ## Flow typed assertions
 
@@ -191,19 +194,18 @@ expect(subject) {
 One of the aims of Kirk is that implementing your own assertions is _really, really_ easy.
 Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
 
-Assertions come in two basic flavors; atomic and nested.
-Atomic assertions produce a single message on failure.
-`isNull`, `isEqualTo`, `isA<T>` and so on are all examples of atomic assertions.
-Nested assertions check several things about the subject and produce a group of messages that are _nested_ under the main message on failure.
-Examples of nested assertions would be those that apply to every element of a collection, such as `all`, or assertions that do field-by-field object comparisons.  
+Simple assertions produce a single message on failure.
+They call `assert` passing a lambda with the assertion logic that calls `pass()` or `fail()`.
 
-### Atomic assertions
+The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simple assertions implemented just like this.
+
+### Simple assertions
 
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
 ```kotlin
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
-  atomic("is St. Tib's Day") { 
+  assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
       else               -> fail()
@@ -214,7 +216,7 @@ Breaking this down:
 
 1. We declare the assertion function applies only to `Assertion<LocalDate>`.
 2. Note that the function also returns `Assertion<LocalDate>` so we can include this assertion as part of a chain.
-3. We use an `atomic` assertion as we're just applying a single check.
+3. We call `assert` passing a lambda with the assertion logic.
 4. If `subject` is the value we want we call `pass()` otherwise we call `fail()`
 
 If this assertion fails it will produce a message like:
@@ -225,17 +227,20 @@ If this assertion fails it will produce a message like:
 
 #### Where do `subject`, `pass()` and `fail()` come from?
 
-The method `atomic` accepts a description for the assertion being made and a lambda function `AtomicAssertionContext<T>.() -> Unit`.
-That `AtomicAssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
+That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 
 ### Nested assertions
+
+Nested assertions check several things about the subject and produce a group of messages that are _nested_ under the main message on failure.
+Examples of nested assertions would be those that apply to every element of a collection, such as `all`, or assertions that do field-by-field object comparisons.  
 
 Nested assertions are implemented in a very similar way to atomic assertions.
 The only differences are that you use the `nested` method instead of `atomic` and the receiver is a `NestedAssertionContext<T>` which has a few extra capabilities.
 
 `NestedAssertionContext<T>` has the following properties and methods:
 
-- `subject`, `pass()` and `fail()` are the same as in `AtomicAssertionContext<T>`.
+- `subject`, `pass()` and `fail()` are the same as in `AssertionContext<T>`.
 - `expect(E)` and `expect(E, Assertion<E>.() -> Unit)` let you make nested assertions using either chains or blocks.
 - `allFailed`, `anyFailed`, `allPassed` and `anyPassed` are boolean properties that report on the outcome of any nested assertions.
 

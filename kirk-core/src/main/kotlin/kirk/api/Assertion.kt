@@ -6,15 +6,20 @@ package kirk.api
 interface Assertion<T> {
   // TODO: these only make sense to be visible inside an assertion function, not sure how to hide them from other contexts
   /**
-   * Used by assertion implementations to evaluate a single condition that may
-   * pass or fail.
+   * Evaluates a condition that may pass or fail.
+   *
+   * This method can be used directly in a test but is typically used inside an
+   * extension method on `Assertion<T>` such as those provided in the
+   * [kirk.assertions] package.
    *
    * @param description a description for the assertion.
    * @param assertion the assertion implementation that should result in a call
-   * to [AtomicAssertionContext.pass] or [AtomicAssertionContext.fail].
+   * to [AssertionContext.pass] or [AssertionContext.fail].
    * @return this assertion, in order to facilitate a fluent API.
+   * @see AssertionContext.pass
+   * @see AssertionContext.fail
    */
-  fun atomic(description: String, assertion: AtomicAssertionContext<T>.() -> Unit): Assertion<T>
+  fun assert(description: String, assertion: AssertionContext<T>.() -> Unit): Assertion<T>
 
   /**
    * Used by assertion implementations to evaluate a group of conditions that
@@ -41,11 +46,11 @@ interface Assertion<T> {
 /**
  * Allows reporting of success or failure by assertion implementations.
  *
- * This class is the receiver of the lambda passed to [Assertion.atomic].
+ * This class is the receiver of the lambda passed to [Assertion.assert].
  *
- * @see Assertion.atomic
+ * @see Assertion.assert
  */
-interface AtomicAssertionContext<T> {
+interface AssertionContext<T> {
   /**
    * The assertion subject.
    */
@@ -72,7 +77,7 @@ interface AtomicAssertionContext<T> {
 
  * @see Assertion.nested
  */
-interface NestedAssertionContext<T> : AtomicAssertionContext<T> {
+interface NestedAssertionContext<T> : AssertionContext<T> {
   /**
    * Start a chain of assertions under the current group.
    *
