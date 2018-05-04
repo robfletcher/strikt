@@ -230,9 +230,11 @@ If this assertion fails it will produce a message like:
 The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
 That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 
+`AssertionContext<T>` also provides the functions `expect(E)` and `expect(E, Assertion<E>.()->Unit)` for building complex nested assertions.
+
 ### Nested assertions
 
-For more complex assertion implementations you can "nest" assertions inside your overall assertion.
+For more complex assertion implementations you can "nest" sub-assertions inside your overall assertion.
 Nested assertions results are reported under the overall result which can be very useful for providing detailed diagnostic information in case of a failure.
 
 Nested assertions are useful for things like:
@@ -241,9 +243,5 @@ Nested assertions are useful for things like:
 - applying assertions to all elements of a collection or entries in a map, reporting on individual elements.
 
 Nested assertions are implemented by using `AssertionContext<T>.expect` to perform assertions inside of the lambda passed to `assert` and then using the properties `allFailed`, `anyFailed`, `allPassed` and `anyPassed` to make a decision about the overall result.
-
-A nested assertion will use several `expect` chains or blocks to make assertions then make a decision about whether the _overall_ assertion has passed or failed based on the outcome of those nested assertions.
 For example, `all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed.
 On the other hand `any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if just one of those nested assertions passed. 
-
-Nested assertions can also be very useful for custom assertions that apply to the domain objects of your own applications.
