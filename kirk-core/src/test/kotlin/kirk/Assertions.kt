@@ -266,6 +266,48 @@ internal object Assertions : Spek({
           }
       }
     }
+
+    describe("contains assertion") {
+      it("passes if the expected element is the only actual element") {
+        expect(listOf("catflap")).contains("catflap")
+      }
+
+      it("passes if the expected element is one of the actual elements") {
+        expect(listOf("catflap", "rubberplant", "marzipan")).contains("catflap")
+      }
+
+      it("passes if the expected elements are among the actual elements") {
+        expect(listOf("catflap", "rubberplant", "marzipan")).contains("catflap", "marzipan")
+      }
+
+      it("fails if the expected element is not present") {
+        fails {
+          expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe")
+        }
+      }
+
+      it("has a nested failure for each missing element") {
+        fails {
+          expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
+        }.let { e ->
+          assert(e.assertionCount == 3)
+          assert(e.failureCount == 2)
+          assert(e.passCount == 1)
+        }
+      }
+
+      it("fails if no expected elements are supplied") {
+        fails {
+          expect(listOf("catflap", "rubberplant", "marzipan")).contains()
+        }
+      }
+
+      it("fails if subject is empty") {
+        fails {
+          expect(emptyList<String>()).contains("catflap")
+        }
+      }
+    }
   }
 
   describe("assertions on ${Comparable::class.simpleName}") {
