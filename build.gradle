@@ -89,6 +89,7 @@ subprojects {
     outputDirectory = "$buildDir/javadoc"
     jdkVersion = 8
   }
+  dokka.mustRunAfter javadoc
 
   task(dokkaJar, type: Jar) {
     group = "documentation"
@@ -96,10 +97,7 @@ subprojects {
     classifier = "javadoc"
     from(dokka)
   }
-
-  project.afterEvaluate {
-    assemble.dependsOn sourceJar, dokkaJar
-  }
+  dokkaJar.mustRunAfter javadocJar
 
   publishing {
     publications {
