@@ -10,14 +10,14 @@ Any suggestions, issue reports, contributions, or feedback are very welcome.
 
 ## Installation
 
-Currently Kirk is hosted on Bintray.
+Kirk is available from jcenter.
 
 ```groovy
 repositories { 
-  maven { url "https://dl.bintray.com/robfletcher/maven" } 
+  jcenter() 
 }
 
-testCompile "io.github.robfletcher.kirk:kirk-core:0.1.0"
+testCompile "io.github.robfletcher.kirk:kirk-core:0.2.1"
 ```
 
 ## Using Kirk

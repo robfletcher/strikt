@@ -18,15 +18,15 @@ The design goals I had in mind were:
 
 ## Installation
 
-Currently Kirk is hosted on Bintray.
+Kirk is available from jcenter.
 Add the following to your `build.gradle`.
 
 ```groovy
 repositories { 
-  maven { url "https://dl.bintray.com/robfletcher/maven" } 
+  jcenter() 
 }
 
-testCompile "io.github.robfletcher.kirk:kirk-core:0.1.0"
+testCompile "io.github.robfletcher.kirk:kirk-core:0.2.1"
 ```
 
 ## Assertion styles
