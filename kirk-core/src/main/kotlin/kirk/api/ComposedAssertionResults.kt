@@ -1,11 +1,20 @@
 package kirk.api
 
+import kirk.internal.AggregatingReporter
+import kirk.internal.Reporter
+import kirk.internal.result
+
 /**
  * The results of assertions made inside the block passed to
  * [AssertionContext.compose].
  */
-interface ComposedAssertionResults {
-
+class ComposedAssertionResults
+internal constructor(
+  private val reporter: Reporter,
+  private val nestedReporter: AggregatingReporter,
+  private val description: String,
+  private val subject: Any?
+) {
   /**
    * A convenient way to chain a result handler after
    * [AssertionContext.compose].
@@ -15,12 +24,16 @@ interface ComposedAssertionResults {
   /**
    * Report that the assertion succeeded.
    */
-  fun pass()
+  fun pass() {
+    reporter.report(result(Status.Passed, description, subject, nestedReporter.results))
+  }
 
   /**
    * Report that the assertion failed.
    */
-  fun fail()
+  fun fail() {
+    reporter.report(result(Status.Failed, description, subject, nestedReporter.results))
+  }
 
   /**
    * Returns `true` if any nested assertions evaluated inside
@@ -28,7 +41,7 @@ interface ComposedAssertionResults {
    *
    * @see expect
    */
-  val anyFailed: Boolean
+  val anyFailed: Boolean = nestedReporter.anyFailed
 
   /**
    * Returns `true` if _all_ nested assertions evaluated using
@@ -36,7 +49,7 @@ interface ComposedAssertionResults {
    *
    * @see expect
    */
-  val allFailed: Boolean
+  val allFailed: Boolean = nestedReporter.allFailed
 
   /**
    * Returns `true` if any nested assertions evaluated using
@@ -44,7 +57,7 @@ interface ComposedAssertionResults {
    *
    * @see expect
    */
-  val anyPassed: Boolean
+  val anyPassed: Boolean = nestedReporter.anyPassed
 
   /**
    * Returns `true` if _all_ nested assertions evaluated using
@@ -52,5 +65,5 @@ interface ComposedAssertionResults {
    *
    * @see expect
    */
-  val allPassed: Boolean
+  val allPassed: Boolean = nestedReporter.allPassed
 }

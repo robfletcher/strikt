@@ -13,6 +13,12 @@ gradle final -Prelease.scope=major
 gradle final -Prelease.scope=patch
 ```
 
+Cut a snapshot:
+
+```
+gradle snapshot  -Prelease.scope=patch
+```
+
 Fucksocks, the last publish didn't work. Let me do it again:
 
 ```

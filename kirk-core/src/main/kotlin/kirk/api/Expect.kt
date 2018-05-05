@@ -4,7 +4,6 @@ import kirk.assertions.isA
 import kirk.internal.AggregatingReporter
 import kirk.internal.AssertionFailed
 import kirk.internal.FailFastReporter
-import kirk.internal.ReportingAssertion
 
 /**
  * Start a chain of assertions over [subject].
@@ -15,7 +14,7 @@ import kirk.internal.ReportingAssertion
  */
 fun <T> expect(subject: T): Assertion<T> {
   val reporter = FailFastReporter()
-  return ReportingAssertion(reporter, subject)
+  return Assertion(reporter, subject)
 }
 
 /**
@@ -29,7 +28,7 @@ fun <T> expect(subject: T): Assertion<T> {
  */
 fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
   val reporter = AggregatingReporter()
-  return ReportingAssertion(reporter, subject)
+  return Assertion(reporter, subject)
     .apply(block)
     .apply {
       if (reporter.anyFailed) {

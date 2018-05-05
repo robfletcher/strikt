@@ -1,10 +1,13 @@
 package kirk.api
 
+import kirk.internal.AggregatingReporter
+
 /**
  * Allows assertions to be composed, or nested, using
  * [AssertionContext.compose].
  */
-interface ComposedAssertionContext {
+class ComposedAssertions
+internal constructor(private val nestedReporter: AggregatingReporter) {
   /**
    * Start a chain of assertions in the current nested context.
    *
@@ -12,7 +15,9 @@ interface ComposedAssertionContext {
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <T> expect(subject: T): Assertion<T>
+  fun <T> expect(subject: T): Assertion<T> {
+    return Assertion(nestedReporter, subject)
+  }
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -23,5 +28,7 @@ interface ComposedAssertionContext {
    * be evaluated regardless of whether preceding ones pass or fail.
    * @return an assertion for [subject].
    */
-  fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T>
+  fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
+    return Assertion(nestedReporter, subject).apply(block)
+  }
 }

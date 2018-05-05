@@ -1,10 +1,15 @@
 package kirk.api
 
+import kirk.internal.Reporter
+
 /**
  * Holds a subject of type [T] that you can then make assertions about.
  */
-interface Assertion<T> {
-  // TODO: these only make sense to be visible inside an assertion function, not sure how to hide them from other contexts
+class Assertion<T>
+internal constructor(
+  private val reporter: Reporter,
+  private val subject: T
+) {
   /**
    * Evaluates a condition that may pass or fail.
    *
@@ -19,12 +24,17 @@ interface Assertion<T> {
    * @see AssertionContext.pass
    * @see AssertionContext.fail
    */
-  fun assert(description: String, assertion: AssertionContext<T>.() -> Unit): Assertion<T>
+  fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
+    apply {
+      AssertionContext(subject, reporter, description).assertion()
+    }
 
   /**
    * Maps the assertion subject to the result of [function].
    * For example, if [function] is a property reference on [T]
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-  fun <R> map(function: T.() -> R): Assertion<R>
+  fun <R> map(function: T.() -> R): Assertion<R> {
+    return Assertion(reporter, subject.function())
+  }
 }
