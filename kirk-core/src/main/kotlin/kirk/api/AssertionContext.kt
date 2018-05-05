@@ -1,7 +1,7 @@
 package kirk.api
 
-import kirk.internal.AggregatingReporter
-import kirk.internal.Reporter
+import kirk.internal.AssertionResultCollector
+import kirk.internal.AssertionResultHandler
 import kirk.internal.result
 
 /**
@@ -17,21 +17,21 @@ internal constructor(
    * The assertion subject.
    */
   val subject: T,
-  private val reporter: Reporter,
+  private val assertionResultHandler: AssertionResultHandler,
   private val description: String
 ) {
   /**
    * Report that the assertion succeeded.
    */
   fun pass() {
-    reporter.report(result(Status.Passed, description, subject))
+    assertionResultHandler.report(result(Status.Passed, description, subject))
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    reporter.report(result(Status.Failed, description, subject))
+    assertionResultHandler.report(result(Status.Failed, description, subject))
   }
 
   /**
@@ -44,11 +44,11 @@ internal constructor(
    * @return the results of assertions made inside the [assertions] block.
    */
   fun compose(assertions: ComposedAssertions.() -> Unit): ComposedAssertionResults =
-    AggregatingReporter().let { nestedReporter ->
+    AssertionResultCollector().let { nestedReporter ->
       ComposedAssertions(nestedReporter)
         .apply(assertions)
         .let {
-          ComposedAssertionResults(reporter, nestedReporter, description, subject)
+          ComposedAssertionResults(assertionResultHandler, nestedReporter, description, subject)
         }
     }
 }

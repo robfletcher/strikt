@@ -1,9 +1,9 @@
 package kirk.api
 
 import kirk.assertions.isA
-import kirk.internal.AggregatingReporter
 import kirk.internal.AssertionFailed
-import kirk.internal.FailFastReporter
+import kirk.internal.AssertionResultCollector
+import kirk.internal.FailFastAssertionResultHandler
 
 /**
  * Start a chain of assertions over [subject].
@@ -13,7 +13,7 @@ import kirk.internal.FailFastReporter
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T): Assertion<T> {
-  val reporter = FailFastReporter()
+  val reporter = FailFastAssertionResultHandler()
   return Assertion(reporter, subject)
 }
 
@@ -27,7 +27,7 @@ fun <T> expect(subject: T): Assertion<T> {
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
-  val reporter = AggregatingReporter()
+  val reporter = AssertionResultCollector()
   return Assertion(reporter, subject)
     .apply(block)
     .apply {
@@ -45,12 +45,12 @@ fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
  */
 inline fun <reified E : Throwable> throws(
   action: () -> Unit
-): Assertion<E> {
-  val thrown = try {
+): Assertion<E> =
+  try {
     action()
     null
   } catch (e: Throwable) {
     e
+  }.let { thrown ->
+    expect(thrown).isA()
   }
-  return expect(thrown).isA()
-}

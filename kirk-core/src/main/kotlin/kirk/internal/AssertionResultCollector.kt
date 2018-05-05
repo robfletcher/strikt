@@ -3,7 +3,7 @@ package kirk.internal
 import kirk.api.Result
 import kirk.api.Status
 
-internal class AggregatingReporter : Reporter {
+internal class AssertionResultCollector : AssertionResultHandler {
   private val _results = mutableListOf<Result>()
 
   override fun report(result: Result) {

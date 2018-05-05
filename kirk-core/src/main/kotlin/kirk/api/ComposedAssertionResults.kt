@@ -1,7 +1,7 @@
 package kirk.api
 
-import kirk.internal.AggregatingReporter
-import kirk.internal.Reporter
+import kirk.internal.AssertionResultCollector
+import kirk.internal.AssertionResultHandler
 import kirk.internal.result
 
 /**
@@ -10,8 +10,8 @@ import kirk.internal.result
  */
 class ComposedAssertionResults
 internal constructor(
-  private val reporter: Reporter,
-  private val nestedReporter: AggregatingReporter,
+  private val assertionResultHandler: AssertionResultHandler,
+  private val nestedReporter: AssertionResultCollector,
   private val description: String,
   private val subject: Any?
 ) {
@@ -25,14 +25,14 @@ internal constructor(
    * Report that the assertion succeeded.
    */
   fun pass() {
-    reporter.report(result(Status.Passed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(result(Status.Passed, description, subject, nestedReporter.results))
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    reporter.report(result(Status.Failed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(result(Status.Failed, description, subject, nestedReporter.results))
   }
 
   /**

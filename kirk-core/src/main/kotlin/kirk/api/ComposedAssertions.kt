@@ -1,13 +1,13 @@
 package kirk.api
 
-import kirk.internal.AggregatingReporter
+import kirk.internal.AssertionResultCollector
 
 /**
  * Allows assertions to be composed, or nested, using
  * [AssertionContext.compose].
  */
 class ComposedAssertions
-internal constructor(private val nestedReporter: AggregatingReporter) {
+internal constructor(private val nestedReporter: AssertionResultCollector) {
   /**
    * Start a chain of assertions in the current nested context.
    *

@@ -1,13 +1,13 @@
 package kirk.api
 
-import kirk.internal.Reporter
+import kirk.internal.AssertionResultHandler
 
 /**
  * Holds a subject of type [T] that you can then make assertions about.
  */
 class Assertion<T>
 internal constructor(
-  private val reporter: Reporter,
+  private val assertionResultHandler: AssertionResultHandler,
   private val subject: T
 ) {
   /**
@@ -26,7 +26,7 @@ internal constructor(
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AssertionContext(subject, reporter, description).assertion()
+      AssertionContext(subject, assertionResultHandler, description).assertion()
     }
 
   /**
@@ -35,6 +35,6 @@ internal constructor(
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
   fun <R> map(function: T.() -> R): Assertion<R> {
-    return Assertion(reporter, subject.function())
+    return Assertion(assertionResultHandler, subject.function())
   }
 }

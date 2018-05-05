@@ -2,6 +2,6 @@ package kirk.internal
 
 import kirk.api.Result
 
-internal interface Reporter {
+internal interface AssertionResultHandler {
   fun report(result: Result)
 }
