@@ -2,12 +2,15 @@ package kirk.internal
 
 import kirk.api.Result
 import kirk.api.Status
+import kirk.internal.reporting.DefaultResultWriter
 import java.io.StringWriter
 
 internal class FailFastAssertionResultHandler : AssertionResultHandler {
   override fun report(result: Result) {
     StringWriter()
-      .also(result::describeTo)
+      .use {
+        DefaultResultWriter(it).write(result)
+      }
       .toString()
       .let(::println)
     if (result.status == Status.Failed) {

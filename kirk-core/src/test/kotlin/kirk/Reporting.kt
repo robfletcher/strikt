@@ -38,7 +38,8 @@ object Reporting : Spek({
 ✘ [catflap, rubberplant, marzipan] all elements match predicate:
   ✔ catflap starts with 'c'
   ✘ rubberplant starts with 'c'
-  ✘ marzipan starts with 'c'"""
+  ✘ marzipan starts with 'c'
+"""
         assert(e.message == expectedMessage) {
           "Assertion failure message was\n${e.message}"
         }

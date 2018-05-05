@@ -1,7 +1,5 @@
 package kirk.api
 
-import java.io.Writer
-
 /**
  * Represents the result of an assertion or a group of assertions.
  */
@@ -30,17 +28,4 @@ interface Result {
    * The number of assertions that failed.
    */
   val failureCount: Int
-
-  // TODO: these should be internal
-  /**
-   * Outputs the result details for logging purposes.
-   */
-  fun describeTo(writer: Writer, indent: Int)
-
-  /**
-   * Outputs the result details for logging purposes.
-   */
-  fun describeTo(writer: Writer) {
-    describeTo(writer, 0)
-  }
 }
