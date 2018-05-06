@@ -3,26 +3,33 @@ package kirk.internal.reporting
 import kirk.api.Result
 import kirk.api.Status
 
-internal class DefaultResultWriter(
-  private val writer: Appendable
-) : ResultWriter {
-  override fun write(result: Result) {
-    writeIndented(result)
+internal open class DefaultResultWriter : ResultWriter {
+  override fun writeTo(writer: Appendable, result: Result) {
+    writeIndented(writer, result)
   }
 
-  private fun writeIndented(result: Result, indent: Int = 0) {
-    writer
-      .append("".padStart(indent))
-      .append(when (result.status) {
-        Status.Passed -> "✔ "
-        Status.Failed -> "✘ "
-      })
-      .append("${result.subject} ${result.description}")
-
-    if (result.nestedResults.isNotEmpty()) writer.append(":")
-    writer.append("\n")
+  private fun writeIndented(writer: Appendable, result: Result, indent: Int = 0) {
+    writeLine(writer, result, indent)
     result.nestedResults.forEach {
-      writeIndented(it, indent + 2)
+      writeIndented(writer, it, indent + 1)
     }
+  }
+
+  protected open fun writeLine(writer: Appendable, result: Result, indent: Int) {
+    onLineStart(writer, result, indent)
+    writer.append(when (result.status) {
+      Status.Passed -> "✔ "
+      Status.Failed -> "✘ "
+    })
+      .append("${result.subject} ${result.description}")
+    onLineEnd(writer, result)
+  }
+
+  protected open fun onLineStart(writer: Appendable, result: Result, indent: Int) {
+    writer.append("".padStart(2 * indent))
+  }
+
+  protected open fun onLineEnd(writer: Appendable, result: Result) {
+    writer.append("\n")
   }
 }

@@ -30,18 +30,26 @@ object Reporting : Spek({
 
       it("formats the error message") {
         // TODO: comparing big blocks of text is shitty
-        val expectedMessage = """✘ [catflap, rubberplant, marzipan] has size 0
-✘ [catflap, rubberplant, marzipan] all elements match predicate:
-  ✘ catflap is upper case
-  ✘ rubberplant is upper case
-  ✘ marzipan is upper case
-✘ [catflap, rubberplant, marzipan] all elements match predicate:
-  ✔ catflap starts with 'c'
-  ✘ rubberplant starts with 'c'
-  ✘ marzipan starts with 'c'
-"""
-        assert(e.message == expectedMessage) {
-          "Assertion failure message was\n${e.message}"
+        val expectedLines = listOf(
+          "✘ [catflap, rubberplant, marzipan] has size 0",
+          "✘ [catflap, rubberplant, marzipan] all elements match predicate",
+          "  ✘ catflap is upper case",
+          "  ✘ rubberplant is upper case",
+          "  ✘ marzipan is upper case",
+          "✘ [catflap, rubberplant, marzipan] all elements match predicate",
+          "  ✔ catflap starts with 'c'",
+          "  ✘ rubberplant starts with 'c'",
+          "  ✘ marzipan starts with 'c'",
+          ""
+        )
+        val actualLines = e.message!!.lines()
+        assert(actualLines.size == expectedLines.size) {
+          "Expected ${expectedLines.size} lines of output but found ${actualLines.size}"
+        }
+        actualLines.forEachIndexed { i, line ->
+          assert(line == expectedLines[i]) {
+            "Assertion failure message line ${i + 1} was\n\"$line\""
+          }
         }
       }
     }

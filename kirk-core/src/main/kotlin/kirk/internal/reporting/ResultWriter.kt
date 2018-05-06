@@ -4,20 +4,21 @@ import kirk.api.Result
 import java.io.StringWriter
 
 internal interface ResultWriter {
-  fun write(result: Result)
-  fun write(results: Iterable<Result>) = results.forEach(::write)
+  fun writeTo(writer: Appendable, result: Result)
+  fun writeTo(writer: Appendable, results: Iterable<Result>) =
+    results.forEach { writeTo(writer, it) }
 }
 
-fun Result.writeToString() =
+internal fun Result.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
   StringWriter()
     .use { writer ->
-      DefaultResultWriter(writer).write(this)
+      resultWriter.writeTo(writer, this)
       writer.toString()
     }
 
-fun Iterable<Result>.writeToString() =
+internal fun Iterable<Result>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
   StringWriter()
     .use { writer ->
-      DefaultResultWriter(writer).write(this)
+      resultWriter.writeTo(writer, this)
       writer.toString()
     }
