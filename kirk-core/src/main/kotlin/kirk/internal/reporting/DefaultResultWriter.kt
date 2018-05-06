@@ -2,7 +2,6 @@ package kirk.internal.reporting
 
 import kirk.api.Result
 import kirk.api.Status
-import kirk.internal.CompoundResult
 
 internal class DefaultResultWriter(
   private val writer: Appendable
@@ -20,14 +19,10 @@ internal class DefaultResultWriter(
       })
       .append("${result.subject} ${result.description}")
 
-    // TODO: no
-    if (result is CompoundResult) {
-      writer.append(":\n")
-      result.results.forEach {
-        writeIndented(it, indent + 2)
-      }
-    } else {
-      writer.append("\n")
+    if (result.nestedResults.isNotEmpty()) writer.append(":")
+    writer.append("\n")
+    result.nestedResults.forEach {
+      writeIndented(it, indent + 2)
     }
   }
 }

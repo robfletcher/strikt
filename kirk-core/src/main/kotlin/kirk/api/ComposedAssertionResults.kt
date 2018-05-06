@@ -2,7 +2,6 @@ package kirk.api
 
 import kirk.internal.AssertionResultCollector
 import kirk.internal.AssertionResultHandler
-import kirk.internal.result
 
 /**
  * The results of assertions made inside the block passed to
@@ -25,14 +24,14 @@ internal constructor(
    * Report that the assertion succeeded.
    */
   fun pass() {
-    assertionResultHandler.report(result(Status.Passed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(Result(Status.Passed, description, subject, nestedReporter.results))
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    assertionResultHandler.report(result(Status.Failed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(Result(Status.Failed, description, subject, nestedReporter.results))
   }
 
   /**

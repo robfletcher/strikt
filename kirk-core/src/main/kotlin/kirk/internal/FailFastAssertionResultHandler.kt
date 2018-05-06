@@ -10,8 +10,8 @@ internal class FailFastAssertionResultHandler : AssertionResultHandler {
     StringWriter()
       .use {
         DefaultResultWriter(it).write(result)
+        it.toString()
       }
-      .toString()
       .let(::println)
     if (result.status == Status.Failed) {
       throw AssertionFailed(result)
