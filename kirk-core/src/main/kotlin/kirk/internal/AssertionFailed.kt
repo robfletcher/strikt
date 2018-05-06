@@ -1,16 +1,12 @@
 package kirk.internal
 
 import kirk.api.Result
-import kirk.internal.reporting.DefaultResultWriter
-import java.io.StringWriter
+import kirk.internal.reporting.writeToString
 
 internal class AssertionFailed(
-  val results: Collection<Result>
+  private val results: Collection<Result>
 ) : AssertionError(
-  StringWriter().use { writer ->
-    DefaultResultWriter(writer).write(results)
-    writer.toString()
-  }
+  results.writeToString()
 ) {
   constructor(result: Result) : this(listOf(result))
 
