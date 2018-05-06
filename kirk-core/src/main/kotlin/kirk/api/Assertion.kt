@@ -1,6 +1,7 @@
 package kirk.api
 
 import kirk.internal.AssertionResultHandler
+import kirk.internal.NegatedResultHandler
 
 /**
  * Holds a subject of type [T] that you can then make assertions about.
@@ -37,4 +38,14 @@ internal constructor(
   fun <R> map(function: T.() -> R): Assertion<R> {
     return Assertion(assertionResultHandler, subject.function())
   }
+
+  /**
+   * Reverses any assertions chained after this method.
+   * For example:
+   *
+   *     expect("covfefe").not().isNull().isUpperCase()
+   *
+   * will pass.
+   */
+  fun not(): Assertion<T> = Assertion(NegatedResultHandler(assertionResultHandler), subject)
 }
