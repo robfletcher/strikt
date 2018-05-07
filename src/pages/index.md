@@ -183,7 +183,7 @@ The method takes a lambda whose receiver is the current subject and returns an `
 This is sometimes useful for making assertions about the properties of an object or the values returned by methods.
 
 ```kotlin
-val subject = Person("David", LocalDate.of(1947, 1, 8))
+val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expect(subject) {
   map { name }.isEqualTo("David")
   map { birthDate }.map { year }.isEqualTo(1947)

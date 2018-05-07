@@ -88,6 +88,7 @@ subprojects {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
     jdkVersion = 8
+    samples = ["$rootDir/samples/src/test/kotlin"]
   }
   dokka.mustRunAfter javadoc
 
