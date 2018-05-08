@@ -19,7 +19,6 @@ internal constructor(
    * [kirk.assertions] package.
    *
    * @sample kirk.samples.Assertions.inlineAssert
-   * @sample kirk.samples.Assertions.assertionFunctionDefinition
    *
    * @param description a description for the assertion.
    * @param assertion the assertion implementation that should result in a call
@@ -37,31 +36,8 @@ internal constructor(
    * Maps the assertion subject to the result of [function].
    * This is useful for chaining to property values or method call results on
    * the subject.
-   * For example:
    *
-   * ```
-   * val subject = Person(
-   *   name = "David",
-   *   birthDate = LocalDate.of(1947, 1, 8)
-   * )
-   * expect(subject) {
-   *   map { name }
-   *     .isEqualTo("David")
-   *     .map { toUpperCase() }
-   *     .isEqualTo("DAVID")
-   *   map { birthDate }
-   *     .map { year }
-   *     .isEqualTo(1947)
-   * }
-   * ```
-   *
-   * It's also possible to pass property references (for Kotlin classes):
-   *
-   * ```
-   * expect(subject) {
-   *   map(Person::name).isEqualTo("David")
-   * }
-   * ```
+   * @sample kirk.samples.Assertions.map
    *
    * @param function a lambda whose receiver is the current assertion subject.
    * @return an assertion whose subject is the value returned by [function].
@@ -73,13 +49,8 @@ internal constructor(
 
   /**
    * Reverses any assertions chained after this method.
-   * For example:
    *
-   * ```
-   * expect("covfefe").not().isNull().isUpperCase()
-   * ```
-   *
-   * will pass.
+   * @sample kirk.samples.Assertions.not
    *
    * @return an assertion that negates the results of any assertions applied to
    * its subject.
