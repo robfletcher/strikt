@@ -1,0 +1,25 @@
+apply plugin: "org.jetbrains.dokka"
+//apply plugin: "org.ajoberstar.grgit"
+//apply plugin: "org.ajoberstar.git-publish"
+
+dokka {
+  outputFormat = "gfm"
+  jdkVersion = 8
+  kotlinTasks {
+    subprojects.compileKotlin
+  }
+  samples = ["$rootDir/samples/src/test/kotlin"]
+}
+
+//gitPublish {
+//  branch = "gh-pages"
+//  contents {
+//    from "src/pages"
+//    from(dokka) {
+//      into "api"
+//    }
+//    includes = ["packages.md"]
+//  }
+//  commitMessage = "Publishing docs"
+//}
+

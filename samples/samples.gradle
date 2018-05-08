@@ -1,4 +1,11 @@
 dependencies {
   compile project(":kirk-core")
-//  testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.2.+" lock '1.2.41'
+
+  testRuntime "org.junit.vintage:junit-vintage-engine:+" lock '5.2.0'
+}
+
+test {
+  useJUnitPlatform {
+    includeEngines "junit-vintage"
+  }
 }

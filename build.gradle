@@ -17,51 +17,18 @@ apply plugin: "io.spring.release"
 
 allprojects {
   group = "io.github.robfletcher.${rootProject.name}"
-
-  apply plugin: "org.jetbrains.dokka"
 }
-
-//apply plugin: "org.ajoberstar.grgit"
-//apply plugin: "org.ajoberstar.git-publish"
-
-dokka {
-  outputFormat = "gfm"
-  jdkVersion = 8
-  kotlinTasks {
-    subprojects.compileKotlin
-  }
-  samples = ["$rootDir/samples/src/test/kotlin"]
-}
-
-//gitPublish {
-//  branch = "gh-pages"
-//  contents {
-//    from "src/pages"
-//    from(dokka) {
-//      into "api"
-//    }
-//    includes = ["packages.md"]
-//  }
-//  commitMessage = "Publishing docs"
-//}
 
 subprojects {
   apply plugin: "nebula.kotlin"
   apply plugin: "spring.lock"
-  apply plugin: "io.spring.publishing"
 
   repositories {
     jcenter()
-    maven { url "http://dl.bintray.com/jetbrains/spek" }
   }
 
   dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.2.+" lock '1.2.41'
-    testCompile "org.jetbrains.spek:spek-api:+" lock '1.1.5'
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
-
-    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock '1.1.5'
-    testRuntime "org.junit.vintage:junit-vintage-engine:+" lock '5.2.0'
 
     // enables running in IntelliJ using JUnit runner
     testRuntime "org.junit.platform:junit-platform-launcher:+" lock '1.2.0'
@@ -75,43 +42,8 @@ subprojects {
   }
 
   test {
-    useJUnitPlatform {
-      includeEngines "spek", "junit-vintage"
-    }
-    enableAssertions = true
-  }
-
-  dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    jdkVersion = 8
-    samples = ["$rootDir/samples/src/test/kotlin"]
-  }
-  dokka.mustRunAfter javadoc
-
-  task(dokkaJar, type: Jar) {
-    group = "documentation"
-    description = "Assembles Kotlin docs with Dokka"
-    classifier = "javadoc"
-    from(dokka)
-  }
-  dokkaJar.mustRunAfter javadocJar
-
-  publishing {
-    publications {
-      nebula(MavenPublication) {
-        artifact tasks.dokkaJar
-      }
-    }
-  }
-
-  bintray {
-    bintrayUser = System.getenv("BINTRAY_USER")
-    bintrayKey = System.getenv("BINTRAY_KEY")
-    org = "robfletcher"
-    repo = "maven"
-    websiteUrl = "http://robfletcher.github.io/${rootProject.name}/"
-    licenses = ["Apache-2.0"]
-    labels = ["testing", "kotlin"]
+    useJUnitPlatform()
   }
 }
+
+apply from: "$rootDir/gradle/site.gradle"
