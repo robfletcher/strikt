@@ -6,6 +6,7 @@ import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import java.time.LocalDate
+import kotlin.test.assertEquals
 
 internal object Assertions : Spek({
 
@@ -219,9 +220,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
-            assert(failure.passCount == 1) { "Expected 1 passed assertion but found ${failure.passCount}" }
-            assert(failure.failureCount == 2) { "Expected 2 failed assertions but found ${failure.failureCount}" }
+            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(1, failure.passCount, "Passed")
+            assertEquals(2, failure.failureCount, "Failed")
           }
       }
     }
@@ -247,9 +248,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
-            assert(failure.passCount == 0) { "Expected 0 passed assertions but found ${failure.passCount}" }
-            assert(failure.failureCount == 3) { "Expected 3 failed assertions but found ${failure.failureCount}" }
+            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(0, failure.passCount, "Passed")
+            assertEquals(3, failure.failureCount, "Failed")
           }
       }
     }
@@ -269,9 +270,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
-            assert(failure.passCount == 2) { "Expected 2 passed assertions but found ${failure.passCount}" }
-            assert(failure.failureCount == 1) { "Expected 1 failed assertion but found ${failure.failureCount}" }
+            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(2, failure.passCount, "Passed")
+            assertEquals(1, failure.failureCount, "Failed")
           }
       }
       it("fails if all elements conform") {
@@ -282,9 +283,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assert(failure.assertionCount == 3) { "Expected 3 assertions but found ${failure.assertionCount}" }
-            assert(failure.passCount == 3) { "Expected 3 passed assertions but found ${failure.passCount}" }
-            assert(failure.failureCount == 0) { "Expected 0 failed assertions but found ${failure.failureCount}" }
+            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(3, failure.passCount, "Passed")
+            assertEquals(0, failure.failureCount, "Failed")
           }
       }
     }
@@ -312,9 +313,9 @@ internal object Assertions : Spek({
         fails {
           expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
         }.let { e ->
-          assert(e.assertionCount == 3)
-          assert(e.failureCount == 2)
-          assert(e.passCount == 1)
+          assertEquals(3, e.assertionCount, "Assertions")
+          assertEquals(1, e.passCount, "Passed")
+          assertEquals(2, e.failureCount, "Failed")
         }
       }
 

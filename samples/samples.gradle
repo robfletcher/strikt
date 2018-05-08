@@ -1,4 +1,4 @@
 dependencies {
   compile project(":kirk-core")
-  testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.2.+" lock '1.2.41'
+//  testCompile "org.jetbrains.kotlin:kotlin-test-junit:1.2.+" lock '1.2.41'
 }
