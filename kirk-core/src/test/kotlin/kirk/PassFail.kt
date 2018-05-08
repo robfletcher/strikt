@@ -1,13 +1,15 @@
 package kirk
 
 import kirk.internal.AssertionFailed
+import kotlin.test.fail
 
 internal fun fails(function: () -> Unit): AssertionFailed {
   try {
     function.invoke()
-    assert(false) { "Should have failed" }
-    throw IllegalStateException("Unreachable statement unless assertions are not enabled")
+    fail("Should have failed with ${AssertionFailed::class.java.name} but no exception was thrown")
   } catch (e: AssertionFailed) {
     return e
+  } catch (e: Throwable) {
+    fail("Should have failed with ${AssertionFailed::class.java.name} but caught a ${e.javaClass.name} instead")
   }
 }

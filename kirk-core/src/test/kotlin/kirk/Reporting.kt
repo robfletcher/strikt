@@ -7,6 +7,7 @@ import kirk.assertions.isUpperCase
 import kirk.assertions.startsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import kotlin.test.assertEquals
 
 object Reporting : Spek({
 
@@ -23,9 +24,9 @@ object Reporting : Spek({
       }
 
       it("reports assertion statistics") {
-        assert(e.assertionCount == 7) { "Expected 4 assertions but found ${e.assertionCount}" }
-        assert(e.passCount == 1) { "Expected 1 passed assertion but found ${e.passCount}" }
-        assert(e.failureCount == 6) { "Expected 4 failed assertions but found ${e.failureCount}" }
+        assertEquals(7, e.assertionCount, "Assertions")
+        assertEquals(1, e.passCount, "Passed")
+        assertEquals(6, e.failureCount, "Failed")
       }
 
       it("formats the error message") {
@@ -42,14 +43,18 @@ object Reporting : Spek({
           "  ✘ marzipan starts with 'c'",
           ""
         )
-        val actualLines = e.message!!.lines()
-        assert(actualLines.size == expectedLines.size) {
+        val actualLines = e.message.lines()
+        assertEquals(
+          expectedLines.size,
+          actualLines.size,
           "Expected ${expectedLines.size} lines of output but found ${actualLines.size}"
-        }
+        )
         actualLines.forEachIndexed { i, line ->
-          assert(line == expectedLines[i]) {
+          assertEquals(
+            expectedLines[i],
+            line,
             "Assertion failure message line ${i + 1} was\n\"$line\""
-          }
+          )
         }
       }
     }

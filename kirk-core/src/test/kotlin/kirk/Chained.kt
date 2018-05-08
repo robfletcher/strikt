@@ -4,6 +4,7 @@ import kirk.api.expect
 import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import kotlin.test.assertEquals
 
 internal object Chained : Spek({
   describe("chained assertions") {
@@ -12,9 +13,9 @@ internal object Chained : Spek({
         val subject: Any? = null
         expect(subject).isNotNull().isA<String>()
       }.let { e ->
-        assert(e.assertionCount == 1) { "Expected 1 assertion but found ${e.assertionCount}" }
-        assert(e.passCount == 0) { "Expected 0 passed assertions but found ${e.passCount}" }
-        assert(e.failureCount == 1) { "Expected 1 failed assertion but found ${e.failureCount}" }
+        assertEquals(1, e.assertionCount, "Assertions")
+        assertEquals(0, e.passCount, "Passed")
+        assertEquals(1, e.failureCount, "Failed")
       }
     }
 
