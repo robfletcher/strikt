@@ -1,6 +1,6 @@
 package kirk
 
-import kirk.internal.AssertionFailed
+import kirk.api.AssertionFailed
 import kotlin.test.fail
 
 internal fun fails(function: () -> Unit): AssertionFailed {

@@ -1,7 +1,6 @@
 package kirk.api
 
 import kirk.assertions.isA
-import kirk.internal.AssertionFailed
 import kirk.internal.AssertionResultCollector
 import kirk.internal.FailFastAssertionResultHandler
 

@@ -18,7 +18,7 @@ internal constructor(
    * extension method on `Assertion<T>` such as those provided in the
    * [kirk.assertions] package.
    *
-   * @sample kirk.samples.Assertions.inlineAssert
+   * @sample kirk.samples.AssertionMethods.assert
    *
    * @param description a description for the assertion.
    * @param assertion the assertion implementation that should result in a call
@@ -37,7 +37,7 @@ internal constructor(
    * This is useful for chaining to property values or method call results on
    * the subject.
    *
-   * @sample kirk.samples.Assertions.map
+   * @sample kirk.samples.AssertionMethods.map
    *
    * @param function a lambda whose receiver is the current assertion subject.
    * @return an assertion whose subject is the value returned by [function].
@@ -50,7 +50,7 @@ internal constructor(
   /**
    * Reverses any assertions chained after this method.
    *
-   * @sample kirk.samples.Assertions.not
+   * @sample kirk.samples.AssertionMethods.not
    *
    * @return an assertion that negates the results of any assertions applied to
    * its subject.

@@ -5,18 +5,18 @@ import kirk.api.expect
 import kirk.assertions.isEqualTo
 import kirk.assertions.isNull
 import kirk.assertions.isUpperCase
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.YEARS
-import kotlin.test.Test
 
 data class Person(
   val name: String,
   val birthDate: LocalDate
 )
 
-class Assertions {
+internal object AssertionMethods {
   @Test
-  fun inlineAssert() {
+  fun assert() {
     val subject = Person(
       name = "David",
       birthDate = LocalDate.of(1947, 1, 8)

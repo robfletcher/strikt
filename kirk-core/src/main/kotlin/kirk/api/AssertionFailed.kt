@@ -1,9 +1,8 @@
-package kirk.internal
+package kirk.api
 
-import kirk.api.Result
 import kirk.internal.reporting.writeToString
 
-internal class AssertionFailed(
+class AssertionFailed(
   val results: Collection<Result>
 ) : AssertionError() {
   constructor(result: Result) : this(listOf(result))

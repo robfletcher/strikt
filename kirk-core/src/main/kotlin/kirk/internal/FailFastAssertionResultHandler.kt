@@ -1,5 +1,6 @@
 package kirk.internal
 
+import kirk.api.AssertionFailed
 import kirk.api.Result
 import kirk.api.Status
 import kirk.internal.reporting.AnsiColorResultWriter
