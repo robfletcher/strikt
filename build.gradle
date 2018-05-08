@@ -4,7 +4,6 @@ buildscript {
     maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
-    classpath "org.junit.platform:junit-platform-gradle-plugin:1.2.0"
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
     classpath "io.spring.gradle:dependency-lock:0.1.1"
@@ -49,7 +48,6 @@ subprojects {
   apply plugin: "nebula.kotlin"
   apply plugin: "spring.lock"
   apply plugin: "io.spring.publishing"
-  apply plugin: "org.junit.platform.gradle.plugin"
 
   repositories {
     jcenter()
@@ -72,15 +70,10 @@ subprojects {
     }
   }
 
-  junitPlatform {
-    filters {
-      engines {
-        include "spek"
-      }
+  test {
+    useJUnitPlatform {
+      includeEngines "spek"
     }
-  }
-
-  junitPlatformTest {
     enableAssertions = true
   }
 
