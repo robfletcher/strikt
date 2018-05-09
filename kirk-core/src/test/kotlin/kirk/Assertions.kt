@@ -5,6 +5,9 @@ import kirk.api.expect
 import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import java.io.File
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDate
 import kotlin.test.assertEquals
 
@@ -99,24 +102,17 @@ internal object Assertions : Spek({
       it("passes if the subject matches the expectation") {
         expect("covfefe").isEqualTo("covfefe")
       }
-      it("fails if the subject does not match the expectation") {
-        fails {
-          expect("covfefe").isEqualTo("COVFEFE")
-        }
-      }
-      it("fails if the subject is a different type to the expectation") {
-        fails {
-          expect(1).isEqualTo(1L)
-        }
-      }
-      it("can be used on a null subject") {
-        fails {
-          expect(null).isEqualTo("covfefe")
-        }
-      }
-      it("can be used with a null expected value") {
-        fails {
-          expect("covfefe").isEqualTo(null)
+
+      sequenceOf(
+        Pair("covfefe", "COVFEFE"),
+        Pair(1, 1L),
+        Pair(null, "covfefe"),
+        Pair("covfefe", null)
+      ).forEach { (subject, expected) ->
+        it("fails $subject is equal to $expected") {
+          fails {
+            expect(subject).isEqualTo(expected)
+          }
         }
       }
     }
@@ -127,17 +123,16 @@ internal object Assertions : Spek({
           expect("covfefe").isNotEqualTo("covfefe")
         }
       }
-      it("passes if the subject does not match the expectation") {
-        expect("covfefe").isNotEqualTo("COVFEFE")
-      }
-      it("passes if the subject is a different type to the expectation") {
-        expect(1).isNotEqualTo(1L)
-      }
-      it("can be used on a null subject") {
-        expect(null).isNotEqualTo("covfefe")
-      }
-      it("can be used with a null expected value") {
-        expect("covfefe").isNotEqualTo(null)
+
+      sequenceOf(
+        Pair("covfefe", "COVFEFE"),
+        Pair(1, 1L),
+        Pair(null, "covfefe"),
+        Pair("covfefe", null)
+      ).forEach { (subject, expected) ->
+        it("passes $subject is not equal to $expected") {
+          expect(subject).isNotEqualTo(expected)
+        }
       }
     }
   }
@@ -291,21 +286,26 @@ internal object Assertions : Spek({
     }
 
     describe("contains assertion") {
-      it("passes if the expected element is the only actual element") {
-        expect(listOf("catflap")).contains("catflap")
+      sequenceOf(
+        Pair(listOf("catflap"), arrayOf("catflap")),
+        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap")),
+        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap", "marzipan"))
+      ).forEach { (subject, expected) ->
+        it("passes $subject contains ${expected.toList()}") {
+          expect(subject).contains(*expected)
+        }
       }
 
-      it("passes if the expected element is one of the actual elements") {
-        expect(listOf("catflap", "rubberplant", "marzipan")).contains("catflap")
-      }
-
-      it("passes if the expected elements are among the actual elements") {
-        expect(listOf("catflap", "rubberplant", "marzipan")).contains("catflap", "marzipan")
-      }
-
-      it("fails if the expected element is not present") {
-        fails {
-          expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe")
+      sequenceOf(
+        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("covfefe")),
+        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap", "covfefe")),
+        Pair(listOf("catflap", "rubberplant", "marzipan"), emptyArray()),
+        Pair(emptyList(), arrayOf("catflap"))
+      ).forEach { (subject, expected) ->
+        it("fails $subject contains ${expected.toList()}") {
+          fails {
+            expect(subject).contains(*expected)
+          }
         }
       }
 
@@ -318,16 +318,43 @@ internal object Assertions : Spek({
           assertEquals(2, e.failureCount, "Failed")
         }
       }
+    }
 
-      it("fails if no expected elements are supplied") {
+    describe("containsExactly assertion") {
+      it("passes for a set if the elements are identical") {
+        expect(setOf("catflap", "rubberplant", "marzipan"))
+          .containsExactly("rubberplant", "catflap", "marzipan")
+      }
+
+      it("passes for a list if the order matches") {
+        expect(listOf("catflap", "rubberplant", "marzipan"))
+          .containsExactly("catflap", "rubberplant", "marzipan")
+      }
+
+      it("passes when dealing with iterables that are not collections") {
+        val currentDir = File(".").canonicalFile
+        val subject: Iterable<Path> = currentDir.toPath()
+        expect(subject)
+          .containsExactly(* currentDir
+            .path
+            .split(File.separator)
+            .filterNot { it == "" }
+            .map { Paths.get(it) }
+            .toTypedArray()
+          )
+      }
+
+      it("fails for a set if there are more elements") {
         fails {
-          expect(listOf("catflap", "rubberplant", "marzipan")).contains()
+          expect(setOf("catflap", "rubberplant", "marzipan", "covfefe"))
+            .containsExactly("rubberplant", "catflap", "marzipan")
         }
       }
 
-      it("fails if subject is empty") {
+      it("fails for a list if the order is different") {
         fails {
-          expect(emptyList<String>()).contains("catflap")
+          expect(listOf("catflap", "rubberplant", "marzipan"))
+            .containsExactly("rubberplant", "catflap", "marzipan")
         }
       }
     }

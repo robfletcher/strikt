@@ -1,7 +1,6 @@
 package kirk.assertions
 
 import kirk.api.Assertion
-import java.util.*
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
@@ -53,7 +52,7 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  assert("contains the elements ${Arrays.toString(elements)}") {
+  assert("contains the elements ${elements.toList()}") {
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {
@@ -74,5 +73,44 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
     }
   }
 
-// TODO: containsExactly
+/**
+ * Asserts that all [elements] _and no others_ are present in the subject.
+ * If the subject is an ordered iterable such as a [List] or array then the
+ * elements must be ordered the same way.
+ */
+fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
+  assert("contains exactly the elements ${elements.toList()}") {
+    compose {
+      when (subject) {
+        is List<*>       -> expect(subject.toList())
+          .hasSize(elements.size)
+          .isEqualTo(elements.toList())
+        is Collection<*> -> expect(subject.toList())
+          .hasSize(elements.size)
+          .contains(*elements)
+        else             -> {
+          val subjectIterator = subject.iterator()
+          val expectedIterator = elements.iterator()
+          if (!expectedIterator.hasNext()) {
+            // TODO: fail
+          } else {
+            while (expectedIterator.hasNext()) {
+              if (subjectIterator.hasNext()) {
+                expect(subjectIterator.next()).isEqualTo(expectedIterator.next())
+              } else {
+                // TODO: fail
+                break
+              }
+            }
+            if (subjectIterator.hasNext()) {
+              // TODO: fail
+            }
+          }
+        }
+      }
+    } results {
+      if (allPassed) pass() else fail()
+    }
+  }
+
 // TODO: containsInOrder
