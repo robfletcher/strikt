@@ -92,18 +92,18 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
           val subjectIterator = subject.iterator()
           val expectedIterator = elements.iterator()
           if (!expectedIterator.hasNext()) {
-            // TODO: fail
+            expect(subject.toList()).isEmpty()
           } else {
             while (expectedIterator.hasNext()) {
               if (subjectIterator.hasNext()) {
                 expect(subjectIterator.next()).isEqualTo(expectedIterator.next())
               } else {
-                // TODO: fail
+                fail("$subject has fewer elements than expected")
                 break
               }
             }
             if (subjectIterator.hasNext()) {
-              // TODO: fail
+              fail("$subject has more elements than expected")
             }
           }
         }
@@ -113,4 +113,8 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
     }
   }
 
-// TODO: containsInOrder
+fun <T : Iterable<T>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E) =
+  assert("contains exactly the elements ${elements.toList()} in any order") {
+
+  }
+

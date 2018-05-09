@@ -56,4 +56,15 @@ internal constructor(
    * its subject.
    */
   fun not(): Assertion<T> = Assertion(NegatedResultHandler(assertionResultHandler), subject)
+
+  /**
+   * Sometimes you just need to fail with a description.
+   * This method lets you do that.
+   * It's mostly useful inside of custom assertion functions.
+   *
+   * @param description a description for the failure.
+   */
+  fun fail(description: String) {
+    assertionResultHandler.report(Result(Status.Failed, description, subject))
+  }
 }

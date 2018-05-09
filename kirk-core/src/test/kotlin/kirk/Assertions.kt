@@ -321,40 +321,91 @@ internal object Assertions : Spek({
     }
 
     describe("containsExactly assertion") {
-      it("passes for a set if the elements are identical") {
-        expect(setOf("catflap", "rubberplant", "marzipan"))
-          .containsExactly("rubberplant", "catflap", "marzipan")
-      }
+      given("a Set subject") {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
 
-      it("passes for a list if the order matches") {
-        expect(listOf("catflap", "rubberplant", "marzipan"))
-          .containsExactly("catflap", "rubberplant", "marzipan")
-      }
+        it("passes if the elements are identical") {
+          expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
+        }
 
-      it("passes when dealing with iterables that are not collections") {
-        val currentDir = File(".").canonicalFile
-        val subject: Iterable<Path> = currentDir.toPath()
-        expect(subject)
-          .containsExactly(* currentDir
-            .path
-            .split(File.separator)
-            .filterNot { it == "" }
-            .map { Paths.get(it) }
-            .toTypedArray()
-          )
-      }
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactly("rubberplant", "catflap")
+          }
+        }
 
-      it("fails for a set if there are more elements") {
-        fails {
-          expect(setOf("catflap", "rubberplant", "marzipan", "covfefe"))
-            .containsExactly("rubberplant", "catflap", "marzipan")
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+          }
         }
       }
 
-      it("fails for a list if the order is different") {
-        fails {
-          expect(listOf("catflap", "rubberplant", "marzipan"))
-            .containsExactly("rubberplant", "catflap", "marzipan")
+      given("a List subject") {
+        val subject = listOf("catflap", "rubberplant", "marzipan")
+
+        it("passes if all the elements exist in the same order") {
+          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
+        }
+
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant")
+          }
+        }
+
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+
+        it("fails if the order is different") {
+          fails {
+            expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
+          }
+        }
+      }
+
+      given("a non-Collection Iterable subject") {
+        val subject = object : Iterable<String> {
+          override fun iterator() =
+            arrayOf("catflap", "rubberplant", "marzipan").iterator()
+        }
+
+        it("passes if the elements are indentical") {
+          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
+        }
+
+        it("fails if the elements are ordered differently") {
+          fails {
+            expect(subject).containsExactly("marzipan", "rubberplant", "catflap")
+          }
+        }
+
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant")
+          }
+        }
+
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+
+        it("fails if it's supposed to be empty and isn't") {
+          fails {
+            expect(subject).containsExactly()
+          }
+        }
+
+        it("passes if it's supposed to be empty and is") {
+          val emptySubject = object : Iterable<String> {
+            override fun iterator() = emptySequence<String>().iterator()
+          }
+          expect(emptySubject).containsExactly()
         }
       }
     }
@@ -421,3 +472,11 @@ internal object Assertions : Spek({
     }
   }
 })
+
+private fun File.toPathElements(): Array<Path> {
+  return path
+    .split(File.separator)
+    .filterNot { it == "" }
+    .map { Paths.get(it) }
+    .toTypedArray()
+}
