@@ -88,7 +88,7 @@ jobs:
 
 workflows:
   version: 2
-  build_commit:
+  build-commit:
     jobs:
       -build:
         filters:
@@ -96,11 +96,11 @@ workflows:
             ignore: gh-pages
           tags:
             ignore: /.*/
-  release_tag:
-    jobs:
-      -release:
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
+#  release-from-tag:
+#    jobs:
+#      -release:
+#        filters:
+#          branches:
+#            ignore: /.*/
+#          tags:
+#            only: /^v.*/
