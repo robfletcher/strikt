@@ -90,7 +90,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
         assert("contains $it") {
           if (remaining.remove(it)) {
             pass()
-            assert("at index $i") {
+            assert("…at index $i") {
               if (original[i] == it) {
                 pass()
               } else {
