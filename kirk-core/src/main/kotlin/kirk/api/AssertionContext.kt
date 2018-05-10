@@ -8,13 +8,11 @@ import kirk.internal.AssertionResultHandler
  *
  * This class is the receiver of the lambda passed to [Assertion.assert].
  *
+ * @property subject The assertion subject.
  * @see Assertion.assert
  */
 class AssertionContext<T>
 internal constructor(
-  /**
-   * The assertion subject.
-   */
   val subject: T,
   private val assertionResultHandler: AssertionResultHandler,
   private val description: String

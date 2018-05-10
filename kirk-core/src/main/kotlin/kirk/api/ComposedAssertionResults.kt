@@ -6,6 +6,15 @@ import kirk.internal.AssertionResultHandler
 /**
  * The results of assertions made inside the block passed to
  * [AssertionContext.compose].
+ *
+ * @property anyFailed `true` if any nested assertions evaluated inside
+ * [AssertionContext.compose] failed, `false` otherwise.
+ * @property allFailed `true` if _all_ nested assertions evaluated using
+ * [AssertionContext.compose] failed, `false` otherwise.
+ * @property anyPassed `true` if any nested assertions evaluated using
+ * [AssertionContext.compose] passed, `false` otherwise.
+ * @property allPassed `true` if _all_ nested assertions evaluated using
+ * [AssertionContext.compose] passed, `false` otherwise.
  */
 class ComposedAssertionResults
 internal constructor(
@@ -55,35 +64,8 @@ internal constructor(
     ))
   }
 
-  /**
-   * Returns `true` if any nested assertions evaluated inside
-   * [AssertionContext.compose] failed, `false` otherwise.
-   *
-   * @see expect
-   */
   val anyFailed: Boolean = nestedReporter.anyFailed
-
-  /**
-   * Returns `true` if _all_ nested assertions evaluated using
-   * [AssertionContext.compose] failed, `false` otherwise.
-   *
-   * @see expect
-   */
   val allFailed: Boolean = nestedReporter.allFailed
-
-  /**
-   * Returns `true` if any nested assertions evaluated using
-   * [AssertionContext.compose] passed, `false` otherwise.
-   *
-   * @see expect
-   */
   val anyPassed: Boolean = nestedReporter.anyPassed
-
-  /**
-   * Returns `true` if _all_ nested assertions evaluated using
-   * [AssertionContext.compose] passed, `false` otherwise.
-   *
-   * @see expect
-   */
   val allPassed: Boolean = nestedReporter.allPassed
 }
