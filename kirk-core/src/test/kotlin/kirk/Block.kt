@@ -6,7 +6,7 @@ import kirk.assertions.isNotNull
 import kirk.assertions.isNull
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 
 internal object Block : Spek({
   describe("assertions in blocks") {

@@ -74,10 +74,39 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
   }
 
 /**
+ * Asserts that none of [elements] are present in the subject.
+ *
+ * If [elements] is empty the assertion always fails.
+ * If the subject is empty the assertion always passe.
+ */
+fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
+  assert("%s does not contain any of the elements ${elements.toList()}") {
+    when {
+      elements.isEmpty()            -> fail()
+      !subject.iterator().hasNext() -> pass()
+      else                          -> {
+        compose {
+          elements.forEach { element ->
+            expect(subject).assert("does not contain $element") {
+              if (subject.contains(element)) {
+                fail()
+              } else {
+                pass()
+              }
+            }
+          }
+        } results {
+          if (allPassed) pass() else fail()
+        }
+      }
+    }
+  }
+
+/**
  * Asserts that all [elements] _and no others_ are present in the subject in the
  * specified order.
  *
- * If the subject has no guaranteed iteration order (for example a [Set] this
+ * If the subject has no guaranteed iteration order (for example a [Set]) this
  * assertion is probably not appropriate and you should use
  * [containsExactlyInAnyOrder] instead.
  */

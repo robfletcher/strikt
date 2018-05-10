@@ -7,7 +7,7 @@ import kirk.assertions.isUpperCase
 import kirk.assertions.startsWith
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
 
 object Reporting : Spek({
 

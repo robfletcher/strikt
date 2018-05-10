@@ -5,11 +5,11 @@ import kirk.api.expect
 import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.time.LocalDate
-import kotlin.test.assertEquals
 
 internal object Assertions : Spek({
 
@@ -316,6 +316,44 @@ internal object Assertions : Spek({
           assertEquals(3, e.assertionCount, "Assertions")
           assertEquals(1, e.passCount, "Passed")
           assertEquals(2, e.failureCount, "Failed")
+        }
+      }
+    }
+
+    describe("doesNotContain assertion") {
+      it("always passes for an empty subject") {
+        expect(emptyList<String>()).doesNotContain("catflap", "rubberplant", "marzipan")
+      }
+
+      sequenceOf(
+        emptyList(),
+        listOf("catflap", "rubberplant", "marzipan")
+      ).forEach { subject ->
+        it("fails for the subject $subject if no elements are specified") {
+          fails {
+            expect(subject).doesNotContain()
+          }
+        }
+      }
+
+      sequenceOf(
+        arrayOf("covfefe"),
+        arrayOf("xenocracy", "wye", "exercitation")
+      ).forEach { elements ->
+        it("passes if the subject contains none of the elements ${elements.toList()}") {
+          expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
+        }
+      }
+
+      sequenceOf(
+        arrayOf("catflap"),
+        arrayOf("catflap", "kakistocracy", "impeach"),
+        arrayOf("owlbear", "marzipan", "illithid")
+      ).forEach { elements ->
+        it("passes if the subject contains any of the elements ${elements.toList()}") {
+          fails {
+            expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
+          }
         }
       }
     }
