@@ -1,6 +1,5 @@
 
 apply plugin: "io.spring.publishing"
-
 apply plugin: "org.jetbrains.dokka"
 
 dokka {

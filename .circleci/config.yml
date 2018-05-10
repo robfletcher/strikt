@@ -30,17 +30,33 @@ jobs:
 
       # Download and cache dependencies
       - restore_cache:
+          name: Restore dependency cache
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
       - run: gradle dependencies
+          name: Update dependencies
 
       - save_cache:
+          name: Save dependency cache
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      # run tests!
+      # build and release
       - run: gradle test
+          name: Build and release
+
+      # archive test results
+      - run:
+          name: Archive test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit

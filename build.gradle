@@ -6,8 +6,8 @@ buildscript {
   dependencies {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
-    classpath "io.spring.gradle:dependency-lock:0.1.1"
-    classpath "io.spring.gradle:spring-release-plugin:0.17.1"
+    classpath "io.spring.gradle:dependency-lock:0.2.0"
+    classpath "io.spring.gradle:spring-release-plugin:0.19.1"
 //    classpath "org.ajoberstar:grgit:2.2.0"
 //    classpath "org.ajoberstar:gradle-git-publish:0.4.1"
   }
