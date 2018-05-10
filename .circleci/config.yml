@@ -2,56 +2,29 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
+defaults: &defaults
+  docker:
+    - image: circleci/openjdk:8-jdk
+  environment:
+    JVM_OPTS: -Xmx3200m
+    TERM: dumb
+
 version: 2
 jobs:
   build:
-    branches:
-      ignore:
-        - gh-pages
-
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/repo
-
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-
+    <<: *defaults
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
-          name: Restore dependency cache
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-
-      - run:
-          name: Update dependencies
-          command: gradle dependencies
-
+      - run: gradle dependencies
       - save_cache:
-          name: Save dependency cache
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-
-      # build and release
-      - run:
-          name: Build and release
-          command: ./gradle/ci.sh
-
-      # archive test results
+      - run: gradle build
       - run:
           name: Archive test results
           command: |
@@ -62,3 +35,72 @@ jobs:
           path: ~/junit
       - store_artifacts:
           path: ~/junit
+
+  candidate:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          - v1-dependencies-
+      - run: gradle dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - run: gradle -Prelease.useLastTag=true build candidate
+      - run:
+          name: Archive test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+  release:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          - v1-dependencies-
+      - run: gradle dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - run: gradle -Prelease.useLastTag=true build final
+      - run:
+          name: Archive test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      -build:
+        filters:
+          branches:
+            ignore: gh-pages
+          tags:
+            ignore: /.*/
+  build:
+    jobs:
+      -release:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v.*/
