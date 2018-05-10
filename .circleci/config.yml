@@ -91,16 +91,16 @@ workflows:
   build-commit:
     jobs:
       - build:
-        filters:
-          branches:
-            ignore: gh-pages
-          tags:
-            ignore: /.*/
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              ignore: /.*/
   release-from-tag:
     jobs:
       - release:
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
