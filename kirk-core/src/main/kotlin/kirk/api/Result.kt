@@ -24,9 +24,9 @@ internal constructor(
    * However, it can help improve diagnostic messages where it _is_ appropriate.
    *
    * @see AssertionContext.fail
-   * @see ComposedAssertions.fail
+   * @see ComposedAssertionResults.fail
    */
-  val actual: Any? = null,
+  val actual: Actual? = null,
   /**
    * Contains the results of any nested assertions.
    */
@@ -54,3 +54,8 @@ internal constructor(
     false -> nestedResults.sumBy { it.failureCount }
   }
 }
+
+data class Actual(
+  val description: String,
+  val value: Any?
+)

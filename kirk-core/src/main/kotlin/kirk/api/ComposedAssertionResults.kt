@@ -41,15 +41,16 @@ internal constructor(
   /**
    * Report that the assertion failed.
    *
-   * @param actualDescription descriptive text about [actual].
-   * @param actual the value that violated the assertion.
+   * @param actualDescription descriptive text about [actualValue] including a
+   * placeholder in [String.format] notation for [actualValue].
+   * @param actualValue the value(s) that violated the assertion.
    */
-  fun fail(actual: Any?) {
+  fun fail(actualDescription: String, actualValue: Any?) {
     assertionResultHandler.report(Result(
       Status.Failed,
       description,
       subject,
-      actual,
+      Actual(actualDescription, actualValue),
       nestedResults = nestedReporter.results
     ))
   }

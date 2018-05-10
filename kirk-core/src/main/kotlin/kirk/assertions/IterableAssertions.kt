@@ -132,8 +132,12 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
           }
         }
       }
-      if (remaining.isNotEmpty()) {
-        fail("found unexpected elements", remaining)
+      assert("contains no further elements") {
+        if (remaining.isEmpty()) {
+          pass()
+        } else {
+          fail("found %s", remaining)
+        }
       }
     } results {
       if (allPassed) pass() else fail()

@@ -37,9 +37,9 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
   assert("%s is an instance of ${T::class.java.name}") {
     when (subject) {
-      null -> fail(actual = null)
+      null -> fail("is actually %s", null)
       is T -> pass()
-      else -> fail(actual = subject.javaClass.name)
+      else -> fail("is actually a %s", subject.javaClass.name)
     }
   } as Assertion<T>
 

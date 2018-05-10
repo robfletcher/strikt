@@ -25,7 +25,8 @@ internal open class DefaultResultWriter : ResultWriter {
     onLineEnd(writer, result)
     if (result.actual != null) {
       onLineStart(writer, result, indent + 1)
-      writer.append("↳ found ${result.actual}")
+      writer.append("↳ ")
+        .append(result.actual.description.format(result.actual.value))
       onLineEnd(writer, result)
     }
   }
