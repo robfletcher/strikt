@@ -49,7 +49,7 @@ jobs:
       # build and release
       - run:
           name: Build and release
-          command: gradle test
+          command: ./gradle/ci.sh
 
       # archive test results
       - run:
