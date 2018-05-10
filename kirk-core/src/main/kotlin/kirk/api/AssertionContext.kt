@@ -42,9 +42,9 @@ internal constructor(
    *
    * @return the results of assertions made inside the [assertions] block.
    */
-  fun compose(assertions: ComposedAssertions.() -> Unit): ComposedAssertionResults =
+  fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionResults =
     AssertionResultCollector().let { nestedReporter ->
-      ComposedAssertions(nestedReporter)
+      ComposedAssertions(nestedReporter, subject)
         .apply(assertions)
         .let {
           ComposedAssertionResults(assertionResultHandler, nestedReporter, description, subject)
