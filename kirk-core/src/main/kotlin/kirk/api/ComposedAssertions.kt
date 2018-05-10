@@ -34,19 +34,6 @@ internal constructor(
     Assertion(nestedReporter, subject).apply(block)
 
   /**
-   * Sometimes you just need to fail with a description.
-   * This method lets you do that.
-   * It's useful when you want to test for a condition in a composed assertion
-   * for which there's no applicable description for a "passing" state.
-   *
-   * @param description a description for the failure.
-   * @param actualValue the actualValue value that violated the assertion, if any.
-   */
-  fun fail(description: String, actualValue: Any? = null) {
-    nestedReporter.report(Result(Status.Failed, description, parentSubject, Actual("%s", actualValue)))
-  }
-
-  /**
    * Evaluates a composed assertion on the original subject.
    * This creates a new assertion in the composed context using the same
    * subject as the overall assertion.

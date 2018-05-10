@@ -74,38 +74,39 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
   }
 
 /**
- * Asserts that all [elements] _and no others_ are present in the subject.
- * If the subject is an ordered iterable such as a [List] then the
- * elements must be ordered the same way.
+ * Asserts that all [elements] _and no others_ are present in the subject in the
+ * specified order.
+ *
+ * If the subject has no guaranteed iteration order (for example a [Set] this
+ * assertion is probably not appropriate and you should use
+ * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
   assert("%s contains exactly the elements ${elements.toList()}") {
     compose {
-      when (subject) {
-        is List<*>       -> expect(subject.toList())
-          .hasSize(elements.size)
-          .isEqualTo(elements.toList())
-        is Collection<*> -> expect(subject.toList())
-          .hasSize(elements.size)
-          .contains(*elements)
-        else             -> {
-          val subjectIterator = subject.iterator()
-          val expectedIterator = elements.iterator()
-          if (!expectedIterator.hasNext()) {
-            expect(subject.toList()).isEmpty()
-          } else {
-            while (expectedIterator.hasNext()) {
-              if (subjectIterator.hasNext()) {
-                expect(subjectIterator.next()).isEqualTo(expectedIterator.next())
+      val original = subject.toList()
+      val remaining = subject.toMutableList()
+      elements.forEachIndexed { i, it ->
+        assert("contains $it") {
+          if (remaining.remove(it)) {
+            pass()
+            assert("at index $i") {
+              if (original[i] == it) {
+                pass()
               } else {
-                fail("has fewer elements than expected")
-                break
+                fail("found %s", original[i])
               }
             }
-            if (subjectIterator.hasNext()) {
-              fail("has more elements than expected")
-            }
+          } else {
+            fail()
           }
+        }
+      }
+      assert("contains no further elements") {
+        if (remaining.isEmpty()) {
+          pass()
+        } else {
+          fail("found %s", remaining)
         }
       }
     } results {

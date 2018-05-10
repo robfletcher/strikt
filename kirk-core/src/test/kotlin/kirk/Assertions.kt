@@ -325,7 +325,7 @@ internal object Assertions : Spek({
         val subject = setOf("catflap", "rubberplant", "marzipan")
 
         it("passes if the elements are identical") {
-          expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
+          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
         }
 
         it("fails if there are more elements than expected") {
@@ -337,6 +337,12 @@ internal object Assertions : Spek({
         it("fails if there are fewer elements than expected") {
           fails {
             expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+
+        it("fails if the order is different (even though this is a Set)") {
+          fails {
+            expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
           }
         }
       }
