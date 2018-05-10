@@ -36,8 +36,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: gradle dependencies
+      - run:
           name: Update dependencies
+          command: gradle dependencies
 
       - save_cache:
           name: Save dependency cache
@@ -46,8 +47,9 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # build and release
-      - run: gradle test
+      - run:
           name: Build and release
+          command: gradle test
 
       # archive test results
       - run:
