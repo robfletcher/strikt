@@ -6,7 +6,7 @@ import kirk.api.Assertion
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
-  assert("all elements match predicate") {
+  assert("all elements of %s match:") {
     compose {
       subject.forEach {
         expect(it, predicate)
@@ -21,7 +21,7 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
  * [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
-  assert("at least one element matches predicate") {
+  assert("at least one element of %s matches:") {
     compose {
       subject.forEach {
         expect(it, predicate)
@@ -35,7 +35,7 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
-  assert("no elements match predicate") {
+  assert("no elements of %s match:") {
     compose {
       subject.forEach {
         expect(it, predicate)
@@ -52,7 +52,7 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  assert("contains the elements ${elements.toList()}") {
+  assert("%s contains the elements ${elements.toList()}") {
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {
@@ -75,11 +75,11 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject.
- * If the subject is an ordered iterable such as a [List] or array then the
+ * If the subject is an ordered iterable such as a [List] then the
  * elements must be ordered the same way.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
-  assert("contains exactly the elements ${elements.toList()}") {
+  assert("%s contains exactly the elements ${elements.toList()}") {
     compose {
       when (subject) {
         is List<*>       -> expect(subject.toList())
@@ -113,8 +113,14 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
     }
   }
 
+/**
+ * Asserts that all [elements] _and no others_ are present in the subject.
+ * Order is not evaluated, so an assertion on a [List] will pass so long as it
+ * contains all the same elements with the same cardinality as [elements]
+ * regardless of what order they appear in.
+ */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E) =
-  assert("contains exactly the elements ${elements.toList()} in any order") {
+  assert("%s contains exactly the elements ${elements.toList()} in any order") {
     compose {
       val remaining = subject.toMutableList()
       elements.forEach {
@@ -127,7 +133,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
         }
       }
       if (remaining.isNotEmpty()) {
-        fail("contains unexpected elements $remaining")
+        fail("found unexpected elements", remaining)
       }
     } results {
       if (allPassed) pass() else fail()

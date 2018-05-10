@@ -23,14 +23,29 @@ internal constructor(
    * Report that the assertion succeeded.
    */
   fun pass() {
-    assertionResultHandler.report(Result(Status.Passed, description, subject))
+    assertionResultHandler.report(
+      Result(Status.Passed, description, subject)
+    )
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    assertionResultHandler.report(Result(Status.Failed, description, subject))
+    assertionResultHandler.report(
+      Result(Status.Failed, description, subject)
+    )
+  }
+
+  /**
+   * Report that the assertion failed.
+   *
+   * @param actual the value that violated the assertion.
+   */
+  fun fail(actual: Any?) {
+    assertionResultHandler.report(
+      Result(Status.Failed, description, subject, actual)
+    )
   }
 
   /**

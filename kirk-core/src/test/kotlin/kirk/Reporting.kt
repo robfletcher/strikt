@@ -33,11 +33,12 @@ object Reporting : Spek({
         // TODO: comparing big blocks of text is shitty
         val expectedLines = listOf(
           "✘ [catflap, rubberplant, marzipan] has size 0",
-          "✘ [catflap, rubberplant, marzipan] all elements match predicate",
+          "  ↳ found 3",
+          "✘ all elements of [catflap, rubberplant, marzipan] match:",
           "  ✘ catflap is upper case",
           "  ✘ rubberplant is upper case",
           "  ✘ marzipan is upper case",
-          "✘ [catflap, rubberplant, marzipan] all elements match predicate",
+          "✘ all elements of [catflap, rubberplant, marzipan] match:",
           "  ✔ catflap starts with 'c'",
           "  ✘ rubberplant starts with 'c'",
           "  ✘ marzipan starts with 'c'",

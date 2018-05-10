@@ -6,10 +6,10 @@ import kirk.api.Assertion
  * Asserts that the subject has a [CharSequence.length] of exactly [expected].
  */
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
-  assert("has length $expected") {
+  assert("%s has length $expected") {
     when (subject.length) {
       expected -> pass()
-      else     -> fail()
+      else     -> fail(actual = subject.length)
     }
   }
 
@@ -17,7 +17,7 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
  * Asserts that the subject is composed of all lower-case characters.
  */
 fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
-  assert("is lower case") {
+  assert("%s is lower case") {
     when {
       subject.all { it.isLowerCase() } -> pass()
       else                             -> fail()
@@ -28,7 +28,7 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
  * Asserts that the subject is composed of all upper-case characters.
  */
 fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
-  assert("is upper case") {
+  assert("%s is upper case") {
     when {
       subject.all { it.isUpperCase() } -> pass()
       else                             -> fail()
@@ -39,7 +39,7 @@ fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
  * Asserts that the subject starts with the [expected] character.
  */
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
-  assert("starts with '$expected'") {
+  assert("%s starts with '$expected'") {
     when {
       subject.startsWith(expected) -> pass()
       else                         -> fail()

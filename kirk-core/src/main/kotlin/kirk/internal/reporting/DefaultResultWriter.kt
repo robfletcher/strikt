@@ -21,8 +21,13 @@ internal open class DefaultResultWriter : ResultWriter {
       Status.Passed -> "✔ "
       Status.Failed -> "✘ "
     })
-      .append("${result.subject} ${result.description}")
+      .append(result.description.format(result.subject))
     onLineEnd(writer, result)
+    if (result.actual != null) {
+      onLineStart(writer, result, indent + 1)
+      writer.append("↳ found ${result.actual}")
+      onLineEnd(writer, result)
+    }
   }
 
   protected open fun onLineStart(writer: Appendable, result: Result, indent: Int) {

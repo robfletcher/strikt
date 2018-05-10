@@ -40,9 +40,10 @@ internal constructor(
    * for which there's no applicable description for a "passing" state.
    *
    * @param description a description for the failure.
+   * @param actual the actual value that violated the assertion, if any.
    */
-  fun fail(description: String) {
-    nestedReporter.report(Result(Status.Failed, description, parentSubject))
+  fun fail(description: String, actual: Any? = null) {
+    nestedReporter.report(Result(Status.Failed, description, parentSubject, actual))
   }
 
   /**

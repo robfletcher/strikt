@@ -18,6 +18,16 @@ internal constructor(
    */
   val subject: Any?,
   /**
+   * The actual value or values that violated the assertion.
+   * This property is optional as it does not make sense for all types of
+   * assertion.
+   * However, it can help improve diagnostic messages where it _is_ appropriate.
+   *
+   * @see AssertionContext.fail
+   * @see ComposedAssertions.fail
+   */
+  val actual: Any? = null,
+  /**
    * Contains the results of any nested assertions.
    */
   val nestedResults: Collection<Result> = emptyList()

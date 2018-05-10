@@ -24,14 +24,34 @@ internal constructor(
    * Report that the assertion succeeded.
    */
   fun pass() {
-    assertionResultHandler.report(Result(Status.Passed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(
+      Result(Status.Passed, description, subject, nestedResults = nestedReporter.results)
+    )
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    assertionResultHandler.report(Result(Status.Failed, description, subject, nestedReporter.results))
+    assertionResultHandler.report(
+      Result(Status.Failed, description, subject, nestedResults = nestedReporter.results)
+    )
+  }
+
+  /**
+   * Report that the assertion failed.
+   *
+   * @param actualDescription descriptive text about [actual].
+   * @param actual the value that violated the assertion.
+   */
+  fun fail(actual: Any?) {
+    assertionResultHandler.report(Result(
+      Status.Failed,
+      description,
+      subject,
+      actual,
+      nestedResults = nestedReporter.results
+    ))
   }
 
   /**
