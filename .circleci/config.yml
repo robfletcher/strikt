@@ -90,17 +90,17 @@ workflows:
   version: 2
   build-commit:
     jobs:
-      -build:
+      - build:
         filters:
           branches:
             ignore: gh-pages
           tags:
             ignore: /.*/
-#  release-from-tag:
-#    jobs:
-#      -release:
-#        filters:
-#          branches:
-#            ignore: /.*/
-#          tags:
-#            only: /^v.*/
+  release-from-tag:
+    jobs:
+      - release:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /^v.*/
