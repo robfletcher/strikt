@@ -365,6 +365,12 @@ internal object Assertions : Spek({
             expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
           }
         }
+
+        it("fails if the cardinality of an element is lower than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
+          }
+        }
       }
 
       given("a non-Collection Iterable subject") {
@@ -395,6 +401,12 @@ internal object Assertions : Spek({
           }
         }
 
+        it("fails if the cardinality of an element is lower than expected") {
+          fails {
+            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
+          }
+        }
+
         it("fails if it's supposed to be empty and isn't") {
           fails {
             expect(subject).containsExactly()
@@ -406,6 +418,104 @@ internal object Assertions : Spek({
             override fun iterator() = emptySequence<String>().iterator()
           }
           expect(emptySubject).containsExactly()
+        }
+      }
+    }
+
+    describe("containsExactlyInAnyOrder assertion") {
+      given("a Set subject") {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+
+        it("passes if the elements are identical") {
+          expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+        }
+
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap")
+          }
+        }
+
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+      }
+
+      given("a List subject") {
+        val subject = listOf("catflap", "rubberplant", "marzipan")
+
+        it("passes if all the elements exist in the same order") {
+          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
+        }
+
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
+          }
+        }
+
+        it("fails if the cardinality of an element is lower than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+          }
+        }
+
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+
+        it("passes if the order is different") {
+          expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+        }
+      }
+
+      given("a non-Collection Iterable subject") {
+        val subject = object : Iterable<String> {
+          override fun iterator() =
+            arrayOf("catflap", "rubberplant", "marzipan").iterator()
+        }
+
+        it("passes if the elements are indentical") {
+          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
+        }
+
+        it("passes if the elements are ordered differently") {
+          expect(subject).containsExactlyInAnyOrder("marzipan", "rubberplant", "catflap")
+        }
+
+        it("fails if there are more elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
+          }
+        }
+
+        it("fails if there are fewer elements than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+          }
+        }
+
+        it("fails if the cardinality of an element is lower than expected") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+          }
+        }
+
+        it("fails if it's supposed to be empty and isn't") {
+          fails {
+            expect(subject).containsExactlyInAnyOrder()
+          }
+        }
+
+        it("passes if it's supposed to be empty and is") {
+          val emptySubject = object : Iterable<String> {
+            override fun iterator() = emptySequence<String>().iterator()
+          }
+          expect(emptySubject).containsExactlyInAnyOrder()
         }
       }
     }

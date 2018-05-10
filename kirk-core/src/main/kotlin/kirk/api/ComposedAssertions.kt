@@ -31,4 +31,15 @@ internal constructor(private val nestedReporter: AssertionResultCollector) {
   fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> {
     return Assertion(nestedReporter, subject).apply(block)
   }
+
+  /**
+   * Sometimes you just need to fail with a description.
+   * This method lets you do that.
+   *
+   * @param subject the subject of the failure.
+   * @param description a description for the failure.
+   */
+  fun <T> fail(subject: T, description: String) {
+    nestedReporter.report(Result(Status.Failed, description, subject))
+  }
 }
