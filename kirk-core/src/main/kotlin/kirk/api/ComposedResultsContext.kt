@@ -10,6 +10,9 @@ import kirk.internal.Described
  * The results of assertions made inside the block passed to
  * [AssertionContext.compose].
  *
+ * The [pass] and [fail] methods in this class determine the outcome of the
+ * overall assertion based on the results of the composed assertions.
+ *
  * @property anyFailed `true` if any nested assertions evaluated inside
  * [AssertionContext.compose] failed, `false` otherwise.
  * @property allFailed `true` if _all_ nested assertions evaluated using
@@ -19,7 +22,7 @@ import kirk.internal.Described
  * @property allPassed `true` if _all_ nested assertions evaluated using
  * [AssertionContext.compose] passed, `false` otherwise.
  */
-class ComposedAssertionResults
+class ComposedResultsContext
 internal constructor(
   private val resultHandler: AssertionResultHandler,
   private val nestedReporter: AssertionResultCollector,
@@ -31,10 +34,10 @@ internal constructor(
    * A convenient way to chain a result handler after
    * [AssertionContext.compose].
    */
-  infix fun results(block: ComposedAssertionResults.() -> Unit) = apply(block)
+  infix fun results(block: ComposedResultsContext.() -> Unit) = apply(block)
 
   /**
-   * Report that the assertion succeeded.
+   * Report that the overall assertion succeeded.
    */
   fun pass() {
     resultHandler.report(
@@ -48,7 +51,7 @@ internal constructor(
   }
 
   /**
-   * Report that the assertion failed.
+   * Report that the overall assertion failed.
    */
   fun fail() {
     resultHandler.report(
@@ -62,7 +65,7 @@ internal constructor(
   }
 
   /**
-   * Report that the assertion failed.
+   * Report that the overall assertion failed.
    *
    * @param actualDescription descriptive text about [actualValue] including a
    * placeholder in [String.format] notation for [actualValue].
