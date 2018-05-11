@@ -26,7 +26,7 @@ internal constructor(
    */
   fun pass() {
     assertionResultHandler.report(
-      Result(Passed, description, Described(subject))
+      Result(Passed, description, Described(subjectDescription, subject))
     )
   }
 
@@ -35,7 +35,7 @@ internal constructor(
    */
   fun fail() {
     assertionResultHandler.report(
-      Result(Failed, description, Described(subject))
+      Result(Failed, description, Described(subjectDescription, subject))
     )
   }
 

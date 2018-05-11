@@ -2,6 +2,7 @@ package kirk.api
 
 import kirk.internal.AssertionResultHandler
 import kirk.internal.NegatedResultHandler
+import kotlin.jvm.internal.CallableReference
 
 /**
  * Holds a subject of type [T] that you can then make assertions about.
@@ -43,13 +44,29 @@ internal constructor(
    * This is useful for chaining to property values or method call results on
    * the subject.
    *
+   * If [function] is a callable reference, (for example a getter or property
+   * reference) the subject description will be automatically determined for the
+   * returned assertion.
+   *
    * @sample kirk.samples.AssertionMethods.map
    *
    * @param function a lambda whose receiver is the current assertion subject.
    * @return an assertion whose subject is the value returned by [function].
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-  fun <R> map(function: T.() -> R): Assertion<R> = map("%s", function)
+  fun <R> map(function: T.() -> R): Assertion<R> =
+    when (function) {
+      is CallableReference -> map("${subjectDescription.format("").trim()}.${function.propertyName} %s", function)
+      else                 -> map("%s", function)
+    }
+
+  private val CallableReference.propertyName: String
+    get() = "^get(.+)$".toRegex().find(name).let { match ->
+      return when (match) {
+        null -> name
+        else -> match.groupValues[1].decapitalize()
+      }
+    }
 
   /**
    * Maps the assertion subject to the result of [function].

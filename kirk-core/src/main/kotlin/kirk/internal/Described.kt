@@ -6,5 +6,5 @@ internal data class Described<T>(
 ) {
   internal constructor(value: T) : this("%s", value)
 
-  override fun toString(): String = String.format(description, value)
+  override fun toString() = String.format(description, value)
 }

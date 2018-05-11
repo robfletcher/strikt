@@ -190,6 +190,35 @@ expect(subject) {
 }
 ```
 
+### Mapping with property or getter references
+
+If you use a Kotlin property or Java getter reference as the lambda passed to `map`, Kirk will automatically derive the property name and use it as the subject description on the returned assertion. 
+This is very useful for generating good quality assertion output with minimal effort.
+
+For example, if the previous example fails it will format the error message like this:
+
+```
+▼ Person[name: Ziggy, birthDate: 1972-06-16] 
+  ✘ Ziggy is equal to David
+  ✘ 1972 is equal to 1947
+```
+
+However, using property references, the output is more useful.
+
+```kotlin
+val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
+expect(subject) {
+  map(Person::name).isEqualTo("David")
+  map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
+}
+```
+
+```
+▼ Person[name: Ziggy, birthDate: 1972-06-16] 
+  ✘ .name Ziggy is equal to David
+  ✘ .birthDate.year 1972 is equal to 1947
+```
+
 ### Mapping with extension properties
 
 Perhaps the most useful application of `map` is in defining extension properties that map an assertion on a type to an assertion on one of the properties (or method return values) of that type.
