@@ -8,7 +8,8 @@ import kirk.internal.NegatedResultHandler
  */
 class Assertion<T>
 internal constructor(
-  private val assertionResultHandler: AssertionResultHandler,
+  private val resultHandler: AssertionResultHandler,
+  private val subjectDescription: String,
   private val subject: T
 ) {
   /**
@@ -29,7 +30,7 @@ internal constructor(
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AssertionContext(subject, assertionResultHandler, description).assertion()
+      AssertionContext(subject, resultHandler, description).assertion()
     }
 
   /**
@@ -43,9 +44,21 @@ internal constructor(
    * @return an assertion whose subject is the value returned by [function].
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-  fun <R> map(function: T.() -> R): Assertion<R> {
-    return Assertion(assertionResultHandler, subject.function())
-  }
+  fun <R> map(function: T.() -> R): Assertion<R> = map("", function)
+
+  /**
+   * Maps the assertion subject to the result of [function].
+   * This is useful for chaining to property values or method call results on
+   * the subject.
+   *
+   * @sample kirk.samples.AssertionMethods.map
+   *
+   * @param description a description of the mapped result.
+   * @param function a lambda whose receiver is the current assertion subject.
+   * @return an assertion whose subject is the value returned by [function].
+   */
+  fun <R> map(description: String, function: T.() -> R): Assertion<R> =
+    Assertion(resultHandler, description, subject.function())
 
   /**
    * Reverses any assertions chained after this method.
@@ -55,5 +68,9 @@ internal constructor(
    * @return an assertion that negates the results of any assertions applied to
    * its subject.
    */
-  fun not(): Assertion<T> = Assertion(NegatedResultHandler(assertionResultHandler), subject)
+  fun not(): Assertion<T> = Assertion(
+    NegatedResultHandler(resultHandler),
+    subjectDescription,
+    subject
+  )
 }

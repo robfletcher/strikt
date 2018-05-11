@@ -1,5 +1,7 @@
 package kirk.api
 
+import kirk.internal.Described
+
 /**
  * Represents the result of an assertion or a group of assertions.
  *
@@ -20,8 +22,8 @@ data class Result
 internal constructor(
   val status: Status,
   val description: String,
-  val subject: Any?,
-  val actual: Actual? = null,
+  val subject: Described<Any?>,
+  val actual: Described<Any?>? = null,
   val nestedResults: Collection<Result> = emptyList()
 ) {
   val assertionCount: Int = when (nestedResults.isEmpty()) {
@@ -39,15 +41,3 @@ internal constructor(
     false -> nestedResults.sumBy { it.failureCount }
   }
 }
-
-/**
- * A description of the actual value that violated an assertion.
- *
- * @property description a description of the violation with a [String.format]
- * placeholder for [value].
- * @property value the actual value in question.
- */
-data class Actual(
-  val description: String,
-  val value: Any?
-)

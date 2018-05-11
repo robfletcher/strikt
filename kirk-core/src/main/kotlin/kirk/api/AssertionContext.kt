@@ -2,6 +2,7 @@ package kirk.api
 
 import kirk.internal.AssertionResultCollector
 import kirk.internal.AssertionResultHandler
+import kirk.internal.Described
 
 /**
  * Allows reporting of success or failure by assertion implementations.
@@ -22,7 +23,7 @@ internal constructor(
    */
   fun pass() {
     assertionResultHandler.report(
-      Result(Status.Passed, description, subject)
+      Result(Status.Passed, description, Described(subject))
     )
   }
 
@@ -31,7 +32,7 @@ internal constructor(
    */
   fun fail() {
     assertionResultHandler.report(
-      Result(Status.Failed, description, subject)
+      Result(Status.Failed, description, Described(subject))
     )
   }
 
@@ -44,7 +45,7 @@ internal constructor(
    */
   fun fail(actualDescription: String, actualValue: Any?) {
     assertionResultHandler.report(
-      Result(Status.Failed, description, subject, Actual(actualDescription, actualValue))
+      Result(Status.Failed, description, Described(subject), Described(actualDescription, actualValue))
     )
   }
 
@@ -62,7 +63,12 @@ internal constructor(
       ComposedAssertions(nestedReporter, subject)
         .apply(assertions)
         .let {
-          ComposedAssertionResults(assertionResultHandler, nestedReporter, description, subject)
+          ComposedAssertionResults(
+            assertionResultHandler,
+            nestedReporter,
+            description,
+            subject
+          )
         }
     }
 }
