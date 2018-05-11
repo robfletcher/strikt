@@ -1,5 +1,7 @@
 package kirk.api
 
+import kirk.api.Status.Failed
+import kirk.api.Status.Passed
 import kirk.internal.AssertionResultCollector
 import kirk.internal.AssertionResultHandler
 import kirk.internal.Described
@@ -19,9 +21,10 @@ import kirk.internal.Described
  */
 class ComposedAssertionResults
 internal constructor(
-  private val assertionResultHandler: AssertionResultHandler,
+  private val resultHandler: AssertionResultHandler,
   private val nestedReporter: AssertionResultCollector,
-  private val description: String,
+  private val assertionDescription: String,
+  private val subjectDescription: String,
   private val subject: Any?
 ) {
   /**
@@ -34,8 +37,13 @@ internal constructor(
    * Report that the assertion succeeded.
    */
   fun pass() {
-    assertionResultHandler.report(
-      Result(Status.Passed, description, Described(subject), nestedResults = nestedReporter.results)
+    resultHandler.report(
+      Result(
+        Passed,
+        assertionDescription,
+        Described(subjectDescription, subject),
+        nestedResults = nestedReporter.results
+      )
     )
   }
 
@@ -43,8 +51,13 @@ internal constructor(
    * Report that the assertion failed.
    */
   fun fail() {
-    assertionResultHandler.report(
-      Result(Status.Failed, description, Described(subject), nestedResults = nestedReporter.results)
+    resultHandler.report(
+      Result(
+        Failed,
+        assertionDescription,
+        Described(subjectDescription, subject),
+        nestedResults = nestedReporter.results
+      )
     )
   }
 
@@ -56,10 +69,10 @@ internal constructor(
    * @param actualValue the value(s) that violated the assertion.
    */
   fun fail(actualDescription: String, actualValue: Any?) {
-    assertionResultHandler.report(Result(
-      Status.Failed,
-      description,
-      Described(subject),
+    resultHandler.report(Result(
+      Failed,
+      assertionDescription,
+      Described(subjectDescription, subject),
       Described(actualDescription, actualValue),
       nestedResults = nestedReporter.results
     ))

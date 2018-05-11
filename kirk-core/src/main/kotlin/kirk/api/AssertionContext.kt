@@ -1,5 +1,7 @@
 package kirk.api
 
+import kirk.api.Status.Failed
+import kirk.api.Status.Passed
 import kirk.internal.AssertionResultCollector
 import kirk.internal.AssertionResultHandler
 import kirk.internal.Described
@@ -14,6 +16,7 @@ import kirk.internal.Described
  */
 class AssertionContext<T>
 internal constructor(
+  private val subjectDescription: String,
   val subject: T,
   private val assertionResultHandler: AssertionResultHandler,
   private val description: String
@@ -23,7 +26,7 @@ internal constructor(
    */
   fun pass() {
     assertionResultHandler.report(
-      Result(Status.Passed, description, Described(subject))
+      Result(Passed, description, Described(subject))
     )
   }
 
@@ -32,7 +35,7 @@ internal constructor(
    */
   fun fail() {
     assertionResultHandler.report(
-      Result(Status.Failed, description, Described(subject))
+      Result(Failed, description, Described(subject))
     )
   }
 
@@ -45,7 +48,12 @@ internal constructor(
    */
   fun fail(actualDescription: String, actualValue: Any?) {
     assertionResultHandler.report(
-      Result(Status.Failed, description, Described(subject), Described(actualDescription, actualValue))
+      Result(
+        Failed,
+        description,
+        Described(subjectDescription, subject),
+        Described(actualDescription, actualValue)
+      )
     )
   }
 
@@ -67,6 +75,7 @@ internal constructor(
             assertionResultHandler,
             nestedReporter,
             description,
+            subjectDescription,
             subject
           )
         }

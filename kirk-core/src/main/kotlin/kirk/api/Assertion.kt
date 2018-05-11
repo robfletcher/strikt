@@ -30,7 +30,12 @@ internal constructor(
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AssertionContext(subject, resultHandler, description).assertion()
+      AssertionContext(
+        subjectDescription,
+        subject,
+        resultHandler,
+        description
+      ).assertion()
     }
 
   /**
@@ -44,7 +49,7 @@ internal constructor(
    * @return an assertion whose subject is the value returned by [function].
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-  fun <R> map(function: T.() -> R): Assertion<R> = map("", function)
+  fun <R> map(function: T.() -> R): Assertion<R> = map("%s", function)
 
   /**
    * Maps the assertion subject to the result of [function].

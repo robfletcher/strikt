@@ -424,36 +424,41 @@ internal object Assertions : Spek({
         }
 
         it("passes if the elements are indentical") {
-          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
+          expect("a non-Collection iterable %s", subject)
+            .containsExactly("catflap", "rubberplant", "marzipan")
         }
 
         it("fails if the elements are ordered differently") {
           fails {
-            expect(subject).containsExactly("marzipan", "rubberplant", "catflap")
+            expect("a non-Collection iterable %s", subject)
+              .containsExactly("marzipan", "rubberplant", "catflap")
           }
         }
 
         it("fails if there are more elements than expected") {
           fails {
-            expect(subject).containsExactly("catflap", "rubberplant")
+            expect("a non-Collection iterable %s", subject)
+              .containsExactly("catflap", "rubberplant")
           }
         }
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+            expect("a non-Collection iterable %s", subject)
+              .containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
           }
         }
 
         it("fails if the cardinality of an element is lower than expected") {
           fails {
-            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
+            expect("a non-Collection iterable %s", subject)
+              .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
           }
         }
 
         it("fails if it's supposed to be empty and isn't") {
           fails {
-            expect(subject).containsExactly()
+            expect("a non-Collection iterable %s", subject).containsExactly()
           }
         }
 
