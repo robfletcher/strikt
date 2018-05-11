@@ -28,3 +28,9 @@ fun <T : Collection<E>, E> Assertion<T>.isNotEmpty(): Assertion<T> =
   assert("%s is empty") {
     if (subject.isNotEmpty()) pass() else fail()
   }
+
+/**
+ * Maps an assertion on a collection to an assertion on its size.
+ */
+val <T : Collection<*>> Assertion<T>.size: Assertion<Int>
+  get() = map(Collection<*>::size)

@@ -190,6 +190,43 @@ expect(subject) {
 }
 ```
 
+### Mapping with extension properties
+
+Perhaps the most useful application of `map` is in defining extension properties that map an assertion on a type to an assertion on one of the properties (or method return values) of that type.
+
+A simple example is the standard extension property Kirk supplies for `Assertion<Collection<*>>` that maps to an assertion on the collection's `size`.
+
+```kotlin
+val <T : Collection<*>> Assertion<T>.size: Assertion<Int>
+  get() = map(Collection<*>::size)
+```
+
+It is very easy to define these kind of extension properties for testing your own types.
+
+For example:
+
+```kotlin
+val Assertion<Person>.name: Assertion<String>
+  get() = map(Person::name)
+
+val Assertion<Person>.dateOfBirth: Assertion<LocalDate>
+  get() = map(Person::dateOfBirth)
+  
+val Assertion<LocalDate>.year: Assertion<Int>
+  get() = map(LocalDate::getYear)
+
+```
+
+You can then write the earlier example as:
+
+```kotlin
+val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
+expect(subject) {
+  name.isEqualTo("David")
+  birthDate.year.isEqualTo(1947)
+}
+```
+
 ## Writing your own assertion functions
 
 One of the aims of Kirk is that implementing your own assertions is _really, really_ easy.

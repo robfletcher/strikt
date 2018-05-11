@@ -9,11 +9,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit.YEARS
 
-data class Person(
-  val name: String,
-  val birthDate: LocalDate
-)
-
 internal object AssertionMethods {
   @Test
   fun assert() {

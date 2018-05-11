@@ -30,7 +30,6 @@ object Reporting : Spek({
       }
 
       it("formats the error message") {
-        // TODO: comparing big blocks of text is shitty
         val expectedLines = listOf(
           "✘ [catflap, rubberplant, marzipan] has size 0",
           "  ↳ found 3",
@@ -54,7 +53,7 @@ object Reporting : Spek({
           assertEquals(
             expectedLines[i],
             line,
-            "Assertion failure message line ${i + 1} was\n\"$line\""
+            "Assertion failure message line ${i + 1}"
           )
         }
       }

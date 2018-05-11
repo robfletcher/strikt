@@ -57,3 +57,9 @@ fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
       else                      -> fail()
     }
   }
+
+/**
+ * Maps an assertion on a [CharSequence] to an assertion on its length.
+ */
+val <T : CharSequence> Assertion<T>.length: Assertion<Int>
+  get() = map(CharSequence::length)
