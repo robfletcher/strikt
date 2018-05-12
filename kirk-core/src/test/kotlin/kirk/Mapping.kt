@@ -38,7 +38,13 @@ internal object Mapping : Spek({
       fails {
         expect(subject).map(Person::name).isEqualTo("Ziggy")
       }.let { e ->
-        assertEquals("✘ .name ${subject.name} is equal to Ziggy\n", e.message)
+        val expectedMessage = listOf(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08)",
+          "  ▼ .name ${subject.name}",
+          "    ✘ is equal to Ziggy",
+          ""
+        )
+        assertEquals(expectedMessage, e.message.lines())
       }
     }
 
@@ -46,10 +52,14 @@ internal object Mapping : Spek({
       fails {
         expect(subject).map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1971)
       }.let { e ->
-        assertEquals(
-          "✘ .birthDate.year ${subject.birthDate.year} is equal to 1971\n",
-          e.message
+        val expectedMessage = listOf(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08)",
+          "  ▼ .birthDate ${subject.birthDate}",
+          "    ▼ .year ${subject.birthDate.year}",
+          "      ✘ is equal to 1971",
+          ""
         )
+        assertEquals(expectedMessage, e.message.lines())
       }
     }
   }

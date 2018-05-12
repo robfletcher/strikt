@@ -1,15 +1,14 @@
 package kirk.api
 
-import kirk.internal.AssertionResultCollector
+import kirk.internal.Mode
 
 /**
- * Allows assertions to be composed, or nested, using
- * [AssertionContext.compose].
+ * Allows assertions to be composed, or nested, using [AssertionContext.compose].
  */
 class ComposedAssertions<T>
 internal constructor(
-  private val nestedReporter: AssertionResultCollector,
-  private val parentSubject: T
+  private val parent: Subject<T>,
+  private val result: Result
 ) {
   /**
    * Start a chain of assertions in the current nested context.
@@ -18,7 +17,7 @@ internal constructor(
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <E> expect(subject: E): Assertion<E> = expect("%s", subject)
+  fun <E> expect(subject: E): Assertion<E> = expect("Expect that %s", subject)
 
   /**
    * Start a chain of assertions in the current nested context.
@@ -30,7 +29,9 @@ internal constructor(
    * @return an assertion for [subject].
    */
   fun <E> expect(description: String, subject: E): Assertion<E> =
-    Assertion(nestedReporter, description, subject)
+    Subject(description, subject)
+      .also(result::append)
+      .let { Assertion(it, Mode.COLLECT) }
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -42,7 +43,7 @@ internal constructor(
    * @return an assertion for [subject].
    */
   fun <E> expect(subject: E, block: Assertion<E>.() -> Unit): Assertion<E> =
-    expect("%s", subject, block)
+    expect("Expect that %s", subject, block)
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -60,7 +61,9 @@ internal constructor(
     subject: E,
     block: Assertion<E>.() -> Unit
   ): Assertion<E> =
-    Assertion(nestedReporter, description, subject).apply(block)
+    Subject(description, subject)
+      .also(result::append)
+      .let { Assertion(it, Mode.COLLECT).apply(block) }
 
   /**
    * Evaluates a composed assertion on the original subject.
@@ -70,6 +73,5 @@ internal constructor(
    * more detail in any failure message.
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
-    Assertion(nestedReporter, "%s", parentSubject)
-      .assert(description, assertion)
+    Assertion(parent, Mode.COLLECT).assert(description, assertion)
 }

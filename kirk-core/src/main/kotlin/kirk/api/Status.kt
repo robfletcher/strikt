@@ -5,6 +5,10 @@ package kirk.api
  */
 enum class Status {
   /**
+   * The assertion has not been evaluated yet.
+   */
+  Pending,
+  /**
    * The assertion passed.
    */
   Passed,

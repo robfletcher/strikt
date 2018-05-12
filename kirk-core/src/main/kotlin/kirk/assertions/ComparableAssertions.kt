@@ -7,7 +7,7 @@ import kirk.api.Assertion
  * Kotlin's standard `>` operator.
  */
 fun <T : Comparable<T>> Assertion<T>.isGreaterThan(expected: T): Assertion<T> =
-  assert("%s is greater than $expected") {
+  assert("is greater than $expected") {
     when {
       subject > expected -> pass()
       else               -> fail()
@@ -19,7 +19,7 @@ fun <T : Comparable<T>> Assertion<T>.isGreaterThan(expected: T): Assertion<T> =
  * standard `<` operator.
  */
 fun <T : Comparable<T>> Assertion<T>.isLessThan(expected: T): Assertion<T> =
-  assert("%s is less than $expected") {
+  assert("is less than $expected") {
     when {
       subject < expected -> pass()
       else               -> fail()
@@ -31,7 +31,7 @@ fun <T : Comparable<T>> Assertion<T>.isLessThan(expected: T): Assertion<T> =
  * according to Kotlin's standard `>=` operator.
  */
 fun <T : Comparable<T>> Assertion<T>.isGreaterThanOrEqualTo(expected: T): Assertion<T> =
-  assert("%s is greater than or equal to $expected") {
+  assert("is greater than or equal to $expected") {
     when {
       subject >= expected -> pass()
       else                -> fail()
@@ -43,7 +43,7 @@ fun <T : Comparable<T>> Assertion<T>.isGreaterThanOrEqualTo(expected: T): Assert
  * to Kotlin's standard `<=` operator.
  */
 fun <T : Comparable<T>> Assertion<T>.isLessThanOrEqualTo(expected: T): Assertion<T> =
-  assert("%s is less than or equal to $expected") {
+  assert("is less than or equal to $expected") {
     when {
       subject <= expected -> pass()
       else                -> fail()

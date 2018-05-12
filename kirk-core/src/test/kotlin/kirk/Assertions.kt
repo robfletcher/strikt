@@ -215,9 +215,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(4, failure.assertionCount, "Assertions")
             assertEquals(1, failure.passCount, "Passed")
-            assertEquals(2, failure.failureCount, "Failed")
+            assertEquals(3, failure.failureCount, "Failed")
           }
       }
     }
@@ -243,9 +243,9 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assertEquals(3, failure.assertionCount, "Assertions")
+            assertEquals(4, failure.assertionCount, "Assertions")
             assertEquals(0, failure.passCount, "Passed")
-            assertEquals(3, failure.failureCount, "Failed")
+            assertEquals(4, failure.failureCount, "Failed")
           }
       }
     }
@@ -265,8 +265,8 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assertEquals(3, failure.assertionCount, "Assertions")
-            assertEquals(2, failure.passCount, "Passed")
+            assertEquals(4, failure.assertionCount, "Assertions")
+            assertEquals(3, failure.passCount, "Passed")
             assertEquals(1, failure.failureCount, "Failed")
           }
       }
@@ -278,8 +278,8 @@ internal object Assertions : Spek({
           }
         }
           .let { failure ->
-            assertEquals(3, failure.assertionCount, "Assertions")
-            assertEquals(3, failure.passCount, "Passed")
+            assertEquals(4, failure.assertionCount, "Assertions")
+            assertEquals(4, failure.passCount, "Passed")
             assertEquals(0, failure.failureCount, "Failed")
           }
       }

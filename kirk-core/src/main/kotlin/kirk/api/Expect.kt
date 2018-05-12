@@ -1,8 +1,7 @@
 package kirk.api
 
 import kirk.assertions.isA
-import kirk.internal.AssertionResultCollector
-import kirk.internal.FailFastAssertionResultHandler
+import kirk.internal.Mode
 
 /**
  * Start a chain of assertions over [subject].
@@ -11,7 +10,7 @@ import kirk.internal.FailFastAssertionResultHandler
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expect(subject: T): Assertion<T> = expect("%s", subject)
+fun <T> expect(subject: T): Assertion<T> = expect("Expect that %s", subject)
 
 /**
  * Start a chain of assertions over [subject].
@@ -23,8 +22,7 @@ fun <T> expect(subject: T): Assertion<T> = expect("%s", subject)
  * @return an assertion for [subject].
  */
 fun <T> expect(subjectDescription: String, subject: T): Assertion<T> {
-  val reporter = FailFastAssertionResultHandler()
-  return Assertion(reporter, subjectDescription, subject)
+  return Assertion(Subject(subjectDescription, subject), Mode.FAIL_FAST)
 }
 
 /**
@@ -37,7 +35,7 @@ fun <T> expect(subjectDescription: String, subject: T): Assertion<T> {
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T, block: Assertion<T>.() -> Unit): Assertion<T> =
-  expect("%s", subject, block)
+  expect("Expect that %s", subject, block)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -55,12 +53,13 @@ fun <T> expect(
   subject: T,
   block: Assertion<T>.() -> Unit
 ): Assertion<T> {
-  val reporter = AssertionResultCollector()
-  return Assertion(reporter, subjectDescription, subject)
-    .apply(block)
-    .apply {
-      if (reporter.anyFailed) {
-        throw AssertionFailed(reporter.results)
+  return Subject(subjectDescription, subject)
+    .let {
+      val assertion = Assertion(it, Mode.COLLECT).apply(block)
+      if (it.anyFailed) {
+        throw AssertionFailed(it)
+      } else {
+        assertion
       }
     }
 }

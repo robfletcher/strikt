@@ -1,42 +1,41 @@
 package kirk.api
 
-import kirk.api.Status.Failed
-import kirk.api.Status.Passed
-import kirk.internal.AssertionResultCollector
-import kirk.internal.AssertionResultHandler
-import kirk.internal.Described
+import kirk.internal.Mode
 
 /**
  * Allows reporting of success or failure by assertion implementations.
  *
  * This class is the receiver of the lambda passed to [Assertion.assert].
  *
- * @property subject The assertion subject.
+ * @property parent The assertion subject.
  * @see Assertion.assert
  */
 class AssertionContext<T>
 internal constructor(
-  private val subjectDescription: String,
-  val subject: T,
-  private val assertionResultHandler: AssertionResultHandler,
-  private val description: String
+  description: String,
+  private val parent: Subject<T>,
+  private val mode: Mode
 ) {
+
+  private var result = Result(description).also(parent::append)
+
+  val subject: T = parent.value
+
   /**
    * Report that the assertion succeeded.
    */
   fun pass() {
-    assertionResultHandler.report(
-      Result(Passed, description, Described(subjectDescription, subject))
-    )
+    result.pass()
   }
 
   /**
    * Report that the assertion failed.
    */
   fun fail() {
-    assertionResultHandler.report(
-      Result(Failed, description, Described(subjectDescription, subject))
-    )
+    result.fail()
+    if (mode == Mode.FAIL_FAST) {
+      throw AssertionFailed(parent)
+    }
   }
 
   /**
@@ -47,14 +46,10 @@ internal constructor(
    * @param actualValue the value(s) that violated the assertion.
    */
   fun fail(actualDescription: String, actualValue: Any?) {
-    assertionResultHandler.report(
-      Result(
-        Failed,
-        description,
-        Described(subjectDescription, subject),
-        Described(actualDescription, actualValue)
-      )
-    )
+    result.fail(actualDescription, actualValue)
+    if (mode == Mode.FAIL_FAST) {
+      throw AssertionFailed(parent)
+    }
   }
 
   /**
@@ -66,18 +61,40 @@ internal constructor(
    *
    * @return the results of assertions made inside the [assertions] block.
    */
-  fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedResultsContext =
-    AssertionResultCollector().let { nestedReporter ->
-      ComposedAssertions(nestedReporter, subject)
-        .apply(assertions)
-        .let {
-          ComposedResultsContext(
-            assertionResultHandler,
-            nestedReporter,
-            description,
-            subjectDescription,
-            subject
-          )
-        }
+  fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionResults {
+    ComposedAssertions(parent, result).apply(assertions)
+    return object : ComposedAssertionResults {
+      override fun pass() {
+        this@AssertionContext.pass()
+      }
+
+      override fun fail() {
+        this@AssertionContext.fail()
+      }
+
+      override val allPassed: Boolean = result.allPassed
+      override val anyPassed: Boolean = result.anyPassed
+      override val allFailed: Boolean = result.allFailed
+      override val anyFailed: Boolean = result.anyFailed
     }
+  }
 }
+
+interface ComposedAssertionResults {
+  fun pass()
+  fun fail()
+  val allPassed: Boolean
+  val anyPassed: Boolean
+  val allFailed: Boolean
+  val anyFailed: Boolean
+
+  /**
+   * A convenient way to handle to composed assertion results.
+   *
+   * @see AssertionContext.compose
+   */
+  infix fun then(block: ComposedAssertionResults.() -> Unit) {
+    this.block()
+  }
+}
+

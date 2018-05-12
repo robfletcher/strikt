@@ -6,12 +6,12 @@ import kirk.api.Assertion
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
-  assert("all elements of %s match:") {
+  assert("all elements match:") {
     compose {
       subject.forEach {
         expect(it, predicate)
       }
-    } results {
+    } then {
       if (allPassed) pass() else fail()
     }
   }
@@ -21,12 +21,12 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
  * [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
-  assert("at least one element of %s matches:") {
+  assert("at least one element matches:") {
     compose {
       subject.forEach {
         expect(it, predicate)
       }
-    } results {
+    } then {
       if (anyPassed) pass() else fail()
     }
   }
@@ -35,12 +35,12 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
-  assert("no elements of %s match:") {
+  assert("no elements match:") {
     compose {
       subject.forEach {
         expect(it, predicate)
       }
-    } results {
+    } then {
       if (allFailed) pass() else fail()
     }
   }
@@ -52,7 +52,7 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  assert("%s contains the elements ${elements.toList()}") {
+  assert("contains the elements ${elements.toList()}") {
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {
@@ -66,7 +66,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
               }
             }
           }
-        } results {
+        } then {
           if (allPassed) pass() else fail()
         }
       }
@@ -80,7 +80,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
  * If the subject is empty the assertion always passe.
  */
 fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
-  assert("%s does not contain any of the elements ${elements.toList()}") {
+  assert("does not contain any of the elements ${elements.toList()}") {
     when {
       elements.isEmpty()            -> fail()
       !subject.iterator().hasNext() -> pass()
@@ -95,7 +95,7 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
               }
             }
           }
-        } results {
+        } then {
           if (allPassed) pass() else fail()
         }
       }
@@ -111,7 +111,7 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
  * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
-  assert("%s contains exactly the elements ${elements.toList()}") {
+  assert("contains exactly the elements ${elements.toList()}") {
     compose {
       val original = subject.toList()
       val remaining = subject.toMutableList()
@@ -138,7 +138,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
           fail("found %s", remaining)
         }
       }
-    } results {
+    } then {
       if (allPassed) pass() else fail()
     }
   }
@@ -150,7 +150,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
  * regardless of what order they appear in.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E) =
-  assert("%s contains exactly the elements ${elements.toList()} in any order") {
+  assert("contains exactly the elements ${elements.toList()} in any order") {
     compose {
       val remaining = subject.toMutableList()
       elements.forEach {
@@ -169,7 +169,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
           fail("found %s", remaining)
         }
       }
-    } results {
+    } then {
       if (allPassed) pass() else fail()
     }
   }

@@ -1,7 +1,6 @@
 package kirk.api
 
-import kirk.internal.AssertionResultHandler
-import kirk.internal.NegatedResultHandler
+import kirk.internal.Mode
 import kotlin.jvm.internal.CallableReference
 
 /**
@@ -9,9 +8,8 @@ import kotlin.jvm.internal.CallableReference
  */
 class Assertion<T>
 internal constructor(
-  private val resultHandler: AssertionResultHandler,
-  private val subjectDescription: String,
-  private val subject: T
+  private val subject: Subject<T>,
+  private val mode: Mode
 ) {
   /**
    * Evaluates a condition that may pass or fail.
@@ -22,7 +20,7 @@ internal constructor(
    *
    * @sample kirk.samples.AssertionMethods.assert
    *
-   * @param description a description for the assertion.
+   * @param description a description for the condition the assertion evaluates.
    * @param assertion the assertion implementation that should result in a call
    * to [AssertionContext.pass] or [AssertionContext.fail].
    * @return this assertion, in order to facilitate a fluent API.
@@ -31,12 +29,7 @@ internal constructor(
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AssertionContext(
-        subjectDescription,
-        subject,
-        resultHandler,
-        description
-      ).assertion()
+      AssertionContext(description, subject, mode).assertion()
     }
 
   /**
@@ -56,16 +49,8 @@ internal constructor(
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
   fun <R> map(function: T.() -> R): Assertion<R> =
     when (function) {
-      is CallableReference -> map("${subjectDescription.format("").trim()}.${function.propertyName} %s", function)
+      is CallableReference -> map(".${function.propertyName} %s", function)
       else                 -> map("%s", function)
-    }
-
-  private val CallableReference.propertyName: String
-    get() = "^get(.+)$".toRegex().find(name).let { match ->
-      return when (match) {
-        null -> name
-        else -> match.groupValues[1].decapitalize()
-      }
     }
 
   /**
@@ -80,7 +65,9 @@ internal constructor(
    * @return an assertion whose subject is the value returned by [function].
    */
   fun <R> map(description: String, function: T.() -> R): Assertion<R> =
-    Assertion(resultHandler, description, subject.function())
+    Subject(description, subject.value.function())
+      .also(subject::append)
+      .let { Assertion(it, mode) }
 
   /**
    * Reverses any assertions chained after this method.
@@ -90,9 +77,13 @@ internal constructor(
    * @return an assertion that negates the results of any assertions applied to
    * its subject.
    */
-  fun not(): Assertion<T> = Assertion(
-    NegatedResultHandler(resultHandler),
-    subjectDescription,
-    subject
-  )
+  fun not(): Assertion<T> = TODO()
 }
+
+private val CallableReference.propertyName: String
+  get() = "^get(.+)$".toRegex().find(name).let { match ->
+    return when (match) {
+      null -> name
+      else -> match.groupValues[1].decapitalize()
+    }
+  }

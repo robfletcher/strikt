@@ -1,6 +1,6 @@
 package kirk.internal
 
-internal data class Described<T>(
+data class Described<T>(
   val description: String,
   val value: T
 ) {
