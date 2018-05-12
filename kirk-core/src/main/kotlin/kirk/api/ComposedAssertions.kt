@@ -73,5 +73,8 @@ internal constructor(
    * more detail in any failure message.
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
-    Assertion(parent, Mode.COLLECT).assert(description, assertion)
+    parent.copy().let {
+      result.append(it)
+      Assertion(it, Mode.COLLECT).assert(description, assertion)
+    }
 }

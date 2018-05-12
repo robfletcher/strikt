@@ -34,7 +34,7 @@ internal constructor(
   fun fail() {
     result.fail()
     if (mode == Mode.FAIL_FAST) {
-      throw AssertionFailed(parent)
+      throw AssertionFailed(parent.root)
     }
   }
 
@@ -48,7 +48,7 @@ internal constructor(
   fun fail(actualDescription: String, actualValue: Any?) {
     result.fail(actualDescription, actualValue)
     if (mode == Mode.FAIL_FAST) {
-      throw AssertionFailed(parent)
+      throw AssertionFailed(parent.root)
     }
   }
 

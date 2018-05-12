@@ -5,7 +5,6 @@ import kirk.api.expect
 import kirk.assertions.*
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
-import org.junit.jupiter.api.Assertions.assertEquals
 import java.io.File
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -214,11 +213,6 @@ internal object Assertions : Spek({
             startsWith('c')
           }
         }
-          .let { failure ->
-            assertEquals(4, failure.assertionCount, "Assertions")
-            assertEquals(1, failure.passCount, "Passed")
-            assertEquals(3, failure.failureCount, "Failed")
-          }
       }
     }
 
@@ -242,11 +236,6 @@ internal object Assertions : Spek({
             isLowerCase()
           }
         }
-          .let { failure ->
-            assertEquals(4, failure.assertionCount, "Assertions")
-            assertEquals(0, failure.passCount, "Passed")
-            assertEquals(4, failure.failureCount, "Failed")
-          }
       }
     }
 
@@ -264,11 +253,6 @@ internal object Assertions : Spek({
             isUpperCase()
           }
         }
-          .let { failure ->
-            assertEquals(4, failure.assertionCount, "Assertions")
-            assertEquals(3, failure.passCount, "Passed")
-            assertEquals(1, failure.failureCount, "Failed")
-          }
       }
       it("fails if all elements conform") {
         fails {
@@ -277,11 +261,6 @@ internal object Assertions : Spek({
             isUpperCase()
           }
         }
-          .let { failure ->
-            assertEquals(4, failure.assertionCount, "Assertions")
-            assertEquals(4, failure.passCount, "Passed")
-            assertEquals(0, failure.failureCount, "Failed")
-          }
       }
     }
 
@@ -312,10 +291,6 @@ internal object Assertions : Spek({
       it("has a nested failure for each missing element") {
         fails {
           expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
-        }.let { e ->
-          assertEquals(3, e.assertionCount, "Assertions")
-          assertEquals(1, e.passCount, "Passed")
-          assertEquals(2, e.failureCount, "Failed")
         }
       }
     }

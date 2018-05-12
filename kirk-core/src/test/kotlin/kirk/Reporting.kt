@@ -22,22 +22,22 @@ object Reporting : Spek({
           .all { startsWith('c') }
       }
 
-      it("reports assertion statistics") {
-        assertEquals(3, e.assertionCount, "Assertions")
-        assertEquals(0, e.passCount, "Passed")
-        assertEquals(3, e.failureCount, "Failed")
-      }
+//      it("reports assertion statistics") {
+//        assertEquals(3, e.assertionCount, "Assertions")
+//        assertEquals(0, e.passCount, "Passed")
+//        assertEquals(3, e.failureCount, "Failed")
+//      }
 
       it("formats the error message") {
         val expectedLines = listOf(
-          "▼ [catflap, rubberplant, marzipan]",
+          "▼ Expect that [catflap, rubberplant, marzipan]",
           "  ✔ has size 3",
           "  ✘ all elements match:",
-          "    ▼ catflap",
+          "    ▼ Expect that catflap",
           "      ✘ is upper case",
-          "    ▼ rubberplant",
+          "    ▼ Expect that rubberplant",
           "      ✘ is upper case",
-          "    ▼ marzipan",
+          "    ▼ Expect that marzipan",
           "      ✘ is upper case",
           ""
         )
@@ -70,25 +70,25 @@ object Reporting : Spek({
         }
       }
 
-      it("reports assertion statistics") {
-        assertEquals(7, e.assertionCount, "Assertions")
-        assertEquals(1, e.passCount, "Passed")
-        assertEquals(6, e.failureCount, "Failed")
-      }
+//      it("reports assertion statistics") {
+//        assertEquals(7, e.assertionCount, "Assertions")
+//        assertEquals(1, e.passCount, "Passed")
+//        assertEquals(6, e.failureCount, "Failed")
+//      }
 
       it("formats the error message") {
         val expectedLines = listOf(
-          "▼ [catflap, rubberplant, marzipan]",
+          "▼ Expect that [catflap, rubberplant, marzipan]",
           "  ✘ has size 0",
           "    ↳ found 3",
           "  ✘ all elements match:",
-          "    ▼ catflap",
+          "    ▼ Expect that catflap",
           "      ✘ is upper case",
           "      ✔ starts with 'c'",
-          "    ▼ rubberplant",
+          "    ▼ Expect that rubberplant",
           "      ✘ is upper case",
           "      ✘ starts with 'c'",
-          "    ▼ marzipan",
+          "    ▼ Expect that marzipan",
           "      ✘ is upper case",
           "      ✘ starts with 'c'",
           ""

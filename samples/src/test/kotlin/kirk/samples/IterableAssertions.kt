@@ -3,7 +3,6 @@ package kirk.samples
 import kirk.api.AssertionFailed
 import kirk.api.expect
 import kirk.assertions.*
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -25,11 +24,6 @@ internal object IterableAssertions {
         startsWith('c')
       }
     }
-      .let { failure ->
-        assertEquals(3, failure.assertionCount, "Assertions")
-        assertEquals(1, failure.passCount, "Passed")
-        assertEquals(2, failure.failureCount, "Failed")
-      }
   }
 
   @Test
@@ -56,11 +50,6 @@ internal object IterableAssertions {
         isLowerCase()
       }
     }
-      .let { failure ->
-        assertEquals(3, failure.assertionCount, "Assertions")
-        assertEquals(0, failure.passCount, "Passed")
-        assertEquals(3, failure.failureCount, "Failed")
-      }
   }
 
   @Test
@@ -79,11 +68,6 @@ internal object IterableAssertions {
         isUpperCase()
       }
     }
-      .let { failure ->
-        assertEquals(3, failure.assertionCount, "Assertions")
-        assertEquals(2, failure.passCount, "Passed")
-        assertEquals(1, failure.failureCount, "Failed")
-      }
   }
 
   @Test
@@ -94,11 +78,6 @@ internal object IterableAssertions {
         isUpperCase()
       }
     }
-      .let { failure ->
-        assertEquals(3, failure.assertionCount, "Assertions")
-        assertEquals(3, failure.passCount, "Passed")
-        assertEquals(0, failure.failureCount, "Failed")
-      }
   }
 
   @Test
@@ -128,11 +107,6 @@ internal object IterableAssertions {
     assertThrows<AssertionFailed> {
       expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
     }
-      .let { e ->
-        assertEquals(3, e.assertionCount, "Assertions")
-        assertEquals(1, e.passCount, "Passed")
-        assertEquals(2, e.failureCount, "Failed")
-      }
   }
 
   @Test
