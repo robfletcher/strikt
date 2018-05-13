@@ -72,7 +72,13 @@ fun <T> expect(
  */
 inline fun <reified E : Throwable> throws(
   action: () -> Unit
-): Assertion<E> = throws("", action)
+): Assertion<E> =
+  E::class.java.simpleName.let { name ->
+    throws(
+      "Expect that ${if (name.contains("^[AEIOU]".toRegex())) "an" else "a"} $name is thrown",
+      action
+    )
+  }
 
 /**
  * Asserts that [action] throws an exception of type [E] when executed.
