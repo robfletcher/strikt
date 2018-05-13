@@ -1,6 +1,6 @@
 package kirk.api
 
-import kirk.assertions.isA
+import kirk.assertions.throws
 import kirk.internal.Mode
 
 /**
@@ -71,14 +71,9 @@ fun <T> expect(
  * about messages, root causes, etc.
  */
 inline fun <reified E : Throwable> throws(
-  action: () -> Unit
+  noinline action: () -> Unit
 ): Assertion<E> =
-  E::class.java.simpleName.let { name ->
-    throws(
-      "Expect that ${if (name.contains("^[AEIOU]".toRegex())) "an" else "a"} $name is thrown",
-      action
-    )
-  }
+  expect(action).throws()
 
 /**
  * Asserts that [action] throws an exception of type [E] when executed.
@@ -89,14 +84,6 @@ inline fun <reified E : Throwable> throws(
  */
 inline fun <reified E : Throwable> throws(
   description: String,
-  action: () -> Unit
+  noinline action: () -> Unit
 ): Assertion<E> =
-  try {
-    action()
-    null
-  } catch (e: Throwable) {
-    e
-  }.let { thrown ->
-    // TODO: check the message produced here for usefulness
-    expect(description, thrown).isA()
-  }
+  expect(description, action).throws()
