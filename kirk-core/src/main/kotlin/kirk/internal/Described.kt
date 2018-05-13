@@ -4,7 +4,5 @@ data class Described<T>(
   val description: String,
   val value: T
 ) {
-  internal constructor(value: T) : this("%s", value)
-
   override fun toString() = String.format(description, value)
 }

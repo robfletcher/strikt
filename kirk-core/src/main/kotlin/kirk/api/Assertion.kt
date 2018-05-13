@@ -35,6 +35,23 @@ internal constructor(
     }
 
   /**
+   * Evaluates a boolean condition.
+   * This is useful for implementing the simplest types of assertion function.
+   *
+   * @param description a description for the condition the assertion evaluates.
+   * @param assertion a function that returns `true` (the assertion passes) or
+   * `false` (the assertion fails).
+   * @return this assertion, in order to facilitate a fluent API.
+   */
+  // TODO: this name sucks
+  fun passesIf(description: String, assertion: T.() -> Boolean) =
+    apply {
+      assert(description) {
+        if (subject.assertion()) pass() else fail()
+      }
+    }
+
+  /**
    * Maps the assertion subject to the result of [function].
    * This is useful for chaining to property values or method call results on
    * the subject.

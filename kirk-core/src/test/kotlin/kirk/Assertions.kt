@@ -163,6 +163,20 @@ internal object Assertions : Spek({
         }
       }
     }
+
+    describe("contains(Regex) assertion") {
+      it("passes if the subject is a full match for the regex") {
+        expect("covfefe").contains("[cefov]+".toRegex())
+      }
+      it("passes if the subject is only a partial match for the regex") {
+        expect("despite the negative press covfefe").contains("[cefov]+".toRegex())
+      }
+      it("fails if the subject does not match the regex") {
+        fails {
+          expect("covfefe").contains("\\d+".toRegex())
+        }
+      }
+    }
   }
 
   describe("assertions on ${Collection::class.simpleName}") {

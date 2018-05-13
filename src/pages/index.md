@@ -266,7 +266,7 @@ They call `assert` passing a lambda with the assertion logic that calls `pass()`
 
 The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simple assertions implemented just like this.
 
-### Simple assertions
+### Atomic assertions
 
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
@@ -297,6 +297,23 @@ If this assertion fails it will produce a message like:
 
 The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
 That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+
+// TODO: explain actual value descriptions
+
+### Assertions based on boolean conditions
+
+For the very simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose receiver is the assertion subject that returns a boolean.
+
+We can re-implement the example above like this:
+
+```kotlin
+fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
+  passesIf("is St. Tib's Day") { 
+    MonthDay.from(this) == MonthDay.of(2, 29)
+  }
+```
+
+You should not use this form when you want to provide a meaningful description of the actual value but for simple assertions it's slightly less verbose.
 
 ### Composed assertions
 

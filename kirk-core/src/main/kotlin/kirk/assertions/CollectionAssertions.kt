@@ -17,17 +17,13 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
  * Asserts that the subject collection is empty.
  */
 fun <T : Collection<E>, E> Assertion<T>.isEmpty(): Assertion<T> =
-  assert("is empty") {
-    if (subject.isEmpty()) pass() else fail()
-  }
+  passesIf("is empty", Collection<E>::isEmpty)
 
 /**
  * Asserts that the subject collection is _not_ empty.
  */
 fun <T : Collection<E>, E> Assertion<T>.isNotEmpty(): Assertion<T> =
-  assert("is empty") {
-    if (subject.isNotEmpty()) pass() else fail()
-  }
+  passesIf("is not empty", Collection<E>::isNotEmpty)
 
 /**
  * Maps an assertion on a collection to an assertion on its size.

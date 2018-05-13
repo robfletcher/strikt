@@ -17,33 +17,24 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
  * Asserts that the subject is composed of all lower-case characters.
  */
 fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
-  assert("is lower case") {
-    when {
-      subject.all { it.isLowerCase() } -> pass()
-      else                             -> fail()
-    }
+  passesIf("is lower case") {
+    all { it.isLowerCase() }
   }
 
 /**
  * Asserts that the subject is composed of all upper-case characters.
  */
 fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
-  assert("is upper case") {
-    when {
-      subject.all { it.isUpperCase() } -> pass()
-      else                             -> fail()
-    }
+  passesIf("is upper case") {
+    all { it.isUpperCase() }
   }
 
 /**
  * Asserts that the subject starts with the [expected] character.
  */
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
-  assert("starts with '$expected'") {
-    when {
-      subject.startsWith(expected) -> pass()
-      else                         -> fail()
-    }
+  passesIf("starts with '$expected'") {
+    startsWith(expected)
   }
 
 /**
@@ -51,11 +42,17 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
  * expression.
  */
 fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
-  assert("matches the regular expression /${expected.pattern}/") {
-    when {
-      subject.matches(expected) -> pass()
-      else                      -> fail()
-    }
+  passesIf("matches the regular expression /${expected.pattern}/") {
+    matches(expected)
+  }
+
+/**
+ * Asserts that the subject contains a match for the [expected] regular
+ * expression.
+ */
+fun <T : CharSequence> Assertion<T>.contains(expected: Regex): Assertion<T> =
+  passesIf("matches the regular expression /${expected.pattern}/") {
+    contains(expected)
   }
 
 /**
