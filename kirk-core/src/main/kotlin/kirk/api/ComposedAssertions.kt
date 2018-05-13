@@ -1,9 +1,11 @@
 package kirk.api
 
-import kirk.internal.Mode
+import kirk.internal.Mode.COLLECT
 
 /**
- * Allows assertions to be composed, or nested, using [AssertionContext.compose].
+ * Allows assertions to be composed, or nested.
+ * This class is the receiver of the lambda passed to
+ * [AssertionContext.compose].
  */
 class ComposedAssertions<T>
 internal constructor(
@@ -31,7 +33,7 @@ internal constructor(
   fun <E> expect(description: String, subject: E): Assertion<E> =
     Subject(description, subject)
       .also(result::append)
-      .let { Assertion(it, Mode.COLLECT) }
+      .let { Assertion(it, COLLECT) }
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -63,7 +65,7 @@ internal constructor(
   ): Assertion<E> =
     Subject(description, subject)
       .also(result::append)
-      .let { Assertion(it, Mode.COLLECT).apply(block) }
+      .let { Assertion(it, COLLECT).apply(block) }
 
   /**
    * Evaluates a composed assertion on the original subject.
@@ -75,6 +77,6 @@ internal constructor(
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     parent.copy().let {
       result.append(it)
-      Assertion(it, Mode.COLLECT).assert(description, assertion)
+      Assertion(it, COLLECT).assert(description, assertion)
     }
 }

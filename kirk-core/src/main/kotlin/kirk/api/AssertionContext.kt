@@ -1,5 +1,10 @@
 package kirk.api
 
+/**
+ * The receiver of the lambda passed to [Assertion.assert].
+ * This class allows evaluation of the [subject] value, or of composed
+ * assertions, ultimately resulting in a call to [pass] or [fail].
+ */
 interface AssertionContext<T> {
   /**
    * The value that is the subject of the assertion.
@@ -17,7 +22,8 @@ interface AssertionContext<T> {
   fun fail()
 
   /**
-   * Report that the assertion failed.
+   * Report that the assertion failed providing detail about the actual value
+   * of a comparison that caused the assertion to fail.
    *
    * @param actualDescription descriptive text about [actualValue] including a
    * placeholder in [String.format] notation for [actualValue].
