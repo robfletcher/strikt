@@ -31,60 +31,7 @@ internal constructor(
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
       val result = Result(description).also(subject::append)
-      val context = object : AssertionContext<T>, ComposedAssertionContext {
-        override val subject = this@Assertion.subject.value
-
-        override fun pass() {
-          if (negated) {
-            result.fail()
-            if (mode == Mode.FAIL_FAST) {
-              throw AssertionFailed(this@Assertion.subject.root)
-            }
-          } else {
-            result.pass()
-          }
-        }
-
-        override fun fail() {
-          if (negated) {
-            result.pass()
-          } else {
-            result.fail()
-            if (mode == Mode.FAIL_FAST) {
-              throw AssertionFailed(this@Assertion.subject.root)
-            }
-          }
-        }
-
-        override fun fail(actualDescription: String, actualValue: Any?) {
-          if (negated) {
-            result.pass()
-          } else {
-            result.fail(actualDescription, actualValue)
-            if (mode == Mode.FAIL_FAST) {
-              throw AssertionFailed(this@Assertion.subject.root)
-            }
-          }
-        }
-
-        override val allPassed: Boolean
-          get() = result.allPassed
-
-        override val anyPassed: Boolean
-          get() = result.anyPassed
-
-        override val allFailed: Boolean
-          get() = result.allFailed
-
-        override val anyFailed: Boolean
-          get() = result.anyFailed
-
-        override fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext {
-          ComposedAssertions(this@Assertion.subject, result).apply(assertions)
-          return this
-        }
-      }
-      context.assertion()
+      AssertionContextImpl(this, result).assertion()
     }
 
   /**
@@ -141,4 +88,61 @@ internal constructor(
         else -> match.groupValues[1].decapitalize()
       }
     }
+
+  private class AssertionContextImpl<T>(
+    private val assertion: Assertion<T>,
+    private val result: Result
+  ) : AssertionContext<T>, ComposedAssertionContext {
+    override val subject = assertion.subject.value
+
+    override fun pass() {
+      if (assertion.negated) {
+        result.fail()
+        if (assertion.mode == Mode.FAIL_FAST) {
+          throw AssertionFailed(assertion.subject.root)
+        }
+      } else {
+        result.pass()
+      }
+    }
+
+    override fun fail() {
+      if (assertion.negated) {
+        result.pass()
+      } else {
+        result.fail()
+        if (assertion.mode == Mode.FAIL_FAST) {
+          throw AssertionFailed(assertion.subject.root)
+        }
+      }
+    }
+
+    override fun fail(actualDescription: String, actualValue: Any?) {
+      if (assertion.negated) {
+        result.pass()
+      } else {
+        result.fail(actualDescription, actualValue)
+        if (assertion.mode == Mode.FAIL_FAST) {
+          throw AssertionFailed(assertion.subject.root)
+        }
+      }
+    }
+
+    override val allPassed: Boolean
+      get() = result.allPassed
+
+    override val anyPassed: Boolean
+      get() = result.anyPassed
+
+    override val allFailed: Boolean
+      get() = result.allFailed
+
+    override val anyFailed: Boolean
+      get() = result.anyFailed
+
+    override fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext {
+      ComposedAssertions(assertion.subject, result).apply(assertions)
+      return this
+    }
+  }
 }
