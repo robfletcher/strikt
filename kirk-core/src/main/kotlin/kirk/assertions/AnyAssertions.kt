@@ -39,7 +39,7 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
     when (subject) {
       null -> fail("is actually %s", null)
       is T -> pass()
-      else -> fail("is actually a %s", subject.javaClass.name)
+      else -> fail("is actually a %s", subject!!.javaClass.name)
     }
   } as Assertion<T>
 

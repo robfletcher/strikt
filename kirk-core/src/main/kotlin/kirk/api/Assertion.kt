@@ -9,7 +9,8 @@ import kotlin.jvm.internal.CallableReference
 class Assertion<T>
 internal constructor(
   private val subject: Subject<T>,
-  private val mode: Mode
+  private val mode: Mode,
+  private val negated: Boolean = false
 ) {
   /**
    * Evaluates a condition that may pass or fail.
@@ -29,7 +30,61 @@ internal constructor(
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      AssertionContext(description, subject, mode).assertion()
+      val result = Result(description).also(subject::append)
+      val context = object : AssertionContext<T>, ComposedAssertionContext {
+        override val subject = this@Assertion.subject.value
+
+        override fun pass() {
+          if (negated) {
+            result.fail()
+            if (mode == Mode.FAIL_FAST) {
+              throw AssertionFailed(this@Assertion.subject.root)
+            }
+          } else {
+            result.pass()
+          }
+        }
+
+        override fun fail() {
+          if (negated) {
+            result.pass()
+          } else {
+            result.fail()
+            if (mode == Mode.FAIL_FAST) {
+              throw AssertionFailed(this@Assertion.subject.root)
+            }
+          }
+        }
+
+        override fun fail(actualDescription: String, actualValue: Any?) {
+          if (negated) {
+            result.pass()
+          } else {
+            result.fail(actualDescription, actualValue)
+            if (mode == Mode.FAIL_FAST) {
+              throw AssertionFailed(this@Assertion.subject.root)
+            }
+          }
+        }
+
+        override val allPassed: Boolean
+          get() = result.allPassed
+
+        override val anyPassed: Boolean
+          get() = result.anyPassed
+
+        override val allFailed: Boolean
+          get() = result.allFailed
+
+        override val anyFailed: Boolean
+          get() = result.anyFailed
+
+        override fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext {
+          ComposedAssertions(this@Assertion.subject, result).apply(assertions)
+          return this
+        }
+      }
+      context.assertion()
     }
 
   /**
@@ -77,13 +132,13 @@ internal constructor(
    * @return an assertion that negates the results of any assertions applied to
    * its subject.
    */
-  fun not(): Assertion<T> = TODO()
-}
+  fun not(): Assertion<T> = Assertion(subject, mode, !negated)
 
-private val CallableReference.propertyName: String
-  get() = "^get(.+)$".toRegex().find(name).let { match ->
-    return when (match) {
-      null -> name
-      else -> match.groupValues[1].decapitalize()
+  private val CallableReference.propertyName: String
+    get() = "^get(.+)$".toRegex().find(name).let { match ->
+      return when (match) {
+        null -> name
+        else -> match.groupValues[1].decapitalize()
+      }
     }
-  }
+}

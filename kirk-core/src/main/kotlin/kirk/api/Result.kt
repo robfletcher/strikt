@@ -28,13 +28,13 @@ sealed class Reportable {
     get() = results.any { it.status == Failed }
 
   val allFailed: Boolean
-    get() = results.all { it.status == Failed }
+    get() = results.isNotEmpty() && results.all { it.status == Failed }
 
   val anyPassed: Boolean
     get() = results.any { it.status == Passed }
 
   val allPassed: Boolean
-    get() = results.all { it.status == Passed }
+    get() = results.isNotEmpty() && results.all { it.status == Passed }
 
   private val _results = mutableListOf<Reportable>()
 }
@@ -46,8 +46,9 @@ data class Subject<T>(
 ) : Reportable() {
   override val status: Status
     get() = when {
-      results.all { it.status == Passed } -> Passed
-      else                                -> Failed
+      results.all { it.status == Passed }  -> Passed
+      results.all { it.status == Pending } -> Pending
+      else                                 -> Failed
     }
 }
 
