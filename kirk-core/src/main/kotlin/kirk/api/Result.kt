@@ -8,12 +8,11 @@ sealed class Reportable {
   private var parent: Reportable? = null
 
   val root: Reportable
-    get() {
-      var node = this
-      while (node.parent != null) {
-        node = node.parent!! // TODO: why do I need !!?
+    get() = parent.let {
+      when (it) {
+        null -> this
+        else -> it.root
       }
-      return node
     }
 
   val results: Collection<Reportable>
