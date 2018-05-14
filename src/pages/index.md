@@ -1,8 +1,8 @@
-[![CircleCI](https://circleci.com/gh/robfletcher/kirk/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/kirk/tree/master)
-[![Download](https://api.bintray.com/packages/robfletcher/maven/kirk-core/images/download.svg) ](https://bintray.com/robfletcher/maven/kirk-core/_latestVersion)
-[API docs](api/kirk/)
+[![CircleCI](https://circleci.com/gh/robfletcher/strikt/tree/master.svg?style=svg)](https://circleci.com/gh/robfletcher/strikt/tree/master)
+[![Download](https://api.bintray.com/packages/robfletcher/maven/strikt-core/images/download.svg) ](https://bintray.com/robfletcher/maven/strikt-core/_latestVersion)
+[API docs](api/strikt/)
 
-Kirk is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
+Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
 It's very much inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
 However, none of those provided exactly what I wanted so I decided to create my own assertions library.
 
@@ -18,7 +18,7 @@ The design goals I had in mind were:
 
 ## Installation
 
-Kirk is available from jcenter.
+Strikt is available from jcenter.
 Add the following to your `build.gradle`.
 
 ```groovy
@@ -26,7 +26,7 @@ repositories {
   jcenter() 
 }
 
-testCompile "io.github.robfletcher.kirk:kirk-core:0.2.1"
+testCompile strikt2.1"
 ```
 
 ## Assertion styles
@@ -192,7 +192,7 @@ expect(subject) {
 
 ### Mapping with property or getter references
 
-If you use a Kotlin property or Java getter reference as the lambda passed to `map`, Kirk will automatically derive the property name and use it as the subject description on the returned assertion. 
+If you use a Kotlin property or Java getter reference as the lambda passed to `map`, Strikt will automatically derive the property name and use it as the subject description on the returned assertion. 
 This is very useful for generating good quality assertion output with minimal effort.
 
 For example, if the previous example fails it will format the error message like this:
@@ -223,7 +223,7 @@ expect(subject) {
 
 Perhaps the most useful application of `map` is in defining extension properties that map an assertion on a type to an assertion on one of the properties (or method return values) of that type.
 
-A simple example is the standard extension property Kirk supplies for `Assertion<Collection<*>>` that maps to an assertion on the collection's `size`.
+A simple example is the standard extension property Strikt supplies for `Assertion<Collection<*>>` that maps to an assertion on the collection's `size`.
 
 ```kotlin
 val <T : Collection<*>> Assertion<T>.size: Assertion<Int>
@@ -258,7 +258,7 @@ expect(subject) {
 
 ## Writing your own assertion functions
 
-One of the aims of Kirk is that implementing your own assertions is _really, really_ easy.
+One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
 Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
 
 Simple assertions produce a single message on failure.
@@ -361,7 +361,7 @@ If the assertion failed we'll see something like this:
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 
-Several assertion functions in Kirk's standard assertions library use nested assertions.
+Several assertion functions in Strikt's standard assertions library use nested assertions.
 For example, `Assertion<Iterable<E>>.all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed (`allPassed`).
 On the other hand `Assertion<Iterable<E>>.any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if at least one of those nested assertions passed (`anyPassed`).
 The `Assertion<Iterable<E>>.none` assertion passes only if `allFailed` is true for its nested assertions! 

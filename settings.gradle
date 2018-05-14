@@ -1,6 +1,6 @@
-rootProject.name = "kirk"
+rootProject.name = "strikt"
 
-include "kirk-core", "samples"
+include "strikt-core", "samples"
 
 def setBuildFile(project) {
   project.buildFileName = "${project.name}.gradle"

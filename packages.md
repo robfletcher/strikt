@@ -1,14 +1,14 @@
-# Module kirk-core
+# Module strikt-core
 
-The core API of Kirk.
+The core API of Strikt.
 
 ## Getting started
 
-Import Kirk's API and standard assertions library into your test.
+Import Strikt's API and standard assertions library into your test.
 
 ```kotlin
-import kirk.api.*
-import kirk.assertions.*
+import strikt.api.*
+import strikt.assertions.*
 ```
 
 Create assertions with `expect` and apply assertion functions to create tests.
@@ -18,9 +18,9 @@ val subject = "covfefe"
 expect(subject).matches("[cefov]+")
 ```
 
-# Package kirk.api
+# Package strikt.api
 
-Contains the API classes of Kirk as well as the `expect` and `throws` functions used to create assertions.
+Contains the API classes of Strikt as well as the `expect` and `throws` functions used to create assertions.
 
 ## Chained assertions
 
@@ -50,7 +50,7 @@ expect(person) {
 
 Of course, you can include fail-fast chains _inside_ blocks. 
 
-# Package kirk.assertions
+# Package strikt.assertions
 
-Contains Kirk's standard library of assertion functions.
-All assertion functions are extensions on `kirk.api.Assertion<T>`.
+Contains Strikt's standard library of assertion functions.
+All assertion functions are extensions on `strikt.api.Assertion<T>`.
