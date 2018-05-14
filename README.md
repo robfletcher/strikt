@@ -20,4 +20,6 @@ repositories {
 testCompile strikt
 ```
 
-## Using KistriktPstrikte see the [project documentation](https://robfletcher.github.io/strikt/) and [API docs](https://robfletcher.github.io/strikt/api/strikt). 
+## Using Strikt
+
+Please see the [project documentation](https://robfletcher.github.io/strikt/) and [API docs](https://robfletcher.github.io/strikt/api/strikt). 

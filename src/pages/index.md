@@ -26,7 +26,7 @@ repositories {
   jcenter() 
 }
 
-testCompile strikt2.1"
+testCompile "io.github.robfletcher.strikt:strikt-core:0.2.1"
 ```
 
 ## Assertion styles
