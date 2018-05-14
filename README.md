@@ -17,7 +17,9 @@ repositories {
   jcenter() 
 }
 
-testCompile strikt
+dependencies {
+  testCompile "io.github.robfletcher.strikt:strikt-core:0.3.0"
+}
 ```
 
 ## Using Strikt
