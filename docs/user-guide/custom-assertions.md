@@ -3,9 +3,9 @@
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
 Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
 
-## Simple assertions
+## Atomic assertions
 
-Simple assertions produce a single message on failure.
+"Atomic" assertions produce a single message on failure.
 They call `assert` passing a lambda with the assertion logic that calls `pass()` or `fail()`.
 
 The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simple assertions implemented just like this.
@@ -36,10 +36,9 @@ If this assertion fails it will produce a message like:
   ✘ is St. Tib's Day 
 ```
 
-### Where do `subject`, `pass()` and `fail()` come from?
-
-The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
-That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+!!! info
+    The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
+    That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 
 ## Describing the "actual" value
 
@@ -69,7 +68,7 @@ Now if the assertion fails there is a little more detail.
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 
-## Assertions based on boolean conditions
+## Simple atomic assertions with boolean expressions
 
 For the very simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose receiver is the assertion subject that returns a boolean.
 

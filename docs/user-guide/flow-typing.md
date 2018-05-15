@@ -36,9 +36,12 @@ expect(subject.get("name")).hasLength(3) // hasLength does not exist on Assertio
 
 This mechanism means that IDE code-completion is optimally helpful as only assertion methods that are appropriate to the subject type will be suggested. 
 
-## Mapping assertions using lambdas
+## Mapping assertions
 
 In order to map the assertion chain to a property or method result of the current subject you can use the `map` method.
+
+### Mapping with lambdas
+
 The method takes a lambda whose receiver is the current subject and returns an `Assertion<R>` where `R` is whatever the lambda returns.
 
 This is sometimes useful for making assertions about the properties of an object or the values returned by methods.
@@ -53,7 +56,7 @@ expect(subject) {
 
 ### Mapping with property or getter references
 
-If you use a Kotlin property or Java getter reference as the lambda passed to `map`, Strikt will automatically derive the property name and use it as the subject description on the returned assertion. 
+If you use a Kotlin property or Java method reference as the lambda passed to `map`, Strikt will automatically derive the property name and use it as the subject description on the returned assertion. 
 This is very useful for generating good quality assertion output with minimal effort.
 
 For example, if the previous example fails it will format the error message like this:

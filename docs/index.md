@@ -9,7 +9,7 @@ However, none of those provided exactly what I wanted so I decided to create my 
 
 The design goals I had in mind were:
 
-## Strongly typed
+## Strong typing
 
 Assertion functions can "narrow" the type of the assertion:
 

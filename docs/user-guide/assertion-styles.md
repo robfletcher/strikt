@@ -5,7 +5,7 @@ You can mix and match both in the same test and even nest chained assertions ins
 
 ## Chained assertions
 
-Chained assertions use a fluent API.
+Chained assertions use a fluent API similar to AssertJ.
 They fail fast.
 That is, the first assertion that fails breaks the chain and further assertions are not evaluated.
 
@@ -32,7 +32,9 @@ Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLeng
 
 ## Block assertions
 
-Block assertions are declared in a block whose receiver is an assertion on a target object.
+Block assertions are declared in a lambda whose receiver is an `Assertion<T>` object.
+They allow multiple assertions (or assertion chains) to be evaluated against the subject.
+
 Block assertions do _not_ fail fast.
 That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
 
@@ -57,7 +59,7 @@ Produces the output:
 
 All assertions are applied and since two fail there are two errors logged.
 
-## Chained assertions inside block assertions
+### Chained assertions inside block assertions
 
 Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
 

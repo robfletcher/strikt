@@ -25,6 +25,8 @@ pages:
   - Custom Assertions: user-guide/custom-assertions.md
   - About: about.md
 #  - API: api/strikt/index.md
+markdown_extensions:
+  - admonition
 site_description: An assertion library for Kotlin
 site_author: Rob Fletcher
 site_dir: build/site
