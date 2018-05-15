@@ -7,7 +7,8 @@ theme:
   palette:
     primary: 'indigo'
     accent: 'orange'
-  logo: 'img/logo.png'
+  logo:
+    icon: 'check_circle'
   language: 'en'
   font:
     text: 'Roboto'
