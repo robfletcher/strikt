@@ -1,7 +1,19 @@
 site_name: Strikt
 site_url: https://robfletcher.github.io/strikt/
 repo_url: https://github.com/robfletcher/strikt/
-theme: readthedocs
+theme:
+  name: null
+  custom_dir: 'mkdocs-material/material'
+  palette:
+    primary: 'indigo'
+    accent: 'orange'
+  logo: 'img/logo.png'
+  language: 'en'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  feature:
+    tabs: false
 pages:
   - Home: index.md
   - Using Strikt: user-guide/using-strikt.md
