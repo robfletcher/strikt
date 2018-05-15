@@ -64,7 +64,10 @@ Now if the assertion fails there is a little more detail.
 ```
 ▼ Expect that 2018-05-01
   ✘ is St. Tib's Day
+    ↳ in fact it is 2018-05-01
 ```
+
+In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 
 ## Assertions based on boolean conditions
 
