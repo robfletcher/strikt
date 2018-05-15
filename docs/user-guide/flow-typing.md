@@ -1,99 +1,21 @@
-# Using Strikt
+# Flow typing
 
-Strikt does not depend on any particular test runner.
-It can be used with JUnit, Spek or any other runner that supports tests written in Kotlin.
-
-## Assertion styles
-
-Two different styles of assertion -- chained and block -- are supported for different use-cases.
-You can mix and match both in the same test and even nest chained assertions inside block assertions.
-
-### Chained assertions
-
-Chained assertions use a fluent API.
-They fail fast.
-That is, the first assertion that fails breaks the chain and further assertions are not evaluated.
-
-Each assertion in the chain returns an `Assertion` object that supports further assertions.
-
-```kotlin
-val subject = "covfefe"
-expect(subject)
-  .isA<String>()
-  .hasLength(1)
-  .isUpperCase()
-```
-
-Produces the output: 
-
-```
-▼ Expect that "covfefe"
-  ✔ is a java.lang.String
-  ✘ has length 1
-    ↳ found 7
-```
-
-Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
-
-### Block assertions
-
-Block assertions are declared in a block whose receiver is an assertion on a target object.
-Block assertions do _not_ fail fast.
-That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
-
-```kotlin
-val subject = "covfefe"
-expect(subject) {
-  isA<String>()
-  hasLength(1)
-  isUpperCase()
-}
-```
-
-Produces the output:
-
-```
-▼ Expect that "covfefe"
-  ✔ is a java.lang.String
-  ✘ has length 1
-    ↳ found 7
-  ✘ is upper case
-```
-
-All assertions are applied and since two fail there are two errors logged.
-
-### Chained assertions inside block assertions
-
-Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
-
-```kotlin
-val subject = 1L
-expect(subject) {
-  lessThan(1).isA<Int>()
-  greaterThan(1)
-}
-```
-
-Produces the output:
-
-```
-▼ Expect that 1
-  ✘ is less than 1
-  ✘ is greater than 1
-```
-
-Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
-The `greaterThan(1)` assertion _was_ evaluated since it was not part of the same chain.
-
-## Flow typed assertions
+Strikt's API is designed to work with Kotlin's strong type system. 
 
 Chained assertions return an `Assertion<T>` object with a generic type representing the (declared) type of the assertion subject.
 Some assertions will return a _different_ type to the one they were called on.
+
+## Nullable subjects
+
 For example, if the subject of an assertion is a nullable type (in other words it's an `Assertion<T?>`) the assertion methods `isNull()` and `isNotNull()` are available.
 The return type of `isNotNull()` is `Assertion<T>` because we now _know_ the subject is not null.
 You will find IDE code-completion will no longer offer the `isNull()` and `isNotNull()` assertion methods.
 
+## Narrowing assertions
+
 Another example comes when testing values with broad types and making assertions about their specific runtime type.
+This is called "narrowing".
+
 For example:
 
 ```kotlin
@@ -102,7 +24,7 @@ expect(subject.get("count")).isA<Number>().isGreaterThan(0)
 expect(subject.get("name")).isA<String>().hasLength(3)
 ```
 
-The return type of the subject map's `get()` method is `Any` but using the "down-cast" assertion `isA<T>()` we can both assert the type of the value and -- because the compiler now knows it is dealing with an `Assertion<String>` or an `Assertion<Number>` -- we can use more specialized assertion methods that are only available for those subject types.
+The return type of the subject map's `get()` method is `Any` but using the narrowing assertion `isA<T>()` we can both assert the type of the value and -- because the compiler now knows it is dealing with an `Assertion<String>` or an `Assertion<Number>` -- we can use more specialized assertion methods that are only available for those subject types.
 
 Without the `isA<T>()` assertion the code would not compile:
 
@@ -113,50 +35,6 @@ expect(subject.get("name")).hasLength(3) // hasLength does not exist on Assertio
 ```
 
 This mechanism means that IDE code-completion is optimally helpful as only assertion methods that are appropriate to the subject type will be suggested. 
-
-## Assertions on elements of a collection
-
-Some assertions on collections include sub-assertions applied to the elements of the collection.
-For example, we can assert that _all_ elements conform to a repeated assertion.
-
-```kotlin
-val subject = setOf("catflap", "rubberplant", "marzipan")
-expect(subject).all {
-  isLowerCase()
-  startsWith('c')
-}
-```
-
-Produces the output:
-
-```
-▼ Expect that [catflap, rubberplant, marzipan] 
-  ✘ all elements match:
-    ▼ "catflap"
-      ✔ starts with 'c'
-      ✔ is lower case
-    ▼ "rubberplant" 
-      ✘ starts with 'c'
-      ✔ is lower case
-    ▼ "marzipan"
-      ✘ starts with 'c'
-      ✔ is lower case
-```
-
-The results are broken down by individual elements in the collection so it's easy to see which failed.
-
-## Asserting exceptions are thrown
-
-To assert that some code throws an exception you can use the `throws<E>` function.
-For example:
-
-```kotlin
-throws<TooMuchFlaxException> {
-  service.computeMeaning()
-}
-```
-
-The `throws<E>` function returns an `Assertion<E>` so you can chain assertions about the exception after it.
 
 ## Mapping assertions using lambdas
 
