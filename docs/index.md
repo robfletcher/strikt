@@ -24,7 +24,9 @@ Add the following to your `build.gradle`.
 
 ```groovy
 repositories { 
-  jcenter() 
+  maven { 
+    url "https://dl.bintray.com/robfletcher/maven" 
+  } 
 }
 
 dependencies {
