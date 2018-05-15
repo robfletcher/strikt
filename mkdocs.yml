@@ -1,6 +1,7 @@
 site_name: Strikt
 site_url: https://robfletcher.github.io/strikt/
-repo_url: https://github.com/robfletcher/strikt/
+repo_name: 'robfletcher/strikt'
+repo_url: https://github.com/robfletcher/strikt
 theme:
   name: null
   custom_dir: 'mkdocs-material/material'
