@@ -41,7 +41,7 @@ internal object Mapping : Spek({
         val expectedMessage = listOf(
           "▼ Expect that Person(name=David, birthDate=1947-01-08)",
           "  ▼ .name ${subject.name}",
-          "    ✘ is equal to Ziggy",
+          "    ✗ is equal to Ziggy",
           ""
         )
         assertEquals(expectedMessage, e.message.lines())
@@ -56,7 +56,7 @@ internal object Mapping : Spek({
           "▼ Expect that Person(name=David, birthDate=1947-01-08)",
           "  ▼ .birthDate ${subject.birthDate}",
           "    ▼ .year ${subject.birthDate.year}",
-          "      ✘ is equal to 1971",
+          "      ✗ is equal to 1971",
           ""
         )
         assertEquals(expectedMessage, e.message.lines())

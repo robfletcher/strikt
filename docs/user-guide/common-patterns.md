@@ -19,16 +19,16 @@ This produces the output:
 
 ```
 ▼ Expect that [catflap, rubberplant, marzipan] 
-  ✘ all elements match:
+  ✗ all elements match:
     ▼ "catflap"
-      ✔ starts with 'c'
-      ✔ is lower case
+      ✓ starts with 'c'
+      ✓ is lower case
     ▼ "rubberplant" 
-      ✘ starts with 'c'
-      ✔ is lower case
+      ✗ starts with 'c'
+      ✓ is lower case
     ▼ "marzipan"
-      ✘ starts with 'c'
-      ✔ is lower case
+      ✗ starts with 'c'
+      ✓ is lower case
 ```
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.

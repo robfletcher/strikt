@@ -26,22 +26,16 @@ internal open class DefaultResultWriter : ResultWriter {
 
   private fun Subject<*>.writeSubject(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
-    writer
-      .append("▼ ")
-      // TODO: handle without String.format
-      .append(description.format(value))
+    writeSubjectIcon(writer)
+    // TODO: handle without String.format
+    writer.append(description.format(value))
     writeLineEnd(writer, this)
   }
 
   private fun Result.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
-    writer
-      .append(when (status) {
-        Passed  -> "✔ "
-        Failed  -> "✘ "
-        Pending -> "? "
-      })
-      .append(description)
+    writeStatusIcon(writer, this)
+    writer.append(description)
     writeLineEnd(writer, this)
 
     // TODO: recurse here, Actual should be just another Reportable
@@ -51,10 +45,9 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun Result.writeActual(writer: Appendable, indent: Int) {
     actual?.let { actual ->
       writeLineStart(writer, this, indent + 1)
-      writer
-        .append("↳ ")
-        // TODO: handle without String.format
-        .append(actual.description.format(actual.value))
+      writeActualValueIcon(writer)
+      // TODO: handle without String.format
+      writer.append(actual.description.format(actual.value))
       writeLineEnd(writer, this)
     }
   }
@@ -65,5 +58,21 @@ internal open class DefaultResultWriter : ResultWriter {
 
   protected open fun writeLineEnd(writer: Appendable, node: Reportable) {
     writer.append("\n")
+  }
+
+  protected open fun writeStatusIcon(writer: Appendable, node: Result) {
+    writer.append(when (node.status) {
+      Passed  -> "✓ "
+      Failed  -> "✗ "
+      Pending -> "? "
+    })
+  }
+
+  protected open fun writeActualValueIcon(writer: Appendable) {
+    writer.append("• ")
+  }
+
+  protected open fun writeSubjectIcon(writer: Appendable) {
+    writer.append("▼ ")
   }
 }

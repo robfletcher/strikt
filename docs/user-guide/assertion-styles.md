@@ -23,9 +23,9 @@ Produces the output:
 
 ```
 ▼ Expect that "covfefe"
-  ✔ is a java.lang.String
-  ✘ has length 1
-    ↳ found 7
+  ✓ is a java.lang.String
+  ✗ has length 1
+    • found 7
 ```
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
@@ -51,10 +51,10 @@ Produces the output:
 
 ```
 ▼ Expect that "covfefe"
-  ✔ is a java.lang.String
-  ✘ has length 1
-    ↳ found 7
-  ✘ is upper case
+  ✓ is a java.lang.String
+  ✗ has length 1
+    • found 7
+  ✗ is upper case
 ```
 
 All assertions are applied and since two fail there are two errors logged.
@@ -75,8 +75,8 @@ Produces the output:
 
 ```
 ▼ Expect that 1
-  ✘ is less than 1
-  ✘ is greater than 1
+  ✗ is less than 1
+  ✗ is greater than 1
 ```
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.

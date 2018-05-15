@@ -33,7 +33,7 @@ If this assertion fails it will produce a message like:
 
 ```
 ▼ Expect that 2018-05-01
-  ✘ is St. Tib's Day 
+  ✗ is St. Tib's Day 
 ```
 
 !!! info
@@ -62,8 +62,8 @@ Now if the assertion fails there is a little more detail.
 
 ```
 ▼ Expect that 2018-05-01
-  ✘ is St. Tib's Day
-    ↳ in fact it is 2018-05-01
+  ✗ is St. Tib's Day
+    • in fact it is 2018-05-01
 ```
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
@@ -121,15 +121,15 @@ If the assertion failed we'll see something like this:
 
 ```
 ▼ Expect that [catflap, null, rubberplant, marzipan] 
-  ✘ does not contain any null elements: 
+  ✗ does not contain any null elements: 
     ▼ "catflap" 
-      ✔ is not null
+      ✓ is not null
     ▼ null 
-      ✘ is not null  
+      ✗ is not null  
     ▼ "rubberplant" 
-      ✔ is not null
+      ✓ is not null
     ▼ "marzipan" 
-      ✔ is not null
+      ✓ is not null
 ```
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.

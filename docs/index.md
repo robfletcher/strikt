@@ -47,10 +47,10 @@ expect(subject) {
 ```
 Assertion failed:
 ▼ Expect that "The Enlightened take things Lightly"
-  ✘ has length 5
-    ↳ found 35
-  ✘ matches /\d+/
-  ✔ starts with "T"
+  ✗ has length 5
+    • found 35
+  ✗ matches /\d+/
+  ✓ starts with "T"
 ```
 
 ## Extensibility
@@ -73,7 +73,7 @@ With the same diagnostic quality:
 
 ```
 ▼ Expect that 2018-05-16
-  ✘ is St. Tib's Day 
+  ✗ is St. Tib's Day 
 ```
 
 Easy custom narrowing:
@@ -119,16 +119,16 @@ expect(subject).any {
 
 ```
 ▼ Expect that the pantheon
-  ✔ at least one element matches:
+  ✓ at least one element matches:
     ▼ Expect that Thor
-      ✘ .culture is equal to "Grœco-Californian"
-        ↳ found "Norse"
-      ✘ .realm is equal to "discord and confusion"
-        ↳ found "thunder"
-      ✘ .aliases contains "Discordia"
-        ↳ found "Þórr", "Þunor"
+      ✗ .culture is equal to "Grœco-Californian"
+        • found "Norse"
+      ✗ .realm is equal to "discord and confusion"
+        • found "thunder"
+      ✗ .aliases contains "Discordia"
+        • found "Þórr", "Þunor"
     ▼ Expect that Eris
-      ✔ .culture is equal to "Grœco-Californian"
-      ✔ .realm is equal to "discord and confusion"
-      ✔ .aliases contains "Discordia"
+      ✓ .culture is equal to "Grœco-Californian"
+      ✓ .realm is equal to "discord and confusion"
+      ✓ .aliases contains "Discordia"
 ```

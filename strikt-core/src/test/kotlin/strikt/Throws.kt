@@ -40,8 +40,8 @@ internal object Throws : Spek({
         }.let { e ->
           val expectedMessage = listOf(
             "▼ Expect that () -> kotlin.Unit",
-            "  ✘ throws an IllegalStateException",
-            "    ↳ no exception was caught",
+            "  ✗ throws an IllegalStateException",
+            "    • no exception was caught",
             ""
           ).joinToString("\n")
           assertEquals(expectedMessage, e.message)
@@ -54,8 +54,8 @@ internal object Throws : Spek({
         }.let { e ->
           val expectedMessage = listOf(
             "▼ Expect that () -> kotlin.Unit",
-            "  ✘ throws a NullPointerException",
-            "    ↳ no exception was caught",
+            "  ✗ throws a NullPointerException",
+            "    • no exception was caught",
             ""
           ).joinToString("\n")
           assertEquals(expectedMessage, e.message)
@@ -68,8 +68,8 @@ internal object Throws : Spek({
         }.let { e ->
           val expectedMessage = listOf(
             "▼ Expect that () -> kotlin.Unit",
-            "  ✘ throws an IllegalStateException",
-            "    ↳ instead caught a class java.lang.NullPointerException",
+            "  ✗ throws an IllegalStateException",
+            "    • instead caught a class java.lang.NullPointerException",
             ""
           ).joinToString("\n")
           assertEquals(expectedMessage, e.message)

@@ -31,14 +31,14 @@ object Reporting : Spek({
       it("formats the error message") {
         val expectedLines = listOf(
           "▼ Expect that [catflap, rubberplant, marzipan]",
-          "  ✔ has size 3",
-          "  ✘ all elements match:",
+          "  ✓ has size 3",
+          "  ✗ all elements match:",
           "    ▼ Expect that catflap",
-          "      ✘ is upper case",
+          "      ✗ is upper case",
           "    ▼ Expect that rubberplant",
-          "      ✘ is upper case",
+          "      ✗ is upper case",
           "    ▼ Expect that marzipan",
-          "      ✘ is upper case",
+          "      ✗ is upper case",
           ""
         )
         val actualLines = e.message.lines()
@@ -79,18 +79,18 @@ object Reporting : Spek({
       it("formats the error message") {
         val expectedLines = listOf(
           "▼ Expect that [catflap, rubberplant, marzipan]",
-          "  ✘ has size 0",
-          "    ↳ found 3",
-          "  ✘ all elements match:",
+          "  ✗ has size 0",
+          "    • found 3",
+          "  ✗ all elements match:",
           "    ▼ Expect that catflap",
-          "      ✘ is upper case",
-          "      ✔ starts with 'c'",
+          "      ✗ is upper case",
+          "      ✓ starts with 'c'",
           "    ▼ Expect that rubberplant",
-          "      ✘ is upper case",
-          "      ✘ starts with 'c'",
+          "      ✗ is upper case",
+          "      ✗ starts with 'c'",
           "    ▼ Expect that marzipan",
-          "      ✘ is upper case",
-          "      ✘ starts with 'c'",
+          "      ✗ is upper case",
+          "      ✗ starts with 'c'",
           ""
         )
         val actualLines = e.message.lines()

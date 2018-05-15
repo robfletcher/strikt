@@ -64,10 +64,10 @@ For example, if the previous example fails it will format the error message like
 ```
 ▼ Person[name: Ziggy, birthDate: 1972-06-16] 
   ▼ Ziggy 
-    ✘ is equal to David
+    ✗ is equal to David
   ▼ 1972-06-16 
     ▼ 1972
-      ✘ is equal to 1947
+      ✗ is equal to 1947
 ```
 
 However, using property references, the output is more useful.
@@ -83,10 +83,10 @@ expect(subject) {
 ```
 ▼ Person[name: Ziggy, birthDate: 1972-06-16] 
   ▼ .name Ziggy 
-    ✘ is equal to David
+    ✗ is equal to David
   ▼ .birthDate 1972-06-16
     ▼ .year 1972 
-      ✘ is equal to 1947
+      ✗ is equal to 1947
 ```
 
 ### Mapping with extension properties
