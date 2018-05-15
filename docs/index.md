@@ -9,10 +9,126 @@ However, none of those provided exactly what I wanted so I decided to create my 
 
 The design goals I had in mind were:
 
-- An assertion API that takes advantage of Kotlin's strong type system.
-- Easy "soft assertions" out of the box.
-- A simple API for composing custom assertions.
-- Legible syntax that an IDE can help with.
-- Use Kotlin's nice language features without getting overly-clever (torturing everything into an infix function syntax, or trying to recreate [Spock](http://spockframework.org/)'s assertion syntax in a language that can't really do it, for example).
-- A rich selection of assertions that apply to common types without a tangled hierarchy of classes and self-referential generic types, (it turns out Kotlin's extension functions make this pretty easy to accomplish).
-- Simple setup -- one dependency, one (okay, two) imports and you're up and running.
+## Strongly typed
+
+Assertion functions can "narrow" the type of the assertion:
+
+```kotlin
+val subject: Any? = "The Enlightened take things Lightly"
+expect(subject)              // type: Assertion<Any?>
+  .isNotNull()               // type: Assertion<Any>
+  .isA<String>()             // type: Assertion<String>
+  .matches(Regex("[\w\s]+")) // only available on Assertion<CharSequence>
+```
+
+Assertions can "map" to properties and method results in a type safe way:
+
+```kotlin
+val subject = Pantheon.ERIS
+expect(subject)
+  .map(Deity::realm)  // type safe reference to a property narrows assertion
+  .map { toString() } // narrows assertion to return type of method call
+  .isEqualTo("discord and confusion")
+```
+
+## Easy "soft" assertions
+
+```kotlin
+val subject: "The Enlightened take things Lightly"
+expect(subject) {
+  hasLength(5)          // fails
+  matches(Regex("\d+")) // fails
+  startsWith("T")       // still evaluated and passes
+}
+```
+
+## Useful, structured diagnostics
+
+```
+Assertion failed:
+▼ Expect that "The Enlightened take things Lightly"
+  ✘ has length 5
+    ↳ found 35
+  ✘ matches /\d+/
+  ✔ starts with "T"
+```
+
+## Extensibility
+
+Easy custom assertions:
+
+```kotlin
+fun Assertion<LocalDate>.isStTibsDay() =
+  assert("is St. Tib's Day") { 
+    when (MonthDay.from(subject)) {
+      MonthDay.of(2, 29) -> pass()
+      else               -> fail()
+    }
+  }
+
+expect(LocalDate.of("2018-05-15")).isStTibsDay()
+```
+
+With the same diagnostic quality:
+
+```
+▼ Expect that 2018-05-16
+  ✘ is St. Tib's Day 
+```
+
+Easy custom narrowing:
+
+```kotlin
+val Assertion<Deity>.realm: String = map(Deity::realm)
+
+val subject = Pantheon.ERIS
+expect(subject).realm.isEqualTo("discord and confusion")
+```
+
+## Simple setup 
+
+One dependency. Two imports. Go!
+
+```groovy
+repositories { 
+  maven { 
+    url "https://dl.bintray.com/robfletcher/maven" 
+  } 
+}
+
+dependencies {
+  testCompile "io.github.robfletcher.strikt:strikt-core:0.3.0"
+}
+```
+
+```kotlin
+import strikt.api.*
+import strikt.assertions.*
+```
+
+## Simple API, complex capabilities
+
+```kotlin
+val subject = Pantheon.values()
+expect(subject).any {
+  culture.isEqualTo("Grœco-Californian")
+  realm.isEqualTo("discord and confusion")
+  aliases.contains("Discordia")
+}
+```
+
+```
+▼ Expect that the pantheon
+  ✔ at least one element matches:
+    ▼ Expect that Thor
+      ✘ .culture is equal to "Grœco-Californian"
+        ↳ found "Norse"
+      ✘ .realm is equal to "discord and confusion"
+        ↳ found "thunder"
+      ✘ .aliases contains "Discordia"
+        ↳ found "Þórr", "Þunor"
+    ▼ Expect that Eris
+      ✔ .culture is equal to "Grœco-Californian"
+      ✔ .realm is equal to "discord and confusion"
+      ✔ .aliases contains "Discordia"
+```
