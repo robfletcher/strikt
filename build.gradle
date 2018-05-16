@@ -14,7 +14,7 @@ buildscript {
 apply plugin: "io.spring.release"
 
 allprojects {
-  group = "io.github.robfletcher.${rootProject.name}"
+  group = "io.strikt"
 }
 
 subprojects {

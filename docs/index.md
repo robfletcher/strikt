@@ -97,7 +97,7 @@ repositories {
 }
 
 dependencies {
-  testCompile "io.github.robfletcher.strikt:strikt-core:0.3.0"
+  testCompile "io.strikt:strikt-core:0.3.0"
 }
 ```
 
