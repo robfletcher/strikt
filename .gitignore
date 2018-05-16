@@ -3,3 +3,4 @@
 build/
 *.iml
 /mkdocs-material/
+/docs/api/
