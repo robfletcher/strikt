@@ -1,4 +1,3 @@
-
 apply plugin: "io.spring.publishing"
 apply plugin: "org.jetbrains.dokka"
 
@@ -8,22 +7,13 @@ dokka {
   jdkVersion = 8
   samples = ["$rootDir/samples/src/test/kotlin"]
 }
-dokka.mustRunAfter javadoc
 
-task(dokkaJar, type: Jar) {
+javadoc.enabled = false
+task(javadocJar, type: Jar, overwrite: true) {
   group = "documentation"
-  description = "Assembles Kotlin docs with Dokka"
+  description = "Assembles Javadoc jar from Dokka API docs"
   classifier = "javadoc"
   from(dokka)
-}
-dokkaJar.mustRunAfter javadocJar
-
-publishing {
-  publications {
-    nebula(MavenPublication) {
-      artifact tasks.dokkaJar
-    }
-  }
 }
 
 bintray {
