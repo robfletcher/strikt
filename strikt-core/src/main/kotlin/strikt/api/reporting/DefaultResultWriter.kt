@@ -77,6 +77,7 @@ internal open class DefaultResultWriter : ResultWriter {
     when (value) {
       null            -> "null"
       is CharSequence -> "\"$value\""
+      is Char         -> "'$value'"
       is Iterable<*>  -> value.map(this::formatValue)
       is Class<*>     -> value.name
       else            -> value

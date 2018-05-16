@@ -20,7 +20,8 @@ pages:
   - Home: index.md
   - Getting Started: user-guide/getting-started.md
   - Assertion Styles: user-guide/assertion-styles.md
-  - Flow Typing: user-guide/flow-typing.md
+  - Strongly-Typed Assertions: user-guide/flow-typing.md
+  - Mapping Over Assertion Subjects: user-guide/mapping.md
   - Common Assertion Patterns: user-guide/common-patterns.md
   - Custom Assertions: user-guide/custom-assertions.md
   - About: about.md
