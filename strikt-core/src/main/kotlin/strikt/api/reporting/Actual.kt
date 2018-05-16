@@ -1,6 +1,6 @@
-package strikt.internal
+package strikt.api.reporting
 
-data class Described<T>(
+data class Actual<T>(
   val description: String,
   val value: T
 ) {

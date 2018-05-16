@@ -1,7 +1,7 @@
 package strikt.api
 
+import strikt.api.reporting.Subject
 import strikt.assertions.throws
-import strikt.internal.Mode
 
 /**
  * Start a chain of assertions over [subject].

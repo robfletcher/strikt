@@ -1,9 +1,6 @@
-package strikt.internal.reporting
+package strikt.api.reporting
 
-import strikt.api.Reportable
-import strikt.api.Result
 import strikt.api.Status.*
-import strikt.api.Subject
 
 internal open class DefaultResultWriter : ResultWriter {
   override fun writeTo(writer: Appendable, result: Reportable) {

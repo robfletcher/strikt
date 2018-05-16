@@ -1,7 +1,5 @@
-package strikt.internal.reporting
+package strikt.api.reporting
 
-import strikt.api.Reportable
-import strikt.api.Result
 import strikt.api.Status.*
 
 internal object AnsiColorResultWriter : DefaultResultWriter() {

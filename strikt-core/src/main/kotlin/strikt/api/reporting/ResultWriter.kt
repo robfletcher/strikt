@@ -1,6 +1,5 @@
-package strikt.internal.reporting
+package strikt.api.reporting
 
-import strikt.api.Reportable
 import java.io.StringWriter
 
 internal interface ResultWriter {

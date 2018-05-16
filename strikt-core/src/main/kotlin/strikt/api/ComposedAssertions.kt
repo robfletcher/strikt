@@ -1,6 +1,8 @@
 package strikt.api
 
-import strikt.internal.Mode.COLLECT
+import strikt.api.Mode.COLLECT
+import strikt.api.reporting.Result
+import strikt.api.reporting.Subject
 
 /**
  * Allows assertions to be composed, or nested.

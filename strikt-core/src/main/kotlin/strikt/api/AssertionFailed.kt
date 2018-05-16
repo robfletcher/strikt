@@ -1,6 +1,7 @@
 package strikt.api
 
-import strikt.internal.reporting.writeToString
+import strikt.api.reporting.Reportable
+import strikt.api.reporting.writeToString
 
 /**
  * Thrown to indicate an assertion, or a group or chain of assertions has

@@ -1,7 +1,7 @@
-package strikt.api
+package strikt.api.reporting
 
+import strikt.api.Status
 import strikt.api.Status.*
-import strikt.internal.Described
 
 sealed class Reportable {
   abstract val status: Status
@@ -67,7 +67,7 @@ data class Subject<T>(
 data class Result
 internal constructor(val description: String? = null) : Reportable() {
   private var _status: Status = Pending
-  private var _actual: Described<Any?>? = null
+  private var _actual: Actual<Any?>? = null
 
   fun pass() {
     _status = Passed
@@ -79,12 +79,12 @@ internal constructor(val description: String? = null) : Reportable() {
 
   fun fail(actualDescription: String, actualValue: Any?) {
     fail()
-    _actual = Described(actualDescription, actualValue)
+    _actual = Actual(actualDescription, actualValue)
   }
 
   override val status: Status
     get() = _status
 
-  val actual: Described<*>?
+  val actual: Actual<*>?
     get() = _actual
 }

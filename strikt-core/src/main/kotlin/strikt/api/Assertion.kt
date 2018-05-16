@@ -1,6 +1,7 @@
 package strikt.api
 
-import strikt.internal.Mode
+import strikt.api.reporting.Result
+import strikt.api.reporting.Subject
 import kotlin.jvm.internal.CallableReference
 
 /**
