@@ -66,7 +66,7 @@ internal object Mapping : Spek({
       }.let { e ->
         val expectedMessage = listOf(
           "▼ Expect that Person(name=David, birthDate=1947-01-08)",
-          "  ▼ .name ${subject.name}",
+          "  ▼ .name \"${subject.name}\"",
           "    ✗ is equal to Ziggy",
           ""
         )

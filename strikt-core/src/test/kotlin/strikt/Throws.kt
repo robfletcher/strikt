@@ -69,7 +69,7 @@ internal object Throws : Spek({
           val expectedMessage = listOf(
             "▼ Expect that () -> kotlin.Unit",
             "  ✗ throws an IllegalStateException",
-            "    • instead caught a class java.lang.NullPointerException",
+            "    • instead caught a java.lang.NullPointerException",
             ""
           ).joinToString("\n")
           assertEquals(expectedMessage, e.message)

@@ -25,7 +25,7 @@ internal open class DefaultResultWriter : ResultWriter {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
     // TODO: handle without String.format
-    writer.append(description.format(value))
+    writer.append(description.format(formatValue(value)))
     writeLineEnd(writer, this)
   }
 
@@ -44,7 +44,7 @@ internal open class DefaultResultWriter : ResultWriter {
       writeLineStart(writer, this, indent + 1)
       writeActualValueIcon(writer)
       // TODO: handle without String.format
-      writer.append(actual.description.format(actual.value))
+      writer.append(actual.description.format(formatValue(actual.value)))
       writeLineEnd(writer, this)
     }
   }
@@ -72,4 +72,13 @@ internal open class DefaultResultWriter : ResultWriter {
   protected open fun writeSubjectIcon(writer: Appendable) {
     writer.append("▼ ")
   }
+
+  protected open fun formatValue(value: Any?): Any =
+    when (value) {
+      null            -> "null"
+      is CharSequence -> "\"$value\""
+      is Iterable<*>  -> value.map(this::formatValue)
+      is Class<*>     -> value.name
+      else            -> value
+    }
 }
