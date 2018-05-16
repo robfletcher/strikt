@@ -3,6 +3,24 @@ package strikt.assertions
 import strikt.api.Assertion
 
 /**
+ * Maps this assertion to an assertion over the first element in the subject
+ * iterable.
+ *
+ * @see Iterable.first
+ */
+fun <T : Iterable<E>, E> Assertion<T>.first(): Assertion<E> =
+  map("first element %s") { first() }
+
+/**
+ * Maps this assertion to an assertion over the last element in the subject
+ * iterable.
+ *
+ * @see Iterable.last
+ */
+fun <T : Iterable<E>, E> Assertion<T>.last(): Assertion<E> =
+  map("last element %s") { last() }
+
+/**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
