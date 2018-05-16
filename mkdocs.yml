@@ -3,8 +3,7 @@ site_url: https://strikt.io/
 repo_name: 'robfletcher/strikt'
 repo_url: https://github.com/robfletcher/strikt
 theme:
-  name: null
-  custom_dir: 'mkdocs-material/material'
+  name: 'material'
   palette:
     primary: 'indigo'
     accent: 'orange'
@@ -31,3 +30,4 @@ markdown_extensions:
 site_description: An assertion library for Kotlin
 site_author: Rob Fletcher
 site_dir: build/site
+extra_css: ['api']
