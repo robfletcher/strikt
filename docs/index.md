@@ -1,6 +1,6 @@
 ![Strikt](img/logo.png)
 
-[![CircleCI](https://circleci.com/gh/robfletcher/strikt/tree/master.svg?style=shield)](https://circleci.com/gh/robfletcher/strikt/tree/master)
+[![CircleCI](https://img.shields.io/circleci/project/github/robfletcher/strikt/master.svg)](https://circleci.com/gh/robfletcher/strikt/tree/master)
 [![Download](https://api.bintray.com/packages/robfletcher/maven/strikt-core/images/download.svg) ](https://bintray.com/robfletcher/maven/strikt-core/_latestVersion)
 
 Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
