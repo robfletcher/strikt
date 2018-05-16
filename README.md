@@ -26,4 +26,4 @@ dependencies {
 
 ## Using Strikt
 
-Please see the [project documentation](https://robfletcher.github.io/strikt/) and [API docs](https://robfletcher.github.io/strikt/api/strikt). 
+Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt). 
