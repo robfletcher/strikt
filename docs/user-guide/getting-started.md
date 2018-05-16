@@ -5,18 +5,16 @@ It can be used with JUnit, Spek or any other runner that supports tests written 
 
 ## Installation
 
-Strikt is available from Bintray.
+Strikt is available from JCenter.
 Add the following to your `build.gradle`.
 
 ```groovy
 repositories { 
-  maven { 
-    url "https://dl.bintray.com/robfletcher/maven" 
-  } 
+  jcenter() 
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:0.4.0"
+  testCompile "io.strikt:strikt-core:0.4.1"
 }
 ```
 

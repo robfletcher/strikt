@@ -7,17 +7,15 @@ Any suggestions, issue reports, contributions, or feedback are very welcome.
 
 ## Installation
 
-Strikt is available from Bintray.
+Strikt is available from JCenter.
 
 ```groovy
 repositories { 
-  maven { 
-    url "https://dl.bintray.com/robfletcher/maven" 
-  } 
+  jcenter() 
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:0.4.0"
+  testCompile "io.strikt:strikt-core:0.4.1"
 }
 ```
 

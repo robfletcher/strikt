@@ -88,13 +88,11 @@ One dependency. Two imports. Go!
 
 ```groovy
 repositories { 
-  maven { 
-    url "https://dl.bintray.com/robfletcher/maven" 
-  } 
+  jcenter() 
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:0.4.0"
+  testCompile "io.strikt:strikt-core:0.4.1"
 }
 ```
 
