@@ -255,6 +255,22 @@ internal object Assertions : Spek({
     }
   }
 
+  describe("assertions on ${String::class.simpleName}") {
+    describe("isEqualToIgnoringCase assertion") {
+      it("passes if the subject is identical to the expected value") {
+        expect("covfefe").isEqualToIgnoringCase("covfefe")
+      }
+      it("fails if the subject is different") {
+        fails {
+          expect("despite the negative press covfefe").isEqualToIgnoringCase("covfefe")
+        }
+      }
+      it("passes if the subject is the same as the expected value apart from case") {
+        expect("covfefe").isEqualToIgnoringCase("COVFEFE")
+      }
+    }
+  }
+
   describe("assertions on ${Collection::class.simpleName}") {
     describe("hasSize assertion") {
       it("fails if the subject size is not the expected size") {
