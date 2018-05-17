@@ -28,7 +28,6 @@ internal object AssertionMapping {
 
   @Test
   fun extensionPropertyMapping() {
-
     val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
     expect(subject) {
       name.isEqualTo("David")
