@@ -32,7 +32,7 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun Result.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
-    writer.append(description)
+    writer.append(description.format(formatValue(expected), formatValue(actual)))
     writeLineEnd(writer, this)
   }
 
@@ -56,13 +56,14 @@ internal open class DefaultResultWriter : ResultWriter {
     writer.append("▼ ")
   }
 
-  protected open fun formatValue(value: Any?): String =
+  protected open fun formatValue(value: Any?): Any =
     when (value) {
       null            -> "null"
       is CharSequence -> "\"$value\""
       is Char         -> "'$value'"
-      is Iterable<*>  -> value.joinToString(", ", "[", "]", transform = this::formatValue)
+      is Iterable<*>  -> value.map(this::formatValue)
       is Class<*>     -> value.name
-      else            -> value.toString()
+      is Regex        -> "/${value.pattern}/"
+      else            -> value
     }
 }

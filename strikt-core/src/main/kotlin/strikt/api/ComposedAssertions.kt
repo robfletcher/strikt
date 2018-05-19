@@ -81,4 +81,10 @@ internal constructor(
       result.append(it)
       Assertion(it, COLLECT).assert(description, assertion)
     }
+
+  fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =
+    parent.copy().let {
+      result.append(it)
+      Assertion(it, COLLECT).assert(description, expected, assertion)
+    }
 }

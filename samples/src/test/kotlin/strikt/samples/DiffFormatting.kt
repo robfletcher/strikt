@@ -18,8 +18,8 @@ internal object DiffFormatting {
       }
     }.let {
       assertEquals(2, it.failures.size)
-      assertEquals("\"o hai\" is equal to \"kthxbye\"", it.failures[0].message)
-      assertEquals("\"o hai\" is equal to \"o HAI\"", it.failures[1].message)
+      assertEquals("✗ is equal to \"kthxbye\"", it.failures[0].message)
+      assertEquals("✗ is equal to \"o HAI\"", it.failures[1].message)
     }
   }
 
@@ -29,7 +29,7 @@ internal object DiffFormatting {
       expect("o hai").isEqualTo("o HAi")
     }.let {
       assertEquals(1, it.failures.size)
-      assertEquals("\"o hai\" is equal to \"o HAi\"", it.failures[0].message)
+      assertEquals("✗ is equal to \"o HAi\"", it.failures[0].message)
     }
   }
 }

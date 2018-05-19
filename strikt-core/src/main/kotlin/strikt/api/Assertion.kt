@@ -31,8 +31,12 @@ internal constructor(
    * @see AssertionContext.fail
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
+  // TODO: that null bothers me
+    assert(description, null, assertion)
+
+  fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =
     apply {
-      val result = Result(description).also(subject::append)
+      val result = Result(description, expected).also(subject::append)
       AssertionContextImpl(this, result).assertion()
     }
 
@@ -49,6 +53,13 @@ internal constructor(
   fun passesIf(description: String, assertion: T.() -> Boolean) =
     apply {
       assert(description) {
+        if (subject.assertion()) pass() else fail()
+      }
+    }
+
+  fun passesIf(description: String, expected: Any?, assertion: T.() -> Boolean) =
+    apply {
+      assert(description, expected) {
         if (subject.assertion()) pass() else fail()
       }
     }
@@ -136,11 +147,11 @@ internal constructor(
       }
     }
 
-    override fun fail(expected: Any?, actual: Any?) {
+    override fun fail(actual: Any?) {
       if (assertion.negated) {
         result.pass()
       } else {
-        result.fail(expected, actual)
+        result.fail(actual)
         if (assertion.mode == Mode.FAIL_FAST) {
           throw assertion.subject.root.toError()
         }

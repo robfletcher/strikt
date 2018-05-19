@@ -70,17 +70,17 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  assert("contains the elements ${elements.toList()}") {
+  assert("contains the elements %s", elements) {
     when (elements.size) {
       0    -> fail() // TODO: really need a message here
       else -> {
         compose {
           elements.forEach { element ->
-            expect(subject).assert("contains $element") {
+            expect(subject).assert("contains %s", element) {
               if (subject.contains(element)) {
                 pass()
               } else {
-                fail()
+                fail(element)
               }
             }
           }
@@ -98,16 +98,16 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
  * If the subject is empty the assertion always passe.
  */
 fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
-  assert("does not contain any of the elements ${elements.toList()}") {
+  assert("does not contain any of the elements %s", elements) {
     when {
       elements.isEmpty()            -> fail()
       !subject.iterator().hasNext() -> pass()
       else                          -> {
         compose {
           elements.forEach { element ->
-            expect(subject).assert("does not contain $element") {
+            expect(subject).assert("%s does not contain %s", element) {
               if (subject.contains(element)) {
-                fail()
+                fail(element)
               } else {
                 pass()
               }
@@ -129,19 +129,19 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
  * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
-  assert("contains exactly the elements ${elements.toList()}") {
+  assert("contains exactly the elements %s", elements) {
     compose {
       val original = subject.toList()
       val remaining = subject.toMutableList()
-      elements.forEachIndexed { i, it ->
-        assert("contains $it") {
-          if (remaining.remove(it)) {
+      elements.forEachIndexed { i, element ->
+        assert("contains %s", element) {
+          if (remaining.remove(element)) {
             pass()
             assert("…at index $i") {
-              if (original[i] == it) {
+              if (original[i] == element) {
                 pass()
               } else {
-                fail(it, original[i])
+                fail(original[i])
               }
             }
           } else {
@@ -153,7 +153,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail(emptyList<Any>(), remaining)
+          fail(remaining)
         }
       }
     } then {
@@ -168,12 +168,12 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
  * regardless of what order they appear in.
  */
 fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E) =
-  assert("contains exactly the elements ${elements.toList()} in any order") {
+  assert("contains exactly the elements %s in any order") {
     compose {
       val remaining = subject.toMutableList()
-      elements.forEach {
-        assert("contains $it") {
-          if (remaining.remove(it)) {
+      elements.forEach { element ->
+        assert("contains %s", element) {
+          if (remaining.remove(element)) {
             pass()
           } else {
             fail()
@@ -184,7 +184,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail(emptyList<Any>(), remaining)
+          fail(remaining)
         }
       }
     } then {

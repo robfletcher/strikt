@@ -29,9 +29,7 @@ interface AssertionContext<T> {
    * placeholder in [String.format] notation for [actualValue].
    * @param actualValue theR value(s) that violated the assertion.
    */
-  fun fail(expected: Any?, actual: Any?)
-
-  fun fail(expected: Any?) = fail(expected, subject)
+  fun fail(actual: Any?)
 
   /**
    * Allows an assertion to be composed of multiple sub-assertions such as on

@@ -19,7 +19,7 @@ internal object AssertionMethods {
 
     // use assert in a test for a one-off assertion
     expect(subject)
-      .assert("is older than 21") {
+      .assert("is older than %d", 21) {
         if (subject.birthDate < LocalDate.now().minus(21, YEARS)) {
           pass()
         } else {
@@ -29,7 +29,7 @@ internal object AssertionMethods {
 
     // alternatively define a reusable assertion function
     fun Assertion<Person>.isOlderThan(age: Int) =
-      assert("is older than $age") {
+      assert("is older than %d", age) {
         if (subject.birthDate < LocalDate.now().minus(age.toLong(), YEARS)) {
           pass()
         } else {

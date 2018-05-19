@@ -65,9 +65,11 @@ data class Subject<T>(
  */
 // TODO: this should not have nested results
 data class Result
-internal constructor(val description: String? = null) : Reportable() {
+internal constructor(
+  val description: String,
+  val expected: Any?
+) : Reportable() {
   private var _status: Status = Pending
-  private var _expected: Any? = null
   private var _actual: Any? = null
 
   fun pass() {
@@ -78,17 +80,13 @@ internal constructor(val description: String? = null) : Reportable() {
     _status = Failed
   }
 
-  fun fail(expected: Any?, actual: Any?) {
+  fun fail(actual: Any?) {
     fail()
-    _expected = expected
     _actual = actual
   }
 
   override val status: Status
     get() = _status
-
-  val expected: Any?
-    get() = _expected
 
   val actual: Any?
     get() = _actual

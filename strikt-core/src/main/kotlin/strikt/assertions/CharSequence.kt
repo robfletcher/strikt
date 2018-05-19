@@ -7,10 +7,10 @@ import kotlin.text.RegexOption.IGNORE_CASE
  * Asserts that the subject has a [CharSequence.length] of exactly [expected].
  */
 fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
-  assert("has length $expected") {
+  assert("has length %d", expected) {
     when (subject.length) {
       expected -> pass()
-      else     -> fail(expected, subject.length)
+      else     -> fail(subject.length)
     }
   }
 
@@ -34,7 +34,7 @@ fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
  * Asserts that the subject starts with the [expected] character.
  */
 fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
-  passesIf("starts with '$expected'") {
+  passesIf("starts with %s", expected) {
     startsWith(expected)
   }
 
@@ -43,7 +43,7 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
  * expression.
  */
 fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
-  passesIf("matches the regular expression /${expected.pattern}/") {
+  passesIf("matches the regular expression %s", expected) {
     matches(expected)
   }
 
@@ -52,7 +52,7 @@ fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Assertion<T>.matchesIgnoringCase(expected: Regex): Assertion<T> =
-  passesIf("matches the regular expression /${expected.pattern}/ (ignoring case)") {
+  passesIf("matches the regular expression %s (ignoring case)", expected) {
     Regex(expected.pattern, IGNORE_CASE).let {
       matches(it)
     }
@@ -63,7 +63,7 @@ fun <T : CharSequence> Assertion<T>.matchesIgnoringCase(expected: Regex): Assert
  * expression.
  */
 fun <T : CharSequence> Assertion<T>.contains(expected: Regex): Assertion<T> =
-  passesIf("contains a match for the regular expression /${expected.pattern}/") {
+  passesIf("contains a match for the regular expression %s", expected) {
     contains(expected)
   }
 
@@ -72,7 +72,7 @@ fun <T : CharSequence> Assertion<T>.contains(expected: Regex): Assertion<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: Regex): Assertion<T> =
-  passesIf("contains a match for the regular expression /${expected.pattern}/ (ignoring case)") {
+  passesIf("contains a match for the regular expression %s (ignoring case)", expected) {
     Regex(expected.pattern, IGNORE_CASE).let {
       contains(it)
     }
@@ -82,7 +82,7 @@ fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: Regex): Asser
  * Asserts that the subject contains the [expected] substring.
  */
 fun <T : CharSequence> Assertion<T>.contains(expected: CharSequence): Assertion<T> =
-  passesIf("contains \"$expected\"") {
+  passesIf("contains %s", expected) {
     contains(expected)
   }
 
@@ -91,7 +91,7 @@ fun <T : CharSequence> Assertion<T>.contains(expected: CharSequence): Assertion<
  * case.
  */
 fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: CharSequence): Assertion<T> =
-  passesIf("contains \"$expected\" (ignoring case)") {
+  passesIf("contains %s (ignoring case)", expected) {
     contains(expected, ignoreCase = true)
   }
 

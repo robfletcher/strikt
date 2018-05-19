@@ -7,7 +7,7 @@ import strikt.api.Assertion
  */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
-  assert("is null") {
+  assert("is null", null) {
     when (subject) {
       null -> pass()
       else -> fail()
@@ -22,6 +22,7 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
   assert("is not null") {
+    // TODO: way to signify negated expected value
     when (subject) {
       null -> fail()
       else -> pass()
@@ -35,7 +36,7 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
  */
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
-  assert("is an instance of ${T::class.java.name}") {
+  assert("is an instance of %s", T::class.java) {
     when (subject) {
       null -> fail(null)
       is T -> pass()
@@ -50,10 +51,10 @@ inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
-  assert("is equal to $expected") {
+  assert("is equal to %s", expected) {
     when (subject) {
       expected -> pass()
-      else     -> fail(expected, subject)
+      else     -> fail()
     }
   }
 
@@ -64,7 +65,7 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
  * @param expected the expected value.
  */
 fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
-  assert("is equal to $expected") {
+  assert("is not equal to %s", expected) {
     when (subject) {
       expected -> fail()
       else     -> pass()
