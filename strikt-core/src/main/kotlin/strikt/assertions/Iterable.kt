@@ -141,7 +141,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
               if (original[i] == it) {
                 pass()
               } else {
-                fail("found %s", original[i])
+                fail(it, original[i])
               }
             }
           } else {
@@ -153,7 +153,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail("found %s", remaining)
+          fail(emptyList<Any>(), remaining)
         }
       }
     } then {
@@ -184,7 +184,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail("found %s", remaining)
+          fail(emptyList<Any>(), remaining)
         }
       }
     } then {

@@ -37,9 +37,9 @@ fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
 inline fun <reified T> Assertion<*>.isA(): Assertion<T> =
   assert("is an instance of ${T::class.java.name}") {
     when (subject) {
-      null -> fail("is actually %s", null)
+      null -> fail(null)
       is T -> pass()
-      else -> fail("is actually a %s", subject!!.javaClass.name)
+      else -> fail(subject!!.javaClass.name)
     }
   } as Assertion<T>
 
@@ -53,7 +53,7 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
   assert("is equal to $expected") {
     when (subject) {
       expected -> pass()
-      else     -> fail()
+      else     -> fail(expected, subject)
     }
   }
 

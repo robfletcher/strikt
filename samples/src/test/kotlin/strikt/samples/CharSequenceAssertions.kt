@@ -2,7 +2,7 @@ package strikt.samples
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.AssertionFailed
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expect
 import strikt.assertions.hasLength
 import strikt.assertions.matches
@@ -15,7 +15,7 @@ internal object CharSequenceAssertions {
 
   @Test
   fun hasLengthFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("covfefe").hasLength(1)
     }
   }
@@ -27,14 +27,14 @@ internal object CharSequenceAssertions {
 
   @Test
   fun matchesPartialMatch() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("despite the negative press covfefe").matches("[cefov]+".toRegex())
     }
   }
 
   @Test
   fun matchesNotMatch() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("covfefe").matches("\\d+".toRegex())
     }
   }

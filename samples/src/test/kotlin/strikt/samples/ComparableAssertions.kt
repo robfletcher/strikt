@@ -6,7 +6,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import strikt.api.AssertionFailed
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expect
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isGreaterThanOrEqualTo
@@ -23,14 +23,14 @@ internal object ComparableAssertions {
 
   @Test
   fun isGreaterThanFailsEqualValue() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(1).isGreaterThan(1)
     }
   }
 
   @Test
   fun isGreaterThanFailsLesserValue() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(LocalDate.of(2018, 5, 1)).isGreaterThan(LocalDate.of(2018, 5, 2))
     }
   }
@@ -55,7 +55,7 @@ internal object ComparableAssertions {
   @ParameterizedTest(name = "assertion fails: {0} < {1}")
   @MethodSource("isLessThanFailSource")
   fun <T : Comparable<T>> isLessThanFails(subject: T, expected: T) {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(subject).isLessThan(expected)
     }
   }
@@ -83,7 +83,7 @@ internal object ComparableAssertions {
 
   @Test
   fun isGreaterThanOrEqualToLesserValue() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(LocalDate.of(2018, 5, 1)).isGreaterThanOrEqualTo(LocalDate.of(2018, 5, 2))
     }
   }
@@ -100,7 +100,7 @@ internal object ComparableAssertions {
 
   @Test
   fun isLessThanOrEqualToGreaterValue() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(LocalDate.of(2018, 5, 2)).isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
     }
   }

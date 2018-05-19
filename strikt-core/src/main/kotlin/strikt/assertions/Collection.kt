@@ -9,7 +9,7 @@ fun <T : Collection<E>, E> Assertion<T>.hasSize(expected: Int): Assertion<T> =
   assert("has size $expected") {
     when (subject.size) {
       expected -> pass()
-      else     -> fail("found %d", subject.size)
+      else     -> fail(expected, subject.size)
     }
   }
 

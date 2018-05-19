@@ -2,7 +2,7 @@ package strikt.samples
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.AssertionFailed
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expect
 import strikt.assertions.*
 
@@ -18,7 +18,7 @@ internal object IterableAssertions {
 
   @Test
   fun allWithNonMatchingElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expect(subject).all {
         startsWith('c')
@@ -44,7 +44,7 @@ internal object IterableAssertions {
 
   @Test
   fun anyWithNoMatchingElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
       expect(subject).any {
         isLowerCase()
@@ -62,7 +62,7 @@ internal object IterableAssertions {
 
   @Test
   fun noneWithMatchingElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
       expect(subject).none {
         isUpperCase()
@@ -72,7 +72,7 @@ internal object IterableAssertions {
 
   @Test
   fun noneWithAllMatchingElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
       expect(subject).none {
         isUpperCase()
@@ -97,28 +97,28 @@ internal object IterableAssertions {
 
   @Test
   fun containsWithMissingElement() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe")
     }
   }
 
   @Test
   fun containsWithSomeMissingElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
     }
   }
 
   @Test
   fun containsWithNoExpectedElements() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(listOf("catflap", "rubberplant", "marzipan")).contains()
     }
   }
 
   @Test
   fun containsOnEmptySubject() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(emptyList<String>()).contains("catflap")
     }
   }

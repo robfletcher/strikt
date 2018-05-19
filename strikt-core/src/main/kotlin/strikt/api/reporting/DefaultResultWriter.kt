@@ -34,19 +34,6 @@ internal open class DefaultResultWriter : ResultWriter {
     writeStatusIcon(writer, this)
     writer.append(description)
     writeLineEnd(writer, this)
-
-    // TODO: recurse here, Actual should be just another Reportable
-    writeActual(writer, indent)
-  }
-
-  private fun Result.writeActual(writer: Appendable, indent: Int) {
-    actual?.let { actual ->
-      writeLineStart(writer, this, indent + 1)
-      writeActualValueIcon(writer)
-      // TODO: handle without String.format
-      writer.append(actual.description.format(formatValue(actual.value)))
-      writeLineEnd(writer, this)
-    }
   }
 
   protected open fun writeLineStart(writer: Appendable, node: Reportable, indent: Int) {
@@ -65,21 +52,17 @@ internal open class DefaultResultWriter : ResultWriter {
     })
   }
 
-  protected open fun writeActualValueIcon(writer: Appendable) {
-    writer.append("• ")
-  }
-
   protected open fun writeSubjectIcon(writer: Appendable) {
     writer.append("▼ ")
   }
 
-  protected open fun formatValue(value: Any?): Any =
+  protected open fun formatValue(value: Any?): String =
     when (value) {
       null            -> "null"
       is CharSequence -> "\"$value\""
       is Char         -> "'$value'"
-      is Iterable<*>  -> value.map(this::formatValue)
+      is Iterable<*>  -> value.joinToString(", ", "[", "]", transform = this::formatValue)
       is Class<*>     -> value.name
-      else            -> value
+      else            -> value.toString()
     }
 }

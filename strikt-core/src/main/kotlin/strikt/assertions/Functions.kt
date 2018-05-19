@@ -12,12 +12,12 @@ inline fun <reified E : Throwable> Assertion<() -> Unit>.throws(): Assertion<E> 
       e
     }
     when (caught) {
-      null -> fail("no exception was caught", null)
+      null -> fail("no exception was caught") // TODO: is this rendering right?
       is E -> {
         pass()
         exception = caught
       }
-      else -> fail("instead caught ${caught.javaClass.article} %s", caught.javaClass)
+      else -> fail(E::class.java, caught.javaClass)
     }
   }
   return if (exception != null) map { exception!! } else throw IllegalStateException()

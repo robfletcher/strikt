@@ -1,7 +1,7 @@
 package strikt
 
 import org.junit.jupiter.api.assertThrows
-import strikt.api.AssertionFailed
+import org.opentest4j.MultipleFailuresError
 
 internal fun fails(function: () -> Unit) =
-  assertThrows<AssertionFailed>(function)
+  assertThrows<MultipleFailuresError>(function)

@@ -2,7 +2,7 @@ package strikt.samples
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.AssertionFailed
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expect
 import strikt.assertions.hasSize
 import strikt.assertions.isEmpty
@@ -17,7 +17,7 @@ internal object CollectionAssertions {
 
   @Test
   fun hasSizeFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expect(subject).hasSize(1)
     }
@@ -30,14 +30,14 @@ internal object CollectionAssertions {
 
   @Test
   fun isEmptyFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(listOf("catflap", "rubberplant", "marzipan")).isEmpty()
     }
   }
 
   @Test
   fun isNotEmptyFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(emptyList<Any>()).isNotEmpty()
     }
   }

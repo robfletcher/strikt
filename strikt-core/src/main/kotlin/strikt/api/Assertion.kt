@@ -2,6 +2,7 @@ package strikt.api
 
 import strikt.api.reporting.Result
 import strikt.api.reporting.Subject
+import strikt.opentest4j.toError
 import kotlin.jvm.internal.CallableReference
 
 /**
@@ -117,7 +118,7 @@ internal constructor(
       if (assertion.negated) {
         result.fail()
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw AssertionFailed(assertion.subject.root)
+          throw assertion.subject.root.toError()
         }
       } else {
         result.pass()
@@ -130,18 +131,18 @@ internal constructor(
       } else {
         result.fail()
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw AssertionFailed(assertion.subject.root)
+          throw assertion.subject.root.toError()
         }
       }
     }
 
-    override fun fail(actualDescription: String, actualValue: Any?) {
+    override fun fail(expected: Any?, actual: Any?) {
       if (assertion.negated) {
         result.pass()
       } else {
-        result.fail(actualDescription, actualValue)
+        result.fail(expected, actual)
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw AssertionFailed(assertion.subject.root)
+          throw assertion.subject.root.toError()
         }
       }
     }

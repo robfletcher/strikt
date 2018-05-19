@@ -70,7 +70,7 @@ internal object Mapping : Spek({
           "    ✗ is equal to Ziggy",
           ""
         )
-        assertEquals(expectedMessage, e.message.lines())
+        assertEquals(expectedMessage, e.message?.lines())
       }
     }
 
@@ -85,7 +85,7 @@ internal object Mapping : Spek({
           "      ✗ is equal to 1971",
           ""
         )
-        assertEquals(expectedMessage, e.message.lines())
+        assertEquals(expectedMessage, e.message?.lines())
       }
     }
   }

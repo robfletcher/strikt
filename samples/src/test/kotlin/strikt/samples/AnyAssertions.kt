@@ -2,8 +2,8 @@ package strikt.samples
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.opentest4j.MultipleFailuresError
 import strikt.api.Assertion
-import strikt.api.AssertionFailed
 import strikt.api.expect
 import strikt.assertions.*
 
@@ -17,7 +17,7 @@ internal object AnyAssertions {
 
   @Test
   fun isNullFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject: Any? = "covfefe"
       expect(subject).isNull()
     }
@@ -35,7 +35,7 @@ internal object AnyAssertions {
 
   @Test
   fun isNotNullFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject: Any? = null
       expect(subject).isNotNull()
     }
@@ -59,7 +59,7 @@ internal object AnyAssertions {
 
   @Test
   fun isAOnNullSubject() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject: Any? = null
       expect(subject).isA<String>()
     }
@@ -67,7 +67,7 @@ internal object AnyAssertions {
 
   @Test
   fun isAOnWrongType() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       val subject = 1L
       expect(subject).isA<String>()
     }
@@ -115,35 +115,35 @@ internal object AnyAssertions {
 
   @Test
   fun isEqualToFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("covfefe").isEqualTo("COVFEFE")
     }
   }
 
   @Test
   fun isEqualToDifferentType() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(1).isEqualTo(1L)
     }
   }
 
   @Test
   fun isEqualToNullSubject() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect(null).isEqualTo("covfefe")
     }
   }
 
   @Test
   fun isEqualToNullExpected() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("covfefe").isEqualTo(null)
     }
   }
 
   @Test
   fun isNotEqualToFails() {
-    assertThrows<AssertionFailed> {
+    assertThrows<MultipleFailuresError> {
       expect("covfefe").isNotEqualTo("covfefe")
     }
   }

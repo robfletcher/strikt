@@ -41,7 +41,7 @@ object Reporting : Spek({
           "      ✗ is upper case",
           ""
         )
-        val actualLines = e.message.lines()
+        val actualLines = e.message?.lines() ?: emptyList()
         assertEquals(
           expectedLines.size,
           actualLines.size,
@@ -93,7 +93,7 @@ object Reporting : Spek({
           "      ✗ starts with 'c'",
           ""
         )
-        val actualLines = e.message.lines()
+        val actualLines = e.message?.lines() ?: emptyList()
         assertEquals(
           expectedLines.size,
           actualLines.size,
