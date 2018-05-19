@@ -2,7 +2,7 @@ package strikt.api
 
 import strikt.api.reporting.Result
 import strikt.api.reporting.Subject
-import strikt.opentest4j.toError
+import strikt.opentest4j.throwOnFailure
 import kotlin.jvm.internal.CallableReference
 
 /**
@@ -129,7 +129,7 @@ internal constructor(
       if (assertion.negated) {
         result.fail()
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw assertion.subject.root.toError()
+          assertion.subject.throwOnFailure()
         }
       } else {
         result.pass()
@@ -142,7 +142,7 @@ internal constructor(
       } else {
         result.fail()
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw assertion.subject.root.toError()
+          assertion.subject.throwOnFailure()
         }
       }
     }
@@ -153,7 +153,7 @@ internal constructor(
       } else {
         result.fail(actual)
         if (assertion.mode == Mode.FAIL_FAST) {
-          throw assertion.subject.root.toError()
+          assertion.subject.throwOnFailure()
         }
       }
     }

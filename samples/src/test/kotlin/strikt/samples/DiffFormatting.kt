@@ -12,14 +12,20 @@ internal object DiffFormatting {
   @Test
   fun formatsBlockDiffInIntelliJ() {
     assertThrows<MultipleFailuresError> {
-      expect("Expect that: %s", "o hai") {
+      expect("Expect that %s", "o hai") {
         isEqualTo("kthxbye")
         isEqualTo("o HAi")
       }
     }.let {
+      assertEquals(
+        "Expect that \"o hai\" (2 failures)\n" +
+          "\tis equal to \"kthxbye\"\n" +
+          "\tis equal to \"o HAi\"",
+        it.message
+      )
       assertEquals(2, it.failures.size)
-      assertEquals("✗ is equal to \"kthxbye\"", it.failures[0].message)
-      assertEquals("✗ is equal to \"o HAI\"", it.failures[1].message)
+      assertEquals("is equal to \"kthxbye\"", it.failures[0].message)
+      assertEquals("is equal to \"o HAi\"", it.failures[1].message)
     }
   }
 
@@ -28,8 +34,13 @@ internal object DiffFormatting {
     assertThrows<MultipleFailuresError> {
       expect("o hai").isEqualTo("o HAi")
     }.let {
+      assertEquals(
+        "Expect that \"o hai\" (1 failure)\n" +
+          "\tis equal to \"o HAi\"",
+        it.message
+      )
       assertEquals(1, it.failures.size)
-      assertEquals("✗ is equal to \"o HAi\"", it.failures[0].message)
+      assertEquals("is equal to \"o HAi\"", it.failures[0].message)
     }
   }
 }

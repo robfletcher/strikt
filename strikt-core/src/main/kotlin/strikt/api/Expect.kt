@@ -2,7 +2,7 @@ package strikt.api
 
 import strikt.api.reporting.Subject
 import strikt.assertions.throws
-import strikt.opentest4j.toError
+import strikt.opentest4j.throwOnFailure
 
 /**
  * Start a chain of assertions over [subject].
@@ -56,11 +56,9 @@ fun <T> expect(
 ): Assertion<T> {
   return Subject(subjectDescription, subject)
     .let {
-      val assertion = Assertion(it, Mode.COLLECT).apply(block)
-      if (it.anyFailed) {
-        throw it.toError()
-      } else {
-        assertion
+      Assertion(it, Mode.COLLECT).apply {
+        block()
+        it.throwOnFailure()
       }
     }
 }

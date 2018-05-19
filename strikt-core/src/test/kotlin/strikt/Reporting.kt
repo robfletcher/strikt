@@ -22,92 +22,47 @@ object Reporting : Spek({
           .all { startsWith('c') }
       }
 
-//      it("reports assertion statistics") {
-//        assertEquals(3, e.assertionCount, "Assertions")
-//        assertEquals(0, e.passCount, "Passed")
-//        assertEquals(3, e.failureCount, "Failed")
-//      }
-
       it("formats the error message") {
-        val expectedLines = listOf(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]",
-          "  ✓ has size 3",
-          "  ✗ all elements match:",
-          "    ▼ Expect that \"catflap\"",
-          "      ✗ is upper case",
-          "    ▼ Expect that \"rubberplant\"",
-          "      ✗ is upper case",
-          "    ▼ Expect that \"marzipan\"",
-          "      ✗ is upper case",
-          ""
-        )
-        val actualLines = e.message?.lines() ?: emptyList()
-        assertEquals(
-          expectedLines.size,
-          actualLines.size,
-          "Expected ${expectedLines.size} lines of output but found ${actualLines.size}"
-        )
-        actualLines.forEachIndexed { i, line ->
-          assertEquals(
-            expectedLines[i],
-            line,
-            "Assertion failure message line ${i + 1}"
-          )
-        }
-      }
-    }
-
-    on("evaluating a block assertion with multiple failures") {
-
-      val e = fails {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
-        expect(subject) {
-          hasSize(0)
-          all {
-            isUpperCase()
-            startsWith('c')
-          }
-        }
-      }
-
-//      it("reports assertion statistics") {
-//        assertEquals(7, e.assertionCount, "Assertions")
-//        assertEquals(1, e.passCount, "Passed")
-//        assertEquals(6, e.failureCount, "Failed")
-//      }
-
-      it("formats the error message") {
-        val expectedLines = listOf(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]",
-          "  ✗ has size 0",
-          "    • found 3",
-          "  ✗ all elements match:",
-          "    ▼ Expect that \"catflap\"",
-          "      ✗ is upper case",
-          "      ✓ starts with 'c'",
-          "    ▼ Expect that \"rubberplant\"",
-          "      ✗ is upper case",
-          "      ✗ starts with 'c'",
-          "    ▼ Expect that \"marzipan\"",
-          "      ✗ is upper case",
-          "      ✗ starts with 'c'",
-          ""
-        )
-        val actualLines = e.message?.lines() ?: emptyList()
-        assertEquals(
-          expectedLines.size,
-          actualLines.size,
-          "Expected ${expectedLines.size} lines of output but found ${actualLines.size}"
-        )
-        actualLines.forEachIndexed { i, line ->
-          assertEquals(
-            expectedLines[i],
-            line,
-            "Assertion failure message line ${i + 1}"
-          )
-        }
+        val expected =
+          "Expect that [\"catflap\", \"rubberplant\", \"marzipan\"] (1 failure)\n" +
+            "\tall elements match: (3 failures)\n" +
+            "\tExpect that \"catflap\" (1 failure)\n" +
+            "\tis upper case\n" +
+            "\tExpect that \"rubberplant\" (1 failure)\n" +
+            "\tis upper case\n" +
+            "\tExpect that \"marzipan\" (1 failure)\n" +
+            "\tis upper case"
+        assertEquals(expected, e.message)
       }
     }
   }
 
+  on("evaluating a block assertion with multiple failures") {
+
+    val e = fails {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+      expect(subject) {
+        hasSize(0)
+        all {
+          isUpperCase()
+          startsWith('c')
+        }
+      }
+    }
+
+    it("formats the error message") {
+      val expected = "Expect that [\"catflap\", \"rubberplant\", \"marzipan\"] (2 failures)\n" +
+        "\thas size 0\n" +
+        "\tall elements match: (3 failures)\n" +
+        "\tExpect that \"catflap\" (1 failure)\n" +
+        "\tis upper case\n" +
+        "\tExpect that \"rubberplant\" (2 failures)\n" +
+        "\tis upper case\n" +
+        "\tstarts with 'c'\n" +
+        "\tExpect that \"marzipan\" (2 failures)\n" +
+        "\tis upper case\n" +
+        "\tstarts with 'c'"
+      assertEquals(expected, e.message)
+    }
+  }
 })

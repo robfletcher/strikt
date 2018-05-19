@@ -55,15 +55,4 @@ internal open class DefaultResultWriter : ResultWriter {
   protected open fun writeSubjectIcon(writer: Appendable) {
     writer.append("▼ ")
   }
-
-  protected open fun formatValue(value: Any?): Any =
-    when (value) {
-      null            -> "null"
-      is CharSequence -> "\"$value\""
-      is Char         -> "'$value'"
-      is Iterable<*>  -> value.map(this::formatValue)
-      is Class<*>     -> value.name
-      is Regex        -> "/${value.pattern}/"
-      else            -> value
-    }
 }
