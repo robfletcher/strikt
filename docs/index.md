@@ -1,8 +1,8 @@
 # ![Strikt](img/logo.png)
 
 Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
-It's very much inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
-However, none of those provided exactly what I wanted so I decided to create my own!
+It's inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
+However, none of those provided exactly what I wanted so I decided to create my own.
 
 Strikt gets you…
 

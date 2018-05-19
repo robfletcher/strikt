@@ -1,4 +1,4 @@
-# Strongly-Typed Assertions
+# Strongly Typed Assertions
 
 Strikt's API is designed to work with Kotlin's strong type system. 
 

@@ -28,7 +28,7 @@ expect(subject) {
 ## Mapping with property or method references
 
 If you use a Kotlin property or Java method reference as the lambda passed to `map`, Strikt will automatically derive the property name and use it as the subject description on the returned assertion. 
-This is very useful for generating good quality assertion output with minimal effort.
+This is useful for generating good quality assertion output with minimal effort.
 
 For example, if the previous example fails it will format the error message like this:
 
@@ -63,7 +63,7 @@ expect(subject) {
 ## Creating re-usable mappings with extensions
 
 If you find yourself frequently using `map` for the same properties or methods, you should consider defining extension property or method to make things even easier.
-Strikt makes this very easy.
+Strikt makes this easy.
 
 For example:
 

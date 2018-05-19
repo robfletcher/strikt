@@ -8,7 +8,7 @@ Strikt is licensed under the [Apache License v2.0](https://www.apache.org/licens
 
 ## Contributing
 
-Suggestions and contributions are very welcome.
+Suggestions and contributions are welcome.
 
 - **Issues**: You can discuss and raise issues on [GitHub](https://github.com/robfletcher/strikt/issues).
 - **Slack**: Join the [**#strikt**](https://kotlinlang.slack.com/messages/CAR7KJ96J) channel on the Kotlin Slack.

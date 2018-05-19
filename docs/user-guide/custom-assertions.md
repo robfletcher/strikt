@@ -70,7 +70,7 @@ In this case that's not terribly helpful but when dealing with properties, metho
 
 ## Simple atomic assertions with boolean expressions
 
-For the very simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose receiver is the assertion subject that returns a boolean.
+For the simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose receiver is the assertion subject that returns a boolean.
 
 We can re-implement the example above like this:
 
@@ -86,7 +86,7 @@ You should not use this form when you want to provide a meaningful description o
 ## Composed assertions
 
 For more complex assertion implementations you can "nest" sub-assertions inside your overall assertion.
-Composed assertions' results are reported under the overall result which can be very useful for providing detailed diagnostic information in case of a failure.
+Composed assertions' results are reported under the overall result which is useful for providing detailed diagnostic information in case of a failure.
 
 Composed assertions are useful for things like:
 
