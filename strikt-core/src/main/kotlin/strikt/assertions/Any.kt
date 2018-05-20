@@ -22,7 +22,6 @@ fun <T> Assertion<T?>.isNull(): Assertion<Nothing> =
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion<T?>.isNotNull(): Assertion<T> =
   assert("is not null") {
-    // TODO: way to signify negated expected value
     when (subject) {
       null -> fail()
       else -> pass()

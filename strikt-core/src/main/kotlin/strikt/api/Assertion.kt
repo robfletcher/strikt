@@ -32,7 +32,6 @@ internal constructor(
    * @see AssertionContext.fail
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
-  // TODO: that null bothers me
     assert(description, null, assertion)
 
   fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =

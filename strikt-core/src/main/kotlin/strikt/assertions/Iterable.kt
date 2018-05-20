@@ -69,27 +69,26 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
-  assert("contains the elements %s", elements) {
-    when (elements.size) {
-      0    -> fail() // TODO: really need a message here
-      else -> {
-        compose {
-          elements.forEach { element ->
-            expect(subject).assert("contains %s", element) {
-              if (subject.contains(element)) {
-                pass()
-              } else {
-                fail(actual = element)
-              }
-            }
+fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E): Assertion<T> {
+  if (elements.isEmpty()) {
+    throw IllegalArgumentException("You must supply some expected elements.")
+  }
+  return assert("contains the elements %s", elements) {
+    compose {
+      elements.forEach { element ->
+        expect(subject).assert("contains %s", element) {
+          if (subject.contains(element)) {
+            pass()
+          } else {
+            fail(actual = element)
           }
-        } then {
-          if (allPassed) pass() else fail()
         }
       }
+    } then {
+      if (allPassed) pass() else fail()
     }
   }
+}
 
 /**
  * Asserts that none of [elements] are present in the subject.
@@ -97,28 +96,26 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
-  assert("does not contain any of the elements %s", elements) {
-    when {
-      elements.isEmpty()            -> fail()
-      !subject.iterator().hasNext() -> pass()
-      else                          -> {
-        compose {
-          elements.forEach { element ->
-            expect(subject).assert("%s does not contain %s", element) {
-              if (subject.contains(element)) {
-                fail(actual = element)
-              } else {
-                pass()
-              }
-            }
+fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assertion<T> {
+  if (elements.isEmpty()) {
+    throw IllegalArgumentException("You must supply some expected elements.")
+  }
+  return assert("does not contain any of the elements %s", elements) {
+    compose {
+      elements.forEach { element ->
+        expect(subject).assert("%s does not contain %s", element) {
+          if (subject.contains(element)) {
+            fail(actual = element)
+          } else {
+            pass()
           }
-        } then {
-          if (allPassed) pass() else fail()
         }
       }
+    } then {
+      if (allPassed) pass() else fail()
     }
   }
+}
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject in the

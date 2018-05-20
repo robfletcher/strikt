@@ -39,7 +39,6 @@ sealed class Reportable {
   private val _results = mutableListOf<Reportable>()
 }
 
-// TODO: rename
 data class Subject<T>(
   val description: String,
   val value: T
@@ -57,14 +56,13 @@ data class Subject<T>(
  *
  * @property status The status of the result.
  * @property description The description of the assertion as passed to
- * [Assertion.assert].
+ * [strikt.api.Assertion.assert].
  * @property actual The actual value or values that violated the assertion.
  * This property is optional as it does not make sense for all types of
  * assertion.
  * However, it can help improve diagnostic messages where it _is_ appropriate.
  * @property results Contains the results of any nested assertions.
  */
-// TODO: this should not have nested results
 data class Result
 internal constructor(
   val description: String,

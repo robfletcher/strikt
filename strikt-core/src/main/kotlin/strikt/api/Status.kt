@@ -16,5 +16,4 @@ enum class Status {
    * The assertion failed.
    */
   Failed
-  // TODO: may want an `Error` too
 }

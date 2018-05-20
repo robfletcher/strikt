@@ -2,6 +2,7 @@ package strikt
 
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import org.junit.jupiter.api.assertThrows
 import strikt.api.Assertion
 import strikt.api.expect
 import strikt.assertions.*
@@ -384,13 +385,18 @@ internal object Assertions : Spek({
       sequenceOf(
         Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("covfefe")),
         Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap", "covfefe")),
-        Pair(listOf("catflap", "rubberplant", "marzipan"), emptyArray()),
         Pair(emptyList(), arrayOf("catflap"))
       ).forEach { (subject, expected) ->
         it("fails $subject contains ${expected.toList()}") {
           fails {
             expect(subject).contains(*expected)
           }
+        }
+      }
+
+      it("rejects an empty array of expected elements") {
+        assertThrows<IllegalArgumentException> {
+          expect(listOf("catflap", "rubberplant", "marzipan")).contains()
         }
       }
 
@@ -411,7 +417,7 @@ internal object Assertions : Spek({
         listOf("catflap", "rubberplant", "marzipan")
       ).forEach { subject ->
         it("fails for the subject $subject if no elements are specified") {
-          fails {
+          assertThrows<IllegalArgumentException> {
             expect(subject).doesNotContain()
           }
         }

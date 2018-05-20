@@ -111,7 +111,7 @@ internal object IterableAssertions {
 
   @Test
   fun containsWithNoExpectedElements() {
-    assertThrows<MultipleFailuresError> {
+    assertThrows<IllegalArgumentException> {
       expect(listOf("catflap", "rubberplant", "marzipan")).contains()
     }
   }

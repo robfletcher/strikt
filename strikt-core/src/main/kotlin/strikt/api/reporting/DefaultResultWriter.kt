@@ -24,7 +24,6 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun Subject<*>.writeSubject(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
-    // TODO: handle without String.format
     writer.append(description.format(formatValue(value)))
     writeLineEnd(writer, this)
   }
