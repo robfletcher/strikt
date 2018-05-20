@@ -21,8 +21,7 @@ internal object Throws : Spek({
         throws<IllegalStateException> { -> }
       }.let { e ->
         val expected = "Expect that () -> kotlin.Unit (1 failure)\n" +
-          "\tthrows java.lang.IllegalStateException"
-        // TODO: should indicate nothing was caught
+          "\tthrows java.lang.IllegalStateException, but nothing was thrown"
         assertEquals(expected, e.message)
       }
     }
@@ -32,9 +31,9 @@ internal object Throws : Spek({
         throws<IllegalStateException> { -> throw NullPointerException() }
       }.let { e ->
         val expected = "Expect that () -> kotlin.Unit (1 failure)\n" +
-          "\tthrows java.lang.IllegalStateException"
-        // TODO: should indicate the actual exception type
+          "\tthrows java.lang.IllegalStateException, but java.lang.NullPointerException was thrown"
         assertEquals(expected, e.message)
+        assertEquals(NullPointerException::class.java, e.failures.first().cause?.javaClass)
       }
     }
 

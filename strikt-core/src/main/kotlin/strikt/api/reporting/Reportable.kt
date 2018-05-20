@@ -1,5 +1,6 @@
 package strikt.api.reporting
 
+import strikt.api.Failure
 import strikt.api.Status
 import strikt.api.Status.*
 
@@ -70,24 +71,26 @@ internal constructor(
   val expected: Any?
 ) : Reportable() {
   private var _status: Status = Pending
-  private var _actual: Any? = null
+  private var failure: Failure? = null
 
   fun pass() {
     _status = Passed
   }
 
-  fun fail() {
+  fun fail(failure: Failure? = null) {
     _status = Failed
-  }
-
-  fun fail(actual: Any?) {
-    fail()
-    _actual = actual
+    this.failure = failure
   }
 
   override val status: Status
     get() = _status
 
   val actual: Any?
-    get() = _actual
+    get() = failure?.actual
+
+  val message: String?
+    get() = failure?.message
+
+  val cause: Throwable?
+    get() = failure?.cause
 }

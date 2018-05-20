@@ -17,19 +17,16 @@ interface AssertionContext<T> {
   fun pass()
 
   /**
-   * Report that the assertion failed.
-   */
-  fun fail()
-
-  /**
-   * Report that the assertion failed providing detail about the actual value
-   * of a comparison that caused the assertion to fail.
+   * Report that the assertion failed optionally providing additional detail.
    *
-   * @param actualDescription descriptive text about [actualValue] including a
-   * placeholder in [String.format] notation for [actualValue].
-   * @param actualValue theR value(s) that violated the assertion.
+   * @param actual the value(s) that violated the assertion.
+   * @param message a message describing the failure.
+   * @param cause an underlying exception that was the cause of the failure.
    */
-  fun fail(actual: Any?)
+  fun fail(actual: Any? = null, message: String? = null, cause: Throwable? = null) =
+    fail(Failure(actual, message, cause))
+
+  fun fail(failure: Failure)
 
   /**
    * Allows an assertion to be composed of multiple sub-assertions such as on

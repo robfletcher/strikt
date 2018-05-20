@@ -1,5 +1,6 @@
 package strikt.api
 
+import strikt.api.Mode.FAIL_FAST
 import strikt.api.reporting.Result
 import strikt.api.reporting.Subject
 import strikt.opentest4j.throwOnFailure
@@ -128,7 +129,7 @@ internal constructor(
     override fun pass() {
       if (assertion.negated) {
         result.fail()
-        if (assertion.mode == Mode.FAIL_FAST) {
+        if (assertion.mode == FAIL_FAST) {
           assertion.subject.throwOnFailure()
         }
       } else {
@@ -141,18 +142,18 @@ internal constructor(
         result.pass()
       } else {
         result.fail()
-        if (assertion.mode == Mode.FAIL_FAST) {
+        if (assertion.mode == FAIL_FAST) {
           assertion.subject.throwOnFailure()
         }
       }
     }
 
-    override fun fail(actual: Any?) {
+    override fun fail(failure: Failure) {
       if (assertion.negated) {
         result.pass()
       } else {
-        result.fail(actual)
-        if (assertion.mode == Mode.FAIL_FAST) {
+        result.fail(failure)
+        if (assertion.mode == FAIL_FAST) {
           assertion.subject.throwOnFailure()
         }
       }

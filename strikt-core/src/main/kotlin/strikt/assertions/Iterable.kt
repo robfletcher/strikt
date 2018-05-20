@@ -80,7 +80,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E) =
               if (subject.contains(element)) {
                 pass()
               } else {
-                fail(element)
+                fail(actual = element)
               }
             }
           }
@@ -107,7 +107,7 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E) =
           elements.forEach { element ->
             expect(subject).assert("%s does not contain %s", element) {
               if (subject.contains(element)) {
-                fail(element)
+                fail(actual = element)
               } else {
                 pass()
               }
@@ -141,7 +141,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
               if (original[i] == element) {
                 pass()
               } else {
-                fail(original[i])
+                fail(actual = original[i])
               }
             }
           } else {
@@ -153,7 +153,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail(remaining)
+          fail(actual = remaining)
         }
       }
     } then {
@@ -184,7 +184,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
         if (remaining.isEmpty()) {
           pass()
         } else {
-          fail(remaining)
+          fail(actual = remaining)
         }
       }
     } then {
