@@ -27,15 +27,4 @@ interface AssertionContext<T> {
     fail(Failure(actual, message, cause))
 
   fun fail(failure: Failure)
-
-  /**
-   * Allows an assertion to be composed of multiple sub-assertions such as on
-   * fields of an object or elements of a collection.
-   *
-   * The results of assertions made inside the [assertions] block are included
-   * under the overall assertion result.
-   *
-   * @return the results of assertions made inside the [assertions] block.
-   */
-  fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext
 }

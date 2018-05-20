@@ -6,7 +6,7 @@ package strikt.api
  *
  * @see AssertionContext.compose
  */
-interface ComposedAssertionContext {
+interface ComposedAssertionContext<T> {
   fun pass()
   fun fail()
   val allPassed: Boolean
@@ -22,7 +22,5 @@ interface ComposedAssertionContext {
    * @see AssertionContext.compose
    * // TODO: sample here
    */
-  infix fun then(block: ComposedAssertionContext.() -> Unit) {
-    this.block()
-  }
+  infix fun then(block: ComposedAssertionContext<T>.() -> Unit): Assertion<T>
 }

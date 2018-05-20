@@ -41,6 +41,25 @@ internal constructor(
     }
 
   /**
+   * Allows an assertion to be composed of multiple sub-assertions such as on
+   * fields of an object or elements of a collection.
+   *
+   * The results of assertions made inside the [assertions] block are included
+   * under the overall assertion result.
+   *
+   * @return the results of assertions made inside the [assertions] block used
+   * to evaluate whether the overall assertion passes or fails.
+   */
+  fun compose(description: String, expected: Any?, assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext<T> {
+    val result = Result(description, expected).also(subject::append)
+    ComposedAssertions(subject, result).apply(assertions)
+    return AssertionContextImpl(this, result)
+  }
+
+  fun compose(description: String, assertions: ComposedAssertions<T>.() -> Unit) =
+    compose(description, null, assertions)
+
+  /**
    * Evaluates a boolean condition.
    * This is useful for implementing the simplest types of assertion function.
    *
@@ -122,7 +141,7 @@ internal constructor(
   private class AssertionContextImpl<T>(
     private val assertion: Assertion<T>,
     private val result: Result
-  ) : AssertionContext<T>, ComposedAssertionContext {
+  ) : AssertionContext<T>, ComposedAssertionContext<T> {
     override val subject = assertion.subject.value
 
     override fun pass() {
@@ -170,9 +189,9 @@ internal constructor(
     override val anyFailed: Boolean
       get() = result.anyFailed
 
-    override fun compose(assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext {
-      ComposedAssertions(assertion.subject, result).apply(assertions)
-      return this
+    override infix fun then(block: ComposedAssertionContext<T>.() -> Unit): Assertion<T> {
+      this.block()
+      return assertion
     }
   }
 }

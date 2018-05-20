@@ -14,6 +14,7 @@ internal constructor(
   private val parent: Subject<T>,
   private val result: Result
 ) {
+  val subject = parent.value
   /**
    * Start a chain of assertions in the current nested context.
    *

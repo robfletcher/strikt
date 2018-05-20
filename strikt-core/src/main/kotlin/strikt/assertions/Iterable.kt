@@ -23,44 +23,38 @@ fun <T : Iterable<E>, E> Assertion<T>.last(): Assertion<E> =
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit) =
-  assert("all elements match:") {
-    compose {
-      subject.forEach {
-        expect(it, predicate)
-      }
-    } then {
-      if (allPassed) pass() else fail()
+fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+  compose("all elements match:") {
+    subject.forEach {
+      expect(it, predicate)
     }
+  } then {
+    if (allPassed) pass() else fail()
   }
 
 /**
  * Asserts that _at least one_ element of the subject pass the assertions in
  * [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit) =
-  assert("at least one element matches:") {
-    compose {
-      subject.forEach {
-        expect(it, predicate)
-      }
-    } then {
-      if (anyPassed) pass() else fail()
+fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+  compose("at least one element matches:") {
+    subject.forEach {
+      expect(it, predicate)
     }
+  } then {
+    if (anyPassed) pass() else fail()
   }
 
 /**
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit) =
-  assert("no elements match:") {
-    compose {
-      subject.forEach {
-        expect(it, predicate)
-      }
-    } then {
-      if (allFailed) pass() else fail()
+fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+  compose("no elements match:") {
+    subject.forEach {
+      expect(it, predicate)
     }
+  } then {
+    if (allFailed) pass() else fail()
   }
 
 /**
@@ -73,20 +67,18 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E): Assertion<T>
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
-  return assert("contains the elements %s", elements) {
-    compose {
-      elements.forEach { element ->
-        expect(subject).assert("contains %s", element) {
-          if (subject.contains(element)) {
-            pass()
-          } else {
-            fail(actual = element)
-          }
+  return compose("contains the elements %s", elements) {
+    elements.forEach { element ->
+      expect(subject).assert("contains %s", element) {
+        if (subject.contains(element)) {
+          pass()
+        } else {
+          fail(actual = element)
         }
       }
-    } then {
-      if (allPassed) pass() else fail()
     }
+  } then {
+    if (allPassed) pass() else fail()
   }
 }
 
@@ -100,20 +92,18 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assert
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
-  return assert("does not contain any of the elements %s", elements) {
-    compose {
-      elements.forEach { element ->
-        expect(subject).assert("%s does not contain %s", element) {
-          if (subject.contains(element)) {
-            fail(actual = element)
-          } else {
-            pass()
-          }
+  return compose("does not contain any of the elements %s", elements) {
+    elements.forEach { element ->
+      expect(subject).assert("%s does not contain %s", element) {
+        if (subject.contains(element)) {
+          fail(actual = element)
+        } else {
+          pass()
         }
       }
-    } then {
-      if (allPassed) pass() else fail()
     }
+  } then {
+    if (allPassed) pass() else fail()
   }
 }
 
@@ -125,37 +115,35 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assert
  * assertion is probably not appropriate and you should use
  * [containsExactlyInAnyOrder] instead.
  */
-fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
-  assert("contains exactly the elements %s", elements) {
-    compose {
-      val original = subject.toList()
-      val remaining = subject.toMutableList()
-      elements.forEachIndexed { i, element ->
-        assert("contains %s", element) {
-          if (remaining.remove(element)) {
-            pass()
-            assert("…at index $i") {
-              if (original[i] == element) {
-                pass()
-              } else {
-                fail(actual = original[i])
-              }
-            }
-          } else {
-            fail()
-          }
-        }
-      }
-      assert("contains no further elements") {
-        if (remaining.isEmpty()) {
+fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E): Assertion<T> =
+  compose("contains exactly the elements %s", elements) {
+    val original = subject.toList()
+    val remaining = subject.toMutableList()
+    elements.forEachIndexed { i, element ->
+      assert("contains %s", element) {
+        if (remaining.remove(element)) {
           pass()
+          assert("…at index $i") {
+            if (original[i] == element) {
+              pass()
+            } else {
+              fail(actual = original[i])
+            }
+          }
         } else {
-          fail(actual = remaining)
+          fail()
         }
       }
-    } then {
-      if (allPassed) pass() else fail()
     }
+    assert("contains no further elements") {
+      if (remaining.isEmpty()) {
+        pass()
+      } else {
+        fail(actual = remaining)
+      }
+    }
+  } then {
+    if (allPassed) pass() else fail()
   }
 
 /**
@@ -164,28 +152,26 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E) =
  * contains all the same elements with the same cardinality as [elements]
  * regardless of what order they appear in.
  */
-fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E) =
-  assert("contains exactly the elements %s in any order") {
-    compose {
-      val remaining = subject.toMutableList()
-      elements.forEach { element ->
-        assert("contains %s", element) {
-          if (remaining.remove(element)) {
-            pass()
-          } else {
-            fail()
-          }
-        }
-      }
-      assert("contains no further elements") {
-        if (remaining.isEmpty()) {
+fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E): Assertion<T> =
+  compose("contains exactly the elements %s in any order") {
+    val remaining = subject.toMutableList()
+    elements.forEach { element ->
+      assert("contains %s", element) {
+        if (remaining.remove(element)) {
           pass()
         } else {
-          fail(actual = remaining)
+          fail()
         }
       }
-    } then {
-      if (allPassed) pass() else fail()
     }
+    assert("contains no further elements") {
+      if (remaining.isEmpty()) {
+        pass()
+      } else {
+        fail(actual = remaining)
+      }
+    }
+  } then {
+    if (allPassed) pass() else fail()
   }
 
