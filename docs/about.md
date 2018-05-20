@@ -12,3 +12,4 @@ Suggestions and contributions are welcome.
 
 - **Issues**: You can discuss and raise issues on [GitHub](https://github.com/robfletcher/strikt/issues).
 - **Slack**: Join the [**#strikt**](https://kotlinlang.slack.com/messages/CAR7KJ96J) channel on the Kotlin Slack.
+- **Twitter**: Follow [**@stri_kt**](https://twitter.com/stri_kt) on Twitter for updates and release notifications.

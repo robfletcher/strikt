@@ -31,3 +31,11 @@ site_description: An assertion library for Kotlin
 site_author: Rob Fletcher
 site_dir: build/site
 extra_css: ['api']
+extra:
+  social:
+    - type: 'github'
+      link: 'https://github.com/robfletcher/strikt'
+    - type: 'slack'
+      link: 'https://kotlinlang.slack.com/messages/CAR7KJ96J'
+    - type: 'twitter'
+      link: 'https://twitter.com/stri_kt'
