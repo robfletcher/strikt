@@ -2,8 +2,9 @@
 
 Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
 
-The library is at an early stage of development, but usable.
-Any suggestions, issue reports, contributions, or feedback are very welcome.
+Strikt is under development, but 100% usable.
+The API may change until a [version 1.0](https://github.com/robfletcher/strikt/milestone/1) is released.
+Any suggestions, [issue reports](https://github.com/robfletcher/strikt/issues), [contributions](https://github.com/robfletcher/strikt/pulls), or feedback are very welcome.
 
 ## Installation
 
@@ -21,8 +22,14 @@ dependencies {
 
 ## Using Strikt
 
-Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt). 
+Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt).
 
+## Community
+
+Join the [**#strikt**](https://kotlinlang.slack.com/messages/CAR7KJ96J) channel on the Kotlin Slack.
+
+Follow [**@stri_kt**](https://twitter.com/stri_kt) on Twitter for updates and release notifications.
+ 
 [![CircleCI](https://img.shields.io/circleci/project/github/robfletcher/strikt/master.svg)](https://circleci.com/gh/robfletcher/strikt/tree/master)
 [![Download](https://api.bintray.com/packages/robfletcher/maven/strikt-core/images/download.svg) ](https://bintray.com/robfletcher/maven/strikt-core/_latestVersion)
 [![GitHub Release Date](https://img.shields.io/github/release-date/robfletcher/strikt.svg)](https://github.com/robfletcher/strikt/releases)
