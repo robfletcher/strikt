@@ -12,10 +12,10 @@ Assertion functions can "narrow" the type of the assertion:
 
 ```kotlin
 val subject: Any? = "The Enlightened take things Lightly"
-expect(subject)              // type: Assertion<Any?>
-  .isNotNull()               // type: Assertion<Any>
-  .isA<String>()             // type: Assertion<String>
-  .matches(Regex("[\w\s]+")) // only available on Assertion<CharSequence>
+expect(subject)                // type: Assertion<Any?>
+  .isNotNull()                 // type: Assertion<Any>
+  .isA<String>()               // type: Assertion<String>
+  .matches(Regex("[\\w\\s]+")) // only available on Assertion<CharSequence>
 ```
 
 Assertions can "map" to properties and method results in a type safe way:
@@ -42,12 +42,9 @@ expect(subject) {
 ## Useful, structured diagnostics
 
 ```
-Assertion failed:
-▼ Expect that "The Enlightened take things Lightly"
-  ✗ has length 5
-    • found 35
-  ✗ matches /\d+/
-  ✓ starts with "T"
+Multiple Failures (2 failures)
+	has length 5 : found 35
+	matches the regular expression /\d+/
 ```
 
 ## Extensibility
@@ -56,27 +53,28 @@ Easy custom assertions:
 
 ```kotlin
 fun Assertion<LocalDate>.isStTibsDay() =
-  assert("is St. Tib's Day") { 
+  assert("is St. Tib's Day") {
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
       else               -> fail()
     }
   }
 
-expect(LocalDate.of("2018-05-15")).isStTibsDay()
+expect(LocalDate.of(2018, 5, 15)).isStTibsDay()
 ```
 
 With the same diagnostic quality:
 
 ```
-▼ Expect that 2018-05-16
-  ✗ is St. Tib's Day 
+Expect that 2018-05-15 (1 failure)
+    is St. Tib's Day 
 ```
 
 Easy custom narrowing:
 
 ```kotlin
-val Assertion<Deity>.realm: String = map(Deity::realm)
+val Assertion<Deity>.realm: Assertion<String>
+  get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
 expect(subject).realm.isEqualTo("discord and confusion")
@@ -112,18 +110,27 @@ expect(subject).any {
 }
 ```
 
+## Detailed reporting
+
 ```
-▼ Expect that the pantheon
+▼ Expect that [Eris, Thor]
   ✓ at least one element matches:
-    ▼ Expect that Thor
-      ✗ .culture is equal to "Grœco-Californian"
-        • found "Norse"
-      ✗ .realm is equal to "discord and confusion"
-        • found "thunder"
-      ✗ .aliases contains "Discordia"
-        • found "Þórr", "Þunor"
     ▼ Expect that Eris
-      ✓ .culture is equal to "Grœco-Californian"
-      ✓ .realm is equal to "discord and confusion"
-      ✓ .aliases contains "Discordia"
+      ▼ .culture "Grœco-Californian"
+        ✓ is equal to "Grœco-Californian"
+      ▼ .realm "discord and confusion"
+        ✓ is equal to "discord and confusion"
+      ▼ .aliases ["Ἔρις", "Discordia"]
+        ✓ contains the elements ["Discordia"]
+          ▼ Expect that ["Ἔρις", "Discordia"]
+            ✓ contains "Discordia"
+    ▼ Expect that Thor
+      ▼ .culture "Norse"
+        ✗ is equal to "Grœco-Californian"
+      ▼ .realm "thunder"
+        ✗ is equal to "discord and confusion"
+      ▼ .aliases ["Þórr", "Þunor"]
+        ✗ contains the elements ["Discordia"]
+          ▼ Expect that ["Þórr", "Þunor"]
+            ✗ contains "Discordia"
 ```
