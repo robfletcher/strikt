@@ -52,7 +52,7 @@ object Reporting : Spek({
 
     it("formats the error message") {
       val expected = "Expect that [\"catflap\", \"rubberplant\", \"marzipan\"] (2 failures)\n" +
-        "\thas size 0\n" +
+        "\thas size 0 : found 3\n" +
         "\tall elements match: (3 failures)\n" +
         "\tExpect that \"catflap\" (1 failure)\n" +
         "\tis upper case\n" +

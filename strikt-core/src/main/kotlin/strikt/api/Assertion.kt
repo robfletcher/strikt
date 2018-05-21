@@ -3,6 +3,7 @@ package strikt.api
 import strikt.api.Mode.FAIL_FAST
 import strikt.api.reporting.Result
 import strikt.api.reporting.Subject
+import strikt.api.reporting.writeToString
 import strikt.opentest4j.throwOnFailure
 import kotlin.jvm.internal.CallableReference
 
@@ -129,6 +130,8 @@ internal constructor(
    * its subject.
    */
   fun not(): Assertion<T> = Assertion(subject, mode, !negated)
+
+  fun writeReport(): String = subject.writeToString()
 
   private val CallableReference.propertyName: String
     get() = "^get(.+)$".toRegex().find(name).let { match ->

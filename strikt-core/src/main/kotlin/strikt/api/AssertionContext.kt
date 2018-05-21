@@ -23,8 +23,11 @@ interface AssertionContext<T> {
    * @param message a message describing the failure.
    * @param cause an underlying exception that was the cause of the failure.
    */
-  fun fail(actual: Any? = null, message: String? = null, cause: Throwable? = null) =
-    fail(Failure(actual, message, cause))
+  fun fail(
+    actual: Any? = null,
+    message: String? = if (actual == null) null else "found %s",
+    cause: Throwable? = null
+  ) = fail(Failure(actual, message, cause))
 
   fun fail(failure: Failure)
 }

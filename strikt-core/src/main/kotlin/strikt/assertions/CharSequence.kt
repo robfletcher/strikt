@@ -39,6 +39,14 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
   }
 
 /**
+ * Asserts that the subject starts with the [expected] string.
+ */
+fun <T : CharSequence> Assertion<T>.startsWith(expected: CharSequence): Assertion<T> =
+  passesIf("starts with %s", expected) {
+    startsWith(expected)
+  }
+
+/**
  * Asserts that the subject is a full match for the [expected] regular
  * expression.
  */

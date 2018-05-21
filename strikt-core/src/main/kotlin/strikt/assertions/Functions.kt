@@ -12,12 +12,12 @@ inline fun <reified E : Throwable> Assertion<() -> Unit>.throws(): Assertion<E> 
       e
     }
     when (caught) {
-      null -> fail(message = ", but nothing was thrown")
+      null -> fail(message = "nothing was thrown")
       is E -> {
         pass()
         exception = caught
       }
-      else -> fail(message = ", but %s was thrown", cause = caught)
+      else -> fail(message = "%s was thrown", actual = caught, cause = caught)
     }
   }
   return if (exception != null) map { exception!! } else throw IllegalStateException()

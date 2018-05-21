@@ -19,13 +19,13 @@ internal object DiffFormatting {
     }.let {
       assertEquals(
         "Expect that \"o hai\" (2 failures)\n" +
-          "\tis equal to \"kthxbye\"\n" +
-          "\tis equal to \"o HAi\"",
+          "\tis equal to \"kthxbye\" : found \"o hai\"\n" +
+          "\tis equal to \"o HAi\" : found \"o hai\"",
         it.message
       )
       assertEquals(2, it.failures.size)
-      assertEquals("is equal to \"kthxbye\"", it.failures[0].message)
-      assertEquals("is equal to \"o HAi\"", it.failures[1].message)
+      assertEquals("is equal to \"kthxbye\" : found \"o hai\"", it.failures[0].message)
+      assertEquals("is equal to \"o HAi\" : found \"o hai\"", it.failures[1].message)
     }
   }
 
@@ -36,11 +36,11 @@ internal object DiffFormatting {
     }.let {
       assertEquals(
         "Expect that \"o hai\" (1 failure)\n" +
-          "\tis equal to \"o HAi\"",
+          "\tis equal to \"o HAi\" : found \"o hai\"",
         it.message
       )
       assertEquals(1, it.failures.size)
-      assertEquals("is equal to \"o HAi\"", it.failures[0].message)
+      assertEquals("is equal to \"o HAi\" : found \"o hai\"", it.failures[0].message)
     }
   }
 }
