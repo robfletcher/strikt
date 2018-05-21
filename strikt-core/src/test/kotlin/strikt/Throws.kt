@@ -3,8 +3,10 @@ package strikt
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import strikt.api.expect
 import strikt.api.throws
 import strikt.assertions.isA
+import strikt.assertions.throws
 
 internal object Throws : Spek({
   describe("throws assertion") {
@@ -40,6 +42,25 @@ internal object Throws : Spek({
     it("returns an assertion whose subject is the exception that was caught") {
       throws<IllegalStateException> { -> throw IllegalStateException() }
         .isA<IllegalStateException>()
+    }
+
+    it("formats the message for a callable reference") {
+      class Thing {
+        fun throwSomething() {
+          throw NullPointerException()
+        }
+
+        override fun toString(): String = "MyThing"
+      }
+      fails {
+        val subject = Thing()
+        val fn: () -> Unit = subject::throwSomething
+        expect(fn).throws<IllegalStateException>()
+      }.let { e ->
+        val expected = "Expect that MyThing::throwSomething (1 failure)\n" +
+          "\tthrows java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
+        assertEquals(expected, e.message)
+      }
     }
   }
 })

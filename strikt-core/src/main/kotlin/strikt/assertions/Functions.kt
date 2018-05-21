@@ -17,11 +17,8 @@ inline fun <reified E : Throwable> Assertion<() -> Unit>.throws(): Assertion<E> 
         pass()
         exception = caught
       }
-      else -> fail(actual = caught, message = "%s was thrown", cause = caught)
+      else -> fail(actual = caught.javaClass, message = "%s was thrown", cause = caught)
     }
   }
   return if (exception != null) map { exception!! } else throw IllegalStateException()
 }
-
-val Class<*>.article: String
-  get() = if (simpleName.contains("^[AEIOU]".toRegex())) "an" else "a"
