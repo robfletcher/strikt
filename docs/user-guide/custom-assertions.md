@@ -32,8 +32,8 @@ Breaking this down:
 If this assertion fails it will produce a message like:
 
 ```
-▼ Expect that 2018-05-01
-  ✗ is St. Tib's Day 
+Expect that 2018-05-01 (1 failure)
+    is St. Tib's Day 
 ```
 
 !!! info
@@ -53,7 +53,10 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
   assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
-      else               -> fail("in fact it is %s", subject)
+      else               -> fail(
+        message = "in fact it is %s", 
+        actual = subject
+      )
     }
   }
 ```
@@ -61,9 +64,8 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
 Now if the assertion fails there is a little more detail.
 
 ```
-▼ Expect that 2018-05-01
-  ✗ is St. Tib's Day
-    • in fact it is 2018-05-01
+Expect that 2018-05-01
+    is St. Tib's Day : in fact it is 2018-05-01
 ```
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
@@ -97,39 +99,31 @@ Imagine we're creating an assertion function that tests fails if any element of 
 
 ```kotlin
 fun <T: Iterable<E?>, E> Assertion<T>.containsNoNullElements(): Assertion<T> =
-  assert("does not contain any null elements") {
-    compose {
-      subject.forEach {
-        expect(it).isNotNull()
-      }
-    } results {
-      if (allPassed) pass() else fail()
+  compose("does not contain any null elements") {
+    subject.forEach {
+      expect(it).isNotNull()
     }
+  } then {
+    if (allPassed) pass() else fail()
   }
 ```
 
 Breaking this down:
 
 1. We declare the overall assertion function applies to an `Iterable` of a nullable element type `E`.
-2. We use the `assert` method to create the overall assertion with a description as usual.
-3. Inside the block passed to `compose` we make an assertion about each element of the subject.
-4. Inside the results block we pass or fail the overall assertion depending on whether the nested assertions all passed.
+2. We use the `compose` method instead of `assert`.
+3. Inside the `compose` block we make assertions about each element of the iterable subject.
+4. Inside the `then` block we pass or fail the overall assertion depending on whether the nested assertions all passed.
 
 The receiver of the block passed to `result` has the properties `allFailed`, `anyFailed`, `allPassed` and `anyPassed` along with `pass()` and `fail()` functions similar to those used in simple assertions.
 
 If the assertion failed we'll see something like this:
 
 ```
-▼ Expect that [catflap, null, rubberplant, marzipan] 
-  ✗ does not contain any null elements: 
-    ▼ "catflap" 
-      ✓ is not null
-    ▼ null 
-      ✗ is not null  
-    ▼ "rubberplant" 
-      ✓ is not null
-    ▼ "marzipan" 
-      ✓ is not null
+Expect that [catflap, null, rubberplant, marzipan] (1 failure) 
+    does not contain any null elements (1 failure)
+        Expect that null (1 failure) 
+            is not null  
 ```
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.

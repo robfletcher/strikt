@@ -18,17 +18,12 @@ expect(subject).all {
 This produces the output:
 
 ```
-▼ Expect that [catflap, rubberplant, marzipan] 
-  ✗ all elements match:
-    ▼ "catflap"
-      ✓ starts with 'c'
-      ✓ is lower case
-    ▼ "rubberplant" 
-      ✗ starts with 'c'
-      ✓ is lower case
-    ▼ "marzipan"
-      ✗ starts with 'c'
-      ✓ is lower case
+Expect that [catflap, rubberplant, marzipan] (1 failure)
+    all elements match: (2 failures)
+        Expect that "rubberplant" (1 failure)
+            starts with 'c'
+        Expect that "marzipan" (1 failure)
+            starts with 'c'
 ```
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.

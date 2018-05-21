@@ -33,12 +33,12 @@ This is useful for generating good quality assertion output with minimal effort.
 For example, if the previous example fails it will format the error message like this:
 
 ```
-▼ Person[name: Ziggy, birthDate: 1972-06-16] 
-  ▼ Ziggy 
-    ✗ is equal to David
-  ▼ 1972-06-16 
-    ▼ 1972
-      ✗ is equal to 1947
+Person[name: Ziggy, birthDate: 1972-06-16] (2 failures) 
+    Expect that "Ziggy" (1 failure)
+        is equal to "David" : found "Ziggy"
+    Expect that 1972-06-16 (1 failure) 
+        Expect that 1972 (1 failure)
+            is equal to 1947 : found 1972
 ```
 
 Using property references the output is more useful.
@@ -52,12 +52,12 @@ expect(subject) {
 ```
 
 ```
-▼ Person[name: Ziggy, birthDate: 1972-06-16] 
-  ▼ .name Ziggy 
-    ✗ is equal to David
-  ▼ .birthDate 1972-06-16
-    ▼ .year 1972 
-      ✗ is equal to 1947
+Person[name: Ziggy, birthDate: 1972-06-16] (2 failures) 
+    .name "Ziggy" (1 failure)
+        is equal to "David" : found "Ziggy"
+    .birthDate 1972-06-16 (1 failure) 
+        .year 1972 (1 failure)
+            is equal to 1947 : found 1972
 ```
 
 ## Creating re-usable mappings with extensions
