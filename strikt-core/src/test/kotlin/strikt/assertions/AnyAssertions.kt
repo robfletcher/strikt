@@ -2,6 +2,7 @@ package strikt.assertions
 
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import strikt.api.Assertion
 import strikt.api.expect
 import strikt.fails
@@ -107,6 +108,15 @@ internal object AnyAssertions : Spek({
           fails {
             expect(subject).isEqualTo(expected)
           }
+        }
+      }
+
+      it("specifies type information if the values look the same") {
+        fails {
+          expect(5L).isEqualTo(5)
+        }.let { e ->
+          assertEquals("""Expect that 5 (1 failure)
+	is equal to 5 (Int) : found 5 (Long)""", e.message)
         }
       }
     }

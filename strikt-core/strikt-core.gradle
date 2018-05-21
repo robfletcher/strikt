@@ -1,9 +1,9 @@
 dependencies {
+  compile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
   compile "org.opentest4j:opentest4j:+" lock '1.1.0'
 
   testCompile "org.junit.jupiter:junit-jupiter-api:+" lock '5.2.0'
   testCompile "org.jetbrains.spek:spek-api:+" lock '1.1.5'
-  testCompile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
 
   testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock '1.1.5'
 }
