@@ -1,7 +1,10 @@
 = Custom Assertions
+:jbake-type: page
+:jbake-status: published
+:jbake-cached: true
 
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
-Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
+Assertion functions are https://kotlinlang.org/docs/reference/extensions.html[extension functions] on the interface `Assertion<T>`.
 
 == Atomic assertions
 
@@ -12,7 +15,8 @@ The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simp
 
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
-```kotlin
+[source,kotlin]
+----
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
   assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
@@ -20,7 +24,7 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
       else               -> fail()
     }
   }
-```
+----
 
 Breaking this down: 
 
@@ -31,14 +35,16 @@ Breaking this down:
 
 If this assertion fails it will produce a message like:
 
-```
+----
 Expect that 2018-05-01 (1 failure)
     is St. Tib's Day 
-```
+----
 
-!!! info
-    The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
-    That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+[NOTE]
+====
+The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
+That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+====
 
 == Describing the "actual" value
 
@@ -48,7 +54,8 @@ That way any assertion failure message will be more helpful.
 In order to do this, Strikt provides an overridden version of `fail()` that accepts a message string and the actual value found.
 The message string should contain a format placeholder for the value.
 
-```kotlin
+[source,kotlin]
+----
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
   assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
@@ -59,14 +66,14 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
       )
     }
   }
-```
+----
 
 Now if the assertion fails there is a little more detail.
 
-```
+----
 Expect that 2018-05-01
     is St. Tib's Day : in fact it is 2018-05-01
-```
+----
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 
@@ -76,12 +83,13 @@ For the simplest assertion functions, instead of using `assert` and calling `pas
 
 We can re-implement the example above like this:
 
-```kotlin
+[source,kotlin]
+----
 fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
   passesIf("is St. Tib's Day") { 
     MonthDay.from(this) == MonthDay.of(2, 29)
   }
-```
+----
 
 You should not use this form when you want to provide a meaningful description of the actual value but for simple assertions it's slightly less verbose.
 
@@ -97,7 +105,8 @@ Composed assertions are useful for things like:
 
 Imagine we're creating an assertion function that tests fails if any element of a collection is `null`.
 
-```kotlin
+[source,kotlin]
+----
 fun <T: Iterable<E?>, E> Assertion<T>.containsNoNullElements(): Assertion<T> =
   compose("does not contain any null elements") {
     subject.forEach {
@@ -106,7 +115,7 @@ fun <T: Iterable<E?>, E> Assertion<T>.containsNoNullElements(): Assertion<T> =
   } then {
     if (allPassed) pass() else fail()
   }
-```
+----
 
 Breaking this down:
 
@@ -119,12 +128,12 @@ The receiver of the block passed to `result` has the properties `allFailed`, `an
 
 If the assertion failed we'll see something like this:
 
-```
+----
 Expect that [catflap, null, rubberplant, marzipan] (1 failure) 
     does not contain any null elements (1 failure)
         Expect that null (1 failure) 
             is not null  
-```
+----
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 

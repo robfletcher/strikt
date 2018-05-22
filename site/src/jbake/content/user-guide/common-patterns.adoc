@@ -1,4 +1,7 @@
 = Common Assertion Patterns
+:jbake-type: page
+:jbake-status: published
+:jbake-cached: true
 
 This section contains some common uses of Strikt's standard assertion library.
 
@@ -7,24 +10,25 @@ This section contains some common uses of Strikt's standard assertion library.
 Some assertions on collections include sub-assertions applied to the elements of the collection.
 For example, we can assert that _all_ elements conform to a repeated assertion.
 
-```kotlin
+[source,kotlin]
+----
 val subject = setOf("catflap", "rubberplant", "marzipan")
 expect(subject).all {
   isLowerCase()
   startsWith('c')
 }
-```
+----
 
 This produces the output:
 
-```
+----
 Expect that [catflap, rubberplant, marzipan] (1 failure)
     all elements match: (2 failures)
         Expect that "rubberplant" (1 failure)
             starts with 'c'
         Expect that "marzipan" (1 failure)
             starts with 'c'
-```
+----
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
 
@@ -33,17 +37,19 @@ The results are broken down by individual elements in the collection so it's eas
 To assert that some code throws an exception you can use an assertion on a lambda `() -> Unit` that performs the operation that should throw an exception and the `throws<E>` assertion function.
 For example:
 
-```kotlin
+[source,kotlin]
+----
 expect { service.computeMeaning() }
   .throws<TooMuchFlaxException>()
-```
+----
 
 The `throws<E>` function returns an `Assertion<E>` so you can chain assertions about the exception after it.
 
 There is also a top level function `throws( () -> Unit )` that makes this even more concise.
 
-```kotlin
+[source,kotlin]
+----
 throws<TooMuchFlaxException> { 
   service.computeMeaning() 
 }
-```
+----
