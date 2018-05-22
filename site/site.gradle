@@ -1,0 +1,10 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "org.jbake:jbake-gradle-plugin:1.2.0"
+  }
+}
+
+apply plugin: "org.jbake.site"
