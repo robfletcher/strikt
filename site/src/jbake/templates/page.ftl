@@ -1,15 +1,22 @@
-<#include "header.ftl">
+<!doctype html>
+<html lang="en">
+    <#include "header.ftl">
+<body>
 
-<#include "menu.ftl">
-	
-	<div class="page-header">
-        <h1><#escape x as x?xml>${content.title}</#escape></h1>
+<#-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <#include "menu.ftl">
+
+  <main class="mdl-layout__content">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+      ${content.body}
+      </div>
     </div>
+  </main>
 
-	<p><em>${content.date?string("dd MMMM yyyy")}</em></p>
+    <#include "footer.ftl">
+</div>
 
-	<p>${content.body}</p>
-
-	<hr/>
-
-<#include "footer.ftl">
+</body>
+</html>

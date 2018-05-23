@@ -4,7 +4,19 @@ buildscript {
   }
   dependencies {
     classpath "org.jbake:jbake-gradle-plugin:1.2.0"
+    classpath "org.asciidoctor:asciidoctor-gradle-plugin:1.5.7"
+    classpath "org.asciidoctor:asciidoctor-leanpub-markdown:1.6.0-alpha.2"
   }
 }
 
 apply plugin: "org.jbake.site"
+apply plugin: "org.asciidoctor.convert"
+
+asciidoctorj {
+  version = "1.6.0-alpha.4"
+}
+
+asciidoctor {
+  sourceDir = file("src/jbake")
+  backends "leanpub"
+}
