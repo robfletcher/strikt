@@ -1,5 +1,8 @@
 site_name: Strikt
 site_url: https://strikt.io/
+site_description: An assertion library for Kotlin
+site_author: Rob Fletcher
+site_dir: build/site
 repo_name: 'robfletcher/strikt'
 repo_url: https://github.com/robfletcher/strikt
 theme:
@@ -24,13 +27,9 @@ pages:
   - Common Assertion Patterns: user-guide/common-patterns.md
   - Custom Assertions: user-guide/custom-assertions.md
   - About: about.md
-#  - API: api/strikt/index.md
+  - API: api/strikt/index.html
 markdown_extensions:
   - admonition
-site_description: An assertion library for Kotlin
-site_author: Rob Fletcher
-site_dir: build/site
-extra_css: ['api']
 extra:
   social:
     - type: 'github'
