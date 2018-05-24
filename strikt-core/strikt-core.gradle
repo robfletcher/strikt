@@ -1,3 +1,13 @@
+plugins {
+  id "nebula.kotlin" version "1.2.41"
+  id "spring.lock" version "0.2.0"
+  id "org.jetbrains.dokka" version "0.9.17"
+  id "io.spring.publishing"
+}
+
+apply from: "$rootDir/gradle/kotlin.gradle"
+apply from: "$rootDir/gradle/published.gradle"
+
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
   compile "org.opentest4j:opentest4j:+" lock '1.1.0'
@@ -13,5 +23,3 @@ test {
     includeEngines "spek"
   }
 }
-
-apply from: "$rootDir/gradle/published.gradle"
