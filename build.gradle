@@ -4,4 +4,8 @@ plugins {
 
 allprojects {
   group = "io.strikt"
+
+  dependencyLocking {
+    lockAllConfigurations()
+  }
 }

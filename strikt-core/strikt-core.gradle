@@ -1,6 +1,5 @@
 plugins {
   id "nebula.kotlin" version "1.2.41"
-  id "spring.lock" version "0.2.0"
   id "org.jetbrains.dokka" version "0.9.17"
   id "io.spring.publishing"
 }
@@ -9,13 +8,13 @@ apply from: "$rootDir/gradle/kotlin.gradle"
 apply from: "$rootDir/gradle/published.gradle"
 
 dependencies {
-  compile "org.jetbrains.kotlin:kotlin-reflect:1.2.+" lock '1.2.41'
-  compile "org.opentest4j:opentest4j:+" lock '1.1.0'
+  compile "org.jetbrains.kotlin:kotlin-reflect:1.2.+"
+  compile "org.opentest4j:opentest4j:+"
 
-  testCompile "org.junit.jupiter:junit-jupiter-api:+" lock '5.2.0'
-  testCompile "org.jetbrains.spek:spek-api:+" lock '1.1.5'
+  testCompile "org.junit.jupiter:junit-jupiter-api:+"
+  testCompile "org.jetbrains.spek:spek-api:1.1.5"
 
-  testRuntime "org.jetbrains.spek:spek-junit-platform-engine:+" lock '1.1.5'
+  testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
 }
 
 test {
