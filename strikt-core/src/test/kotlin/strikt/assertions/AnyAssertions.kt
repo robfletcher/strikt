@@ -146,7 +146,6 @@ internal object AnyAssertions : Spek({
         Pair(listOf("covfefe"), listOf("covfefe")),
         Pair(null, listOf("covfefe")),
         Pair(listOf("covfefe"), null),
-        Pair(null, null),
         Pair(1, 1L)
       ).forEach { (subject, expected) ->
         it("fails $subject is not the same instance as $expected") {
@@ -159,6 +158,7 @@ internal object AnyAssertions : Spek({
       sequenceOf(
         Pair("covfefe", "covfefe"),
         Pair(1L, 1L),
+        Pair(null, null),
         listOf("covfefe").let { Pair(it, it) }
       ).forEach { (subject, expected) ->
         it("succeeds $subject is the same instance as $expected") {
