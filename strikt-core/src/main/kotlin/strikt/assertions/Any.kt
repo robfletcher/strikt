@@ -70,3 +70,19 @@ fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
       else -> pass()
     }
   }
+
+/**
+ * Asserts that the subject is the same instance as [expected] according to the standard
+ * Kotlin `===` operator.
+ *
+ * @param expected the expected instance.
+ */
+fun <T> Assertion<T>.isSameInstanceAs(expected: Any?): Assertion<T> =
+  assert("is not the same instance as %s", expected) {
+    when {
+      subject == null      -> fail()
+      expected == null     -> fail()
+      subject === expected -> pass()
+      else                 -> fail()
+    }
+  }
