@@ -80,8 +80,6 @@ fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
 fun <T> Assertion<T>.isSameInstanceAs(expected: Any?): Assertion<T> =
   assert("is not the same instance as %s", expected) {
     when {
-      subject == null      -> fail()
-      expected == null     -> fail()
       subject === expected -> pass()
       else                 -> fail()
     }
