@@ -1,10 +1,15 @@
 package strikt
 
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
 import org.junit.jupiter.api.Assertions.assertEquals
 import strikt.api.expect
-import strikt.assertions.*
+import strikt.assertions.containsExactly
+import strikt.assertions.first
+import strikt.assertions.get
+import strikt.assertions.isEqualTo
+import strikt.assertions.last
 import java.time.LocalDate
 
 internal object Mapping : Spek({

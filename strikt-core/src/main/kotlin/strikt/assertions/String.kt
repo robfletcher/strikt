@@ -9,6 +9,6 @@ fun Assertion<String>.isEqualToIgnoringCase(expected: String): Assertion<String>
   assert("is equal to %s (ignoring case)", expected) {
     when {
       subject.equals(expected, ignoreCase = true) -> pass()
-      else                                        -> fail()
+      else -> fail()
     }
   }

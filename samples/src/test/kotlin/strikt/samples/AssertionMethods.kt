@@ -49,9 +49,11 @@ internal object AssertionMethods {
     )
 
     expect(subject) {
-      map { name }             // map based on properties...
+      // map based on properties...
+      map { name }
         .isEqualTo("David")
-        .map { toUpperCase() } // ... or methods
+        // ... or methods
+        .map { toUpperCase() }
         .isEqualTo("DAVID")
       map { birthDate }
         .map { year }
@@ -59,7 +61,8 @@ internal object AssertionMethods {
     }
 
     expect(subject)
-      .map(Person::name)       // map using a property reference
+      // map using a property reference
+      .map(Person::name)
       .isEqualTo("David")
   }
 

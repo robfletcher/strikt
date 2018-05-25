@@ -3,7 +3,11 @@ package strikt.samples
 import org.junit.jupiter.api.Test
 import strikt.api.Assertion
 import strikt.api.expect
-import strikt.assertions.*
+import strikt.assertions.all
+import strikt.assertions.isEqualTo
+import strikt.assertions.isGreaterThan
+import strikt.assertions.length
+import strikt.assertions.size
 import java.time.LocalDate
 
 internal object AssertionMapping {

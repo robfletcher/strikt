@@ -4,7 +4,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.MultipleFailuresError
 import strikt.api.expect
-import strikt.assertions.*
+import strikt.assertions.all
+import strikt.assertions.any
+import strikt.assertions.contains
+import strikt.assertions.isLowerCase
+import strikt.assertions.isUpperCase
+import strikt.assertions.none
+import strikt.assertions.startsWith
 
 internal object IterableAssertions {
 

@@ -1,6 +1,8 @@
 package strikt.api.reporting
 
-import strikt.api.Status.*
+import strikt.api.Status.Failed
+import strikt.api.Status.Passed
+import strikt.api.Status.Pending
 
 internal open class DefaultResultWriter : ResultWriter {
   override fun writeTo(writer: Appendable, result: Reportable) {
@@ -17,7 +19,7 @@ internal open class DefaultResultWriter : ResultWriter {
   protected open fun writeLine(writer: Appendable, result: Reportable, indent: Int) {
     when (result) {
       is Subject<*> -> result.writeSubject(writer, indent)
-      is Result     -> result.writeResult(writer, indent)
+      is Result -> result.writeResult(writer, indent)
     }
   }
 
@@ -45,8 +47,8 @@ internal open class DefaultResultWriter : ResultWriter {
 
   protected open fun writeStatusIcon(writer: Appendable, node: Result) {
     writer.append(when (node.status) {
-      Passed  -> "✓ "
-      Failed  -> "✗ "
+      Passed -> "✓ "
+      Failed -> "✗ "
       Pending -> "? "
     })
   }

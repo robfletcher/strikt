@@ -1,14 +1,16 @@
 package strikt.api.reporting
 
-import strikt.api.Status.*
+import strikt.api.Status.Failed
+import strikt.api.Status.Passed
+import strikt.api.Status.Pending
 
 internal object AnsiColorResultWriter : DefaultResultWriter() {
   override fun writeLineStart(writer: Appendable, node: Reportable, indent: Int) {
     super.writeLineStart(writer, node, indent)
     if (node is Result) {
       writer.append(when (node.status) {
-        Passed  -> ANSI_GREEN
-        Failed  -> ANSI_RED
+        Passed -> ANSI_GREEN
+        Failed -> ANSI_RED
         Pending -> ANSI_YELLOW
       })
     }

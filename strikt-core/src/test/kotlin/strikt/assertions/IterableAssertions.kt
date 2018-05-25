@@ -1,7 +1,9 @@
 package strikt.assertions
 
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.given
+import org.jetbrains.spek.api.dsl.it
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expect
 import strikt.fails

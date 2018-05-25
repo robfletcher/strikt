@@ -2,10 +2,12 @@ plugins {
   id "nebula.kotlin" version "1.2.41"
   id "org.jetbrains.dokka" version "0.9.17"
   id "io.spring.publishing"
+  id "org.jmailen.kotlinter" version "1.12.0"
 }
 
 apply from: "$rootDir/gradle/kotlin.gradle"
 apply from: "$rootDir/gradle/published.gradle"
+apply from: "$rootDir/gradle/kotlinter.gradle"
 
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-reflect:1.2.+"
@@ -21,4 +23,11 @@ test {
   useJUnitPlatform {
     includeEngines "spek"
   }
+}
+
+kotlinter {
+  ignoreFailures = false
+  indentSize = 2
+  continuationIndentSize = 4
+  reporters = ["checkstyle", "plain"]
 }

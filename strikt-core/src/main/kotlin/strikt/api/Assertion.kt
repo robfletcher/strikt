@@ -102,7 +102,7 @@ internal constructor(
   fun <R> map(function: T.() -> R): Assertion<R> =
     when (function) {
       is CallableReference -> map(".${function.propertyName} %s", function)
-      else                 -> map("%s", function)
+      else -> map("%s", function)
     }
 
   /**

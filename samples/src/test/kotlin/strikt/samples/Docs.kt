@@ -6,7 +6,14 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.MultipleFailuresError
 import strikt.api.Assertion
 import strikt.api.expect
-import strikt.assertions.*
+import strikt.assertions.any
+import strikt.assertions.contains
+import strikt.assertions.hasLength
+import strikt.assertions.isA
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.matches
+import strikt.assertions.startsWith
 import java.time.LocalDate
 import java.time.MonthDay
 
@@ -56,7 +63,7 @@ object Docs {
         assert("is St. Tib's Day") {
           when (MonthDay.from(subject)) {
             MonthDay.of(2, 29) -> pass()
-            else               -> fail()
+            else -> fail()
           }
         }
 
@@ -93,7 +100,8 @@ object Docs {
       realm.isEqualTo("discord and confusion")
       aliases.contains("Discordia")
     }.let {
-      assertEquals("""▼ Expect that [Eris, Thor]
+      assertEquals(
+        """▼ Expect that [Eris, Thor]
   ✓ at least one element matches:
     ▼ Expect that Eris
       ▼ .culture "Grœco-Californian"
@@ -113,7 +121,8 @@ object Docs {
         ✗ contains the elements ["Discordia"]
           ▼ Expect that ["Þórr", "Þunor"]
             ✗ contains "Discordia"
-""", it.writeReport())
+""", it.writeReport()
+      )
     }
   }
 }

@@ -174,4 +174,3 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements:
   } then {
     if (allPassed) pass() else fail()
   }
-

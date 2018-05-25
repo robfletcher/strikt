@@ -10,7 +10,7 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
   assert("has length %d", expected) {
     when (subject.length) {
       expected -> pass()
-      else     -> fail(actual = subject.length)
+      else -> fail(actual = subject.length)
     }
   }
 

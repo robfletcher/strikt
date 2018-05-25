@@ -5,7 +5,12 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.MultipleFailuresError
 import strikt.api.Assertion
 import strikt.api.expect
-import strikt.assertions.*
+import strikt.assertions.hasLength
+import strikt.assertions.isA
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
 
 internal object AnyAssertions {
 

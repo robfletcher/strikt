@@ -2,7 +2,9 @@ package strikt.api.reporting
 
 import strikt.api.Failure
 import strikt.api.Status
-import strikt.api.Status.*
+import strikt.api.Status.Failed
+import strikt.api.Status.Passed
+import strikt.api.Status.Pending
 
 sealed class Reportable {
   abstract val status: Status
@@ -45,9 +47,9 @@ data class Subject<T>(
 ) : Reportable() {
   override val status: Status
     get() = when {
-      results.all { it.status == Passed }  -> Passed
+      results.all { it.status == Passed } -> Passed
       results.all { it.status == Pending } -> Pending
-      else                                 -> Failed
+      else -> Failed
     }
 }
 

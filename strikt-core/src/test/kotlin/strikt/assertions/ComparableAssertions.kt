@@ -1,7 +1,8 @@
 package strikt.assertions
 
 import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.*
+import org.jetbrains.spek.api.dsl.describe
+import org.jetbrains.spek.api.dsl.it
 import strikt.api.expect
 import strikt.fails
 import java.time.LocalDate

@@ -53,7 +53,7 @@ fun <T> Assertion<T>.isEqualTo(expected: Any?): Assertion<T> =
   assert("is equal to %s", expected) {
     when (subject) {
       expected -> pass()
-      else     -> fail(actual = subject)
+      else -> fail(actual = subject)
     }
   }
 
@@ -67,6 +67,6 @@ fun <T> Assertion<T>.isNotEqualTo(expected: Any?): Assertion<T> =
   assert("is not equal to %s", expected) {
     when (subject) {
       expected -> fail()
-      else     -> pass()
+      else -> pass()
     }
   }
