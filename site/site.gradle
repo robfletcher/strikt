@@ -1,3 +1,36 @@
 plugins {
   id "org.jbake.site" version "1.2.0"
+  id "org.jetbrains.dokka" version "0.9.17"
 }
+
+dokka {
+  // I don't know why this task always thinks it's up to date
+  outputs.upToDateWhen { false }
+  outputFormat = "html"
+  moduleName = "strikt-core"
+  jdkVersion = 8
+  kotlinTasks {
+    [project(":strikt-core").compileKotlin]
+  }
+  samples = ["$rootDir/samples/src/test/kotlin"]
+}
+
+task copyApiDocs(type: Copy) {
+  outputs.upToDateWhen { false }
+  from(dokka)
+  into("${projectDir}/src/jbake/content/api/")
+  filter { line ->
+    if (line == "---") {
+      null
+    } else {
+      line.find(/title: (.+)/) { l, t -> "title=$t\ntype=page\nstatus=published\n~~~~~~\n\n" } ?: line
+    }
+  }
+}
+
+jbake {
+  flexmarkVersion = "0.32.24"
+  asciidoctorjVersion = "1.5.6"
+}
+
+bake.dependsOn(copyApiDocs)
