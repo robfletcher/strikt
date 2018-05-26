@@ -1,10 +1,18 @@
+plugins {
+  id "nebula.kotlin" version "1.2.41"
+  id "org.jmailen.kotlinter" version "1.12.0"
+}
+
+apply from: "$rootDir/gradle/kotlin.gradle"
+apply from: "$rootDir/gradle/kotlinter.gradle"
+
 dependencies {
   compile project(":strikt-core")
 
-  testCompile "org.junit.jupiter:junit-jupiter-api:+" lock '5.2.0'
-  testCompile "org.junit.jupiter:junit-jupiter-params:+" lock '5.2.0'
+  testCompile "org.junit.jupiter:junit-jupiter-api:+"
+  testCompile "org.junit.jupiter:junit-jupiter-params:+"
 
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:+" lock '5.2.0'
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:+"
 }
 
 test {

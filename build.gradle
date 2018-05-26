@@ -1,45 +1,11 @@
-buildscript {
-  repositories {
-    jcenter()
-    maven { url "https://plugins.gradle.org/m2/" }
-  }
-  dependencies {
-    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
-    classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
-    classpath "io.spring.gradle:dependency-lock:0.2.0"
-    classpath "io.spring.gradle:spring-release-plugin:0.19.1"
-  }
+plugins {
+  id "io.spring.release" version "0.19.1"
 }
-
-apply plugin: "io.spring.release"
 
 allprojects {
   group = "io.strikt"
-}
 
-subprojects {
-  apply plugin: "nebula.kotlin"
-  apply plugin: "spring.lock"
-
-  repositories {
-    jcenter()
-  }
-
-  dependencies {
-    // enables running in IntelliJ using JUnit runner
-    testRuntime "org.junit.platform:junit-platform-launcher:+" lock '1.2.0'
-  }
-
-  compileKotlin {
-    kotlinOptions {
-      languageVersion = "1.2"
-      jvmTarget = "1.8"
-    }
-  }
-
-  test {
-    useJUnitPlatform()
+  dependencyLocking {
+    lockAllConfigurations()
   }
 }
-
-apply from: "$rootDir/gradle/site.gradle"
