@@ -1,10 +1,10 @@
 dependencies {
   compile project(":strikt-core")
 
-  testCompile "org.junit.jupiter:junit-jupiter-api:+" lock '5.2.0'
-  testCompile "org.junit.jupiter:junit-jupiter-params:+" lock '5.2.0'
+  testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
+  testCompile "org.junit.jupiter:junit-jupiter-params:5.2.0"
 
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:+" lock '5.2.0'
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.2.0"
 }
 
 test {

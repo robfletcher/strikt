@@ -6,20 +6,20 @@ buildscript {
   dependencies {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
-    classpath "io.spring.gradle:dependency-lock:0.2.0"
-    classpath "io.spring.gradle:spring-release-plugin:0.19.1"
+    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.3"
+    classpath "com.netflix.nebula:nebula-release-plugin:6.3.3"
+    classpath "com.netflix.nebula:nebula-publishing-plugin:7.1.0"
+    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
   }
 }
 
-apply plugin: "io.spring.release"
-
 allprojects {
+  apply plugin: "nebula.release"
   group = "io.strikt"
 }
 
 subprojects {
   apply plugin: "nebula.kotlin"
-  apply plugin: "spring.lock"
 
   repositories {
     jcenter()
@@ -27,7 +27,7 @@ subprojects {
 
   dependencies {
     // enables running in IntelliJ using JUnit runner
-    testRuntime "org.junit.platform:junit-platform-launcher:+" lock '1.2.0'
+    testRuntime "org.junit.platform:junit-platform-launcher:1.2.0"
   }
 
   compileKotlin {

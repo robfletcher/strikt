@@ -1,4 +1,6 @@
-apply plugin: "io.spring.publishing"
+apply plugin: "com.jfrog.artifactory"
+apply plugin: "nebula.maven-publish"
+apply plugin: "nebula.nebula-bintray"
 apply plugin: "org.jetbrains.dokka"
 
 dokka {
@@ -17,11 +19,15 @@ task(javadocJar, type: Jar, overwrite: true) {
 }
 
 bintray {
-  bintrayUser = System.getenv("BINTRAY_USER")
-  bintrayKey = System.getenv("BINTRAY_KEY")
-  org = "robfletcher"
-  repo = "maven"
-  websiteUrl = "https://strikt.io/"
-  licenses = ["Apache-2.0"]
-  labels = ["testing", "kotlin"]
+  user = System.getenv("BINTRAY_USER")
+  key = System.getenv("BINTRAY_KEY")
+  pkg {
+    userOrg = "robfletcher"
+    repo = "maven"
+    websiteUrl = "https://strikt.io/"
+    issueTrackerUrl = "https://github.com/robfletcher/strikt/issues"
+    vcsUrl = "https://github.com/robfletcher/strikt.git"
+    licenses = ["Apache-2.0"]
+    labels = ["testing", "kotlin"]
+  }
 }
