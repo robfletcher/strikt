@@ -2,8 +2,8 @@ package strikt.assertions
 
 import strikt.api.Assertion
 
-fun Assertion<Boolean>.isTrue() =
-  passesIf("is true") { this }
+fun <T : Boolean?> Assertion<T>.isTrue() =
+  passesIf("is true") { this == true }
 
-fun Assertion<Boolean>.isFalse() =
-  passesIf("is false") { !this }
+fun <T : Boolean?> Assertion<T>.isFalse() =
+  passesIf("is false") { this == false }

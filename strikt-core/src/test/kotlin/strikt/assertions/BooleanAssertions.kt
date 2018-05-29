@@ -18,6 +18,11 @@ internal object BooleanAssertions : Spek({
           expect("a" == "A").isTrue()
         }
       }
+      it("fails when the subject is null") {
+        fails {
+          expect(null).isTrue()
+        }
+      }
     }
     describe("isFalse assertion") {
       it("passes when the subject is false") {
@@ -26,6 +31,11 @@ internal object BooleanAssertions : Spek({
       it("fails when the subject is false") {
         fails {
           expect("a" == "a").isFalse()
+        }
+      }
+      it("fails when the subject is null") {
+        fails {
+          expect(null).isFalse()
         }
       }
     }
