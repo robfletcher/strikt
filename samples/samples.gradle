@@ -1,3 +1,10 @@
+plugins {
+  id "nebula.kotlin" version "1.2.41"
+}
+
+apply from: "$rootDir/gradle/kotlin.gradle"
+apply from: "$rootDir/gradle/junit.gradle"
+
 dependencies {
   compile project(":strikt-core")
 

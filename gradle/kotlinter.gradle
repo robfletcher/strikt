@@ -1,4 +1,3 @@
-
 kotlinter {
   ignoreFailures = false
   indentSize = 2
