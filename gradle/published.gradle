@@ -1,5 +1,7 @@
 apply plugin: "com.jfrog.artifactory"
 apply plugin: "nebula.maven-publish"
+apply plugin: "nebula.javadoc-jar"
+apply plugin: "nebula.source-jar"
 apply plugin: "nebula.nebula-bintray"
 apply plugin: "org.jetbrains.dokka"
 
