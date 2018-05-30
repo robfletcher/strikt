@@ -169,5 +169,32 @@ internal object AnyAssertions : Spek({
         }
       }
     }
+
+    describe("isNotSameInstanceAs assertion") {
+
+      sequenceOf(
+        Pair(listOf("covfefe"), listOf("covfefe")),
+        Pair(null, listOf("covfefe")),
+        Pair(listOf("covfefe"), null),
+        Pair(1, 1L)
+      ).forEach { (subject, expected) ->
+        it("succeeds $subject is not the same instance as $expected") {
+          expect(subject).isNotSameInstanceAs(expected)
+        }
+      }
+
+      sequenceOf(
+        Pair("covfefe", "covfefe"),
+        Pair(1L, 1L),
+        Pair(null, null),
+        listOf("covfefe").let { Pair(it, it) }
+      ).forEach { (subject, expected) ->
+        it("fails $subject is not the same instance as $expected") {
+          fails {
+            expect(subject).isNotSameInstanceAs(expected)
+          }
+        }
+      }
+    }
   }
 })
