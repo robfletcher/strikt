@@ -1,7 +1,6 @@
-plugins {
-  id "org.jbake.site" version "1.2.0"
-  id "org.jetbrains.dokka" version "0.9.17"
-}
+apply plugin: "org.jbake.site"
+
+apply from: "$rootDir/gradle/site.gradle"
 
 dokka {
   // I don't know why this task always thinks it's up to date
@@ -34,3 +33,4 @@ jbake {
 }
 
 bake.dependsOn(copyApiDocs)
+build.dependsOn(bake)
