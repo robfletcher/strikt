@@ -5,11 +5,13 @@ buildscript {
   }
   dependencies {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
-    classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+    classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.12.0"
     classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.3"
     classpath "com.netflix.nebula:nebula-release-plugin:6.3.3"
     classpath "com.netflix.nebula:nebula-publishing-plugin:7.1.0"
     classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
+    classpath "org.jbake:jbake-gradle-plugin:1.2.0"
   }
 }
 
@@ -27,5 +29,3 @@ subprojects {
     lockAllConfigurations()
   }
 }
-
-apply from: "$rootDir/gradle/site.gradle"
