@@ -81,6 +81,20 @@ fun <T> Assertion<T>.isSameInstanceAs(expected: Any?): Assertion<T> =
   assert("is the same instance as %s", expected) {
     when {
       subject === expected -> pass()
-      else -> fail()
+      else -> fail(actual = subject)
+    }
+  }
+
+/**
+ * Asserts that the subject is not the same instance as [expected] according to the standard
+ * Kotlin `===` operator.
+ *
+ * @param expected the expected instance.
+ */
+fun <T> Assertion<T>.isNotSameInstanceAs(expected: Any?): Assertion<T> =
+  assert("is not the same instance as %s", expected) {
+    when {
+      subject === expected -> fail()
+      else -> pass()
     }
   }
