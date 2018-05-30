@@ -1,3 +1,5 @@
+apply plugin: "nebula.kotlin"
+
 compileKotlin {
   kotlinOptions {
     languageVersion = "1.2"

@@ -1,9 +1,20 @@
-plugins {
-  id "org.jetbrains.dokka" version "0.9.17"
-  id "nebula.release" version "6.3.3"
+buildscript {
+  repositories {
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
+    classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
+    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.3"
+    classpath "com.netflix.nebula:nebula-release-plugin:6.3.3"
+    classpath "com.netflix.nebula:nebula-publishing-plugin:7.1.0"
+    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
+  }
 }
 
 allprojects {
+  apply plugin: "nebula.release"
   group = "io.strikt"
 }
 
