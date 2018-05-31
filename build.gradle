@@ -22,6 +22,10 @@ subprojects {
   repositories {
     jcenter()
   }
+
+  dependencyLocking {
+    lockAllConfigurations()
+  }
 }
 
 apply from: "$rootDir/gradle/site.gradle"

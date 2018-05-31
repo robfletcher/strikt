@@ -3,8 +3,6 @@
 # This file is expected to be part of source control.
 org.apiguardian:apiguardian-api:1.0.0
 org.jetbrains.kotlin:kotlin-reflect:1.2.41
-org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.41
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41
 org.jetbrains.kotlin:kotlin-stdlib:1.2.41
 org.jetbrains:annotations:13.0
 org.junit.jupiter:junit-jupiter-api:5.2.0
