@@ -1,0 +1,25 @@
+apply plugin: "org.jetbrains.dokka"
+
+javadoc.enabled = false
+
+dokka {
+  outputFormat = "html"
+  outputDirectory = "$buildDir/javadoc"
+  jdkVersion = 8
+  samples = ["$rootDir/samples/src/test/kotlin"]
+}
+
+task(dokkaJar, type: Jar) {
+  group = "build"
+  description = "Assembles Javadoc jar from Dokka API docs"
+  classifier = "javadoc"
+  from(dokka)
+}
+
+publishing {
+  publications {
+    nebula(MavenPublication) {
+      artifact dokkaJar
+    }
+  }
+}

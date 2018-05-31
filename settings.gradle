@@ -12,3 +12,5 @@ def setBuildFile(project) {
 rootProject.children.each {
   setBuildFile it
 }
+
+enableFeaturePreview("STABLE_PUBLISHING")
