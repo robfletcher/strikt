@@ -1,6 +1,6 @@
 dependencies {
   // enables running in IntelliJ using JUnit runner
-  testRuntime "org.junit.platform:junit-platform-launcher:+"
+  testRuntime "org.junit.platform:junit-platform-launcher:1.2.0"
 }
 
 test {

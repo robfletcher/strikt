@@ -13,4 +13,5 @@ rootProject.children.each {
   setBuildFile it
 }
 
-enableFeaturePreview("STABLE_PUBLISHING")
+// TODO: uncomment once project is on Gradle 4.8+
+//enableFeaturePreview("STABLE_PUBLISHING")
