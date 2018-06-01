@@ -1,18 +1,19 @@
 apply plugin: "twitter-gradle-plugin"
 
 def tag = System.getenv("CIRCLE_TAG")
-def releaseName = new groovy.json.JsonSlurper()
-  .parseText("https://api.github.com/repos/robfletcher/strikt/releases/tags/v0.7.1?access_token=${System.getenv("GITHUB_OAUTH_TOKEN")}".toURL().text)
-  .name
 
-twitterPlugin {
-  consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
-  consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
-  accessToken = System.getenv("TWITTER_ACCESS_TOKEN")
-  accessTokenSecret = System.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-  message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
-}
+if (tag) {
+  def releaseName = new groovy.json.JsonSlurper()
+    .parseText("https://api.github.com/repos/robfletcher/strikt/releases/tags/$tag?access_token=${System.getenv("GITHUB_OAUTH_TOKEN")}".toURL().text)
+    .name
 
-createTweet.doFirst {
-  if (!tag) throw new IllegalStateException("Should not be tweeting without a tag!")
+  twitterPlugin {
+    consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
+    consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
+    accessToken = System.getenv("TWITTER_ACCESS_TOKEN")
+    accessTokenSecret = System.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+    message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
+  }
+
+  project.tasks.find { it.name == "final" }.finalizedBy createTweet
 }
