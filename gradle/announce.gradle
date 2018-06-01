@@ -3,8 +3,12 @@ apply plugin: "twitter-gradle-plugin"
 def tag = System.getenv("CIRCLE_TAG")
 
 if (tag) {
+  def ghOrg = System.getenv("CIRCLE_PROJECT_USERNAME")
+  def ghRepo = System.getenv("CIRCLE_PROJECT_REPONAME")
+  def ghToken = System.getenv("GITHUB_OAUTH_TOKEN")
+  def ghReleaseUrl = "https://api.github.com/repos/$ghOrg/$ghRepo/releases/tags/$tag?access_token=$ghToken"
   def releaseName = new groovy.json.JsonSlurper()
-    .parseText("https://api.github.com/repos/robfletcher/strikt/releases/tags/$tag?access_token=${System.getenv("GITHUB_OAUTH_TOKEN")}".toURL().text)
+    .parseText(ghReleaseUrl.toURL().text)
     .name
 
   twitterPlugin {
