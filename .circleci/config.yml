@@ -46,7 +46,7 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: ./gradlew -Prelease.useLastTag=true final createTweet
+      - run: ./gradlew -Prelease.useLastTag=true final
 
 workflows:
   version: 2
