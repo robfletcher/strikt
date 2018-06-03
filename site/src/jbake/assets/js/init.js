@@ -1,7 +1,9 @@
 (function ($) {
     $(function () {
 
-        $('.sidenav').sidenav();
+      $(".dropdown-trigger").dropdown();
+
+      $('.sidenav').sidenav();
 
     }); // end of document ready
 })(jQuery); // end of jQuery name space
