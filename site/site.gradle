@@ -3,8 +3,7 @@ apply plugin: "org.jbake.site"
 apply from: "$rootDir/gradle/site.gradle"
 
 dokka {
-  // TODO: I don't know why this task always thinks it's up to date
-  outputs.upToDateWhen { false }
+  inputs.files tasks.getByPath(":strikt-core:compileKotlin")
   outputFormat = "html"
   outputDirectory = "$buildDir/dokka"
   moduleName = "strikt-core"
@@ -16,8 +15,6 @@ dokka {
 }
 
 task copyApiDocs(type: Copy) {
-  // TODO: I don't know why this task always thinks it's up to date
-  outputs.upToDateWhen { false }
   from(dokka) {
     include "**/*.html"
   }
