@@ -1,64 +1,61 @@
-= Strikt
-:jbake-type: page
-:jbake-status: published
-:jbake-cached: true
+title=Strikt
+type=page
+status=published
+cached=true
+~~~~~~
 
-Strikt is an assertion library for Kotlin intended for use with a test runner such as https://junit.org/junit5/[JUnit] or http://spekframework.org/[Spek].
-It's inspired by https://joel-costigliola.github.io/assertj/[AssertJ], https://robstoll.github.io/atrium/[Atrium] and https://github.com/npryce/hamkrest[Hamkrest].
+Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
+It's inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
 However, none of those provided exactly what I wanted so I decided to create my own.
 
 Strikt gets you…
 
-== Strong typing
+## Strong typing
 
 Assertion functions can "narrow" the type of the assertion:
 
-[source,kotlin]
-----
+```kotlin
 val subject: Any? = "The Enlightened take things Lightly"
 expect(subject)                // type: Assertion<Any?>
   .isNotNull()                 // type: Assertion<Any>
   .isA<String>()               // type: Assertion<String>
   .matches(Regex("[\\w\\s]+")) // only available on Assertion<CharSequence>
-----
+```
 
 Assertions can "map" to properties and method results in a type safe way:
 
-[source,kotlin]
-----
+```kotlin
 val subject = Pantheon.ERIS
 expect(subject)
   .map(Deity::realm)  // type safe reference to a property narrows assertion
   .map { toString() } // narrows assertion to return type of method call
   .isEqualTo("discord and confusion")
-----
+```
 
-== Easy "soft" assertions
+## Easy "soft" assertions
 
-[source,kotlin]
-----
+```kotlin
 val subject: "The Enlightened take things Lightly"
 expect(subject) {
   hasLength(5)          // fails
   matches(Regex("\d+")) // fails
   startsWith("T")       // still evaluated and passes
 }
-----
+```
 
-== Useful, structured diagnostics
+## Useful, structured diagnostics
 
-----
+```
 Multiple Failures (2 failures)
 	has length 5 : found 35
 	matches the regular expression /\d+/
-----
+```
 
-== Extensibility
+## Extensibility
 
 Easy custom assertions:
 
-[source,kotlin]
-----
+```kotlin
 fun Assertion<LocalDate>.isStTibsDay() =
   assert("is St. Tib's Day") {
     when (MonthDay.from(subject)) {
@@ -68,32 +65,30 @@ fun Assertion<LocalDate>.isStTibsDay() =
   }
 
 expect(LocalDate.of(2018, 5, 15)).isStTibsDay()
-----
+```
 
 With the same diagnostic quality:
 
-----
+```
 Expect that 2018-05-15 (1 failure)
     is St. Tib's Day 
-----
+```
 
 Easy custom narrowing:
 
-[source,kotlin]
-----
+```kotlin
 val Assertion<Deity>.realm: Assertion<String>
   get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
 expect(subject).realm.isEqualTo("discord and confusion")
-----
+```
 
-== Simple setup
+## Simple setup
 
 One dependency. Two imports. Go!
 
-[source,groovy]
-----
+```groovy
 repositories { 
   jcenter() 
 }
@@ -101,29 +96,27 @@ repositories {
 dependencies {
   testCompile "io.strikt:strikt-core:0.6.0"
 }
-----
+```
 
-[source,kotlin]
-----
+```kotlin
 import strikt.api.*
 import strikt.assertions.*
-----
+```
 
-== Simple API, complex capabilities
+## Simple API, complex capabilities
 
-[source,kotlin]
-----
+```kotlin
 val subject = Pantheon.values()
 expect(subject).any {
   culture.isEqualTo("Grœco-Californian")
   realm.isEqualTo("discord and confusion")
   aliases.contains("Discordia")
 }
-----
+```
 
-== Detailed reporting
+## Detailed reporting
 
-----
+```
 ▼ Expect that [Eris, Thor]
   ✓ at least one element matches:
     ▼ Expect that Eris
@@ -144,4 +137,4 @@ expect(subject).any {
         ✗ contains the elements ["Discordia"]
           ▼ Expect that ["Þórr", "Þunor"]
             ✗ contains "Discordia"
-----
+```

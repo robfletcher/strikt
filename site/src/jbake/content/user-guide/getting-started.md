@@ -1,36 +1,38 @@
-= Getting Started
-:jbake-type: page
-:jbake-status: published
-:jbake-cached: true
+title=Getting Started
+type=page
+status=published
+cached=true
+nextPage=assertion-styles.html
+~~~~~~
+
+# Getting Started
 
 Strikt does not depend on any particular test runner.
 It can be used with JUnit, Spek or any other runner that supports tests written in Kotlin.
 
-== Installation
+## Installation
 
 Strikt is available from JCenter.
 Add the following to your `build.gradle`.
 
-[source,groovy]
-----
-repositories { 
-  jcenter() 
+```groovy
+repositories {
+  jcenter()
 }
 
 dependencies {
   testCompile "io.strikt:strikt-core:0.6.0"
 }
-----
+```
 
-== Importing the Strikt API
+## Importing the Strikt API
 
 Add the following imports to your test:
 
-[source,kotlin]
-----
+```kotlin
 import strikt.api.*
 import strikt.assertions.*
-----
+```
 
 The `strikt.api` package contains top level functions such as `expect` and `throws` that you will use to create assertions as well as the API classes you will interact with if you decide to implement your own assertion functions.
 The `strikt.assertions` package contains the standard library of assertion functions.

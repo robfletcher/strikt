@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <#include "header.ftl">
+  <#include "head.ftl">
 </head>
 <body>
-  <#include "menu.ftl">
+  <#include "navbar.ftl">
 
 <div class="section no-pad-bot" id="index-banner">
   <div class="container">

@@ -1,6 +1,5 @@
 apply plugin: "org.jbake.site"
-
-apply from: "$rootDir/gradle/site.gradle"
+apply plugin: "org.jetbrains.dokka"
 
 dokka {
   inputs.files tasks.getByPath(":strikt-core:compileKotlin")
