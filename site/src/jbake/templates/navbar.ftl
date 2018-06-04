@@ -5,16 +5,15 @@
         <img src="/img/logo.png" alt="Strikt" width="112" height="28">
       </a>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div class="navbar-menu">
+    <div class="navbar-menu" id="navMenu">
       <div class="navbar-start">
-        <!-- navbar items -->
       </div>
 
       <div class="navbar-end">
