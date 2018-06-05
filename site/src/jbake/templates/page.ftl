@@ -6,9 +6,9 @@
 <main class="section">
   <div class="container">
     <div class="content is-medium">${content.body}</div>
+    <#include "pagination.ftl">
   </div>
 </main>
-  <#include "pagination.ftl">
   <#include "footer.ftl">
 </body>
 </html>
