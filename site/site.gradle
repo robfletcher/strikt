@@ -29,6 +29,10 @@ task copyApiDocs(type: Copy) {
   filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
 }
 
+dependencies {
+  jbake "com.orientechnologies:orientdb-core:2.2.34"
+}
+
 jbake {
   flexmarkVersion = "0.32.24"
   asciidoctorjVersion = "1.5.6"
