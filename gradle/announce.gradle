@@ -19,7 +19,5 @@ if (tag) {
     message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
   }
 
-  project.task("postRelease") {
-    finalizedBy createTweet
-  }
+  rootProject.tasks.postRelease.finalizedBy createTweet
 }
