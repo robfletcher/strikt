@@ -9,6 +9,8 @@ import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
 import strikt.assertions.last
 import java.time.LocalDate
 
@@ -35,6 +37,14 @@ internal object Mapping : Spek({
       it("maps to a ranged sub-list using [IntRange]") {
         val subject = listOf("catflap", "rubberplant", "marzipan")
         expect(subject)[1..2].containsExactly("rubberplant", "marzipan")
+      }
+    }
+
+    describe("mapping assertions on ${Map::class.java.simpleName}") {
+      it("maps to a value element using [key]") {
+        val subject = mapOf("foo" to "bar")
+        expect(subject)["foo"].isNotNull().isEqualTo("bar")
+        expect(subject)["bar"].isNull()
       }
     }
   }
