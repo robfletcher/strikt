@@ -1,0 +1,46 @@
+apply plugin: "org.jbake.site"
+apply plugin: "org.jetbrains.dokka"
+
+dokka {
+  inputs.files tasks.getByPath(":strikt-core:compileKotlin")
+  outputFormat = "html"
+  outputDirectory = "$buildDir/dokka"
+  moduleName = "strikt-core"
+  jdkVersion = 8
+  kotlinTasks {
+    [project(":strikt-core").compileKotlin]
+  }
+  samples = ["$rootDir/samples/src/test/kotlin"]
+}
+
+task copyApiDocs(type: Copy) {
+  from(dokka) {
+    include "**/*.html"
+  }
+  into("${projectDir}/src/jbake/content/api/")
+  filter { line ->
+    def strip = ["<HTML>", "<HEAD>", "<meta", "<title>", "<link", "</HEAD>", "<BODY>", "</BODY>", "</HTML>"]
+    if (strip.any { line.startsWith(it) }) {
+      null
+    } else {
+      line
+    }
+  }
+  filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
+}
+
+dependencies {
+  jbake "com.orientechnologies:orientdb-core:2.2.34"
+}
+
+jbake {
+  flexmarkVersion = "0.32.24"
+  asciidoctorjVersion = "1.5.6"
+}
+
+clean.doFirst {
+  delete "${projectDir}/src/jbake/content/api/"
+}
+
+bake.dependsOn(copyApiDocs)
+build.dependsOn(bake)

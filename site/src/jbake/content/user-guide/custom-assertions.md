@@ -1,7 +1,14 @@
+title=Custom Assertions
+type=page
+status=published
+cached=true
+previousPage=mapping.html
+~~~~~~
+
 # Custom Assertions
 
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
-Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
+Assertion functions are https://kotlinlang.org/docs/reference/extensions.html[extension functions] on the interface `Assertion<T>`.
 
 ## Atomic assertions
 
@@ -36,7 +43,7 @@ Expect that 2018-05-01 (1 failure)
     is St. Tib's Day 
 ```
 
-!!! info
+!!! note
     The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
     That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 

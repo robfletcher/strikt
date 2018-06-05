@@ -1,3 +1,11 @@
+title=Assertion styles
+type=page
+status=published
+cached=true
+previousPage=getting-started.html
+nextPage=common-patterns.html
+~~~~~~
+
 # Assertion styles
 
 Two different styles of assertion -- chained and block -- are supported for different use-cases.
@@ -19,7 +27,7 @@ expect(subject)
   .isUpperCase()
 ```
 
-Produces the output: 
+Produces the output:
 
 ```
 Expect that "covfefe" (1 failure)

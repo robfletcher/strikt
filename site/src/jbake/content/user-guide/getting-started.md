@@ -1,3 +1,10 @@
+title=Getting Started
+type=page
+status=published
+cached=true
+nextPage=assertion-styles.html
+~~~~~~
+
 # Getting Started
 
 Strikt does not depend on any particular test runner.
@@ -9,8 +16,8 @@ Strikt is available from JCenter.
 Add the following to your `build.gradle`.
 
 ```groovy
-repositories { 
-  jcenter() 
+repositories {
+  jcenter()
 }
 
 dependencies {

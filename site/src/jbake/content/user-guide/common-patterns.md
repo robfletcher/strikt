@@ -1,3 +1,11 @@
+title=Common Assertion Patterns
+type=page
+status=published
+cached=true
+previousPage=assertion-styles.html
+nextPage=flow-typing.html
+~~~~~~
+
 # Common Assertion Patterns
 
 This section contains some common uses of Strikt's standard assertion library.

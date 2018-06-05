@@ -1,3 +1,11 @@
+title=Mapping Over Assertion Subjects
+type=page
+status=published
+cached=true
+previousPage=flow-typing.html
+nextPage=custom-assertions.html
+~~~~~~
+
 # Mapping Over Assertion Subjects
 
 Although you can obviously write assertions for the properties of an object with code like this:

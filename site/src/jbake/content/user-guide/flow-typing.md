@@ -1,6 +1,14 @@
+title=Strongly Typed Assertions
+type=page
+status=published
+cached=true
+previousPage=common-patterns.html
+nextPage=mapping.html
+~~~~~~
+
 # Strongly Typed Assertions
 
-Strikt's API is designed to work with Kotlin's strong type system. 
+Strikt's API is designed to work with Kotlin's strong type system.
 
 Strikt's assertion API uses the class `Assertion<T>`, with the generic type `T` representing the (declared) type of the assertion subject.
 Assertion functions such as `isEqualTo` are implemented as extension functions on `Assertion` with an appropriate generic type.

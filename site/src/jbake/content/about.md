@@ -1,3 +1,9 @@
+title=About Strikt
+type=page
+status=published
+cached=true
+~~~~~~
+
 # About Strikt
 
 Strikt was written by [Rob Fletcher](https://github.com/robfletcher).

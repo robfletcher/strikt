@@ -1,4 +1,8 @@
-# ![Strikt](img/logo.png)
+title=Strikt
+type=page
+status=published
+cached=true
+~~~~~~
 
 Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
 It's inspired by [AssertJ](https://joel-costigliola.github.io/assertj/), [Atrium](https://robstoll.github.io/atrium/) and [Hamkrest](https://github.com/npryce/hamkrest).
@@ -80,7 +84,7 @@ val subject = Pantheon.ERIS
 expect(subject).realm.isEqualTo("discord and confusion")
 ```
 
-## Simple setup 
+## Simple setup
 
 One dependency. Two imports. Go!
 
