@@ -19,5 +19,7 @@ if (tag) {
     message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
   }
 
-  project.tasks.find { it.name == "final" }.finalizedBy createTweet
+  project.task("postRelease") {
+    finalizedBy createTweet
+  }
 }
