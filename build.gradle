@@ -27,7 +27,7 @@ subprojects {
   }
 
 // TODO: uncomment once project is on Gradle 4.8+
-//  dependencyLocking {
-//    lockAllConfigurations()
-//  }
+  dependencyLocking {
+    lockAllConfigurations()
+  }
 }

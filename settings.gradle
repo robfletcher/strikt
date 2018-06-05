@@ -14,4 +14,4 @@ rootProject.children.each {
 }
 
 // TODO: uncomment once project is on Gradle 4.8+
-//enableFeaturePreview("STABLE_PUBLISHING")
+enableFeaturePreview("STABLE_PUBLISHING")
