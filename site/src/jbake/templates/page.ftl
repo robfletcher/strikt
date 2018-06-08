@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en" class="has-spaced-navbar-fixed-top">
+<head>
   <#include "head.ftl">
+</head>
 <body>
   <#include "navbar.ftl">
 <main class="section">

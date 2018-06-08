@@ -4,13 +4,13 @@
       <div class="column">
         <p class="has-text-left-tablet has-text-centered-mobile">
           <a href="https://github.com/robfletcher/strikt/" class="button is-dark">
-            <span class="icon"><i class="fab fa-github"></i></span><span>GitHub</span>
+            <span class="icon"><i class="fab fa-lg fa-github"></i></span><span>GitHub</span>
           </a>
           <a href="https://kotlinlang.slack.com/messages/CAR7KJ96J" class="button is-danger">
-            <span class="icon"><i class="fab fa-slack-hash"></i></span><span>Slack</span>
+            <span class="icon"><i class="fab fa-lg fa-slack-hash"></i></span><span>Slack</span>
           </a>
           <a href="https://twitter.com/stri_kt" class="button is-info">
-            <span class="icon"><i class="fab fa-twitter"></i></span><span>Twitter</span>
+            <span class="icon"><i class="fab fa-lg fa-twitter"></i></span><span>Twitter</span>
           </a>
         </p>
       </div>
