@@ -16,13 +16,13 @@ repositories {
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:0.6.0"
+  testCompile "io.strikt:strikt-core:0.8.0"
 }
 ```
 
 ## Using Strikt
 
-Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt).
+Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt-core).
 
 ## Community
 
