@@ -26,7 +26,7 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun Subject<*>.writeSubject(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
-    writer.append(description.format(formatValue(value)))
+    writer.append("Expect that: ").append(description.format(formatValue(value)))
     writeLineEnd(writer, this)
   }
 

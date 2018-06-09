@@ -33,7 +33,7 @@ internal object MapAssertions : Spek({
           expect(subject).hasEntry("foo")
         }.let { e ->
           assertEquals(
-            "Expect that {} (1 failure)\n" +
+            "Expect that: {} (1 failure)\n" +
               "\thas an entry with the key \"foo\"",
             e.message
           )
@@ -45,8 +45,8 @@ internal object MapAssertions : Spek({
           expect(subject).hasEntry("foo").isEqualTo("baz")
         }.let { e ->
           assertEquals(
-            "Expect that {foo=bar} (1 failure)\n" +
-              "\tentry [foo] \"bar\" (1 failure)\n" +
+            "Expect that: {foo=bar} (1 failure)\n" +
+              "\tExpect that: entry [foo] \"bar\" (1 failure)\n" +
               "\tis equal to \"baz\" : found \"bar\"",
             e.message
           )

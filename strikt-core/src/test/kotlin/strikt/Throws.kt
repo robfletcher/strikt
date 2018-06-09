@@ -23,7 +23,7 @@ internal object Throws : Spek({
       fails {
         throws<IllegalStateException> { -> }
       }.let { e ->
-        val expected = "Expect that () -> kotlin.Unit (1 failure)\n" +
+        val expected = "Expect that: () -> kotlin.Unit (1 failure)\n" +
           "\tthrows java.lang.IllegalStateException : nothing was thrown"
         assertEquals(expected, e.message)
       }
@@ -33,7 +33,7 @@ internal object Throws : Spek({
       fails {
         throws<IllegalStateException> { -> throw NullPointerException() }
       }.let { e ->
-        val expected = "Expect that () -> kotlin.Unit (1 failure)\n" +
+        val expected = "Expect that: () -> kotlin.Unit (1 failure)\n" +
           "\tthrows java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
         assertEquals(expected, e.message)
         assertEquals(NullPointerException::class.java, e.failures.first().cause?.javaClass)
@@ -58,7 +58,7 @@ internal object Throws : Spek({
         val fn: () -> Unit = subject::throwSomething
         expect(fn).throws<IllegalStateException>()
       }.let { e ->
-        val expected = "Expect that MyThing::throwSomething (1 failure)\n" +
+        val expected = "Expect that: MyThing::throwSomething (1 failure)\n" +
           "\tthrows java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
         assertEquals(expected, e.message)
       }

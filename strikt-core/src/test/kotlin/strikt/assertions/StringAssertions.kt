@@ -3,6 +3,7 @@ package strikt.assertions
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
+import org.junit.jupiter.api.Assertions.assertEquals
 import strikt.api.expect
 import strikt.fails
 
@@ -19,6 +20,21 @@ internal object StringAssertions : Spek({
       }
       it("passes if the subject is the same as the expected value apart from case") {
         expect("covfefe").isEqualToIgnoringCase("COVFEFE")
+      }
+    }
+
+    describe("block assertions on string subjects") {
+      it("compiles") {
+        fails {
+          val subject = "The Enlightened take things Lightly"
+          expect(subject = subject) {
+            hasLength(5)
+            matches(Regex("\\d+"))
+            startsWith("T")
+          }
+        }.let { e ->
+          assertEquals(2, e.failures.size)
+        }
       }
     }
   }

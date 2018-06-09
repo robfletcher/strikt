@@ -41,14 +41,14 @@ object Docs {
   fun softAssertions() {
     assertThrows<MultipleFailuresError> {
       val subject = "The Enlightened take things Lightly"
-      expect("", subject) {
+      expect(subject) {
         hasLength(5)           // fails
         matches(Regex("\\d+")) // fails
         startsWith("T")        // still evaluated and passes
       }
     }.let {
       assertEquals(
-        """Multiple Failures (2 failures)
+        """Expect that: "The Enlightened take things Lightly" (2 failures)
 	has length 5 : found 35
 	matches the regular expression /\d+/""",
         it.message
@@ -70,7 +70,7 @@ object Docs {
       expect(LocalDate.of(2018, 5, 15)).isStTibsDay()
     }.let {
       assertEquals(
-        """Expect that 2018-05-15 (1 failure)
+        """Expect that: 2018-05-15 (1 failure)
 	is St. Tib's Day""",
         it.message
       )
@@ -101,25 +101,25 @@ object Docs {
       aliases.contains("Discordia")
     }.let {
       assertEquals(
-        """▼ Expect that [Eris, Thor]
+        """▼ Expect that: [Eris, Thor]
   ✓ at least one element matches:
-    ▼ Expect that Eris
-      ▼ .culture "Grœco-Californian"
+    ▼ Expect that: Eris
+      ▼ Expect that: .culture "Grœco-Californian"
         ✓ is equal to "Grœco-Californian"
-      ▼ .realm "discord and confusion"
+      ▼ Expect that: .realm "discord and confusion"
         ✓ is equal to "discord and confusion"
-      ▼ .aliases ["Ἔρις", "Discordia"]
+      ▼ Expect that: .aliases ["Ἔρις", "Discordia"]
         ✓ contains the elements ["Discordia"]
-          ▼ Expect that ["Ἔρις", "Discordia"]
+          ▼ Expect that: ["Ἔρις", "Discordia"]
             ✓ contains "Discordia"
-    ▼ Expect that Thor
-      ▼ .culture "Norse"
+    ▼ Expect that: Thor
+      ▼ Expect that: .culture "Norse"
         ✗ is equal to "Grœco-Californian"
-      ▼ .realm "thunder"
+      ▼ Expect that: .realm "thunder"
         ✗ is equal to "discord and confusion"
-      ▼ .aliases ["Þórr", "Þunor"]
+      ▼ Expect that: .aliases ["Þórr", "Þunor"]
         ✗ contains the elements ["Discordia"]
-          ▼ Expect that ["Þórr", "Þunor"]
+          ▼ Expect that: ["Þórr", "Þunor"]
             ✗ contains "Discordia"
 """, it.writeReport()
       )

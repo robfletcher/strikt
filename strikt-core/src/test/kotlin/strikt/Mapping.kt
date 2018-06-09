@@ -80,8 +80,8 @@ internal object Mapping : Spek({
         expect(subject).map(Person::name).isEqualTo("Ziggy")
       }.let { e ->
         val expectedMessage = listOf(
-          "Expect that Person(name=David, birthDate=1947-01-08) (1 failure)",
-          "\t.name \"${subject.name}\" (1 failure)",
+          "Expect that: Person(name=David, birthDate=1947-01-08) (1 failure)",
+          "\tExpect that: .name \"${subject.name}\" (1 failure)",
           "\tis equal to \"Ziggy\" : found \"David\""
         )
         assertEquals(expectedMessage, e.message?.lines())
@@ -93,9 +93,9 @@ internal object Mapping : Spek({
         expect(subject).map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1971)
       }.let { e ->
         val expectedMessage = listOf(
-          "Expect that Person(name=David, birthDate=1947-01-08) (1 failure)",
-          "\t.birthDate ${subject.birthDate} (1 failure)",
-          "\t.year ${subject.birthDate.year} (1 failure)", // TODO: can we make it indent again?
+          "Expect that: Person(name=David, birthDate=1947-01-08) (1 failure)",
+          "\tExpect that: .birthDate ${subject.birthDate} (1 failure)",
+          "\tExpect that: .year ${subject.birthDate.year} (1 failure)", // TODO: can we make it indent again?
           "\tis equal to 1971 : found 1947"
         )
         assertEquals(expectedMessage, e.message?.lines())

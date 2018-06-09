@@ -17,6 +17,16 @@ internal constructor(
   private val negated: Boolean = false
 ) {
   /**
+   * Adds a description to the assertion.
+   *
+   * @param description a description of the subject of the assertion. The description may include a [String.format]
+   * style placeholder for the value itself.
+   * @return the same assertion with the new description applied.
+   */
+  fun describedAs(description: String): Assertion<T> =
+    Assertion(subject.copy(description = description), mode, negated)
+
+  /**
    * Evaluates a condition that may pass or fail.
    *
    * This method can be used directly in a test but is typically used inside an
@@ -51,7 +61,11 @@ internal constructor(
    * @return the results of assertions made inside the [assertions] block used
    * to evaluate whether the overall assertion passes or fails.
    */
-  fun compose(description: String, expected: Any?, assertions: ComposedAssertions<T>.() -> Unit): ComposedAssertionContext<T> {
+  fun compose(
+    description: String,
+    expected: Any?,
+    assertions: ComposedAssertions<T>.() -> Unit
+  ): ComposedAssertionContext<T> {
     val result = Result(description, expected).also(subject::append)
     ComposedAssertions(subject, result).apply(assertions)
     return AssertionContextImpl(this, result)
@@ -117,7 +131,7 @@ internal constructor(
    * @return an assertion whose subject is the value returned by [function].
    */
   fun <R> map(description: String, function: T.() -> R): Assertion<R> =
-    Subject(description, subject.value.function())
+    Subject(subject.value.function(), description)
       .also(subject::append)
       .let { Assertion(it, mode) }
 
