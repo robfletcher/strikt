@@ -1,5 +1,6 @@
 package strikt.api
 
+import strikt.api.Mode.COLLECT
 import strikt.api.Mode.FAIL_FAST
 import strikt.api.reporting.Result
 import strikt.api.reporting.Subject
@@ -25,6 +26,24 @@ internal constructor(
    */
   fun describedAs(description: String): Assertion<T> =
     Assertion(subject.copy(description = description), mode, negated)
+
+  /**
+   * Evaluates multiple assertions against the subject.
+   *
+   * @param block a closure that can perform multiple assertions that will all
+   * be evaluated regardless of whether preceding ones pass or fail.
+   *
+   * @see expect
+   */
+  // TODO: not 100% happy with the name
+  fun evaluate(block: Assertion<T>.() -> Unit): Assertion<T> =
+    Assertion(subject, COLLECT, negated)
+      .apply(block)
+      .also {
+        if (mode == FAIL_FAST) {
+          subject.throwOnFailure()
+        }
+      }
 
   /**
    * Evaluates a condition that may pass or fail.
