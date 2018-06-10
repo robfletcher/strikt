@@ -3,21 +3,24 @@ apply plugin: "twitter-gradle-plugin"
 def tag = System.getenv("CIRCLE_TAG")
 
 if (tag) {
-  def ghOrg = System.getenv("CIRCLE_PROJECT_USERNAME")
-  def ghRepo = System.getenv("CIRCLE_PROJECT_REPONAME")
   def ghToken = System.getenv("GITHUB_OAUTH_TOKEN")
-  def ghReleaseUrl = "https://api.github.com/repos/$ghOrg/$ghRepo/releases/tags/$tag?access_token=$ghToken"
-  def releaseName = new groovy.json.JsonSlurper()
-    .parseText(ghReleaseUrl.toURL().text)
-    .name
+  def ghReleaseUrl = "https://api.github.com/repos/robfletcher/strikt/releases/tags/$tag?access_token=$ghToken"
+  def releaseName = null
+  try {
+    releaseName = new groovy.json.JsonSlurper()
+      .parseText(ghReleaseUrl.toURL().text)
+      .name
 
-  twitterPlugin {
-    consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
-    consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
-    accessToken = System.getenv("TWITTER_ACCESS_TOKEN")
-    accessTokenSecret = System.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-    message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
+    twitterPlugin {
+      consumerKey = System.getenv("TWITTER_CONSUMER_KEY")
+      consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
+      accessToken = System.getenv("TWITTER_ACCESS_TOKEN")
+      accessTokenSecret = System.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+      message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
+    }
+
+    rootProject.tasks.postRelease.finalizedBy createTweet
+  } catch (IOException e) {
+    logger.warn("Could not get release name from GitHub: $e.message")
   }
-
-  rootProject.tasks.postRelease.finalizedBy createTweet
 }
