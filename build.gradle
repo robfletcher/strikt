@@ -13,6 +13,7 @@ buildscript {
     classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.2"
     classpath "com.ferranpons:twitter-gradle-plugin:1.0.2"
     classpath "org.jbake:jbake-gradle-plugin:1.2.0"
+    classpath "org.ajoberstar:gradle-git:1.7.2"
   }
 }
 

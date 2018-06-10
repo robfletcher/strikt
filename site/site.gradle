@@ -1,5 +1,6 @@
 apply plugin: "org.jbake.site"
 apply plugin: "org.jetbrains.dokka"
+apply plugin: "org.ajoberstar.github-pages"
 
 dokka {
   inputs.files tasks.getByPath(":strikt-core:compileKotlin")
@@ -43,4 +44,14 @@ clean.doFirst {
 }
 
 bake.dependsOn(copyApiDocs)
-build.dependsOn(bake)
+
+githubPages {
+  repoUri = "git@github.com:robfletcher/strikt.git"
+  targetBranch = "gh-pages"
+  pages {
+    from(bake)
+    from(rootDir) {
+      include ".circleci/**/*"
+    }
+  }
+}
