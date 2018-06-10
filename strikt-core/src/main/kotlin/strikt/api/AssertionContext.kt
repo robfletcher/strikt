@@ -29,5 +29,10 @@ interface AssertionContext<T> {
     cause: Throwable? = null
   ) = fail(Failure(actual, message, cause))
 
+  /**
+   * Report that the assertion failed.
+   *
+   * @param failure the details of the failure.
+   */
   fun fail(failure: Failure)
 }

@@ -7,7 +7,9 @@ import strikt.api.reporting.Subject
 /**
  * Allows assertions to be composed, or nested.
  * This class is the receiver of the lambda passed to
- * [AssertionContext.compose].
+ * [Assertion.compose].
+ *
+ * @property subject The subject of the assertion.
  */
 class ComposedAssertions<T>
 internal constructor(
@@ -51,6 +53,11 @@ internal constructor(
    * subject as the overall assertion.
    * This is useful because it allows for the overall assertion to contain much
    * more detail in any failure message.
+   *
+   * @param description a description for the conditions the assertion evaluates.
+   * @param assertion the assertion implementation that should result in a call
+   * to [AssertionContext.pass] or [AssertionContext.fail].
+   * @return this assertion, in order to facilitate a fluent API.
    */
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     parent.copy().let {
@@ -58,7 +65,24 @@ internal constructor(
       Assertion(it, COLLECT).assert(description, assertion)
     }
 
-  fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =
+  /**
+   * Evaluates a composed assertion on the original subject.
+   * This creates a new assertion in the composed context using the same
+   * subject as the overall assertion.
+   * This is useful because it allows for the overall assertion to contain much
+   * more detail in any failure message.
+   *
+   * @param description a description for the condition the assertion evaluates.
+   * @param expected the expected value of a comparison.
+   * @param assertion the assertion implementation that should result in a call
+   * to [AssertionContext.pass] or [AssertionContext.fail].
+   * @return this assertion, in order to facilitate a fluent API.
+   */
+  fun assert(
+    description: String,
+    expected: Any?,
+    assertion: AssertionContext<T>.() -> Unit
+  ) =
     parent.copy().let {
       result.append(it)
       Assertion(it, COLLECT).assert(description, expected, assertion)

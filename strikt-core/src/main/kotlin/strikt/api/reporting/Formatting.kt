@@ -2,7 +2,7 @@ package strikt.api.reporting
 
 import kotlin.jvm.internal.CallableReference
 
-fun formatValue(value: Any?): Any =
+internal fun formatValue(value: Any?): Any =
   when (value) {
     null -> "null"
     is CharSequence -> "\"$value\""
@@ -12,6 +12,7 @@ fun formatValue(value: Any?): Any =
     is Class<*> -> value.name
     is Regex -> "/${value.pattern}/"
     is Throwable -> value.javaClass.name
-      is CallableReference -> "${formatValue(value.boundReceiver)}::${value.name}"
+    is CallableReference -> "${formatValue(value.boundReceiver)}::${value.name}"
+    is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
     else -> value
   }

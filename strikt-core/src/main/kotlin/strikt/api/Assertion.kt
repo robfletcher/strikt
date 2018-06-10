@@ -48,8 +48,8 @@ internal constructor(
   /**
    * Evaluates a condition that may pass or fail.
    *
-   * This method can be used directly in a test but is typically used inside an
-   * extension method on `Assertion<T>` such as those provided in the
+   * While this method _can_ be used directly in a test but is typically used
+   * inside an extension method on `Assertion<T>` such as those provided in the
    * [strikt.assertions] package.
    *
    * @sample strikt.samples.AssertionMethods.assert
@@ -64,6 +64,23 @@ internal constructor(
   fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
     assert(description, null, assertion)
 
+  /**
+   * Evaluates a condition that may pass or fail.
+   *
+   * While this method _can_ be used directly in a test but is typically used
+   * inside an extension method on `Assertion<T>` such as those provided in the
+   * [strikt.assertions] package.
+   *
+   * @sample strikt.samples.AssertionMethods.assert
+   *
+   * @param description a description for the condition the assertion evaluates.
+   * @param expected the expected value of a comparison.
+   * @param assertion the assertion implementation that should result in a call
+   * to [AssertionContext.pass] or [AssertionContext.fail].
+   * @return this assertion, in order to facilitate a fluent API.
+   * @see AssertionContext.pass
+   * @see AssertionContext.fail
+   */
   fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =
     apply {
       val result = Result(description, expected).also(subject::append)
@@ -77,6 +94,10 @@ internal constructor(
    * The results of assertions made inside the [assertions] block are included
    * under the overall assertion result.
    *
+   * @param description a description for the condition the assertion evaluates.
+   * @param expected the expected value of a comparison.
+   * @param assertions a group of assertions that will be evaluated against the
+   * subject.
    * @return the results of assertions made inside the [assertions] block used
    * to evaluate whether the overall assertion passes or fails.
    */
@@ -90,6 +111,19 @@ internal constructor(
     return AssertionContextImpl(this, result)
   }
 
+  /**
+   * Allows an assertion to be composed of multiple sub-assertions such as on
+   * fields of an object or elements of a collection.
+   *
+   * The results of assertions made inside the [assertions] block are included
+   * under the overall assertion result.
+   *
+   * @param description a description for the condition the assertion evaluates.
+   * @param assertions a group of assertions that will be evaluated against the
+   * subject.
+   * @return the results of assertions made inside the [assertions] block used
+   * to evaluate whether the overall assertion passes or fails.
+   */
   fun compose(description: String, assertions: ComposedAssertions<T>.() -> Unit) =
     compose(description, null, assertions)
 
@@ -110,6 +144,16 @@ internal constructor(
       }
     }
 
+  /**
+   * Evaluates a boolean condition.
+   * This is useful for implementing the simplest types of assertion function.
+   *
+   * @param description a description for the condition the assertion evaluates.
+   * @param expected the expected value of a comparison.
+   * @param assertion a function that returns `true` (the assertion passes) or
+   * `false` (the assertion fails).
+   * @return this assertion, in order to facilitate a fluent API.
+   */
   fun passesIf(description: String, expected: Any?, assertion: T.() -> Boolean) =
     apply {
       assert(description, expected) {
@@ -164,6 +208,9 @@ internal constructor(
    */
   fun not(): Assertion<T> = Assertion(subject, mode, !negated)
 
+  /**
+   * @return a verbose assertion report detailing all passes and failures.
+   */
   fun writeReport(): String = subject.writeToString()
 
   private val CallableReference.propertyName: String

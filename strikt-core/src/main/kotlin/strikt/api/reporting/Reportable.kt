@@ -6,6 +6,21 @@ import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 
+/**
+ * Part of a graph of assertion results.
+ *
+ * @property status The status of the assertion or group of assertions.
+ * @property root The root of the assertion graph.
+ * @property results The results of any assertions in this node of the graph.
+ * @property allPassed `true` if all composed assertions passed, otherwise
+ * `false`.
+ * @property anyPassed `true` if at least one composed assertion passed,
+ * otherwise `false`.
+ * @property allFailed `true` if all composed assertions failed, otherwise
+ * `false`.
+ * @property anyFailed `true` if at least one composed assertion failed,
+ * otherwise `false`.
+ */
 sealed class Reportable {
   abstract val status: Status
   private var parent: Reportable? = null
@@ -21,6 +36,9 @@ sealed class Reportable {
   val results: Collection<Reportable>
     get() = _results
 
+  /**
+   * Append a new result to this node in the graph.
+   */
   fun append(result: Reportable) {
     result.parent = this
     _results.add(result)
@@ -41,6 +59,12 @@ sealed class Reportable {
   private val _results = mutableListOf<Reportable>()
 }
 
+/**
+ * THe subject of an assertion.
+ *
+ * @property value The subject value.
+ * @property description The formattable description of the subject.
+ */
 data class Subject<T>(
   val value: T,
   val description: String = "%s"
@@ -64,6 +88,10 @@ data class Subject<T>(
  * assertion.
  * However, it can help improve diagnostic messages where it _is_ appropriate.
  * @property results Contains the results of any nested assertions.
+ * @property actual The actual value, if relevant to the assertion.
+ * @property expected The actual value, if relevant to the assertion.
+ * @property message A description of the failure.
+ * @property cause The exception that caused the failure, if any.
  */
 data class Result
 internal constructor(
@@ -73,10 +101,18 @@ internal constructor(
   private var _status: Status = Pending
   private var failure: Failure? = null
 
+  /**
+   * Mark this result as passed.
+   */
   fun pass() {
     _status = Passed
   }
 
+  /**
+   * Mark this result as failed.
+   *
+   * @param failure A description of the failure.
+   */
   fun fail(failure: Failure? = null) {
     _status = Failed
     this.failure = failure
