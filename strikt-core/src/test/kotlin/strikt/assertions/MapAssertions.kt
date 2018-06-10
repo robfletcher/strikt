@@ -22,15 +22,15 @@ internal object MapAssertions : Spek({
       }
     }
 
-    describe("hasEntry assertion") {
+    describe("containsKey assertion") {
       it("passes if the subject has a matching key") {
         val subject = mapOf("foo" to "bar")
-        expect(subject).hasEntry("foo")
+        expect(subject).containsKey("foo")
       }
       it("fails if the subject does not have a matching key") {
         fails {
           val subject = emptyMap<Any, Any>()
-          expect(subject).hasEntry("foo")
+          expect(subject).containsKey("foo")
         }.let { e ->
           assertEquals(
             "Expect that: {} (1 failure)\n" +
@@ -39,7 +39,9 @@ internal object MapAssertions : Spek({
           )
         }
       }
+    }
 
+    describe("hasEntry assertion") {
       it("passes if the subject has a matching key / value pair") {
         val subject = mapOf("foo" to "bar")
         expect(subject).hasEntry("foo", "bar")

@@ -24,7 +24,7 @@ operator fun <T : Map<K, V>, K, V> Assertion<T>.get(key: K): Assertion<V?> =
  * the map implementation the value associated with [key] may be `null`. This
  * assertion just tests for the existence of the key.
  */
-fun <T : Map<K, V>, K, V> Assertion<T>.hasEntry(key: K): Assertion<T> =
+fun <T : Map<K, V>, K, V> Assertion<T>.containsKey(key: K): Assertion<T> =
   assert("has an entry with the key %s", key) {
     if (subject.containsKey(key)) pass() else fail()
   }
@@ -37,4 +37,4 @@ fun <T : Map<K, V>, K, V> Assertion<T>.hasEntry(
   key: K,
   value: V
 ): Assertion<T> =
-  apply { hasEntry(key)[key].isEqualTo(value) }
+  apply { containsKey(key)[key].isEqualTo(value) }
