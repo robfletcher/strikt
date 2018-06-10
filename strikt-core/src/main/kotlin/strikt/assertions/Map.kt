@@ -30,6 +30,16 @@ fun <T : Map<K, V>, K, V> Assertion<T>.containsKey(key: K): Assertion<T> =
   }
 
 /**
+ * Asserts that the subject map contains entries for all [keys].
+ */
+fun <T : Map<K, V>, K, V> Assertion<T>.containsKeys(vararg keys: K): Assertion<T> =
+  compose("has entries with the keys %s", keys) {
+    keys.forEach { expect(subject).containsKey(it) }
+  } then {
+    if (allPassed) pass() else fail()
+  }
+
+/**
  * Asserts that the subject map contains an entry indexed by [key] with a value
  * equal to [value].
  */
