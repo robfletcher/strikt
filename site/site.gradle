@@ -31,7 +31,7 @@ task copyApiDocs(type: Copy) {
 }
 
 dependencies {
-  jbake "com.orientechnologies:orientdb-core:2.2.34"
+  jbake "com.orientechnologies:orientdb-core:2.2.34+"
 }
 
 jbake {

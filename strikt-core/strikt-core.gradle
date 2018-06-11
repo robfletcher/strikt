@@ -5,7 +5,7 @@ apply from: "$rootDir/gradle/published.gradle"
 
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-reflect"
-  compile "org.opentest4j:opentest4j:1.1.0"
+  compile "org.opentest4j:opentest4j:+"
 
-  testCompile "org.junit.jupiter:junit-jupiter-api:5.2.0"
+  testCompile "org.junit.jupiter:junit-jupiter-api:+"
 }
