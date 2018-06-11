@@ -10,7 +10,7 @@ buildscript {
     classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.3"
     classpath "com.netflix.nebula:nebula-release-plugin:6.3.3"
     classpath "com.netflix.nebula:nebula-publishing-plugin:7.2.2"
-    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.3"
+    classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.4"
     classpath "com.ferranpons:twitter-gradle-plugin:1.0.2"
     classpath "org.jbake:jbake-gradle-plugin:1.2.0"
     classpath "org.ajoberstar:gradle-git:1.7.2"
@@ -27,8 +27,7 @@ subprojects {
     jcenter()
   }
 
-// TODO: uncomment once project is on Gradle 4.8+
-//  dependencyLocking {
-//    lockAllConfigurations()
-//  }
+  dependencyLocking {
+    lockAllConfigurations()
+  }
 }
