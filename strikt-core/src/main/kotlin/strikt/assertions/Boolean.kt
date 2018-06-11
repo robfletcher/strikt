@@ -6,10 +6,14 @@ import strikt.api.Assertion
  * Asserts that the subject is not null and is the boolean value `true`.
  */
 fun <T : Boolean?> Assertion<T>.isTrue() =
-  passesIf("is true") { this == true }
+  assert("is true") {
+    if (subject == true) pass() else fail(actual = subject)
+  }
 
 /**
  * Asserts that the subject is not null and is the boolean value `false`.
  */
 fun <T : Boolean?> Assertion<T>.isFalse() =
-  passesIf("is false") { this == false }
+  assert("is true") {
+    if (subject == false) pass() else fail(actual = subject)
+  }
