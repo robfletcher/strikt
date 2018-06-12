@@ -61,5 +61,3 @@ githubPages {
     }
   }
 }
-
-rootProject.tasks.final.finalizedBy publishGhPages

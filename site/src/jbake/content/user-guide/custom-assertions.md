@@ -8,7 +8,7 @@ previousPage=mapping.html
 # Custom Assertions
 
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
-Assertion functions are https://kotlinlang.org/docs/reference/extensions.html[extension functions] on the interface `Assertion<T>`.
+Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
 
 ## Atomic assertions
 
