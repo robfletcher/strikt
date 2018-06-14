@@ -2,8 +2,9 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 org.apiguardian:apiguardian-api:1.0.0
-org.jetbrains.kotlin:kotlin-reflect:1.2.41
-org.jetbrains.kotlin:kotlin-stdlib:1.2.41
+org.jetbrains.kotlin:kotlin-reflect:1.2.50
+org.jetbrains.kotlin:kotlin-stdlib-common:1.2.50
+org.jetbrains.kotlin:kotlin-stdlib:1.2.50
 org.jetbrains.spek:spek-api:1.1.5
 org.jetbrains.spek:spek-junit-platform-engine:1.1.5
 org.jetbrains:annotations:13.0

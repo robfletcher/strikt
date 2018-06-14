@@ -4,7 +4,7 @@ buildscript {
     maven { url "https://plugins.gradle.org/m2/" }
   }
   dependencies {
-    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.41"
+    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.50"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
     classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.12.0"
     classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.7.3"
