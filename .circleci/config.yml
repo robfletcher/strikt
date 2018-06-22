@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: circleci/openjdk:8-jdk
+    - image: circleci/openjdk:10-jdk
   working_directory: ~/repo
   environment:
     JVM_OPTS: -Xmx3200m
