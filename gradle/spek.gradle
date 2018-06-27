@@ -5,8 +5,8 @@ repositories {
 }
 
 dependencies {
-  testCompile "org.jetbrains.spek:spek-api:1.1.5"
-  testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
+  testImplementation "org.jetbrains.spek:spek-api:1.1.5"
+  testRuntimeOnly "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
 }
 
 test {

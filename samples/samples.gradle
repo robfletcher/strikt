@@ -3,12 +3,12 @@ apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/junit.gradle"
 
 dependencies {
-  compile project(":strikt-core")
+  implementation project(":strikt-core")
 
-  testCompile "org.junit.jupiter:junit-jupiter-api:+"
-  testCompile "org.junit.jupiter:junit-jupiter-params:+"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:+"
+  testImplementation "org.junit.jupiter:junit-jupiter-params:+"
 
-  testRuntime "org.junit.jupiter:junit-jupiter-engine:+"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:+"
 }
 
 test {
