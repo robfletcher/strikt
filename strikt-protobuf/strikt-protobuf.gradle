@@ -5,8 +5,8 @@ apply from: "$rootDir/gradle/spek.gradle"
 apply from: "$rootDir/gradle/published.gradle"
 
 dependencies {
-  implementation "org.jetbrains.kotlin:kotlin-reflect"
-  implementation "org.opentest4j:opentest4j:+"
+  api project(":strikt-core")
+  api "com.google.protobuf:protobuf-java:+"
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:+"
 }
