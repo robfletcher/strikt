@@ -1,10 +1,8 @@
 package strikt.assertions
 
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.given
-import org.jetbrains.spek.api.dsl.it
 import org.junit.jupiter.api.assertThrows
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import strikt.api.expect
 import strikt.fails
 
@@ -150,7 +148,7 @@ internal object IterableAssertions : Spek({
     }
 
     describe("containsExactly assertion") {
-      given("a Set subject") {
+      describe("a Set subject") {
         val subject = setOf("catflap", "rubberplant", "marzipan")
 
         it("passes if the elements are identical") {
@@ -176,7 +174,7 @@ internal object IterableAssertions : Spek({
         }
       }
 
-      given("a List subject") {
+      describe("a List subject") {
         val subject = listOf("catflap", "rubberplant", "marzipan")
 
         it("passes if all the elements exist in the same order") {
@@ -208,7 +206,7 @@ internal object IterableAssertions : Spek({
         }
       }
 
-      given("a non-Collection Iterable subject") {
+      describe("a non-Collection Iterable subject") {
         val subject = object : Iterable<String> {
           override fun iterator() =
             arrayOf("catflap", "rubberplant", "marzipan").iterator()
@@ -270,7 +268,7 @@ internal object IterableAssertions : Spek({
     }
 
     describe("containsExactlyInAnyOrder assertion") {
-      given("a Set subject") {
+      describe("a Set subject") {
         val subject = setOf("catflap", "rubberplant", "marzipan")
 
         it("passes if the elements are identical") {
@@ -290,7 +288,7 @@ internal object IterableAssertions : Spek({
         }
       }
 
-      given("a List subject") {
+      describe("a List subject") {
         val subject = listOf("catflap", "rubberplant", "marzipan")
 
         it("passes if all the elements exist in the same order") {
@@ -320,7 +318,7 @@ internal object IterableAssertions : Spek({
         }
       }
 
-      given("a non-Collection Iterable subject") {
+      describe("a non-Collection Iterable subject") {
         val subject = object : Iterable<String> {
           override fun iterator() =
             arrayOf("catflap", "rubberplant", "marzipan").iterator()

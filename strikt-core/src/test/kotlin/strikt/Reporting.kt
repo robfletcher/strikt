@@ -1,10 +1,8 @@
 package strikt
 
-import org.jetbrains.spek.api.Spek
-import org.jetbrains.spek.api.dsl.describe
-import org.jetbrains.spek.api.dsl.it
-import org.jetbrains.spek.api.dsl.on
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.spekframework.spek2.Spek
+import org.spekframework.spek2.style.specification.describe
 import strikt.api.expect
 import strikt.assertions.all
 import strikt.assertions.hasSize
@@ -14,7 +12,7 @@ import strikt.assertions.startsWith
 object Reporting : Spek({
 
   describe("assertion failure messages") {
-    on("evaluating a chained assertion that fails") {
+    describe("evaluating a chained assertion that fails") {
       val e = fails {
         val subject = setOf("catflap", "rubberplant", "marzipan")
         expect(subject)
@@ -39,7 +37,7 @@ object Reporting : Spek({
     }
   }
 
-  on("evaluating a block assertion with multiple failures") {
+  describe("evaluating a block assertion with multiple failures") {
     val e = fails {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expect(subject) {
