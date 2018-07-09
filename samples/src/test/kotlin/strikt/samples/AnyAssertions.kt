@@ -23,7 +23,7 @@ internal object AnyAssertions {
   @Test
   fun isNullFails() {
     assertThrows<MultipleFailuresError> {
-      val subject: Any? = "covfefe"
+      val subject: Any? = "fnord"
       expect(subject).isNull()
     }
   }
@@ -48,14 +48,14 @@ internal object AnyAssertions {
 
   @Test
   fun isNotNull() {
-    val subject: Any? = "covfefe"
+    val subject: Any? = "fnord"
     expect(subject).isNotNull()
   }
 
   @Test
   @Suppress("USELESS_IS_CHECK")
   fun isNotNullDowncast() {
-    val subject: Any? = "covfefe"
+    val subject: Any? = "fnord"
     expect(subject)
       .also { assert(it is Assertion<Any?>) }
       .isNotNull()
@@ -80,7 +80,7 @@ internal object AnyAssertions {
 
   @Test
   fun isAExactType() {
-    val subject = "covfefe"
+    val subject = "fnord"
     expect(subject).isA<String>()
   }
 
@@ -105,23 +105,23 @@ internal object AnyAssertions {
   @Test
   @Suppress("USELESS_IS_CHECK")
   fun isAChain() {
-    val subject: Any = "covfefe"
+    val subject: Any = "fnord"
     expect(subject)
       .also { assert(it is Assertion<Any>) }
       .isA<String>()
       .also { assert(it is Assertion<String>) }
-      .hasLength(7) // only available on Assertion<CharSequence>
+      .hasLength(5) // only available on Assertion<CharSequence>
   }
 
   @Test
   fun isEqualTo() {
-    expect("covfefe").isEqualTo("covfefe")
+    expect("fnord").isEqualTo("fnord")
   }
 
   @Test
   fun isEqualToFails() {
     assertThrows<MultipleFailuresError> {
-      expect("covfefe").isEqualTo("COVFEFE")
+      expect("fnord").isEqualTo("FNORD")
     }
   }
 
@@ -135,27 +135,27 @@ internal object AnyAssertions {
   @Test
   fun isEqualToNullSubject() {
     assertThrows<MultipleFailuresError> {
-      expect(null).isEqualTo("covfefe")
+      expect(null).isEqualTo("fnord")
     }
   }
 
   @Test
   fun isEqualToNullExpected() {
     assertThrows<MultipleFailuresError> {
-      expect("covfefe").isEqualTo(null)
+      expect("fnord").isEqualTo(null)
     }
   }
 
   @Test
   fun isNotEqualToFails() {
     assertThrows<MultipleFailuresError> {
-      expect("covfefe").isNotEqualTo("covfefe")
+      expect("fnord").isNotEqualTo("fnord")
     }
   }
 
   @Test
   fun isNotEqualTo() {
-    expect("covfefe").isNotEqualTo("COVFEFE")
+    expect("fnord").isNotEqualTo("FNORD")
   }
 
   @Test
@@ -165,11 +165,11 @@ internal object AnyAssertions {
 
   @Test
   fun isNotEqualToNullSubject() {
-    expect(null).isNotEqualTo("covfefe")
+    expect(null).isNotEqualTo("fnord")
   }
 
   @Test
   fun isNotEqualToNullExpected() {
-    expect("covfefe").isNotEqualTo(null)
+    expect("fnord").isNotEqualTo(null)
   }
 }

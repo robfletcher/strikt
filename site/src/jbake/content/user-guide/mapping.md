@@ -12,7 +12,7 @@ Although you can obviously write assertions for the properties of an object with
 
 ```kotlin
 expect(map.size).isEqualTo(1)
-expect(list.first()).isEqualTo("covfefe")
+expect(list.first()).isEqualTo("fnord")
 expect(person.name).isEqualTo("Ziggy")
 ```
 

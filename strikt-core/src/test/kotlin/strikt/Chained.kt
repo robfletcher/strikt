@@ -27,7 +27,7 @@ internal object Chained : Spek({
       }
 
       it("affects the entire chain") {
-        val subject = "covfefe"
+        val subject = "fnord"
         expect(subject).not().isUpperCase().isA<Int>().isEqualTo(1L)
       }
     }

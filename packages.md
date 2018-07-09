@@ -14,7 +14,7 @@ import strikt.assertions.*
 Create assertions with `expect` and apply assertion functions to create tests.
 
 ```kotlin
-val subject = "covfefe"
+val subject = "fnord"
 expect(subject).matches("[cefov]+")
 ```
 

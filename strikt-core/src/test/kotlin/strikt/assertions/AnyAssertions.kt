@@ -16,7 +16,7 @@ internal object AnyAssertions : Spek({
       }
       it("fails if the subject is not null") {
         fails {
-          val subject: Any? = "covfefe"
+          val subject: Any? = "fnord"
           expect(subject).isNull()
         }
       }
@@ -38,12 +38,12 @@ internal object AnyAssertions : Spek({
         }
       }
       it("passes if the subject is not null") {
-        val subject: Any? = "covfefe"
+        val subject: Any? = "fnord"
         expect(subject).isNotNull()
       }
       @Suppress("USELESS_IS_CHECK")
       it("down-casts the result") {
-        val subject: Any? = "covfefe"
+        val subject: Any? = "fnord"
         expect(subject)
           .also { assert(it is Assertion<Any?>) }
           .isNotNull()
@@ -65,7 +65,7 @@ internal object AnyAssertions : Spek({
         }
       }
       it("passes if the subject is the same exact type") {
-        val subject = "covfefe"
+        val subject = "fnord"
         expect(subject).isA<String>()
       }
       it("passes if the subject is a sub-type") {
@@ -84,25 +84,25 @@ internal object AnyAssertions : Spek({
       }
       @Suppress("USELESS_IS_CHECK")
       it("allows specialized assertions after establishing type") {
-        val subject: Any = "covfefe"
+        val subject: Any = "fnord"
         expect(subject)
           .also { assert(it is Assertion<Any>) }
           .isA<String>()
           .also { assert(it is Assertion<String>) }
-          .hasLength(7) // only available on Assertion<CharSequence>
+          .hasLength(5) // only available on Assertion<CharSequence>
       }
     }
 
     describe("isEqualTo assertion") {
       it("passes if the subject matches the expectation") {
-        expect("covfefe").isEqualTo("covfefe")
+        expect("fnord").isEqualTo("fnord")
       }
 
       sequenceOf(
-        Pair("covfefe", "COVFEFE"),
+        Pair("fnord", "FNORD"),
         Pair(1, 1L),
-        Pair(null, "covfefe"),
-        Pair("covfefe", null)
+        Pair(null, "fnord"),
+        Pair("fnord", null)
       ).forEach { (subject, expected) ->
         it("fails $subject is equal to $expected") {
           fails {
@@ -126,15 +126,15 @@ internal object AnyAssertions : Spek({
     describe("isNotEqualTo assertion") {
       it("fails if the subject matches the expectation") {
         fails {
-          expect("covfefe").isNotEqualTo("covfefe")
+          expect("fnord").isNotEqualTo("fnord")
         }
       }
 
       sequenceOf(
-        Pair("covfefe", "COVFEFE"),
+        Pair("fnord", "FNORD"),
         Pair(1, 1L),
-        Pair(null, "covfefe"),
-        Pair("covfefe", null)
+        Pair(null, "fnord"),
+        Pair("fnord", null)
       ).forEach { (subject, expected) ->
         it("passes $subject is not equal to $expected") {
           expect(subject).isNotEqualTo(expected)
@@ -145,9 +145,9 @@ internal object AnyAssertions : Spek({
     describe("isSameInstanceAs assertion") {
 
       sequenceOf(
-        Pair(listOf("covfefe"), listOf("covfefe")),
-        Pair(null, listOf("covfefe")),
-        Pair(listOf("covfefe"), null),
+        Pair(listOf("fnord"), listOf("fnord")),
+        Pair(null, listOf("fnord")),
+        Pair(listOf("fnord"), null),
         Pair(1, 1L)
       ).forEach { (subject, expected) ->
         it("fails $subject is not the same instance as $expected") {
@@ -158,10 +158,10 @@ internal object AnyAssertions : Spek({
       }
 
       sequenceOf(
-        Pair("covfefe", "covfefe"),
+        Pair("fnord", "fnord"),
         Pair(1L, 1L),
         Pair(null, null),
-        listOf("covfefe").let { Pair(it, it) }
+        listOf("fnord").let { Pair(it, it) }
       ).forEach { (subject, expected) ->
         it("succeeds $subject is the same instance as $expected") {
           expect(subject).isSameInstanceAs(expected)
@@ -172,9 +172,9 @@ internal object AnyAssertions : Spek({
     describe("isNotSameInstanceAs assertion") {
 
       sequenceOf(
-        Pair(listOf("covfefe"), listOf("covfefe")),
-        Pair(null, listOf("covfefe")),
-        Pair(listOf("covfefe"), null),
+        Pair(listOf("fnord"), listOf("fnord")),
+        Pair(null, listOf("fnord")),
+        Pair(listOf("fnord"), null),
         Pair(1, 1L)
       ).forEach { (subject, expected) ->
         it("succeeds $subject is not the same instance as $expected") {
@@ -183,10 +183,10 @@ internal object AnyAssertions : Spek({
       }
 
       sequenceOf(
-        Pair("covfefe", "covfefe"),
+        Pair("fnord", "fnord"),
         Pair(1L, 1L),
         Pair(null, null),
-        listOf("covfefe").let { Pair(it, it) }
+        listOf("fnord").let { Pair(it, it) }
       ).forEach { (subject, expected) ->
         it("fails $subject is not the same instance as $expected") {
           fails {

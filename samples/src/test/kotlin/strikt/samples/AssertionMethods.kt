@@ -68,7 +68,7 @@ internal object AssertionMethods {
 
   @Test
   fun not() {
-    val subject: String? = "covfefe"
+    val subject: String? = "fnord"
     expect(subject)
       .not()
       .isNull()

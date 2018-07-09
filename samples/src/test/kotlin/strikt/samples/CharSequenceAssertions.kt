@@ -10,32 +10,32 @@ import strikt.assertions.matches
 internal object CharSequenceAssertions {
   @Test
   fun hasLength() {
-    expect("covfefe").hasLength(7)
+    expect("fnord").hasLength(5)
   }
 
   @Test
   fun hasLengthFails() {
     assertThrows<MultipleFailuresError> {
-      expect("covfefe").hasLength(1)
+      expect("fnord").hasLength(1)
     }
   }
 
   @Test
   fun matchesFullMatch() {
-    expect("covfefe").matches("[cefov]+".toRegex())
+    expect("fnord").matches("[dfnor]+".toRegex())
   }
 
   @Test
   fun matchesPartialMatch() {
     assertThrows<MultipleFailuresError> {
-      expect("despite the negative press covfefe").matches("[cefov]+".toRegex())
+      expect("despite the negative press fnord").matches("[cefov]+".toRegex())
     }
   }
 
   @Test
   fun matchesNotMatch() {
     assertThrows<MultipleFailuresError> {
-      expect("covfefe").matches("\\d+".toRegex())
+      expect("fnord").matches("\\d+".toRegex())
     }
   }
 }

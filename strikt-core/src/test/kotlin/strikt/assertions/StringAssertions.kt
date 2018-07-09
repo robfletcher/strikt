@@ -10,15 +10,15 @@ internal object StringAssertions : Spek({
   describe("assertions on ${String::class.simpleName}") {
     describe("isEqualToIgnoringCase assertion") {
       it("passes if the subject is identical to the expected value") {
-        expect("covfefe").isEqualToIgnoringCase("covfefe")
+        expect("fnord").isEqualToIgnoringCase("fnord")
       }
       it("fails if the subject is different") {
         fails {
-          expect("despite the negative press covfefe").isEqualToIgnoringCase("covfefe")
+          expect("despite the negative press fnord").isEqualToIgnoringCase("fnord")
         }
       }
       it("passes if the subject is the same as the expected value apart from case") {
-        expect("covfefe").isEqualToIgnoringCase("COVFEFE")
+        expect("fnord").isEqualToIgnoringCase("fnord")
       }
     }
 

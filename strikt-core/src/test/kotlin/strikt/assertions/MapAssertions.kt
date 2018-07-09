@@ -43,19 +43,19 @@ internal object MapAssertions : Spek({
     describe("containsKeys assertion") {
       it("passes if the subject has all the specified keys") {
         val subject =
-          mapOf("foo" to "bar", "baz" to "covfefe", "qux" to "fnord")
+          mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
         expect(subject).containsKeys("foo", "baz")
       }
       it("fails if the subject does not have a matching key") {
         fails {
           val subject =
-            mapOf("foo" to "bar", "baz" to "covfefe", "qux" to "fnord")
+            mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
           expect(subject).containsKeys("foo", "bar")
         }.let { e ->
           assertEquals(
-            "Expect that: {foo=bar, baz=covfefe, qux=fnord} (1 failure)\n" +
+            "Expect that: {foo=bar, baz=fnord, qux=fnord} (1 failure)\n" +
               "\thas entries with the keys [\"foo\", \"bar\"] (1 failure)\n" +
-              "\tExpect that: {foo=bar, baz=covfefe, qux=fnord} (1 failure)\n" +
+              "\tExpect that: {foo=bar, baz=fnord, qux=fnord} (1 failure)\n" +
               "\thas an entry with the key \"bar\"",
             e.message
           )

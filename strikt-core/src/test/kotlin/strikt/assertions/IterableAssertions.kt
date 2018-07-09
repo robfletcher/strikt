@@ -85,8 +85,11 @@ internal object IterableAssertions : Spek({
       }
 
       sequenceOf(
-        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("covfefe")),
-        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap", "covfefe")),
+        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("fnord")),
+        Pair(
+          listOf("catflap", "rubberplant", "marzipan"),
+          arrayOf("catflap", "fnord")
+        ),
         Pair(emptyList(), arrayOf("catflap"))
       ).forEach { (subject, expected) ->
         it("fails $subject contains ${expected.toList()}") {
@@ -104,7 +107,11 @@ internal object IterableAssertions : Spek({
 
       it("has a nested failure for each missing element") {
         fails {
-          expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
+          expect(listOf("catflap", "rubberplant", "marzipan")).contains(
+            "fnord",
+            "marzipan",
+            "bojack"
+          )
         }
       }
     }
@@ -126,7 +133,7 @@ internal object IterableAssertions : Spek({
       }
 
       sequenceOf(
-        arrayOf("covfefe"),
+        arrayOf("fnord"),
         arrayOf("xenocracy", "wye", "exercitation")
       ).forEach { elements ->
         it("passes if the subject contains none of the elements ${elements.toList()}") {
@@ -163,7 +170,12 @@ internal object IterableAssertions : Spek({
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+            expect(subject).containsExactly(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
           }
         }
 
@@ -189,7 +201,12 @@ internal object IterableAssertions : Spek({
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+            expect(subject).containsExactly(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
           }
         }
 
@@ -238,7 +255,7 @@ internal object IterableAssertions : Spek({
           fails {
             expect(subject)
               .describedAs("a non-Collection iterable %s")
-              .containsExactly("catflap", "rubberplant", "marzipan", "covfefe")
+              .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
           }
         }
 
@@ -283,7 +300,12 @@ internal object IterableAssertions : Spek({
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+            expect(subject).containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
           }
         }
       }
@@ -309,7 +331,12 @@ internal object IterableAssertions : Spek({
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+            expect(subject).containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
           }
         }
 
@@ -340,7 +367,12 @@ internal object IterableAssertions : Spek({
 
         it("fails if there are fewer elements than expected") {
           fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "covfefe")
+            expect(subject).containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
           }
         }
 

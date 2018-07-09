@@ -20,7 +20,7 @@ That is, the first assertion that fails breaks the chain and further assertions 
 Each assertion in the chain returns an `Assertion` object that supports further assertions.
 
 ```kotlin
-val subject = "covfefe"
+val subject = "fnord"
 expect(subject)
   .isA<String>()
   .hasLength(1)
@@ -30,8 +30,8 @@ expect(subject)
 Produces the output:
 
 ```
-Expect that "covfefe" (1 failure)
-    has length 1 : found 7
+Expect that "fnord" (1 failure)
+    has length 1 : found 5
 ```
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
@@ -45,7 +45,7 @@ Block assertions do _not_ fail fast.
 That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
 
 ```kotlin
-val subject = "covfefe"
+val subject = "fnord"
 expect(subject) {
   isA<String>()
   hasLength(1)
@@ -56,8 +56,8 @@ expect(subject) {
 Produces the output:
 
 ```
-Expect that "covfefe" (2 failures)
-    has length 1 : found 7
+Expect that "fnord" (2 failures)
+    has length 1 : found 5
     is upper case
 ```
 

@@ -104,14 +104,18 @@ internal object IterableAssertions {
   @Test
   fun containsWithMissingElement() {
     assertThrows<MultipleFailuresError> {
-      expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe")
+      expect(listOf("catflap", "rubberplant", "marzipan")).contains("fnord")
     }
   }
 
   @Test
   fun containsWithSomeMissingElements() {
     assertThrows<MultipleFailuresError> {
-      expect(listOf("catflap", "rubberplant", "marzipan")).contains("covfefe", "marzipan", "bojack")
+      expect(listOf("catflap", "rubberplant", "marzipan")).contains(
+        "fnord",
+        "marzipan",
+        "bojack"
+      )
     }
   }
 
