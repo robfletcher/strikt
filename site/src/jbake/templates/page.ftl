@@ -7,8 +7,12 @@
   <#include "navbar.ftl">
 <main class="section">
   <div class="container">
-    <div class="content is-medium">${content.body}</div>
-    <#include "pagination.ftl">
+    <div class="columns is-centered">
+      <div class="column is-10-desktop">
+        <div class="content is-medium">${content.body}</div>
+        <#include "pagination.ftl">
+      </div>
+    </div>
   </div>
 </main>
   <#include "footer.ftl">

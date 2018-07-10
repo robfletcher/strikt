@@ -68,10 +68,9 @@ Person[name: Ziggy, birthDate: 1972-06-16] (2 failures)
             is equal to 1947 : found 1972
 ```
 
-## Creating re-usable mappings with extensions
+## Re-usable mappings
 
 If you find yourself frequently using `map` for the same properties or methods, you should consider defining extension property or method to make things even easier.
-Strikt makes this easy.
 
 For example:
 
