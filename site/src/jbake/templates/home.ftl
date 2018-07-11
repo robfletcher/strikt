@@ -78,13 +78,13 @@
 
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
-              <h2 class="title">A powerful fluent API</h2>
+            <div class="notification content is-medium">
+              <h2 class="title is-3">A powerful fluent API</h2>
               <p>Type-safe fluent assertions</p>
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification is-dark"><code>val subject: "The Enlightened take things Lightly"
+          <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
 expect(subject)
   .hasLength(35)
   .matches(Regex("[\w\s]+"))
@@ -94,32 +94,32 @@ expect(subject)
 
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
-              <h2 class="title">Collection handling</h2>
+            <div class="notification content is-medium">
+              <h2 class="title is-3">Collection handling</h2>
               <p>Flexible assertions about collections</p>
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification is-dark"><code>expect(subject)
+          <pre class="notification content is-medium is-dark"><code>expect(subject)
   .contains("Eris", "Thor", "Anubis")</code></pre>
           </div>
 
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
+            <div class="notification content is-medium">
               <p>&ldquo;Narrow&rdquo; the assertion to elements or ranges</p>
             </div>
           </div>
           <div class="column is-8">
-            <pre class="notification is-dark"><code>expect(subject)[0].isEqualTo("Eris")</code></pre>
+            <pre class="notification content is-medium is-dark"><code>expect(subject)[0].isEqualTo("Eris")</code></pre>
           </div>
 
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
+            <div class="notification content is-medium">
               <p>Make grouping assertions</p>
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification is-dark"><code>val subject = Pantheon.values()
+          <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.values()
 expect(subject)
   .isNotEmpty()
   .any { startsWith("E") }</code></pre>
@@ -128,13 +128,13 @@ expect(subject)
 
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
-              <h2 class="title">&ldquo;Soft&rdquo; assertions</h2>
+            <div class="notification content is-medium">
+              <h2 class="title is-3">&ldquo;Soft&rdquo; assertions</h2>
               <p>Use lambdas to execute multiple assertions on a subject at once&hellip;</p>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification is-dark"><code>val subject: "The Enlightened take things Lightly"
+        <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
 expect(subject) {
   hasLength(5)          // fails
   matches(Regex("\d+")) // fails
@@ -142,12 +142,12 @@ expect(subject) {
 }</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
+            <div class="notification content is-medium">
               <p>&hellip;with structured diagnostics of those that fail</p>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification is-dark"><code>Expect that "The Enlightened take things Lightly" (2 failures)
+        <pre class="notification content is-medium is-dark"><code>Expect that "The Enlightened take things Lightly" (2 failures)
   has length 5 : found 35
   matches the regular expression /\d+/</code></pre>
           </div>
@@ -155,13 +155,13 @@ expect(subject) {
 
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
-              <h2 class="title">Strong typing</h2>
+            <div class="notification content is-medium">
+              <h2 class="title is-3">Strong typing</h2>
               <p>Assertion functions can "narrow" the type of the assertion</p>
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification is-dark"><code>val subject: Any? = "The Enlightened take things Lightly"
+          <pre class="notification content is-medium is-dark"><code>val subject: Any? = "The Enlightened take things Lightly"
 expect(subject)                // type: Assertion&lt;Any?&gt;
   .isNotNull()                 // type: Assertion&lt;Any&gt;
   .isA&lt;String&gt;()               // type: Assertion&lt;String&gt;
@@ -169,12 +169,12 @@ expect(subject)                // type: Assertion&lt;Any?&gt;
   // only available on Assertion&lt;CharSequence&gt;</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
+            <div class="notification content is-medium">
               <p>Assertions can "map" to properties and method results in a type safe way:</p>
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification is-dark"><code>val subject = Pantheon.ERIS
+          <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.ERIS
 expect(subject)
   .map(Deity::realm)  // reference to a property
   .map { toString() } // return type of a method call
@@ -184,13 +184,13 @@ expect(subject)
 
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
-              <h2 class="title">Extensibility</h2>
+            <div class="notification content is-medium">
+              <h2 class="title is-3">Extensibility</h2>
               <p>Custom assertions are extension functions</p>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification is-dark"><code>fun Assertion&lt;LocalDate&gt;.isStTibsDay() =
+        <pre class="notification content is-medium is-dark"><code>fun Assertion&lt;LocalDate&gt;.isStTibsDay() =
   assert("is St. Tib's Day") {
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
@@ -201,12 +201,12 @@ expect(subject)
 expect(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
-            <div class="notification">
+            <div class="notification content is-medium">
               <p>Custom mappings are extension properties</p>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification is-dark"><code>val Assertion&lt;Deity&gt;.realm: Assertion&lt;String&gt;
+        <pre class="notification content is-medium is-dark"><code>val Assertion&lt;Deity&gt;.realm: Assertion&lt;String&gt;
   get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
