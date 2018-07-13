@@ -6,41 +6,39 @@ defaults: &defaults
     JVM_OPTS: -Xmx3200m
     TERM: dumb
 
+defaults: &buildsteps
+  steps:
+    - checkout
+    - run: ./gradlew build
+    - run:
+        name: Archive test results
+        command: |
+          mkdir -p ~/junit/
+          find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+        when: always
+    - store_test_results:
+        path: ~/junit
+    - store_artifacts:
+        path: ~/junit
+
+
 version: 2
 jobs:
   build:
     <<: *defaults
-    steps:
-      - checkout
-      - run: ./gradlew build
-      - run:
-          name: Archive test results
-          command: |
-            mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
+    <<: *buildsteps
 
   build-java8:
     <<: *defaults
     docker:
       - image: circleci/openjdk:8-jdk
-    steps:
-      - checkout
-      - run: ./gradlew build
-      - run:
-          name: Archive test results
-          command: |
-            mkdir -p ~/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
+    <<: *buildsteps
+
+  build-java9:
+    <<: *defaults
+    docker:
+      - image: circleci/openjdk:9-jdk
+    <<: *buildsteps
 
   release:
     <<: *defaults
@@ -65,6 +63,12 @@ workflows:
             tags:
               only: /.*/
       - build-java8:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
+      - build-java9:
           filters:
             branches:
               ignore: gh-pages
