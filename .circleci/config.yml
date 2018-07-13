@@ -12,15 +12,24 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          - v1-dependencies-
-      - run: ./gradlew dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - run: ./gradlew build
+      - run:
+          name: Archive test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
+  build-java6:
+    <<: *defaults
+    docker:
+      - image: circleci/openjdk:6-jdk
+    steps:
+      - checkout
       - run: ./gradlew build
       - run:
           name: Archive test results
@@ -37,30 +46,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          - v1-dependencies-
-      - run: ./gradlew dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: ./gradlew -Prelease.useLastTag=true final
 
   site:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "build.gradle" }}
-          - v1-dependencies-
-      - run: ./gradlew dependencies
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: ./gradlew publishGhPages
 
 workflows:
@@ -68,6 +59,12 @@ workflows:
   build-and-release:
     jobs:
       - build:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
+      - build-java6:
           filters:
             branches:
               ignore: gh-pages
