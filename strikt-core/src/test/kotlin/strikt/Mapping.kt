@@ -56,7 +56,7 @@ internal object Mapping : Spek({
     it("maps the assertion subject to the closure result") {
       expect(subject) {
         map { name }.isEqualTo("David")
-        map { birthDate }.map { year }.isEqualTo(1947)
+        map { birthDate.year }.isEqualTo(1947)
       }
     }
 

@@ -17,6 +17,8 @@ expect(person.name).isEqualTo("Ziggy")
 ```
 
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
+Particularly when using soft assertion blocks.
+
 Strikt allows for this using the `Assertion<T>.map` method.  
 
 ## Mapping with lambdas
@@ -29,7 +31,7 @@ This is sometimes useful for making assertions about the properties of an object
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expect(subject) {
   map { name }.isEqualTo("David")
-  map { birthDate }.map { year }.isEqualTo(1947)
+  map { birthDate.year }.isEqualTo(1947)
 }
 ```
 
@@ -44,12 +46,11 @@ For example, if the previous example fails it will format the error message like
 Person[name: Ziggy, birthDate: 1972-06-16] (2 failures) 
     Expect that "Ziggy" (1 failure)
         is equal to "David" : found "Ziggy"
-    Expect that 1972-06-16 (1 failure) 
-        Expect that 1972 (1 failure)
-            is equal to 1947 : found 1972
+    Expect that 1972 (1 failure)
+        is equal to 1947 : found 1972
 ```
 
-Using property references the output is more useful.
+Using property references the output is more useful (although the test code is more verbose).
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
@@ -70,7 +71,7 @@ Person[name: Ziggy, birthDate: 1972-06-16] (2 failures)
 
 ## Re-usable mappings
 
-If you find yourself frequently using `map` for the same properties or methods, you should consider defining extension property or method to make things even easier.
+If you find yourself frequently using `map` for the same properties or methods, consider defining extension property or method to make things even easier.
 
 For example:
 
@@ -95,3 +96,4 @@ expect(subject) {
 ## Built-in mappings
 
 Strikt has a number of built in mapping properties and functions such as `Assertion<List<E>>.first()` which returns an `Assertion<E>` whose subject is the first element of the list.
+See the [API docs](/api/strikt-core/strikt.api/-assertion/) for details.
