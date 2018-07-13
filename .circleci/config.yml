@@ -27,7 +27,7 @@ jobs:
   build-java6:
     <<: *defaults
     docker:
-      - image: circleci/openjdk:6-jdk
+      - image: oracle/openjdk:6
     steps:
       - checkout
       - run: ./gradlew build
