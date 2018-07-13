@@ -24,10 +24,10 @@ jobs:
       - store_artifacts:
           path: ~/junit
 
-  build-java6:
+  build-java8:
     <<: *defaults
     docker:
-      - image: oracle/openjdk:6
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       - run: ./gradlew build
@@ -64,7 +64,7 @@ workflows:
               ignore: gh-pages
             tags:
               only: /.*/
-      - build-java6:
+      - build-java8:
           filters:
             branches:
               ignore: gh-pages
