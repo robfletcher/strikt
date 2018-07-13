@@ -14,6 +14,10 @@
       border-bottom-right-radius: 0;
     }
 
+    header.column h2 {
+      margin-bottom: 0;
+    }
+
     @media screen and (max-width: 768px) {
       .is-4:first-child .notification {
         border-top-left-radius: 4px;
@@ -23,6 +27,10 @@
       .is-8:last-child .notification {
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
+      }
+
+      header.column .notification {
+        padding-bottom: 0;
       }
     }
 
@@ -47,10 +55,6 @@
       .is-8:last-child .notification {
         border-bottom-right-radius: 4px;
       }
-
-      h2:only-child {
-        margin-bottom: 0;
-      }
     }
   </style>
 </head>
@@ -62,7 +66,7 @@
     <div class="columns is-centered">
       <div class="column is-10-desktop">
 
-        <div class="columns">
+        <section class="columns">
           <div class="column is-8">
             <figure class="image is-4by1">
               <img src="/img/logo.png" alt="Strikt logo">
@@ -78,14 +82,14 @@
               <p>Strikt gives you…</p>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="columns is-multiline is-gapless">
-          <div class="column is-4 has-text-right-tablet">
+        <section class="columns is-multiline is-gapless">
+          <header class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
               <h2 class="title is-4">A powerful fluent API</h2>
             </div>
-          </div>
+          </header>
           <div class="column is-8 is-hidden-mobile">
             <div class="notification is-dark"></div>
           </div>
@@ -101,14 +105,14 @@ expect(subject)
   .matches(Regex("[\w\s]+"))
   .startsWith("T")</code></pre>
           </div>
-        </div>
+        </section>
 
-        <div class="columns is-multiline is-gapless">
-          <div class="column is-4 has-text-right-tablet">
+        <section class="columns is-multiline is-gapless">
+          <header class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
               <h2 class="title is-4">Collection handling</h2>
             </div>
-          </div>
+          </header>
           <div class="column is-8 is-hidden-mobile">
             <div class="notification is-dark"></div>
           </div>
@@ -142,14 +146,14 @@ expect(subject)
   .isNotEmpty()
   .any { startsWith("E") }</code></pre>
           </div>
-        </div>
+        </section>
 
-        <div class="columns is-multiline is-gapless">
-          <div class="column is-4 has-text-right-tablet">
+        <section class="columns is-multiline is-gapless">
+          <header class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
               <h2 class="title is-4">&ldquo;Soft&rdquo; assertions</h2>
             </div>
-          </div>
+          </header>
           <div class="column is-8 is-hidden-mobile">
             <div class="notification is-dark"></div>
           </div>
@@ -176,14 +180,14 @@ expect(subject) {
   has length 5 : found 35
   matches the regular expression /\d+/</code></pre>
           </div>
-        </div>
+        </section>
 
-        <div class="columns is-multiline is-gapless">
-          <div class="column is-4 has-text-right-tablet">
+        <section class="columns is-multiline is-gapless">
+          <header class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
               <h2 class="title is-4">Strong typing</h2>
             </div>
-          </div>
+          </header>
           <div class="column is-8 is-hidden-mobile">
             <div class="notification is-dark"></div>
           </div>
@@ -212,14 +216,14 @@ expect(subject)
   .map { toString() } // return type of a method call
   .isEqualTo("discord and confusion")</code></pre>
           </div>
-        </div>
+        </section>
 
-        <div class="columns is-multiline is-gapless">
-          <div class="column is-4 has-text-right-tablet">
+        <section class="columns is-multiline is-gapless">
+          <header class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
               <h2 class="title is-4">Extensibility</h2>
             </div>
-          </div>
+          </header>
           <div class="column is-8 is-hidden-mobile">
             <div class="notification is-dark"></div>
           </div>
@@ -251,7 +255,7 @@ expect(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
 val subject = Pantheon.ERIS
 expect(subject).realm.isEqualTo("discord and confusion")</code></pre>
           </div>
-        </div>
+        </section>
       </div>
     </div>
 
