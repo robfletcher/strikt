@@ -24,7 +24,7 @@ defaults: &buildsteps
 
 version: 2
 jobs:
-  build:
+  build-java10:
     <<: *defaults
     <<: *buildsteps
 
@@ -56,12 +56,6 @@ workflows:
   version: 2
   build-and-release:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: gh-pages
-            tags:
-              only: /.*/
       - build-java8:
           filters:
             branches:
@@ -74,9 +68,17 @@ workflows:
               ignore: gh-pages
             tags:
               only: /.*/
+      - build-java10:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
       - release:
           requires:
-            - build
+            - build-java8
+            - build-java9
+            - build-java10
           filters:
             tags:
               only: /^v.*/
@@ -84,7 +86,7 @@ workflows:
               ignore: /.*/
       - site:
           requires:
-            - build
+            - release
           filters:
             tags:
               only: /^v.*/
