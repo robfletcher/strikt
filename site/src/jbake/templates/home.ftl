@@ -47,6 +47,10 @@
       .is-8:last-child .notification {
         border-bottom-right-radius: 4px;
       }
+
+      h2:only-child {
+        margin-bottom: 0;
+      }
     }
   </style>
 </head>
@@ -79,7 +83,14 @@
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <h2 class="title is-3">A powerful fluent API</h2>
+              <h2 class="title is-4">A powerful fluent API</h2>
+            </div>
+          </div>
+          <div class="column is-8 is-hidden-mobile">
+            <div class="notification is-dark"></div>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
               <p>Type-safe fluent assertions</p>
             </div>
           </div>
@@ -95,7 +106,14 @@ expect(subject)
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <h2 class="title is-3">Collection handling</h2>
+              <h2 class="title is-4">Collection handling</h2>
+            </div>
+          </div>
+          <div class="column is-8 is-hidden-mobile">
+            <div class="notification is-dark"></div>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
               <p>Flexible assertions about collections</p>
             </div>
           </div>
@@ -129,7 +147,14 @@ expect(subject)
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <h2 class="title is-3">&ldquo;Soft&rdquo; assertions</h2>
+              <h2 class="title is-4">&ldquo;Soft&rdquo; assertions</h2>
+            </div>
+          </div>
+          <div class="column is-8 is-hidden-mobile">
+            <div class="notification is-dark"></div>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
               <p>Use lambdas to execute multiple assertions on a subject at once&hellip;</p>
             </div>
           </div>
@@ -156,7 +181,14 @@ expect(subject) {
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <h2 class="title is-3">Strong typing</h2>
+              <h2 class="title is-4">Strong typing</h2>
+            </div>
+          </div>
+          <div class="column is-8 is-hidden-mobile">
+            <div class="notification is-dark"></div>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
               <p>Assertion functions can "narrow" the type of the assertion</p>
             </div>
           </div>
@@ -185,7 +217,14 @@ expect(subject)
         <div class="columns is-multiline is-gapless">
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <h2 class="title is-3">Extensibility</h2>
+              <h2 class="title is-4">Extensibility</h2>
+            </div>
+          </div>
+          <div class="column is-8 is-hidden-mobile">
+            <div class="notification is-dark"></div>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
               <p>Custom assertions are extension functions</p>
             </div>
           </div>
