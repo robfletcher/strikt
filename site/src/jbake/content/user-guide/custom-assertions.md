@@ -3,6 +3,7 @@ type=page
 status=published
 cached=true
 previousPage=mapping.html
+nextPage=additional-modules.html
 ~~~~~~
 
 # Custom Assertions

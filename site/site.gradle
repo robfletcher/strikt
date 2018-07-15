@@ -3,13 +3,15 @@ apply plugin: "org.jetbrains.dokka"
 apply plugin: "org.ajoberstar.github-pages"
 
 dokka {
-  inputs.files tasks.getByPath(":strikt-core:compileKotlin")
+  dependsOn(":strikt-core:compileKotlin", ":strikt-protobuf:compileKotlin")
   outputFormat = "html"
-  outputDirectory = "$buildDir/dokka"
-  moduleName = "strikt-core"
-  jdkVersion = 8
+  moduleName = "strikt"
+  jdkVersion = 9
   kotlinTasks {
-    [project(":strikt-core").compileKotlin]
+    [
+      ":strikt-core:compileKotlin",
+      ":strikt-protobuf:compileKotlin"
+    ]
   }
   samples = ["$rootDir/samples/src/test/kotlin"]
 }
@@ -41,8 +43,7 @@ dependencies {
 }
 
 jbake {
-  flexmarkVersion = "0.32.24"
-  asciidoctorjVersion = "1.5.6"
+  flexmarkVersion = "0.34.8"
 }
 
 clean.doFirst {
