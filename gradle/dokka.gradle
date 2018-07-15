@@ -5,7 +5,7 @@ javadoc.enabled = false
 dokka {
   outputFormat = "html"
   outputDirectory = "$buildDir/javadoc"
-  jdkVersion = 8
+  jdkVersion = 9
   samples = ["$rootDir/samples/src/test/kotlin"]
 }
 
