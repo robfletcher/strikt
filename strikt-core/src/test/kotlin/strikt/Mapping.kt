@@ -74,6 +74,24 @@ internal object Mapping : Spek({
       }
     }
 
+    it("can describe the mapping") {
+      fails {
+        expect(subject) {
+          map { name }.describedAs("name").isEqualTo("Ziggy")
+          map { birthDate.year }.describedAs("birth year").isEqualTo(1971)
+        }
+      }.let { e ->
+        val expectedMessage = listOf(
+          "Expect that: Person(name=David, birthDate=1947-01-08) (2 failures)",
+          "\tExpect that: name (1 failure)",
+          "\tis equal to \"Ziggy\" : found \"David\"",
+          "\tExpect that: birth year (1 failure)",
+          "\tis equal to 1971 : found 1947"
+        )
+        assertEquals(expectedMessage, e.message?.lines())
+      }
+    }
+
     it("automatically maps a Kotlin property name to the downstream subject description") {
       fails {
         expect(subject).map(Person::name).isEqualTo("Ziggy")

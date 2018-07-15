@@ -25,7 +25,10 @@ internal constructor(
    * @return the same assertion with the new description applied.
    */
   fun describedAs(description: String): Assertion<T> =
-    Assertion(subject.copy(description = description), mode, negated)
+  // TODO: would like to return a new Assertion here rather than relying on mutability
+    apply {
+      subject.description = description
+    }
 
   /**
    * Evaluates multiple assertions against the subject.
@@ -81,7 +84,11 @@ internal constructor(
    * @see AssertionContext.pass
    * @see AssertionContext.fail
    */
-  fun assert(description: String, expected: Any?, assertion: AssertionContext<T>.() -> Unit) =
+  fun assert(
+    description: String,
+    expected: Any?,
+    assertion: AssertionContext<T>.() -> Unit
+  ) =
     apply {
       val result = Result(description, expected).also(subject::append)
       AssertionContextImpl(this, result).assertion()
@@ -124,7 +131,10 @@ internal constructor(
    * @return the results of assertions made inside the [assertions] block used
    * to evaluate whether the overall assertion passes or fails.
    */
-  fun compose(description: String, assertions: ComposedAssertions<T>.() -> Unit) =
+  fun compose(
+    description: String,
+    assertions: ComposedAssertions<T>.() -> Unit
+  ) =
     compose(description, null, assertions)
 
   /**
@@ -154,7 +164,11 @@ internal constructor(
    * `false` (the assertion fails).
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun passesIf(description: String, expected: Any?, assertion: T.() -> Boolean) =
+  fun passesIf(
+    description: String,
+    expected: Any?,
+    assertion: T.() -> Boolean
+  ) =
     apply {
       assert(description, expected) {
         if (subject.assertion()) pass() else fail()

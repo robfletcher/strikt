@@ -67,7 +67,7 @@ sealed class Reportable {
  */
 data class Subject<T>(
   val value: T,
-  val description: String = "%s"
+  var description: String = "%s"
 ) : Reportable() {
   override val status: Status
     get() = when {
