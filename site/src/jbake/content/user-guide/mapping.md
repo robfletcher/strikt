@@ -96,4 +96,4 @@ expect(subject) {
 ## Built-in mappings
 
 Strikt has a number of built in mapping properties and functions such as `Assertion<List<E>>.first()` which returns an `Assertion<E>` whose subject is the first element of the list.
-See the [API docs](/api/strikt-core/strikt.api/-assertion/) for details.
+See the [API docs](/api/strikt/strikt.api/-assertion/) for details.

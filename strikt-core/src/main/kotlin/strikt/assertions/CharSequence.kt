@@ -105,6 +105,8 @@ fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: CharSequence)
 
 /**
  * Maps an assertion on a [CharSequence] to an assertion on its length.
+ *
+ * @see CharSequence.length
  */
 val <T : CharSequence> Assertion<T>.length: Assertion<Int>
   get() = map(CharSequence::length)

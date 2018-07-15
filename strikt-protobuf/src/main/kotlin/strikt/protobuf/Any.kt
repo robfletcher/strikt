@@ -5,15 +5,22 @@ import com.google.protobuf.Internal.getDefaultInstance
 import com.google.protobuf.Message
 import strikt.api.Assertion
 
-typealias AnyMessage = com.google.protobuf.Any
-
-fun Assertion<AnyMessage>.isEmpty() {
+/**
+ * Asserts that a `com.google.protobuf.Any` is empty and does not contain an
+ * object of any kind.
+ */
+fun Assertion<com.google.protobuf.Any>.isEmpty() {
   passesIf("is empty") {
     value == ByteString.EMPTY
   }
 }
 
-inline fun <reified T : Message> Assertion<AnyMessage>.unpacksTo(): Assertion<AnyMessage> =
+/**
+ * Asserts that the subject is a message of type [T].
+ *
+ * @see com.google.protobuf.Any.is
+ */
+inline fun <reified T : Message> Assertion<com.google.protobuf.Any>.unpacksTo(): Assertion<com.google.protobuf.Any> =
   assert(
     "unpacks to %s",
     getDefaultInstance(T::class.java).descriptorForType.fullName
@@ -25,5 +32,11 @@ inline fun <reified T : Message> Assertion<AnyMessage>.unpacksTo(): Assertion<An
     }
   }
 
-inline fun <reified T : Message> Assertion<AnyMessage>.unpack(): Assertion<T> =
+/**
+ * Maps an assertion on `com.google.protobuf.Any` to an assertion on an unpacked
+ * message of type [T].
+ *
+ * @see com.google.protobuf.Any.unpack
+ */
+inline fun <reified T : Message> Assertion<com.google.protobuf.Any>.unpack(): Assertion<T> =
   map { unpack(T::class.java) }

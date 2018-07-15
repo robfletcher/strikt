@@ -34,7 +34,7 @@
             <a class="navbar-item" href="/user-guide/additional-modules.html">Additional modules</a>
           </div>
         </div>
-        <a class="navbar-item" href="/api/strikt-core"><span class="icon has-text-info"><i class="fas fa-file-alt"></i></span><span>API</span></a>
+        <a class="navbar-item" href="/api/strikt"><span class="icon has-text-info"><i class="fas fa-file-alt"></i></span><span>API</span></a>
       </div>
     </div>
   </div>

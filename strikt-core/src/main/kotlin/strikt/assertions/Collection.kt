@@ -27,6 +27,8 @@ fun <T : Collection<E>, E> Assertion<T>.isNotEmpty(): Assertion<T> =
 
 /**
  * Maps an assertion on a collection to an assertion on its size.
+ *
+ * @see Collection.size
  */
 val <T : Collection<*>> Assertion<T>.size: Assertion<Int>
   get() = map(Collection<*>::size)
