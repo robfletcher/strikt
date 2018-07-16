@@ -1,24 +1,20 @@
 apply plugin: "org.jbake.site"
-apply plugin: "org.jetbrains.dokka"
 apply plugin: "org.ajoberstar.github-pages"
 
-dokka {
-  dependsOn(":strikt-core:compileKotlin", ":strikt-protobuf:compileKotlin")
-  outputFormat = "html"
-  moduleName = "strikt"
-  jdkVersion = 9
-  kotlinTasks {
-    [
-      ":strikt-core:compileKotlin",
-      ":strikt-protobuf:compileKotlin"
-    ]
-  }
-  samples = ["$rootDir/samples/src/test/kotlin"]
-}
-
 task copyApiDocs(type: Copy) {
-  from(dokka) {
+  from(rootProject.tasks.findByPath(":strikt-core:dokka")) {
     include "**/*.html"
+    filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
+  }
+  from(rootProject.tasks.findByPath(":strikt-protobuf:dokka")) {
+    include "**/*.html"
+    filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
+  }
+  from(rootProject.tasks.findByPath(":strikt-core:dokka")) {
+    include "**/package-list"
+  }
+  from(rootProject.tasks.findByPath(":strikt-protobuf:dokka")) {
+    include "**/package-list"
   }
   into("${projectDir}/src/jbake/content/api/")
   filter { line ->
@@ -29,7 +25,6 @@ task copyApiDocs(type: Copy) {
       line
     }
   }
-  filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
 }
 
 configurations {

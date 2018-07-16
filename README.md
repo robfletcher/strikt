@@ -22,7 +22,7 @@ dependencies {
 
 ## Using Strikt
 
-Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt).
+Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt-core).
 
 ## Community
 

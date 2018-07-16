@@ -34,7 +34,14 @@
             <a class="navbar-item" href="/user-guide/additional-modules.html">Additional modules</a>
           </div>
         </div>
-        <a class="navbar-item" href="/api/strikt"><span class="icon has-text-info"><i class="fas fa-file-alt"></i></span><span>API</span></a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link"><span class="icon has-text-info"><i
+            class="fas fa-book"></i></span><span>API</span></a>
+          <div class="navbar-dropdown is-right">
+            <a class="navbar-item" href="/api/strikt-core">strikt-core</a>
+            <a class="navbar-item" href="/api/strikt-protobuf">strikt-protobuf</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

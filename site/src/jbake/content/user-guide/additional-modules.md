@@ -12,7 +12,7 @@ In addition to the core functionality provided by the `strikt-core` module, Stri
 ## Protobuf
 
 Extensions for testing code that uses Protobuf / gRPC.
-See the [API docs](/api/strikt/strikt.protobuf/).
+See the [API docs](/api/strikt-protobuf/).
 
 Add the following to your dependencies:
 

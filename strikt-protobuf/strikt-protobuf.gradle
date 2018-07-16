@@ -10,3 +10,9 @@ dependencies {
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:+"
 }
+
+dokka {
+  externalDocumentationLink {
+    url = new URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
+  }
+}
