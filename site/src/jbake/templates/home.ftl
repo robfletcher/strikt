@@ -18,6 +18,12 @@
       margin-bottom: 0;
     }
 
+    @media screen and (max-width: 1087px) {
+      html.has-spaced-navbar-fixed-top {
+        padding-top: 2.25rem;
+      }
+    }
+
     @media screen and (max-width: 768px) {
       .is-4:first-child .notification {
         border-top-left-radius: 4px;
@@ -66,15 +72,17 @@
     <div class="columns is-centered">
       <div class="column is-10-desktop">
 
-        <section class="columns">
-          <div class="column is-8">
-            <figure class="image is-4by1">
+        <section class="columns is-centered">
+          <div class="column is-half">
+            <figure class="image">
               <img src="/img/logo.png" alt="Strikt logo">
             </figure>
           </div>
+        </section>
 
-          <div class="column is-4">
-            <div class="notification is-link content is-medium">
+        <section class="columns is-centered">
+          <div class="column is-8">
+            <div class="content is-medium">
               <p>
                 Strikt is an assertion library for Kotlin intended for use with a test runner such as <a
                 href="https://junit.org/junit5/">JUnit</a> or <a href="http://spekframework.org/">Spek</a>.
