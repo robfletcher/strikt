@@ -1,10 +1,6 @@
-apply from: "$rootDir/gradle/kotlin.gradle"
-apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/junit.gradle"
 
 dependencies {
-  implementation project(":strikt-core")
-
   testImplementation "org.junit.jupiter:junit-jupiter-api:+"
   testImplementation "org.junit.jupiter:junit-jupiter-params:+"
 

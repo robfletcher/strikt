@@ -1,70 +1,99 @@
 package strikt.assertions
 
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.fails
 import java.time.LocalDate
 
-internal object ComparableAssertions : Spek({
-  describe("assertions on ${Comparable::class.simpleName}") {
-    describe("isGreaterThan assertion") {
-      it("passes if the subject is greater than the expected value") {
-        expect(1).isGreaterThan(0)
-      }
-      it("fails if the subject is equal to the expected value") {
-        fails {
-          expect(1).isGreaterThan(1)
-        }
-      }
-      it("fails if the subject is less than the expected value") {
-        fails {
-          expect(LocalDate.of(2018, 5, 1)).isGreaterThan(LocalDate.of(2018, 5, 2))
-        }
+@DisplayName("assertions on Comparable")
+internal class ComparableAssertions {
+  @Nested
+  @DisplayName("isGreaterThan assertion")
+  inner class IsGreaterThan {
+    @Test
+    fun `passes if the subject is greater than the expected value`() {
+      expect(1).isGreaterThan(0)
+    }
+
+    @Test
+    fun `fails if the subject is equal to the expected value`() {
+      fails {
+        expect(1).isGreaterThan(1)
       }
     }
 
-    describe("isLessThan assertion") {
-      it("passes if the subject is less than the expected value") {
-        expect(0).isLessThan(1)
-      }
-      it("fails if the subject is equal to the expected value") {
-        fails {
-          expect(1).isLessThan(1)
-        }
-      }
-      it("fails if the subject is greater than the expected value") {
-        fails {
-          expect(LocalDate.of(2018, 5, 2)).isLessThan(LocalDate.of(2018, 5, 1))
-        }
-      }
-    }
-    describe("isGreaterThanOrEqualTo assertion") {
-      it("passes if the subject is greater than the expected value") {
-        expect(1).isGreaterThanOrEqualTo(0)
-      }
-      it("passes if the subject is equal to the expected value") {
-        expect(1).isGreaterThanOrEqualTo(1)
-      }
-      it("fails if the subject is less than the expected value") {
-        fails {
-          expect(LocalDate.of(2018, 5, 1)).isGreaterThanOrEqualTo(LocalDate.of(2018, 5, 2))
-        }
-      }
-    }
-
-    describe("isLessThanOrEqualTo assertion") {
-      it("passes if the subject is less than the expected value") {
-        expect(0).isLessThanOrEqualTo(1)
-      }
-      it("passes if the subject is equal to the expected value") {
-        expect(1).isLessThanOrEqualTo(1)
-      }
-      it("fails if the subject is greater than the expected value") {
-        fails {
-          expect(LocalDate.of(2018, 5, 2)).isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
-        }
+    @Test
+    fun `fails if the subject is less than the expected value`() {
+      fails {
+        expect(LocalDate.of(2018, 5, 1)).isGreaterThan(LocalDate.of(2018, 5, 2))
       }
     }
   }
-})
+
+  @Nested
+  @DisplayName("isLessThan assertion")
+  inner class IsLessThan {
+    @Test
+    fun `passes if the subject is less than the expected value`() {
+      expect(0).isLessThan(1)
+    }
+
+    @Test
+    fun `fails if the subject is equal to the expected value`() {
+      fails {
+        expect(1).isLessThan(1)
+      }
+    }
+
+    @Test
+    fun `fails if the subject is greater than the expected value`() {
+      fails {
+        expect(LocalDate.of(2018, 5, 2)).isLessThan(LocalDate.of(2018, 5, 1))
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("isGreaterThanOrEqualTo assertion")
+  inner class IsGreaterThanOrEqualTo {
+    @Test
+    fun `passes if the subject is greater than the expected value`() {
+      expect(1).isGreaterThanOrEqualTo(0)
+    }
+
+    @Test
+    fun `passes if the subject is equal to the expected value`() {
+      expect(1).isGreaterThanOrEqualTo(1)
+    }
+
+    @Test
+    fun `fails if the subject is less than the expected value`() {
+      fails {
+        expect(LocalDate.of(2018, 5, 1)).isGreaterThanOrEqualTo(LocalDate.of(2018, 5, 2))
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("isLessThanOrEqualTo assertion")
+  inner class IsLessThanOrEqualTo {
+    @Test
+    fun `passes if the subject is less than the expected value`() {
+      expect(0).isLessThanOrEqualTo(1)
+    }
+
+    @Test
+    fun `passes if the subject is equal to the expected value`() {
+      expect(1).isLessThanOrEqualTo(1)
+    }
+
+    @Test
+    fun `fails if the subject is greater than the expected value`() {
+      fails {
+        expect(LocalDate.of(2018, 5, 2)).isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
+      }
+    }
+  }
+}

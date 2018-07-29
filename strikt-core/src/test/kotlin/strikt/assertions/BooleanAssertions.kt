@@ -1,42 +1,57 @@
 package strikt.assertions
 
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.fails
 
+@DisplayName("assertions on Boolean")
 @Suppress("SimplifyBooleanWithConstants")
-internal object BooleanAssertions : Spek({
-  describe("assertions on ${Boolean::class.simpleName}") {
-    describe("isTrue assertion") {
-      it("passes when the subject is true") {
-        expect("a" == "a").isTrue()
-      }
-      it("fails when the subject is false") {
-        fails {
-          expect("a" == "A").isTrue()
-        }
-      }
-      it("fails when the subject is null") {
-        fails {
-          expect(null).isTrue()
-        }
+internal class BooleanAssertions {
+  @Nested
+  @DisplayName("isTrue assertion")
+  inner class IsTrue {
+    @Test
+    fun `passes when the subject is true`() {
+      expect("a" == "a").isTrue()
+    }
+
+    @Test
+    fun `fails when the subject is false`() {
+      fails {
+        expect("a" == "A").isTrue()
       }
     }
-    describe("isFalse assertion") {
-      it("passes when the subject is false") {
-        expect("a" == "A").isFalse()
-      }
-      it("fails when the subject is false") {
-        fails {
-          expect("a" == "a").isFalse()
-        }
-      }
-      it("fails when the subject is null") {
-        fails {
-          expect(null).isFalse()
-        }
+
+    @Test
+    fun `fails when the subject is null`() {
+      fails {
+        expect(null).isTrue()
       }
     }
   }
-})
+
+  @Nested
+  @DisplayName("isFalse assertion")
+  inner class IsFalse {
+    @Test
+    fun `passes when the subject is false`() {
+      expect("a" == "A").isFalse()
+    }
+
+    @Test
+    fun `fails when the subject is false`() {
+      fails {
+        expect("a" == "a").isFalse()
+      }
+    }
+
+    @Test
+    fun `fails when the subject is null`() {
+      fails {
+        expect(null).isFalse()
+      }
+    }
+  }
+}

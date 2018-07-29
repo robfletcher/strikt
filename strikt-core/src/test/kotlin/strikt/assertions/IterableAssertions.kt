@@ -1,400 +1,481 @@
 package strikt.assertions
 
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
 import strikt.api.expect
 import strikt.fails
 
-internal object IterableAssertions : Spek({
-  describe("assertions on ${Iterable::class.simpleName}") {
-    describe("all assertion") {
-      it("passes if all elements conform") {
+@DisplayName("assertions on Iterable")
+internal class IterableAssertions {
+  @Nested
+  @DisplayName("all assertion")
+  inner class All {
+    @Test
+    fun `passes if all elements conform`() {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+      expect(subject).all {
+        isLowerCase()
+      }
+    }
+
+    @Test
+    fun `fails if any element does not conform`() {
+      fails {
         val subject = setOf("catflap", "rubberplant", "marzipan")
         expect(subject).all {
-          isLowerCase()
-        }
-      }
-      it("fails if any element does not conform") {
-        fails {
-          val subject = setOf("catflap", "rubberplant", "marzipan")
-          expect(subject).all {
-            startsWith('c')
-          }
+          startsWith('c')
         }
       }
     }
+  }
 
-    describe("any assertion") {
-      it("passes if all elements conform") {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
+  @Nested
+  @DisplayName("any assertion")
+  inner class Any {
+    @Test
+    fun `passes if all elements conform`() {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+      expect(subject).any {
+        isLowerCase()
+      }
+    }
+
+    @Test
+    fun `passes if any one element conforms`() {
+      val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
+      expect(subject).any {
+        isLowerCase()
+      }
+    }
+
+    @Test
+    fun `fails if no elements conform`() {
+      fails {
+        val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
         expect(subject).any {
           isLowerCase()
         }
       }
-      it("passes if any one element conforms") {
+    }
+  }
+
+  @Nested
+  @DisplayName("none assertion")
+  inner class None {
+    @Test
+    fun `passes if no elements conform`() {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+      expect(subject).none {
+        isUpperCase()
+      }
+    }
+
+    @Test
+    fun `fails if some elements conforms`() {
+      fails {
         val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
-        expect(subject).any {
-          isLowerCase()
-        }
-      }
-      it("fails if no elements conform") {
-        fails {
-          val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
-          expect(subject).any {
-            isLowerCase()
-          }
-        }
-      }
-    }
-
-    describe("none assertion") {
-      it("passes if no elements conform") {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
         expect(subject).none {
           isUpperCase()
         }
       }
-      it("fails if some elements conforms") {
-        fails {
-          val subject = setOf("catflap", "RUBBERPLANT", "MARZIPAN")
-          expect(subject).none {
-            isUpperCase()
-          }
-        }
-      }
-      it("fails if all elements conform") {
-        fails {
-          val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
-          expect(subject).none {
-            isUpperCase()
-          }
+    }
+
+    @Test
+    fun `fails if all elements conform`() {
+      fails {
+        val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        expect(subject).none {
+          isUpperCase()
         }
       }
     }
+  }
 
-    describe("contains assertion") {
-      sequenceOf(
-        Pair(listOf("catflap"), arrayOf("catflap")),
-        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap")),
-        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("catflap", "marzipan"))
-      ).forEach { (subject, expected) ->
-        it("passes $subject contains ${expected.toList()}") {
+  @Nested
+  @DisplayName("contains assertion")
+  inner class Contains {
+    @TestFactory
+    fun `passes subject contains expected`() =
+      listOf(
+        Pair(
+          listOf("catflap"),
+          arrayOf("catflap")
+        ),
+        Pair(
+          listOf("catflap", "rubberplant", "marzipan"),
+          arrayOf("catflap")
+        ),
+        Pair(
+          listOf("catflap", "rubberplant", "marzipan"),
+          arrayOf("catflap", "marzipan")
+        )
+      ).map { (subject, expected) ->
+        dynamicTest("passes $subject contains ${expected.toList()}") {
           expect(subject).contains(*expected)
         }
       }
 
-      sequenceOf(
-        Pair(listOf("catflap", "rubberplant", "marzipan"), arrayOf("fnord")),
+    @TestFactory
+    fun `fails subject contains expected`() =
+      listOf(
+        Pair(
+          listOf("catflap", "rubberplant", "marzipan"),
+          arrayOf("fnord")
+        ),
         Pair(
           listOf("catflap", "rubberplant", "marzipan"),
           arrayOf("catflap", "fnord")
         ),
         Pair(emptyList(), arrayOf("catflap"))
-      ).forEach { (subject, expected) ->
-        it("fails $subject contains ${expected.toList()}") {
+      ).map { (subject, expected) ->
+        dynamicTest("fails $subject contains ${expected.toList()}") {
           fails {
             expect(subject).contains(*expected)
           }
         }
       }
 
-      it("rejects an empty array of expected elements") {
-        assertThrows<IllegalArgumentException> {
-          expect(listOf("catflap", "rubberplant", "marzipan")).contains()
-        }
-      }
-
-      it("has a nested failure for each missing element") {
-        fails {
-          expect(listOf("catflap", "rubberplant", "marzipan")).contains(
-            "fnord",
-            "marzipan",
-            "bojack"
-          )
-        }
+    @Test
+    fun `rejects an empty array of expected elements`() {
+      assertThrows<IllegalArgumentException> {
+        expect(listOf("catflap", "rubberplant", "marzipan")).contains()
       }
     }
 
-    describe("doesNotContain assertion") {
-      it("always passes for an empty subject") {
-        expect(emptyList<String>()).doesNotContain("catflap", "rubberplant", "marzipan")
+    @Test
+    fun `has a nested failure for each missing element`() {
+      fails {
+        expect(listOf("catflap", "rubberplant", "marzipan"))
+          .contains("fnord", "marzipan", "bojack")
       }
+    }
+  }
 
-      sequenceOf(
+  @Nested
+  @DisplayName("doesNotContain assertion")
+  inner class DoesNotContain {
+    @Test
+    fun `always passes for an empty subject`() {
+      expect(emptyList<String>())
+        .doesNotContain("catflap", "rubberplant", "marzipan")
+    }
+
+    @TestFactory
+    fun `fails if no elements are specified`() =
+      listOf(
         emptyList(),
         listOf("catflap", "rubberplant", "marzipan")
-      ).forEach { subject ->
-        it("fails for the subject $subject if no elements are specified") {
+      ).map { subject ->
+        dynamicTest("fails for $subject is if no elements are specified") {
           assertThrows<IllegalArgumentException> {
             expect(subject).doesNotContain()
           }
         }
       }
 
-      sequenceOf(
+    fun `passes if the subject contains none of the elements`() =
+      listOf(
         arrayOf("fnord"),
         arrayOf("xenocracy", "wye", "exercitation")
-      ).forEach { elements ->
-        it("passes if the subject contains none of the elements ${elements.toList()}") {
+      ).map { elements ->
+        dynamicTest("passes if the subject contains none of the elements ${elements.toList()}") {
           expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
         }
       }
 
-      sequenceOf(
+    @TestFactory
+    fun `passes if the subject contains any of the elements`() =
+      listOf(
         arrayOf("catflap"),
         arrayOf("catflap", "kakistocracy", "impeach"),
         arrayOf("owlbear", "marzipan", "illithid")
-      ).forEach { elements ->
-        it("passes if the subject contains any of the elements ${elements.toList()}") {
+      ).map { elements ->
+        dynamicTest("passes if the subject contains any of the elements ${elements.toList()}") {
           fails {
             expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
           }
         }
       }
+  }
+
+  @Nested
+  @DisplayName("containsExactly assertion")
+  inner class ContainsExactly {
+    @Nested
+    @DisplayName("a Set subject")
+    inner class Set {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+
+      @Test
+      fun `passes if the elements are identical`() {
+        expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
+      }
+
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject).containsExactly("rubberplant", "catflap")
+        }
+      }
+
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
+        }
+      }
+
+      @Test
+      fun `fails if the order is different (even though this is a Set)`() {
+        fails {
+          expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
+        }
+      }
     }
 
-    describe("containsExactly assertion") {
-      describe("a Set subject") {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
+    @Nested
+    @DisplayName("a List subject")
+    inner class List {
+      val subject = listOf("catflap", "rubberplant", "marzipan")
 
-        it("passes if the elements are identical") {
-          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
-        }
+      @Test
+      fun `passes if all the elements exist in the same order`() {
+        expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
+      }
 
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject).containsExactly("rubberplant", "catflap")
-          }
-        }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject).containsExactly(
-              "catflap",
-              "rubberplant",
-              "marzipan",
-              "fnord"
-            )
-          }
-        }
-
-        it("fails if the order is different (even though this is a Set)") {
-          fails {
-            expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
-          }
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject).containsExactly("catflap", "rubberplant")
         }
       }
 
-      describe("a List subject") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-
-        it("passes if all the elements exist in the same order") {
-          expect(subject).containsExactly("catflap", "rubberplant", "marzipan")
-        }
-
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject).containsExactly("catflap", "rubberplant")
-          }
-        }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject).containsExactly(
-              "catflap",
-              "rubberplant",
-              "marzipan",
-              "fnord"
-            )
-          }
-        }
-
-        it("fails if the order is different") {
-          fails {
-            expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
-          }
-        }
-
-        it("fails if the cardinality of an element is lower than expected") {
-          fails {
-            expect(subject).containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
-          }
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
       }
 
-      describe("a non-Collection Iterable subject") {
-        val subject = object : Iterable<String> {
-          override fun iterator() =
-            arrayOf("catflap", "rubberplant", "marzipan").iterator()
+      @Test
+      fun `fails if the order is different`() {
+        fails {
+          expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
         }
+      }
 
-        it("passes if the elements are indentical") {
+      @Test
+      fun `fails if the cardinality of an element is lower than expected`() {
+        fails {
+          expect(subject)
+            .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
+        }
+      }
+    }
+
+    @Nested
+    @DisplayName("a non-Collection Iterable subject")
+    inner class NonCollection {
+      val subject = object : Iterable<String> {
+        override fun iterator() =
+          arrayOf("catflap", "rubberplant", "marzipan").iterator()
+      }
+
+      @Test
+      fun `passes if the elements are indentical`() {
+        expect(subject)
+          .describedAs("a non-Collection iterable %s")
+          .containsExactly("catflap", "rubberplant", "marzipan")
+      }
+
+      @Test
+      fun `fails if the elements are ordered differently`() {
+        fails {
           expect(subject)
             .describedAs("a non-Collection iterable %s")
-            .containsExactly("catflap", "rubberplant", "marzipan")
-        }
-
-        it("fails if the elements are ordered differently") {
-          fails {
-            expect(subject)
-              .describedAs("a non-Collection iterable %s")
-              .containsExactly("marzipan", "rubberplant", "catflap")
-          }
-        }
-
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject)
-              .describedAs("a non-Collection iterable %s")
-              .containsExactly("catflap", "rubberplant")
-          }
-        }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject)
-              .describedAs("a non-Collection iterable %s")
-              .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
-          }
-        }
-
-        it("fails if the cardinality of an element is lower than expected") {
-          fails {
-            expect(subject)
-              .describedAs("a non-Collection iterable %s")
-              .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
-          }
-        }
-
-        it("fails if it's supposed to be empty and isn't") {
-          fails {
-            expect(subject)
-              .describedAs("a non-Collection iterable %s")
-              .containsExactly()
-          }
-        }
-
-        it("passes if it's supposed to be empty and is") {
-          val emptySubject = object : Iterable<String> {
-            override fun iterator() = emptySequence<String>().iterator()
-          }
-          expect(emptySubject).containsExactly()
-        }
-      }
-    }
-
-    describe("containsExactlyInAnyOrder assertion") {
-      describe("a Set subject") {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
-
-        it("passes if the elements are identical") {
-          expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
-        }
-
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap")
-          }
-        }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder(
-              "catflap",
-              "rubberplant",
-              "marzipan",
-              "fnord"
-            )
-          }
+            .containsExactly("marzipan", "rubberplant", "catflap")
         }
       }
 
-      describe("a List subject") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-
-        it("passes if all the elements exist in the same order") {
-          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
-        }
-
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
-          }
-        }
-
-        it("fails if the cardinality of an element is lower than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
-          }
-        }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder(
-              "catflap",
-              "rubberplant",
-              "marzipan",
-              "fnord"
-            )
-          }
-        }
-
-        it("passes if the order is different") {
-          expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject)
+            .describedAs("a non-Collection iterable %s")
+            .containsExactly("catflap", "rubberplant")
         }
       }
 
-      describe("a non-Collection Iterable subject") {
-        val subject = object : Iterable<String> {
-          override fun iterator() =
-            arrayOf("catflap", "rubberplant", "marzipan").iterator()
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .describedAs("a non-Collection iterable %s")
+            .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
+      }
 
-        it("passes if the elements are indentical") {
-          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
+      @Test
+      fun `fails if the cardinality of an element is lower than expected`() {
+        fails {
+          expect(subject)
+            .describedAs("a non-Collection iterable %s")
+            .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
         }
+      }
 
-        it("passes if the elements are ordered differently") {
-          expect(subject).containsExactlyInAnyOrder("marzipan", "rubberplant", "catflap")
+      @Test
+      fun `fails if it's supposed to be empty and isn't`() {
+        fails {
+          expect(subject)
+            .describedAs("a non-Collection iterable %s")
+            .containsExactly()
         }
+      }
 
-        it("fails if there are more elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
-          }
+      @Test
+      fun `passes if it's supposed to be empty and is`() {
+        val emptySubject = object : Iterable<String> {
+          override fun iterator() = emptySequence<String>().iterator()
         }
-
-        it("fails if there are fewer elements than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder(
-              "catflap",
-              "rubberplant",
-              "marzipan",
-              "fnord"
-            )
-          }
-        }
-
-        it("fails if the cardinality of an element is lower than expected") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
-          }
-        }
-
-        it("fails if it's supposed to be empty and isn't") {
-          fails {
-            expect(subject).containsExactlyInAnyOrder()
-          }
-        }
-
-        it("passes if it's supposed to be empty and is") {
-          val emptySubject = object : Iterable<String> {
-            override fun iterator() = emptySequence<String>().iterator()
-          }
-          expect(emptySubject).containsExactlyInAnyOrder()
-        }
+        expect(emptySubject).containsExactly()
       }
     }
   }
-})
+
+  @Nested
+  @DisplayName("containsExactlyInAnyOrder assertion")
+  inner class ContainsExactlyInAnyOrder {
+    @Nested
+    @DisplayName("a Set subject")
+    inner class Set {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+
+      @Test
+      fun `passes if the elements are identical`() {
+        expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+      }
+
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap")
+        }
+      }
+
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+        }
+      }
+    }
+
+    @Nested
+    @DisplayName("a List subject")
+    inner class List {
+      val subject = listOf("catflap", "rubberplant", "marzipan")
+
+      @Test
+      fun `passes if all the elements exist in the same order`() {
+        expect(subject)
+          .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
+      }
+
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
+        }
+      }
+
+      @Test
+      fun `fails if the cardinality of an element is lower than expected`() {
+        fails {
+          expect(subject)
+            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+        }
+      }
+
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+        }
+      }
+
+      @Test
+      fun `passes if the order is different`() {
+        expect(subject)
+          .containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+      }
+    }
+
+    @Nested
+    @DisplayName("a non-Collection Iterable subject")
+    inner class NonCollection {
+      val subject = object : Iterable<String> {
+        override fun iterator() =
+          arrayOf("catflap", "rubberplant", "marzipan").iterator()
+      }
+
+      @Test
+      fun `passes if the elements are indentical`() {
+        expect(subject)
+          .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
+      }
+
+      @Test
+      fun `passes if the elements are ordered differently`() {
+        expect(subject)
+          .containsExactlyInAnyOrder("marzipan", "rubberplant", "catflap")
+      }
+
+      @Test
+      fun `fails if there are more elements than expected`() {
+        fails {
+          expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
+        }
+      }
+
+      @Test
+      fun `fails if there are fewer elements than expected`() {
+        fails {
+          expect(subject)
+            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+        }
+      }
+
+      @Test
+      fun `fails if the cardinality of an element is lower than expected`() {
+        fails {
+          expect(subject)
+            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+        }
+      }
+
+      @Test
+      fun `fails if it's supposed to be empty and isn't`() {
+        fails {
+          expect(subject).containsExactlyInAnyOrder()
+        }
+      }
+
+      @Test
+      fun `passes if it's supposed to be empty and is`() {
+        val emptySubject = object : Iterable<String> {
+          override fun iterator() = emptySequence<String>().iterator()
+        }
+        expect(emptySubject).containsExactlyInAnyOrder()
+      }
+    }
+  }
+}

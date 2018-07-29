@@ -1,22 +1,24 @@
 package strikt.assertions
 
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import strikt.api.expect
 
-internal object EnumAssertions : Spek({
-  describe("assertions on enums") {
-    Pantheon.values().forEach { pantheon ->
-      it("can map to the enum name \"${pantheon.name}\"") {
-        expect(pantheon).name.isEqualTo(pantheon.name)
-      }
-
-      it("can map to the enum ordinal ${pantheon.ordinal}") {
-        expect(pantheon).ordinal.isEqualTo(pantheon.ordinal)
-      }
-    }
+@DisplayName("assertions on enums")
+internal class EnumAssertions {
+  @ParameterizedTest
+  @EnumSource(Pantheon::class)
+  fun `can map to the enum name"`(deity: Pantheon) {
+    expect(deity).name.isEqualTo(deity.name)
   }
-})
+
+  @ParameterizedTest
+  @EnumSource(Pantheon::class)
+  fun `can map to the enum ordinal`(deity: Pantheon) {
+    expect(deity).ordinal.isEqualTo(deity.ordinal)
+  }
+}
 
 enum class Pantheon {
   NORSE, GREEK, ROMAN

@@ -1,14 +1,12 @@
 apply plugin: "java-library"
 apply from: "$rootDir/gradle/kotlin.gradle"
 apply from: "$rootDir/gradle/kotlinter.gradle"
-apply from: "$rootDir/gradle/spek.gradle"
+apply from: "$rootDir/gradle/jupiter.gradle"
 apply from: "$rootDir/gradle/published.gradle"
 
 dependencies {
   api project(":strikt-core")
   api "com.google.protobuf:protobuf-java:+"
-
-  testImplementation "org.junit.jupiter:junit-jupiter-api:+"
 }
 
 dokka {

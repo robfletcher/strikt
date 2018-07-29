@@ -1,8 +1,9 @@
 package strikt
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.containsExactly
 import strikt.assertions.first
@@ -13,68 +14,72 @@ import strikt.assertions.isNull
 import strikt.assertions.last
 import java.time.LocalDate
 
-internal object Mapping : Spek({
-  describe("standard library mappings") {
-    describe("mapping assertions on ${Iterable::class.java.simpleName}") {
-      it("maps to the first element using first") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-        expect(subject).first().isEqualTo("catflap")
-      }
-
-      it("maps to the last element using first") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-        expect(subject).last().isEqualTo("marzipan")
-      }
-    }
-
-    describe("mapping assertions on ${List::class.java.simpleName}") {
-      it("maps to an indexed element using [int]") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-        expect(subject)[1].isEqualTo("rubberplant")
-      }
-
-      it("maps to a ranged sub-list using [IntRange]") {
-        val subject = listOf("catflap", "rubberplant", "marzipan")
-        expect(subject)[1..2].containsExactly("rubberplant", "marzipan")
-      }
-    }
-
-    describe("mapping assertions on ${Map::class.java.simpleName}") {
-      it("maps to a value element using [key]") {
-        val subject = mapOf("foo" to "bar")
-        expect(subject)["foo"].isNotNull().isEqualTo("bar")
-        expect(subject)["bar"].isNull()
-      }
-    }
+@DisplayName("mapping assertions")
+internal class Mapping {
+  @Test
+  fun `first() maps to the first element of an iterable`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expect(subject).first().isEqualTo("catflap")
   }
 
-  describe("custom mapping") {
-    data class Person(val name: String, val birthDate: LocalDate)
+  @Test
+  fun `last() maps to the last element of an iterable`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expect(subject).last().isEqualTo("marzipan")
+  }
 
+  @Test
+  fun `array access maps to an indexed element of a list`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expect(subject)[1].isEqualTo("rubberplant")
+  }
+
+  @Test
+  fun `array access maps to a sub-list of a list`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expect(subject)[1..2].containsExactly("rubberplant", "marzipan")
+  }
+
+  @Test
+  fun `array access maps to a value of a map`() {
+    val subject = mapOf("foo" to "bar")
+    expect(subject)["foo"].isNotNull().isEqualTo("bar")
+    expect(subject)["bar"].isNull()
+  }
+
+  data class Person(val name: String, val birthDate: LocalDate)
+
+  @Nested
+  @DisplayName("custom mappings")
+  inner class Custom {
     val subject = Person("David", LocalDate.of(1947, 1, 8))
 
-    it("maps the assertion subject to the closure result") {
+    @Test
+    fun `can map with a closure`() {
       expect(subject) {
         map { name }.isEqualTo("David")
         map { birthDate.year }.isEqualTo(1947)
       }
     }
 
-    it("can use property syntax") {
+    @Test
+    fun `can map with property and method references`() {
       expect(subject) {
         map(Person::name).isEqualTo("David")
         map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
       }
     }
 
-    it("allows methods to be called") {
+    @Test
+    fun `closures can call methods`() {
       expect(subject) {
         map { name.toUpperCase() }.isEqualTo("DAVID")
         map { birthDate.plusYears(69).plusDays(2) }.isEqualTo(LocalDate.of(2016, 1, 10))
       }
     }
 
-    it("can describe the mapping") {
+    @Test
+    fun `can be described`() {
       fails {
         expect(subject) {
           map { name }.describedAs("name").isEqualTo("Ziggy")
@@ -92,7 +97,8 @@ internal object Mapping : Spek({
       }
     }
 
-    it("automatically maps a Kotlin property name to the downstream subject description") {
+    @Test
+    fun `descriptions are defaulted when using property references`() {
       fails {
         expect(subject).map(Person::name).isEqualTo("Ziggy")
       }.let { e ->
@@ -105,7 +111,8 @@ internal object Mapping : Spek({
       }
     }
 
-    it("automatically maps a Java property name to the downstream subject description") {
+    @Test
+    fun `descriptions are defaulted when using bean getter references`() {
       fails {
         expect(subject).map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1971)
       }.let { e ->
@@ -119,4 +126,4 @@ internal object Mapping : Spek({
       }
     }
   }
-})
+}

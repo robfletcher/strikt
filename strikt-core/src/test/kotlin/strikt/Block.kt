@@ -1,24 +1,24 @@
 package strikt
 
-import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 
-internal object Block : Spek({
-  describe("assertions in blocks") {
-    it("evaluates all assertions in the block even if some fail") {
-      fails {
-        val subject: Any? = "fnord"
-        expect(subject) {
-          isNull()
-          isNotNull()
-          isA<String>()
-          isA<Number>()
-        }
+@DisplayName("assertions in blocks")
+internal class Block {
+  @Test
+  fun `all assertions in a block are evaluated even if some fail`() {
+    fails {
+      val subject: Any? = "fnord"
+      expect(subject) {
+        isNull()
+        isNotNull()
+        isA<String>()
+        isA<Number>()
       }
     }
   }
-})
+}
