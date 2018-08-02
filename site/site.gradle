@@ -56,7 +56,7 @@ githubPages {
     }
     from(bake) {
       include "**/*.html"
-      filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: System.getenv("CIRCLE_TAG") ?: "+"])
+      filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: System.getenv("CIRCLE_TAG")[1..-1] ?: "+"])
     }
     from(rootDir) {
       include ".circleci/**/*"
