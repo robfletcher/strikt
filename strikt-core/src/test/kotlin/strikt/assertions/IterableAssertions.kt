@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
@@ -199,6 +200,22 @@ internal class IterableAssertions {
             expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
           }
         }
+      }
+
+    @Test
+    fun `formats its failure message correctly`() =
+      fails {
+        expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain("catflap", "wye", "marzipan")
+      }.let { e ->
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ does not contain any of the elements [\"catflap\", \"wye\", \"marzipan\"]\n" +
+            "    ▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "      ✗ does not contain \"catflap\"\n" +
+            "    ▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "      ✗ does not contain \"marzipan\"",
+          e.message
+        )
       }
   }
 

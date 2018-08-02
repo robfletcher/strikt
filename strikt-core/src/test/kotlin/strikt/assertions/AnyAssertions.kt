@@ -152,8 +152,8 @@ internal class AnyAssertions {
         expect(5L).isEqualTo(5)
       }.let { e ->
         assertEquals(
-          """Expect that: 5 (1 failure)
-	is equal to 5 (Int) : found 5 (Long)""", e.message
+          """▼ Expect that 5:
+  ✗ is equal to 5 (Int) : found 5 (Long)""", e.message
         )
       }
     }

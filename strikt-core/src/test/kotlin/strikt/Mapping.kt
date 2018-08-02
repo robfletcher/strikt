@@ -74,7 +74,8 @@ internal class Mapping {
     fun `closures can call methods`() {
       expect(subject) {
         map { name.toUpperCase() }.isEqualTo("DAVID")
-        map { birthDate.plusYears(69).plusDays(2) }.isEqualTo(LocalDate.of(2016, 1, 10))
+        map { birthDate.plusYears(69).plusDays(2) }
+          .isEqualTo(LocalDate.of(2016, 1, 10))
       }
     }
 
@@ -86,14 +87,14 @@ internal class Mapping {
           map { birthDate.year }.describedAs("birth year").isEqualTo(1971)
         }
       }.let { e ->
-        val expectedMessage = listOf(
-          "Expect that: Person(name=David, birthDate=1947-01-08) (2 failures)",
-          "\tExpect that: name (1 failure)",
-          "\tis equal to \"Ziggy\" : found \"David\"",
-          "\tExpect that: birth year (1 failure)",
-          "\tis equal to 1971 : found 1947"
+        assertEquals(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+            "  ▼ Expect that name:\n" +
+            "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
+            "  ▼ Expect that birth year:\n" +
+            "    ✗ is equal to 1971 : found 1947",
+          e.message
         )
-        assertEquals(expectedMessage, e.message?.lines())
       }
     }
 
@@ -102,27 +103,28 @@ internal class Mapping {
       fails {
         expect(subject).map(Person::name).isEqualTo("Ziggy")
       }.let { e ->
-        val expectedMessage = listOf(
-          "Expect that: Person(name=David, birthDate=1947-01-08) (1 failure)",
-          "\tExpect that: .name \"${subject.name}\" (1 failure)",
-          "\tis equal to \"Ziggy\" : found \"David\""
+        assertEquals(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+            "  ▼ Expect that .name \"${subject.name}\":\n" +
+            "    ✗ is equal to \"Ziggy\" : found \"David\"",
+          e.message
         )
-        assertEquals(expectedMessage, e.message?.lines())
       }
     }
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
       fails {
-        expect(subject).map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1971)
+        expect(subject).map(Person::birthDate).map(LocalDate::getYear)
+          .isEqualTo(1971)
       }.let { e ->
-        val expectedMessage = listOf(
-          "Expect that: Person(name=David, birthDate=1947-01-08) (1 failure)",
-          "\tExpect that: .birthDate ${subject.birthDate} (1 failure)",
-          "\tExpect that: .year ${subject.birthDate.year} (1 failure)", // TODO: can we make it indent again?
-          "\tis equal to 1971 : found 1947"
+        assertEquals(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+            "  ▼ Expect that .birthDate ${subject.birthDate}:\n" +
+            "    ▼ Expect that .year ${subject.birthDate.year}:\n" +
+            "      ✗ is equal to 1971 : found 1947",
+          e.message
         )
-        assertEquals(expectedMessage, e.message?.lines())
       }
     }
   }

@@ -95,7 +95,7 @@ data class Subject<T>(
  */
 data class Result
 internal constructor(
-  val description: String,
+  private val _description: String,
   val expected: Any?
 ) : Reportable() {
   private var _status: Status = Pending
@@ -124,8 +124,11 @@ internal constructor(
   val actual: Any?
     get() = failure?.actual
 
-  val message: String?
-    get() = failure?.message
+  val description: String
+    get() = StringBuilder(_description).run {
+      failure?.description?.let { append(" : $it") }
+      toString()
+    }
 
   val cause: Throwable?
     get() = failure?.cause

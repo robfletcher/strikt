@@ -6,6 +6,8 @@ internal interface ResultWriter {
   fun writeTo(writer: Appendable, result: Reportable)
   fun writeTo(writer: Appendable, results: Iterable<Reportable>) =
     results.forEach { writeTo(writer, it) }
+
+  val verbose: Boolean
 }
 
 internal fun Reportable.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =

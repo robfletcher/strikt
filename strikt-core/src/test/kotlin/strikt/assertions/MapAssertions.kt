@@ -43,8 +43,8 @@ internal class MapAssertions {
         expect(subject).containsKey("foo")
       }.let { e ->
         assertEquals(
-          "Expect that: {} (1 failure)\n" +
-            "\thas an entry with the key \"foo\"",
+          "▼ Expect that {}:\n" +
+            "  ✗ has an entry with the key \"foo\"",
           e.message
         )
       }
@@ -69,10 +69,8 @@ internal class MapAssertions {
         expect(subject).containsKeys("foo", "bar")
       }.let { e ->
         assertEquals(
-          "Expect that: {foo=bar, baz=fnord, qux=fnord} (1 failure)\n" +
-            "\thas entries with the keys [\"foo\", \"bar\"] (1 failure)\n" +
-            "\tExpect that: {foo=bar, baz=fnord, qux=fnord} (1 failure)\n" +
-            "\thas an entry with the key \"bar\"",
+          "▼ Expect that {foo=bar, baz=fnord, qux=fnord}:\n" +
+            "  ✗ has an entry with the key \"bar\"",
           e.message
         )
       }
@@ -95,8 +93,8 @@ internal class MapAssertions {
         expect(subject).hasEntry("foo", "bar")
       }.let { e ->
         assertEquals(
-          "Expect that: {} (1 failure)\n" +
-            "\thas an entry with the key \"foo\"",
+          "▼ Expect that {}:\n" +
+            "  ✗ has an entry with the key \"foo\"",
           e.message
         )
       }
@@ -109,9 +107,9 @@ internal class MapAssertions {
         expect(subject).hasEntry("foo", "baz")
       }.let { e ->
         assertEquals(
-          "Expect that: {foo=bar} (1 failure)\n" +
-            "\tExpect that: entry [\"foo\"] \"bar\" (1 failure)\n" +
-            "\tis equal to \"baz\" : found \"bar\"",
+          "▼ Expect that {foo=bar}:\n" +
+            "  ▼ Expect that entry [\"foo\"] \"bar\":\n" +
+            "    ✗ is equal to \"baz\" : found \"bar\"",
           e.message
         )
       }

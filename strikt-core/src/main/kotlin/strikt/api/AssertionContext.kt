@@ -20,14 +20,14 @@ interface AssertionContext<T> {
    * Report that the assertion failed optionally providing additional detail.
    *
    * @param actual the value(s) that violated the assertion.
-   * @param message a message describing the failure.
+   * @param description a description of the failure.
    * @param cause an underlying exception that was the cause of the failure.
    */
   fun fail(
     actual: Any? = null,
-    message: String? = if (actual == null) null else "found %s",
+    description: String? = if (actual == null) null else "found %s",
     cause: Throwable? = null
-  ) = fail(Failure(actual, message, cause))
+  ) = fail(Failure(actual, description, cause))
 
   /**
    * Report that the assertion failed.

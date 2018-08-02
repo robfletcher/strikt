@@ -25,8 +25,8 @@ internal class Throws {
     fails {
       throws<IllegalStateException> { -> }
     }.let { e ->
-      val expected = "Expect that: () -> kotlin.Unit (1 failure)\n" +
-        "\tthrows java.lang.IllegalStateException : nothing was thrown"
+      val expected = "▼ Expect that () -> kotlin.Unit:\n" +
+        "  ✗ throws java.lang.IllegalStateException : nothing was thrown"
       assertEquals(expected, e.message)
     }
   }
@@ -36,8 +36,8 @@ internal class Throws {
     fails {
       throws<IllegalStateException> { -> throw NullPointerException() }
     }.let { e ->
-      val expected = "Expect that: () -> kotlin.Unit (1 failure)\n" +
-        "\tthrows java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
+      val expected = "▼ Expect that () -> kotlin.Unit:\n" +
+        "  ✗ throws java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
       assertEquals(expected, e.message)
       assertEquals(NullPointerException::class.java, e.failures.first().cause?.javaClass)
     }
@@ -63,8 +63,8 @@ internal class Throws {
       val fn: () -> Unit = subject::throwSomething
       expect(fn).throws<IllegalStateException>()
     }.let { e ->
-      val expected = "Expect that: MyThing::throwSomething (1 failure)\n" +
-        "\tthrows java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
+      val expected = "▼ Expect that MyThing::throwSomething:\n" +
+        "  ✗ throws java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
       assertEquals(expected, e.message)
     }
   }

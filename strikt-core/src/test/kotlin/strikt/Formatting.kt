@@ -24,14 +24,14 @@ internal class Formatting {
     }
 
     val expected =
-      "Expect that: a couple of words (1 failure)\n" +
-        "\tall elements match: (3 failures)\n" +
-        "\tExpect that: \"catflap\" (1 failure)\n" +
-        "\tis upper case\n" +
-        "\tExpect that: \"rubberplant\" (1 failure)\n" +
-        "\tis upper case\n" +
-        "\tExpect that: \"marzipan\" (1 failure)\n" +
-        "\tis upper case"
+      "▼ Expect that a couple of words:\n" +
+        "  ✗ all elements match:\n" +
+        "    ▼ Expect that \"catflap\":\n" +
+        "      ✗ is upper case\n" +
+        "    ▼ Expect that \"rubberplant\":\n" +
+        "      ✗ is upper case\n" +
+        "    ▼ Expect that \"marzipan\":\n" +
+        "      ✗ is upper case"
     assertEquals(expected, e.message)
   }
 
@@ -48,17 +48,72 @@ internal class Formatting {
       }
     }
 
-    val expected = "Expect that: [\"catflap\", \"rubberplant\", \"marzipan\"] (2 failures)\n" +
-      "\thas size 0 : found 3\n" +
-      "\tall elements match: (3 failures)\n" +
-      "\tExpect that: \"catflap\" (1 failure)\n" +
-      "\tis upper case\n" +
-      "\tExpect that: \"rubberplant\" (2 failures)\n" +
-      "\tis upper case\n" +
-      "\tstarts with 'c'\n" +
-      "\tExpect that: \"marzipan\" (2 failures)\n" +
-      "\tis upper case\n" +
-      "\tstarts with 'c'"
+    val expected =
+      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+        "  ✗ has size 0 : found 3\n" +
+        "  ✗ all elements match:\n" +
+        "    ▼ Expect that \"catflap\":\n" +
+        "      ✗ is upper case\n" +
+        "    ▼ Expect that \"rubberplant\":\n" +
+        "      ✗ is upper case\n" +
+        "      ✗ starts with 'c'\n" +
+        "    ▼ Expect that \"marzipan\":\n" +
+        "      ✗ is upper case\n" +
+        "      ✗ starts with 'c'"
+    assertEquals(expected, e.message)
+  }
+
+  @Test
+  fun `passing assertions are excluded by default`() {
+    val e = fails {
+      val subject = setOf("catflap", "rubberplant", "marzipan")
+      expect(subject) {
+        hasSize(3)
+        all {
+          startsWith('c')
+        }
+      }
+    }
+
+    val expected =
+      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+        "  ✗ all elements match:\n" +
+        "    ▼ Expect that \"rubberplant\":\n" +
+        "      ✗ starts with 'c'\n" +
+        "    ▼ Expect that \"marzipan\":\n" +
+        "      ✗ starts with 'c'"
+    assertEquals(expected, e.message)
+  }
+
+  @Test
+  fun `passing assertions are included in verbose mode`() {
+    val e = try {
+      System.setProperty("strikt.verbose", "true")
+
+      fails {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expect(subject) {
+          hasSize(3)
+          all {
+            startsWith('c')
+          }
+        }
+      }
+    } finally {
+      System.clearProperty("strikt.verbose")
+    }
+
+    val expected =
+      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+        "  ✓ has size 3\n" +
+        "  ✗ all elements match:\n" +
+        "    ▼ Expect that \"catflap\":\n" +
+        "      ✓ starts with 'c'\n" +
+        "    ▼ Expect that \"rubberplant\":\n" +
+        "      ✗ starts with 'c'\n" +
+        "    ▼ Expect that \"marzipan\":\n" +
+        "      ✗ starts with 'c'"
+
     assertEquals(expected, e.message)
   }
 }

@@ -73,7 +73,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E): Assertion<T>
         if (subject.contains(element)) {
           pass()
         } else {
-          fail(actual = element)
+          fail()
         }
       }
     }
@@ -94,9 +94,9 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assert
   }
   return compose("does not contain any of the elements %s", elements) {
     elements.forEach { element ->
-      expect(subject).assert("%s does not contain %s", element) {
+      expect(subject).assert("does not contain %s", element) {
         if (subject.contains(element)) {
-          fail(actual = element)
+          fail()
         } else {
           pass()
         }

@@ -25,18 +25,16 @@ operator fun <T : Map<K, V>, K, V> Assertion<T>.get(key: K): Assertion<V?> =
  * assertion just tests for the existence of the key.
  */
 fun <T : Map<K, V>, K, V> Assertion<T>.containsKey(key: K): Assertion<T> =
-  assert("has an entry with the key %s", key) {
-    if (subject.containsKey(key)) pass() else fail()
+  passesIf("has an entry with the key %s", key) {
+    containsKey(key)
   }
 
 /**
  * Asserts that the subject map contains entries for all [keys].
  */
 fun <T : Map<K, V>, K, V> Assertion<T>.containsKeys(vararg keys: K): Assertion<T> =
-  compose("has entries with the keys %s", keys) {
-    keys.forEach { expect(subject).containsKey(it) }
-  } then {
-    if (allPassed) pass() else fail()
+  evaluate {
+    keys.forEach { containsKey(it) }
   }
 
 /**
