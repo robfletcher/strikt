@@ -4,6 +4,7 @@ import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 import strikt.internal.AssertionResult
+import strikt.internal.AssertionSubject
 import strikt.internal.ResultNode
 
 internal open class DefaultResultWriter : ResultWriter {
@@ -38,8 +39,10 @@ internal open class DefaultResultWriter : ResultWriter {
     indent: Int
   ) {
     when (resultNode) {
-      is AssertionResult<*> -> resultNode.writeResult(writer, indent)
-      is AssertionSubject<*> -> resultNode.writeSubject(writer, indent)
+      is AssertionResult<*> ->
+        resultNode.writeResult(writer, indent)
+      is AssertionSubject<*> ->
+        resultNode.writeSubject(writer, indent)
     }
   }
 
@@ -48,14 +51,15 @@ internal open class DefaultResultWriter : ResultWriter {
     writeSubjectIcon(writer)
     writer
       .append("Expect that ")
-      .append(description.format(formatValue(subject)))
+      .append(subject.describe(::formatValue))
       .append(":")
   }
 
   private fun AssertionResult<*>.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
-    val (formattedExpected, formattedActual) = formatValues(expected, actual)
+    val (formattedExpected, formattedActual) =
+      formatValues(expected, (status as? Failed)?.actual)
     writer.append(description.format(formattedExpected, formattedActual))
   }
 

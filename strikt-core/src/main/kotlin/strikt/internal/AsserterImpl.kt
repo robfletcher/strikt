@@ -5,41 +5,19 @@ import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
-import strikt.api.Status
 import strikt.internal.Mode.COLLECT
 
-// TODO: this should be stateless and just responsible for appending to a tree of results
 internal class AsserterImpl<T>(
-  override val parent: ResultNode? = null,
-  override val subject: Described<T>,
+  private val context: AssertionSubject<T>,
   private val mode: Mode,
   private val negated: Boolean = false
-) : Asserter<T>, AssertionSubject<T> {
-
-  override val status: Status
-    get() = when {
-      assertions.isEmpty() -> Status.Pending
-      assertions.any { it.status is Status.Pending } -> Status.Pending
-      assertions.any { it.status is Status.Failed } -> Status.Failed()
-      else -> Status.Passed
-    }
-
-  override val children: List<ResultNode>
-    get() = assertions
-
-  private val assertions =
-    mutableListOf<AssertionResult<*>>()
-
-  private fun append(assertion: AssertionResult<*>) =
-    assertions.add(assertion)
+) : Asserter<T> {
 
   override fun describedAs(description: String): Asserter<T> =
-    apply {
-      this.description = description
-    }
+    AsserterImpl(context, mode, negated)
 
   override fun evaluate(block: Asserter<T>.() -> Unit): Asserter<T> =
-    AsserterImpl(parent, subject, COLLECT, negated)
+    AsserterImpl(context, COLLECT, negated)
       .apply(block)
       .also {
         throwOnFailure()
@@ -49,20 +27,17 @@ internal class AsserterImpl<T>(
     description: String,
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit
-  ) =
-    apply {
-      AtomicAssertionResult(subject.value, parent)
-        .also { append(it) }
-        .apply(assert)
-    }
+  ): AsserterImpl<T> {
+    AtomicAssertionResult(context, description, expected).assert()
+    return this
+  }
 
   override fun compose(
     description: String,
     expected: Any?,
     assertions: AssertionComposer<T>.() -> Unit
   ): CompoundAssertions<T> =
-    CompoundAssertionResult(subject.value, parent)
-      .also { append(it) }
+    CompoundAssertionResult(context, description, expected)
       .apply(assertions)
       .let { result ->
         object : CompoundAssertions<T> {
@@ -74,11 +49,14 @@ internal class AsserterImpl<T>(
       }
 
   override fun <R> map(description: String, function: T.() -> R): Asserter<R> =
-    AsserterImpl(
-      parent = this,
-      subject = Described(subject.value.function(), description),
-      mode = mode
-    )
+    context.subject.value.function()
+      .let { mappedValue ->
+        AsserterImpl(
+          AssertionSubject(context, Described(mappedValue, description)),
+          mode,
+          negated
+        )
+      }
 
   /**
    * Reverses any assertions chained after this method.
@@ -88,5 +66,9 @@ internal class AsserterImpl<T>(
    * @return an assertion that negates the results of any assertions applied to
    * its subject.
    */
-  override fun not(): Asserter<T> = AsserterImpl(parent, subject, mode, !negated)
+  override fun not(): Asserter<T> = AsserterImpl(context, mode, !negated)
+
+  private fun throwOnFailure() {
+    TODO("not implemented")
+  }
 }

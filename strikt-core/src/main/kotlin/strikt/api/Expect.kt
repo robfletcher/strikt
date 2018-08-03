@@ -2,6 +2,7 @@ package strikt.api
 
 import strikt.assertions.throws
 import strikt.internal.AsserterImpl
+import strikt.internal.AssertionSubject
 import strikt.internal.Mode.FAIL_FAST
 
 /**
@@ -12,7 +13,7 @@ import strikt.internal.Mode.FAIL_FAST
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T): Asserter<T> =
-  AsserterImpl(subject = subject, mode = FAIL_FAST)
+  AsserterImpl(AssertionSubject(subject), FAIL_FAST)
 
 /**
  * Evaluate a block of assertions over [subject].

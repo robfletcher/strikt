@@ -70,8 +70,3 @@ interface AssertionComposer<T> {
   ): Asserter<T>
 }
 
-interface CompoundAssertions<T> {
-
-  infix fun then(block: CompoundAssertion<T>.() -> Unit): Asserter<T>
-
-}
