@@ -1,8 +1,10 @@
-package strikt.api.reporting
+package strikt.internal.reporting
 
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import strikt.internal.AssertionResult
+import strikt.internal.ResultNode
 
 internal open class DefaultResultWriter : ResultWriter {
 
@@ -10,19 +12,19 @@ internal open class DefaultResultWriter : ResultWriter {
   override val verbose: Boolean
     get() = System.getProperty("strikt.verbose", "false").toBoolean()
 
-  override fun writeTo(writer: Appendable, result: Reportable) {
-    if (result.shouldWrite) {
-      writeIndented(writer, result)
+  override fun writeTo(writer: Appendable, resultNode: ResultNode) {
+    if (resultNode.shouldWrite) {
+      writeIndented(writer, resultNode)
     }
   }
 
   private fun writeIndented(
     writer: Appendable,
-    result: Reportable,
+    resultNode: ResultNode,
     indent: Int = 0
   ) {
-    writeLine(writer, result, indent)
-    result.results.forEach {
+    writeLine(writer, resultNode, indent)
+    resultNode.children.forEach {
       if (it.shouldWrite) {
         writeLineEnd(writer, it)
         writeIndented(writer, it, indent + 1)
@@ -32,25 +34,25 @@ internal open class DefaultResultWriter : ResultWriter {
 
   protected open fun writeLine(
     writer: Appendable,
-    result: Reportable,
+    resultNode: ResultNode,
     indent: Int
   ) {
-    when (result) {
-      is Subject<*> -> result.writeSubject(writer, indent)
-      is Result -> result.writeResult(writer, indent)
+    when (resultNode) {
+      is AssertionResult<*> -> resultNode.writeResult(writer, indent)
+      is AssertionSubject<*> -> resultNode.writeSubject(writer, indent)
     }
   }
 
-  private fun Subject<*>.writeSubject(writer: Appendable, indent: Int) {
+  private fun AssertionSubject<*>.writeSubject(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
     writer
       .append("Expect that ")
-      .append(description.format(formatValue(value)))
+      .append(description.format(formatValue(subject)))
       .append(":")
   }
 
-  private fun Result.writeResult(writer: Appendable, indent: Int) {
+  private fun AssertionResult<*>.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
     val (formattedExpected, formattedActual) = formatValues(expected, actual)
@@ -59,22 +61,22 @@ internal open class DefaultResultWriter : ResultWriter {
 
   protected open fun writeLineStart(
     writer: Appendable,
-    node: Reportable,
+    node: ResultNode,
     indent: Int
   ) {
     writer.append("".padStart(2 * indent))
   }
 
-  protected open fun writeLineEnd(writer: Appendable, node: Reportable) {
+  protected open fun writeLineEnd(writer: Appendable, node: ResultNode) {
     writer.append(EOL)
   }
 
-  protected open fun writeStatusIcon(writer: Appendable, node: Result) {
+  protected open fun writeStatusIcon(writer: Appendable, node: ResultNode) {
     writer.append(
       when (node.status) {
-        Passed -> "✓ "
-        Failed -> "✗ "
-        Pending -> "? "
+        is Passed -> "✓ "
+        is Failed -> "✗ "
+        is Pending -> "? "
       }
     )
   }
@@ -83,7 +85,7 @@ internal open class DefaultResultWriter : ResultWriter {
     writer.append("▼ ")
   }
 
-  private val Reportable.shouldWrite: Boolean
+  private val ResultNode.shouldWrite: Boolean
     get() = status != Passed || verbose
 }
 

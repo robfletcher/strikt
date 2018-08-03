@@ -1,11 +1,11 @@
 package strikt.assertions
 
-import strikt.api.Assertion
+import strikt.api.Asserter
 
 /**
  * Asserts that the subject is not null and is the boolean value `true`.
  */
-fun <T : Boolean?> Assertion<T>.isTrue() =
+fun <T : Boolean?> Asserter<T>.isTrue() =
   assert("is true", expected = true) {
     if (subject == true) pass() else fail(actual = subject)
   }
@@ -13,7 +13,7 @@ fun <T : Boolean?> Assertion<T>.isTrue() =
 /**
  * Asserts that the subject is not null and is the boolean value `false`.
  */
-fun <T : Boolean?> Assertion<T>.isFalse() =
+fun <T : Boolean?> Asserter<T>.isFalse() =
   assert("is false", expected = false) {
     if (subject == false) pass() else fail(actual = subject)
   }

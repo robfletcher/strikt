@@ -1,6 +1,6 @@
 package strikt.assertions
 
-import strikt.api.Assertion
+import strikt.api.Asserter
 
 /**
  * Maps this assertion to an assertion over the first element in the subject
@@ -8,7 +8,7 @@ import strikt.api.Assertion
  *
  * @see Iterable.first
  */
-fun <T : Iterable<E>, E> Assertion<T>.first(): Assertion<E> =
+fun <T : Iterable<E>, E> Asserter<T>.first(): Asserter<E> =
   map("first element %s") { first() }
 
 /**
@@ -17,13 +17,13 @@ fun <T : Iterable<E>, E> Assertion<T>.first(): Assertion<E> =
  *
  * @see Iterable.last
  */
-fun <T : Iterable<E>, E> Assertion<T>.last(): Assertion<E> =
+fun <T : Iterable<E>, E> Asserter<T>.last(): Asserter<E> =
   map("last element %s") { last() }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+fun <T : Iterable<E>, E> Asserter<T>.all(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("all elements match:") {
     subject.forEach {
       expect(it, predicate)
@@ -36,7 +36,7 @@ fun <T : Iterable<E>, E> Assertion<T>.all(predicate: Assertion<E>.() -> Unit): A
  * Asserts that _at least one_ element of the subject pass the assertions in
  * [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+fun <T : Iterable<E>, E> Asserter<T>.any(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("at least one element matches:") {
     subject.forEach {
       expect(it, predicate)
@@ -48,7 +48,7 @@ fun <T : Iterable<E>, E> Assertion<T>.any(predicate: Assertion<E>.() -> Unit): A
 /**
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit): Assertion<T> =
+fun <T : Iterable<E>, E> Asserter<T>.none(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("no elements match:") {
     subject.forEach {
       expect(it, predicate)
@@ -63,7 +63,7 @@ fun <T : Iterable<E>, E> Assertion<T>.none(predicate: Assertion<E>.() -> Unit): 
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E): Assertion<T> {
+fun <T : Iterable<E>, E> Asserter<T>.contains(vararg elements: E): Asserter<T> {
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
@@ -88,7 +88,7 @@ fun <T : Iterable<E>, E> Assertion<T>.contains(vararg elements: E): Assertion<T>
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assertion<T> {
+fun <T : Iterable<E>, E> Asserter<T>.doesNotContain(vararg elements: E): Asserter<T> {
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
@@ -115,7 +115,7 @@ fun <T : Iterable<E>, E> Assertion<T>.doesNotContain(vararg elements: E): Assert
  * assertion is probably not appropriate and you should use
  * [containsExactlyInAnyOrder] instead.
  */
-fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E): Assertion<T> =
+fun <T : Iterable<E>, E> Asserter<T>.containsExactly(vararg elements: E): Asserter<T> =
   compose("contains exactly the elements %s", elements) {
     val original = subject.toList()
     val remaining = subject.toMutableList()
@@ -152,7 +152,7 @@ fun <T : Iterable<E>, E> Assertion<T>.containsExactly(vararg elements: E): Asser
  * contains all the same elements with the same cardinality as [elements]
  * regardless of what order they appear in.
  */
-fun <T : Iterable<E>, E> Assertion<T>.containsExactlyInAnyOrder(vararg elements: E): Assertion<T> =
+fun <T : Iterable<E>, E> Asserter<T>.containsExactlyInAnyOrder(vararg elements: E): Asserter<T> =
   compose("contains exactly the elements %s in any order") {
     val remaining = subject.toMutableList()
     elements.forEach { element ->

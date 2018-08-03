@@ -1,25 +1,22 @@
-package strikt.api.reporting
+package strikt.internal.reporting
 
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import strikt.internal.ResultNode
 
 internal object AnsiColorResultWriter : DefaultResultWriter() {
-  override fun writeLineStart(writer: Appendable, node: Reportable, indent: Int) {
+  override fun writeLineStart(writer: Appendable, node: ResultNode, indent: Int) {
     super.writeLineStart(writer, node, indent)
-    if (node is Result) {
-      writer.append(when (node.status) {
-        Passed -> ANSI_GREEN
-        Failed -> ANSI_RED
-        Pending -> ANSI_YELLOW
-      })
-    }
+    writer.append(when (node.status) {
+      is Passed -> ANSI_GREEN
+      is Failed -> ANSI_RED
+      is Pending -> ANSI_YELLOW
+    })
   }
 
-  override fun writeLineEnd(writer: Appendable, node: Reportable) {
-    if (node is Result) {
-      writer.append(ANSI_RESET)
-    }
+  override fun writeLineEnd(writer: Appendable, node: ResultNode) {
+    writer.append(ANSI_RESET)
     super.writeLineEnd(writer, node)
   }
 }

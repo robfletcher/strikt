@@ -1,12 +1,12 @@
 package strikt.assertions
 
-import strikt.api.Assertion
+import strikt.api.Asserter
 import kotlin.text.RegexOption.IGNORE_CASE
 
 /**
  * Asserts that the subject has a [CharSequence.length] of exactly [expected].
  */
-fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.hasLength(expected: Int): Asserter<T> =
   assert("has length %d", expected) {
     when (subject.length) {
       expected -> pass()
@@ -17,7 +17,7 @@ fun <T : CharSequence> Assertion<T>.hasLength(expected: Int): Assertion<T> =
 /**
  * Asserts that the subject is composed of all lower-case characters.
  */
-fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.isLowerCase(): Asserter<T> =
   passesIf("is lower case") {
     all { it.isLowerCase() }
   }
@@ -25,7 +25,7 @@ fun <T : CharSequence> Assertion<T>.isLowerCase(): Assertion<T> =
 /**
  * Asserts that the subject is composed of all upper-case characters.
  */
-fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.isUpperCase(): Asserter<T> =
   passesIf("is upper case") {
     all { it.isUpperCase() }
   }
@@ -33,7 +33,7 @@ fun <T : CharSequence> Assertion<T>.isUpperCase(): Assertion<T> =
 /**
  * Asserts that the subject starts with the [expected] character.
  */
-fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.startsWith(expected: Char): Asserter<T> =
   passesIf("starts with %s", expected) {
     startsWith(expected)
   }
@@ -41,7 +41,7 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: Char): Assertion<T> =
 /**
  * Asserts that the subject starts with the [expected] string.
  */
-fun <T : CharSequence> Assertion<T>.startsWith(expected: CharSequence): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.startsWith(expected: CharSequence): Asserter<T> =
   passesIf("starts with %s", expected) {
     startsWith(expected)
   }
@@ -50,7 +50,7 @@ fun <T : CharSequence> Assertion<T>.startsWith(expected: CharSequence): Assertio
  * Asserts that the subject is a full match for the [expected] regular
  * expression.
  */
-fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.matches(expected: Regex): Asserter<T> =
   passesIf("matches the regular expression %s", expected) {
     matches(expected)
   }
@@ -59,7 +59,7 @@ fun <T : CharSequence> Assertion<T>.matches(expected: Regex): Assertion<T> =
  * Asserts that the subject is a full match for the [expected] regular
  * expression regardless of case.
  */
-fun <T : CharSequence> Assertion<T>.matchesIgnoringCase(expected: Regex): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.matchesIgnoringCase(expected: Regex): Asserter<T> =
   passesIf("matches the regular expression %s (ignoring case)", expected) {
     Regex(expected.pattern, IGNORE_CASE).let {
       matches(it)
@@ -70,7 +70,7 @@ fun <T : CharSequence> Assertion<T>.matchesIgnoringCase(expected: Regex): Assert
  * Asserts that the subject contains a match for the [expected] regular
  * expression.
  */
-fun <T : CharSequence> Assertion<T>.contains(expected: Regex): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.contains(expected: Regex): Asserter<T> =
   passesIf("contains a match for the regular expression %s", expected) {
     contains(expected)
   }
@@ -79,7 +79,7 @@ fun <T : CharSequence> Assertion<T>.contains(expected: Regex): Assertion<T> =
  * Asserts that the subject contains a match for the [expected] regular
  * expression regardless of case.
  */
-fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: Regex): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.containsIgnoringCase(expected: Regex): Asserter<T> =
   passesIf("contains a match for the regular expression %s (ignoring case)", expected) {
     Regex(expected.pattern, IGNORE_CASE).let {
       contains(it)
@@ -89,7 +89,7 @@ fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: Regex): Asser
 /**
  * Asserts that the subject contains the [expected] substring.
  */
-fun <T : CharSequence> Assertion<T>.contains(expected: CharSequence): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.contains(expected: CharSequence): Asserter<T> =
   passesIf("contains %s", expected) {
     contains(expected)
   }
@@ -98,7 +98,7 @@ fun <T : CharSequence> Assertion<T>.contains(expected: CharSequence): Assertion<
  * Asserts that the subject contains the [expected] substring regardless of
  * case.
  */
-fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: CharSequence): Assertion<T> =
+fun <T : CharSequence> Asserter<T>.containsIgnoringCase(expected: CharSequence): Asserter<T> =
   passesIf("contains %s (ignoring case)", expected) {
     contains(expected, ignoreCase = true)
   }
@@ -108,5 +108,5 @@ fun <T : CharSequence> Assertion<T>.containsIgnoringCase(expected: CharSequence)
  *
  * @see CharSequence.length
  */
-val <T : CharSequence> Assertion<T>.length: Assertion<Int>
+val <T : CharSequence> Asserter<T>.length: Asserter<Int>
   get() = map(CharSequence::length)

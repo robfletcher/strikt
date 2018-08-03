@@ -3,17 +3,21 @@ package strikt.api
 /**
  * The basic state of an assertion result.
  */
-enum class Status {
+internal sealed class Status {
   /**
    * The assertion has not been evaluated yet.
    */
-  Pending,
+  object Pending : Status()
   /**
    * The assertion passed.
    */
-  Passed,
+  object Passed : Status()
   /**
    * The assertion failed.
    */
-  Failed
+  data class Failed(
+    val actual: Any? = null,
+    val description: String? = null,
+    val cause: Throwable? = null
+  ) : Status()
 }

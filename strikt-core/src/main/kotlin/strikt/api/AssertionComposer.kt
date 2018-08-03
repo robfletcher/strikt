@@ -1,22 +1,14 @@
 package strikt.api
 
-import strikt.api.Mode.COLLECT
-import strikt.api.reporting.Result
-import strikt.api.reporting.Subject
-
 /**
  * Allows assertions to be composed, or nested.
  * This class is the receiver of the lambda passed to
- * [Assertion.compose].
+ * [Asserter.compose].
  *
  * @property subject The subject of the assertion.
  */
-class ComposedAssertions<T>
-internal constructor(
-  private val parent: Subject<T>,
-  private val result: Result
-) {
-  val subject = parent.value
+interface AssertionComposer<T> {
+  val subject: T
 
   /**
    * Start a chain of assertions in the current nested context.
@@ -25,10 +17,7 @@ internal constructor(
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <E> expect(subject: E): Assertion<E> =
-    Subject(subject)
-      .also(result::append)
-      .let { Assertion(it, COLLECT) }
+  fun <E> expect(subject: E): Asserter<E>
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -41,11 +30,8 @@ internal constructor(
    */
   fun <E> expect(
     subject: E,
-    block: Assertion<E>.() -> Unit
-  ): Assertion<E> =
-    Subject(subject)
-      .also(result::append)
-      .let { Assertion(it, COLLECT).apply(block) }
+    block: Asserter<E>.() -> Unit
+  ): Asserter<E>
 
   /**
    * Evaluates a composed assertion on the original subject.
@@ -56,14 +42,13 @@ internal constructor(
    *
    * @param description a description for the conditions the assertion evaluates.
    * @param assertion the assertion implementation that should result in a call
-   * to [AssertionContext.pass] or [AssertionContext.fail].
+   * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun assert(description: String, assertion: AssertionContext<T>.() -> Unit) =
-    parent.copy().let {
-      result.append(it)
-      Assertion(it, COLLECT).assert(description, assertion)
-    }
+  fun assert(
+    description: String,
+    assertion: AtomicAssertion<T>.() -> Unit
+  ): Asserter<T>
 
   /**
    * Evaluates a composed assertion on the original subject.
@@ -75,16 +60,18 @@ internal constructor(
    * @param description a description for the condition the assertion evaluates.
    * @param expected the expected value of a comparison.
    * @param assertion the assertion implementation that should result in a call
-   * to [AssertionContext.pass] or [AssertionContext.fail].
+   * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun assert(
     description: String,
     expected: Any?,
-    assertion: AssertionContext<T>.() -> Unit
-  ) =
-    parent.copy().let {
-      result.append(it)
-      Assertion(it, COLLECT).assert(description, expected, assertion)
-    }
+    assertion: AtomicAssertion<T>.() -> Unit
+  ): Asserter<T>
+}
+
+interface CompoundAssertions<T> {
+
+  infix fun then(block: CompoundAssertion<T>.() -> Unit): Asserter<T>
+
 }

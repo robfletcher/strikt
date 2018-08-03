@@ -1,4 +1,4 @@
-package strikt.api.reporting
+package strikt.internal.reporting
 
 import kotlin.jvm.internal.CallableReference
 

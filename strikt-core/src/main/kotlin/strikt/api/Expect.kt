@@ -1,8 +1,8 @@
 package strikt.api
 
-import strikt.api.Mode.FAIL_FAST
-import strikt.api.reporting.Subject
 import strikt.assertions.throws
+import strikt.internal.AsserterImpl
+import strikt.internal.Mode.FAIL_FAST
 
 /**
  * Start a chain of assertions over [subject].
@@ -11,8 +11,8 @@ import strikt.assertions.throws
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expect(subject: T): Assertion<T> =
-  Assertion(Subject(subject), FAIL_FAST)
+fun <T> expect(subject: T): Asserter<T> =
+  AsserterImpl(subject = subject, mode = FAIL_FAST)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -27,12 +27,12 @@ fun <T> expect(subject: T): Assertion<T> =
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return an assertion for [subject].
  *
- * @see Assertion.evaluate
+ * @see Asserter.evaluate
  */
 fun <T> expect(
   subject: T,
-  block: Assertion<T>.() -> Unit
-): Assertion<T> =
+  block: Asserter<T>.() -> Unit
+): Asserter<T> =
   expect(subject).evaluate(block)
 
 /**
@@ -43,5 +43,5 @@ fun <T> expect(
  */
 inline fun <reified E : Throwable> throws(
   noinline action: () -> Unit
-): Assertion<E> =
+): Asserter<E> =
   expect(action).throws()
