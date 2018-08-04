@@ -35,7 +35,7 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit
   ): AsserterImpl<T> {
-    object : AtomicAssertionResult(context, description, expected), AtomicAssertion<T> {
+    object : AssertionResult(context, description, expected), AtomicAssertion<T> {
       override val subject: T
         get() = context.subject.value
 
@@ -65,7 +65,7 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assertions: AssertionComposer<T>.() -> Unit
   ): CompoundAssertions<T> {
-    val composedContext = object : CompoundAssertionResult(context, description, expected), CompoundAssertion<T> {
+    val composedContext = object : AssertionResult(context, description, expected), CompoundAssertion<T> {
       override val subject: T
         get() = context.subject.value
 
@@ -105,11 +105,11 @@ internal class AsserterImpl<T>(
       override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): Asserter<E> =
         expect(subject).assertAll(block)
 
-      override fun assert(description: String, assertion: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(this@AsserterImpl.context, COLLECT).assert(description, assertion)
+      override fun assert(description: String, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
+        AsserterImpl(AssertionSubject(composedContext, subject), COLLECT).assert(description, assert)
 
-      override fun assert(description: String, expected: Any?, assertion: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(this@AsserterImpl.context, COLLECT).assert(description, expected, assertion)
+      override fun assert(description: String, expected: Any?, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
+        AsserterImpl(AssertionSubject(composedContext, subject), COLLECT).assert(description, expected, assert)
     }
     composer.apply(assertions)
     return composedContext.let { result ->

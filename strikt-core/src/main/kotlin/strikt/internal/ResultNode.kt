@@ -53,6 +53,7 @@ internal class AssertionSubject<T>(
       else -> Passed
     }
 
+  // TODO: rewrite so exceptions contain result tree
   override fun toError(): Throwable? = when (status) {
     is Failed -> CompoundAssertionFailure(writeToString(), children.toErrors())
     is Pending -> TestSkippedException(writeToString())
@@ -61,45 +62,30 @@ internal class AssertionSubject<T>(
 }
 
 internal abstract class AssertionResult(
-  parent: ResultNode
+  parent: ResultNode,
+  val description: String,
+  val expected: Any? = null
 ) : ResultNode(parent) {
-  abstract val description: String
-  abstract val expected: Any?
 
   protected var _status: Status = Pending
 
   override val status: Status
     get() = _status
-}
 
-internal abstract class AtomicAssertionResult(
-  parent: ResultNode,
-  override val description: String,
-  override val expected: Any? = null
-) : AssertionResult(parent) {
-
+  // TODO: rewrite so exceptions contain result tree
   override fun toError(): Throwable? = when (status) {
-    is Failed -> AtomicAssertionFailure(
-      writeToString(),
-      expected,
-      (status as? Failed)?.actual,
-      (status as? Failed)?.cause
-    )
     is Pending -> TestSkippedException(writeToString())
     is Passed -> null
-  }
-}
-
-internal abstract class CompoundAssertionResult(
-  parent: ResultNode,
-  override val description: String,
-  override val expected: Any? = null
-) : AssertionResult(parent) {
-
-  override fun toError(): Throwable? = when (status) {
-    is Failed -> CompoundAssertionFailure(writeToString(), children.toErrors())
-    is Pending -> TestSkippedException(writeToString())
-    is Passed -> null
+    is Failed -> when {
+      children.isEmpty() -> AtomicAssertionFailure(
+        writeToString(),
+        expected,
+        (status as? Failed)?.actual,
+        (status as? Failed)?.cause
+      )
+      else ->
+        CompoundAssertionFailure(writeToString(), children.toErrors())
+    }
   }
 }
 
