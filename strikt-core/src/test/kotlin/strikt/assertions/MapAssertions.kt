@@ -66,11 +66,13 @@ internal class MapAssertions {
       fails {
         val subject =
           mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
-        expect(subject).containsKeys("foo", "bar")
+        expect(subject).containsKeys("foo", "bar", "fnord")
       }.let { e ->
         assertEquals(
           "▼ Expect that {foo=bar, baz=fnord, qux=fnord}:\n" +
-            "  ✗ has an entry with the key \"bar\"",
+            "  ✗ has entries with the keys [\"foo\", \"bar\", \"fnord\"]\n" +
+            "    ✗ has an entry with the key \"bar\"\n" +
+            "    ✗ has an entry with the key \"fnord\"",
           e.message
         )
       }
