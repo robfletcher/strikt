@@ -39,7 +39,7 @@ internal open class DefaultResultWriter : ResultWriter {
     indent: Int
   ) {
     when (resultNode) {
-      is AssertionResult<*> ->
+      is AssertionResult ->
         resultNode.writeResult(writer, indent)
       is AssertionSubject<*> ->
         resultNode.writeSubject(writer, indent)
@@ -55,7 +55,7 @@ internal open class DefaultResultWriter : ResultWriter {
       .append(":")
   }
 
-  private fun AssertionResult<*>.writeResult(writer: Appendable, indent: Int) {
+  private fun AssertionResult.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
     val (formattedExpected, formattedActual) = formatValues(

@@ -5,6 +5,8 @@ import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
+import strikt.api.Status.Failed
+import strikt.api.Status.Passed
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
 
@@ -33,7 +35,27 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit
   ): AsserterImpl<T> {
-    AtomicAssertionResult(context, description, expected).assert()
+    object : AtomicAssertionResult(context, description, expected), AtomicAssertion<T> {
+      override val subject: T
+        get() = context.subject.value
+
+      override fun pass() {
+        _status = if (negated) {
+          Failed()
+        } else {
+          Passed
+        }
+      }
+
+      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
+        _status = if (negated) {
+          Passed
+        } else {
+          Failed(actual, description, cause)
+        }
+      }
+    }
+      .assert()
     throwOnFailure()
     return this
   }
@@ -43,10 +65,39 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assertions: AssertionComposer<T>.() -> Unit
   ): CompoundAssertions<T> {
-    val composedContext = CompoundAssertionResult(context, description, expected)
+    val composedContext = object : CompoundAssertionResult(context, description, expected), CompoundAssertion<T> {
+      override val subject: T
+        get() = context.subject.value
+
+      override fun pass() {
+        _status = if (negated) {
+          Failed()
+        } else {
+          Passed
+        }
+      }
+
+      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
+        _status = if (negated) {
+          Passed
+        } else {
+          Failed(actual, description, cause)
+        }
+      }
+
+      override val anyFailed: Boolean
+        get() = children.any { it.status is Failed }
+      override val allFailed: Boolean
+        get() = children.all { it.status is Failed }
+      override val anyPassed: Boolean
+        get() = children.any { it.status is Passed }
+      override val allPassed: Boolean
+        get() = children.all { it.status is Passed }
+    }
+
     val composer = object : AssertionComposer<T> {
       override val subject: T
-        get() = this@AsserterImpl.context.subject.value // TODO: c'mon, train wreck
+        get() = context.subject.value
 
       override fun <E> expect(subject: E): Asserter<E> =
         AsserterImpl(AssertionSubject(composedContext, subject), COLLECT)
@@ -82,14 +133,6 @@ internal class AsserterImpl<T>(
         )
       }
 
-  /**
-   * Reverses any assertions chained after this method.
-   *
-   * @sample strikt.samples.AssertionMethods.not
-   *
-   * @return an assertion that negates the results of any assertions applied to
-   * its subject.
-   */
   override fun not(): Asserter<T> = AsserterImpl(context, mode, !negated)
 
   private fun throwOnFailure() {
