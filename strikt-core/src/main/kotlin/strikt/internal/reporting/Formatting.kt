@@ -2,7 +2,7 @@ package strikt.internal.reporting
 
 import kotlin.jvm.internal.CallableReference
 
-internal fun formatValues(expected: Any?, actual: Any?): Pair<Any, Any> {
+internal fun formatValues(expected: Any?, actual: Any?): Pair<Any?, Any?> {
   val e = formatValue(expected)
   val a = formatValue(actual)
   return if (e.toString() == a.toString()) {

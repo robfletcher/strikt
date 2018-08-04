@@ -14,8 +14,12 @@ internal class AsserterImpl<T>(
   private val negated: Boolean = false
 ) : Asserter<T> {
 
-  override fun describedAs(description: String): Asserter<T> =
-    AsserterImpl(context, mode, negated)
+  override fun describedAs(description: String): Asserter<T> {
+    context.apply {
+      subject = subject.copy(description = description)
+    }
+    return this
+  }
 
   override fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T> =
     AsserterImpl(context, COLLECT, negated)

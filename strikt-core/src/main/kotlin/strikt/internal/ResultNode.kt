@@ -43,7 +43,7 @@ internal sealed class ResultNode(
 
 internal class AssertionSubject<T>(
   parent: ResultNode?,
-  val subject: Described<T>
+  var subject: Described<T>
 ) : ResultNode(parent) {
   constructor(value: T) : this(null, Described(value))
   constructor(parent: ResultNode, value: T) : this(parent, Described(value))
@@ -88,7 +88,7 @@ internal class AtomicAssertionResult<T>(
   override val subject: T,
   override val description: String,
   override val expected: Any? = null
-) : AssertionResult<T>(parent), AtomicAssertion<T> {
+) : AssertionResult<T>(parent), AtomicAssertion<T> { // TODO: implement interface by delegation
 
   constructor(parent: AssertionSubject<T>, description: String, expected: Any?) :
     this(parent, parent.subject.value, description, expected)
@@ -110,7 +110,7 @@ internal class CompoundAssertionResult<T>(
   override val subject: T,
   override val description: String,
   override val expected: Any? = null
-) : AssertionResult<T>(parent), CompoundAssertion<T> {
+) : AssertionResult<T>(parent), CompoundAssertion<T> { // TODO: implement interface by delegation
 
   constructor(parent: AssertionSubject<T>, description: String, expected: Any?) :
     this(parent, parent.subject.value, description, expected)

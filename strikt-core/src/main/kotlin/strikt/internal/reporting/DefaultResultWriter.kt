@@ -58,9 +58,15 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun AssertionResult<*>.writeResult(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
-    val (formattedExpected, formattedActual) =
-      formatValues(expected, (status as? Failed)?.actual)
-    writer.append(description.format(formattedExpected, formattedActual))
+    val (formattedExpected, formattedActual) = formatValues(
+      expected,
+      (status as? Failed)?.actual
+    )
+    writer.append(description.format(formattedExpected))
+    // TODO: not the prettiest code
+    (status as? Failed)?.also { failed ->
+      failed.describe { formattedActual }?.let { writer.append(" : ").append(it) }
+    }
   }
 
   protected open fun writeLineStart(
