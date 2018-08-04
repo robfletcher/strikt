@@ -52,14 +52,7 @@ interface AtomicAssertion<T> : Assertion<T>
  */
 interface CompoundAssertion<T> : Assertion<T> {
   val anyFailed: Boolean
-//    get() = results.any { it.status is Failed }
-
   val allFailed: Boolean
-//    get() = results.isNotEmpty() && results.all { it.status is Failed }
-
   val anyPassed: Boolean
-//    get() = results.any { it.status is Passed }
-
   val allPassed: Boolean
-//    get() = results.isNotEmpty() && results.all { it.status is Passed }
 }

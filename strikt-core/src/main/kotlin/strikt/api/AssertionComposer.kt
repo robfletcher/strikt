@@ -41,13 +41,13 @@ interface AssertionComposer<T> {
    * more detail in any failure message.
    *
    * @param description a description for the conditions the assertion evaluates.
-   * @param assertion the assertion implementation that should result in a call
+   * @param assert the assertion implementation that should result in a call
    * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun assert(
     description: String,
-    assertion: AtomicAssertion<T>.() -> Unit
+    assert: AtomicAssertion<T>.() -> Unit
   ): Asserter<T>
 
   /**
@@ -59,14 +59,13 @@ interface AssertionComposer<T> {
    *
    * @param description a description for the condition the assertion evaluates.
    * @param expected the expected value of a comparison.
-   * @param assertion the assertion implementation that should result in a call
+   * @param assert the assertion implementation that should result in a call
    * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
   fun assert(
     description: String,
     expected: Any?,
-    assertion: AtomicAssertion<T>.() -> Unit
+    assert: AtomicAssertion<T>.() -> Unit
   ): Asserter<T>
 }
-
