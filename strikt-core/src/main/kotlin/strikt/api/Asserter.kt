@@ -25,7 +25,7 @@ interface Asserter<T> {
    * @see expect
    */
   // TODO: not 100% happy with the name
-  fun evaluate(block: Asserter<T>.() -> Unit): Asserter<T>
+  fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T>
 
   /**
    * Evaluates a condition that may pass or fail.
@@ -84,7 +84,7 @@ interface Asserter<T> {
    * @param assertions a group of assertions that will be evaluated against the
    * subject.
    * @return the results of assertions made inside the [assertions] block used
-   * to evaluate whether the overall assertion passes or fails.
+   * to assertAll whether the overall assertion passes or fails.
    */
   fun compose(
     description: String,
@@ -103,7 +103,7 @@ interface Asserter<T> {
    * @param assertions a group of assertions that will be evaluated against the
    * subject.
    * @return the results of assertions made inside the [assertions] block used
-   * to evaluate whether the overall assertion passes or fails.
+   * to assertAll whether the overall assertion passes or fails.
    */
   fun compose(
     description: String,

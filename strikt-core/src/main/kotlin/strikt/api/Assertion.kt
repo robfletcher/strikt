@@ -1,7 +1,7 @@
 package strikt.api
 
 /**
- * Allows assertion implementations to evaluate [subject] and determine a
+ * Allows assertion implementations to assertAll [subject] and determine a
  * result.
  */
 interface Assertion<T> {

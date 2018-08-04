@@ -1,13 +1,16 @@
 package strikt.internal
 
-import strikt.api.Asserter
-import strikt.api.AssertionComposer
+import org.opentest4j.TestSkippedException
+import strikt.api.Assertion
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import strikt.internal.opentest4j.AtomicAssertionFailure
+import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.reporting.writeToString
 
 /**
  * Part of a graph of assertion results.
@@ -30,6 +33,12 @@ internal sealed class ResultNode(
   private val _children = mutableListOf<ResultNode>()
   val children: List<ResultNode>
     get() = _children
+
+  fun throwOnFailure() {
+    root.toError()?.let { throw it }
+  }
+
+  abstract fun toError(): Throwable?
 }
 
 internal class AssertionSubject<T>(
@@ -37,6 +46,7 @@ internal class AssertionSubject<T>(
   val subject: Described<T>
 ) : ResultNode(parent) {
   constructor(value: T) : this(null, Described(value))
+  constructor(parent: ResultNode, value: T) : this(parent, Described(value))
 
   override val status: Status
     get() = when {
@@ -45,24 +55,19 @@ internal class AssertionSubject<T>(
       children.any { it.status is Status.Failed } -> Failed()
       else -> Passed
     }
+
+  override fun toError(): Throwable? = when (status) {
+    is Failed -> CompoundAssertionFailure(writeToString(), children.toErrors())
+    is Pending -> TestSkippedException(writeToString())
+    is Passed -> null
+  }
 }
 
 internal abstract class AssertionResult<T>(
   parent: ResultNode
-) : ResultNode(parent) {
+) : ResultNode(parent), Assertion<T> {
   abstract val description: String
   abstract val expected: Any?
-}
-
-internal class AtomicAssertionResult<T>(
-  parent: ResultNode,
-  override val subject: T,
-  override val description: String,
-  override val expected: Any? = null
-) : AssertionResult<T>(parent), AtomicAssertion<T> {
-
-  constructor(parent: AssertionSubject<T>, description: String, expected: Any?) :
-    this(parent, parent.subject.value, description, expected)
 
   private var _status: Status = Pending
 
@@ -78,59 +83,53 @@ internal class AtomicAssertionResult<T>(
   }
 }
 
+internal class AtomicAssertionResult<T>(
+  parent: ResultNode,
+  override val subject: T,
+  override val description: String,
+  override val expected: Any? = null
+) : AssertionResult<T>(parent), AtomicAssertion<T> {
+
+  constructor(parent: AssertionSubject<T>, description: String, expected: Any?) :
+    this(parent, parent.subject.value, description, expected)
+
+  override fun toError(): Throwable? = when (status) {
+    is Failed -> AtomicAssertionFailure(
+      writeToString(),
+      expected,
+      (status as? Failed)?.actual,
+      (status as? Failed)?.cause
+    )
+    is Pending -> TestSkippedException(writeToString())
+    is Passed -> null
+  }
+}
+
 internal class CompoundAssertionResult<T>(
   parent: ResultNode,
   override val subject: T,
   override val description: String,
   override val expected: Any? = null
-) : AssertionResult<T>(parent), CompoundAssertion<T>, AssertionComposer<T> {
+) : AssertionResult<T>(parent), CompoundAssertion<T> {
 
   constructor(parent: AssertionSubject<T>, description: String, expected: Any?) :
     this(parent, parent.subject.value, description, expected)
 
-  override fun <E> expect(subject: E): Asserter<E> {
-    TODO("not implemented")
-  }
-
-  override fun <E> expect(
-    subject: E,
-    block: Asserter<E>.() -> Unit
-  ): Asserter<E> {
-    TODO("not implemented")
-  }
-
-  override fun assert(
-    description: String,
-    assertion: AtomicAssertion<T>.() -> Unit
-  ): Asserter<T> {
-    TODO("not implemented")
-  }
-
-  override fun assert(
-    description: String,
-    expected: Any?,
-    assertion: AtomicAssertion<T>.() -> Unit
-  ): Asserter<T> {
-    TODO("not implemented")
-  }
-
-  override val status: Status
-    get() = TODO("not implemented")
-
-  override fun pass() {
-    TODO("not implemented")
-  }
-
-  override fun fail(actual: Any?, description: String?, cause: Throwable?) {
-    TODO("not implemented")
-  }
-
   override val anyFailed: Boolean
-    get() = TODO("not implemented")
+    get() = children.any { it.status is Failed }
   override val allFailed: Boolean
-    get() = TODO("not implemented")
+    get() = children.all { it.status is Failed }
   override val anyPassed: Boolean
-    get() = TODO("not implemented")
+    get() = children.any { it.status is Passed }
   override val allPassed: Boolean
-    get() = TODO("not implemented")
+    get() = children.all { it.status is Passed }
+
+  override fun toError(): Throwable? = when (status) {
+    is Failed -> CompoundAssertionFailure(writeToString(), children.toErrors())
+    is Pending -> TestSkippedException(writeToString())
+    is Passed -> null
+  }
 }
+
+private fun Iterable<ResultNode>.toErrors() =
+  mapNotNull { it.toError() }

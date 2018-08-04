@@ -21,20 +21,20 @@ fun <T> expect(subject: T): Asserter<T> =
  *
  * This is a shortcut for:
  *
- *     expect(subject).evaluate(block)
+ *     expect(subject).assertAll(block)
  *
  * @param subject the subject of the block of assertions.
  * @param block a closure that can perform multiple assertions that will all
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return an assertion for [subject].
  *
- * @see Asserter.evaluate
+ * @see Asserter.assertAll
  */
 fun <T> expect(
   subject: T,
   block: Asserter<T>.() -> Unit
 ): Asserter<T> =
-  expect(subject).evaluate(block)
+  expect(subject).assertAll(block)
 
 /**
  * Asserts that [action] throws an exception of type [E] when executed.
