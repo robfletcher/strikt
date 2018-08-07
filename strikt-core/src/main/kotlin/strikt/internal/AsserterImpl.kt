@@ -5,8 +5,10 @@ import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
+import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
+import strikt.api.Status.Pending
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
 
@@ -37,6 +39,10 @@ internal class AsserterImpl<T>(
       override val subject: T
         get() = context.subject
 
+      private var _status: Status = Pending
+      override val status: Status
+        get() = _status
+
       override fun pass() {
         _status = if (negated) {
           Failed()
@@ -66,6 +72,10 @@ internal class AsserterImpl<T>(
     val composedContext = object : CompoundAssertionNode<T>(context, description, expected), CompoundAssertion<T> {
       override val subject: T
         get() = context.subject
+
+      private var _status: Status = Pending
+      override val status: Status
+        get() = _status
 
       override fun pass() {
         _status = if (negated) {

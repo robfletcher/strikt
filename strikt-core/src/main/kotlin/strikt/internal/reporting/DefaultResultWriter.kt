@@ -54,7 +54,7 @@ internal open class DefaultResultWriter : ResultWriter {
     writeSubjectIcon(writer)
     writer
       .append("Expect that ")
-      .append(description.format(subject))
+      .append(description.format(formatValue(subject)))
       .append(":")
   }
 

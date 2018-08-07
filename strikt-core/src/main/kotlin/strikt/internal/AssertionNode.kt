@@ -37,9 +37,14 @@ internal interface AssertionResult<S> : AssertionNode<S> {
   val expected: Any?
 }
 
-internal sealed class BaseAssertionNode<S>(
-  val parent: AssertionGroup<*>?
-) : AssertionNode<S> {
+internal class AssertionSubject<S>(
+  private val parent: AssertionGroup<*>?,
+  override val subject: S,
+  override var description: String = "%s"
+) : AssertionGroup<S> {
+
+  constructor(value: S) : this(null, value)
+
   override val root: AssertionNode<*>
     get() = parent?.root ?: this
 
@@ -48,22 +53,12 @@ internal sealed class BaseAssertionNode<S>(
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
-  val children: List<AssertionNode<*>>
+  override val children: List<AssertionNode<*>>
     get() = _children
 
-  fun append(node: AssertionNode<*>) {
+  override fun append(node: AssertionNode<*>) {
     _children.add(node)
   }
-}
-
-internal class AssertionSubject<S>(
-  parent: AssertionGroup<*>?,
-  override val subject: S,
-  override var description: String = "Expect that %s"
-) : BaseAssertionNode<S>(parent), AssertionGroup<S> {
-
-  constructor(value: S, description: String) : this(null, value, description)
-  constructor(value: S) : this(null, value)
 
   override val status: Status
     get() = when {
@@ -82,17 +77,20 @@ internal class AssertionSubject<S>(
 }
 
 internal abstract class AtomicAssertionNode<S>(
-  parent: AssertionGroup<S>,
+  final override val parent: AssertionGroup<S>,
   override var description: String,
   override val expected: Any? = null
-) : BaseAssertionNode<S>(parent), AssertionResult<S> {
+) : AssertionResult<S> {
 
   override val subject: S
-    get() = parent!!.subject
-  protected var _status: Status = Pending
+    get() = parent.subject
 
-  override val status: Status
-    get() = _status
+  override val root: AssertionNode<*>
+    get() = parent.root ?: this
+
+  init {
+    parent.also { it.append(this) }
+  }
 
   // TODO: rewrite so exceptions contain result tree
   override fun toError(): Throwable? = when (status) {
@@ -108,18 +106,28 @@ internal abstract class AtomicAssertionNode<S>(
 }
 
 internal abstract class CompoundAssertionNode<S>(
-  parent: AssertionGroup<S>,
+  final override val parent: AssertionGroup<S>,
   override var description: String,
   override val expected: Any? = null
-) : BaseAssertionNode<S>(parent), AssertionGroup<S>, AssertionResult<S> {
+) : AssertionGroup<S>, AssertionResult<S> {
 
   override val subject: S
-    get() = parent!!.subject
+    get() = parent.subject
 
-  protected var _status: Status = Pending
+  override val root: AssertionNode<*>
+    get() = parent.root ?: this
 
-  override val status: Status
-    get() = _status
+  init {
+    parent.also { it.append(this) }
+  }
+
+  private val _children = mutableListOf<AssertionNode<*>>()
+  override val children: List<AssertionNode<*>>
+    get() = _children
+
+  override fun append(node: AssertionNode<*>) {
+    _children.add(node)
+  }
 
   // TODO: rewrite so exceptions contain result tree
   override fun toError(): Throwable? = when (status) {
