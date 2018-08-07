@@ -7,7 +7,7 @@ package strikt.api
  *
  * @property subject The subject of the assertion.
  */
-interface AssertionComposer<T> {
+interface AssertionComposer<T> { // TODO: this must extend Asserter<T> or both share a common interface with is where extensions hook
   val subject: T
 
   /**

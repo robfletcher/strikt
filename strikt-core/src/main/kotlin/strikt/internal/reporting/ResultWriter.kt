@@ -1,24 +1,24 @@
 package strikt.internal.reporting
 
-import strikt.internal.ResultNode
+import strikt.internal.AssertionNode
 import java.io.StringWriter
 
 internal interface ResultWriter {
-  fun writeTo(writer: Appendable, resultNode: ResultNode)
-  fun writeTo(writer: Appendable, results: Iterable<ResultNode>) =
+  fun writeTo(writer: Appendable, node: AssertionNode<*>)
+  fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
     results.forEach { writeTo(writer, it) }
 
   val verbose: Boolean
 }
 
-internal fun ResultNode.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
+internal fun AssertionNode<*>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
   StringWriter()
     .use { writer ->
       resultWriter.writeTo(writer, this)
       writer.toString()
     }
 
-internal fun Iterable<ResultNode>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
+internal fun Iterable<AssertionNode<*>>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
   StringWriter()
     .use { writer ->
       resultWriter.writeTo(writer, this)

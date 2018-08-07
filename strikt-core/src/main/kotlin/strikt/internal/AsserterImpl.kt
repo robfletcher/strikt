@@ -11,15 +11,13 @@ import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
 
 internal class AsserterImpl<T>(
-  private val context: AssertionSubject<T>,
-  private val mode: Mode,
+  private val context: AssertionGroup<T>,
+  private val mode: Mode, // TODO: can we replace with with just checking for context being top level?
   private val negated: Boolean = false
 ) : Asserter<T> {
 
   override fun describedAs(description: String): Asserter<T> {
-    context.apply {
-      subject = subject.copy(description = description)
-    }
+    context.description = description
     return this
   }
 
@@ -35,9 +33,9 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit
   ): AsserterImpl<T> {
-    object : AssertionResult(context, description, expected), AtomicAssertion<T> {
+    object : AtomicAssertionNode<T>(context, description, expected), AtomicAssertion<T> {
       override val subject: T
-        get() = context.subject.value
+        get() = context.subject
 
       override fun pass() {
         _status = if (negated) {
@@ -65,9 +63,9 @@ internal class AsserterImpl<T>(
     expected: Any?,
     assertions: AssertionComposer<T>.() -> Unit
   ): CompoundAssertions<T> {
-    val composedContext = object : AssertionResult(context, description, expected), CompoundAssertion<T> {
+    val composedContext = object : CompoundAssertionNode<T>(context, description, expected), CompoundAssertion<T> {
       override val subject: T
-        get() = context.subject.value
+        get() = context.subject
 
       override fun pass() {
         _status = if (negated) {
@@ -97,7 +95,7 @@ internal class AsserterImpl<T>(
 
     val composer = object : AssertionComposer<T> {
       override val subject: T
-        get() = context.subject.value
+        get() = context.subject
 
       override fun <E> expect(subject: E): Asserter<E> =
         AsserterImpl(AssertionSubject(composedContext, subject), COLLECT)
@@ -124,10 +122,10 @@ internal class AsserterImpl<T>(
   }
 
   override fun <R> map(description: String, function: T.() -> R): Asserter<R> =
-    context.subject.value.function()
+    context.subject.function()
       .let { mappedValue ->
         AsserterImpl(
-          AssertionSubject<R>(context, Described(mappedValue, description)),
+          AssertionSubject<R>(context, mappedValue, description),
           mode,
           negated
         )
