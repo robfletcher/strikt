@@ -161,7 +161,11 @@ internal class AsserterImpl<T>(
         )
       }
 
-  override fun not(): Asserter<T> = AsserterImpl(context, mode, !negated)
+  override fun not(): Asserter<T> = AsserterImpl(
+    AssertionSubject(context, context.subject, "%s does not match"),
+    mode,
+    !negated
+  )
 
   private fun throwOnFailure() {
     if (mode == FAIL_FAST) {
