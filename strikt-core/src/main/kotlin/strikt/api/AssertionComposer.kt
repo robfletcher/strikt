@@ -7,7 +7,7 @@ package strikt.api
  *
  * @property subject The subject of the assertion.
  */
-interface AssertionComposer<T> { // TODO: this must extend Asserter<T> or both share a common interface with is where extensions hook
+interface AssertionComposer<T> : Asserter<T> { // TODO: this must extend Asserter<T> or both share a common interface with is where extensions hook
   val subject: T
 
   /**
@@ -45,7 +45,7 @@ interface AssertionComposer<T> { // TODO: this must extend Asserter<T> or both s
    * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun assert(
+  override fun assert(
     description: String,
     assert: AtomicAssertion<T>.() -> Unit
   ): Asserter<T>
@@ -63,7 +63,7 @@ interface AssertionComposer<T> { // TODO: this must extend Asserter<T> or both s
    * to [Assertion.pass] or [Assertion.fail].
    * @return this assertion, in order to facilitate a fluent API.
    */
-  fun assert(
+  override fun assert(
     description: String,
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit

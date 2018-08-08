@@ -3,6 +3,7 @@ package strikt.api
 import strikt.assertions.throws
 import strikt.internal.AsserterImpl
 import strikt.internal.AssertionSubject
+import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
 
 /**
@@ -34,7 +35,13 @@ fun <T> expect(
   subject: T,
   block: Asserter<T>.() -> Unit
 ): Asserter<T> =
-  expect(subject).assertAll(block)
+  AssertionSubject(subject).let { context ->
+    AsserterImpl(context, COLLECT)
+      .apply {
+        block()
+        context.toError()?.let { throw it }
+      }
+  }
 
 /**
  * Asserts that [action] throws an exception of type [E] when executed.

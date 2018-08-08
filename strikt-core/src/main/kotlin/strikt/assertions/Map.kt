@@ -33,8 +33,10 @@ fun <T : Map<K, V>, K, V> Asserter<T>.containsKey(key: K): Asserter<T> =
  * Asserts that the subject map contains entries for all [keys].
  */
 fun <T : Map<K, V>, K, V> Asserter<T>.containsKeys(vararg keys: K): Asserter<T> =
-  assertAll {
+  compose("has entries with the keys %s", keys.toList()) {
     keys.forEach { containsKey(it) }
+  } then {
+    if (allPassed) pass() else fail()
   }
 
 /**

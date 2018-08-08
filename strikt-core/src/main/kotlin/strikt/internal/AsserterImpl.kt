@@ -104,6 +104,26 @@ internal class AsserterImpl<T>(
     }
 
     val composer = object : AssertionComposer<T> {
+      override fun describedAs(description: String): Asserter<T> {
+        TODO("not implemented")
+      }
+
+      override fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T> {
+        TODO("not implemented")
+      }
+
+      override fun compose(description: String, expected: Any?, assertions: AssertionComposer<T>.() -> Unit): CompoundAssertions<T> {
+        TODO("not implemented")
+      }
+
+      override fun <R> map(description: String, function: T.() -> R): Asserter<R> {
+        TODO("not implemented")
+      }
+
+      override fun not(): Asserter<T> {
+        TODO("not implemented")
+      }
+
       override val subject: T
         get() = context.subject
 
@@ -114,10 +134,10 @@ internal class AsserterImpl<T>(
         expect(subject).assertAll(block)
 
       override fun assert(description: String, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(AssertionSubject(composedContext, subject), COLLECT).assert(description, assert)
+        AsserterImpl(composedContext, COLLECT).assert(description, assert)
 
       override fun assert(description: String, expected: Any?, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(AssertionSubject(composedContext, subject), COLLECT).assert(description, expected, assert)
+        AsserterImpl(composedContext, COLLECT).assert(description, expected, assert)
     }
     composer.apply(assertions)
     return composedContext.let { result ->

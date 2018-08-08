@@ -14,7 +14,7 @@ interface Asserter<T> {
    * itself.
    * @return the same assertion with the new description applied.
    */
-  // TODO: doesn't really make sense to expose this method in a way that it can be called any time other than right after expect
+  // TODO: doesn't really make sense to expose this method in a way that it can be called any time other than right after expect, create a new interface that extends this one and adds this one method
   fun describedAs(description: String): Asserter<T>
 
   /**
