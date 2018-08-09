@@ -17,7 +17,7 @@ interface AssertionComposer<T> : Asserter<T> { // TODO: this must extend Asserte
    * or element of the subject of the surrounding assertion.
    * @return an assertion for [subject].
    */
-  fun <E> expect(subject: E): Asserter<E>
+  fun <E> expect(subject: E): DescribeableAsserter<E>
 
   /**
    * Evaluate a block of assertions in the current nested context.
@@ -31,7 +31,7 @@ interface AssertionComposer<T> : Asserter<T> { // TODO: this must extend Asserte
   fun <E> expect(
     subject: E,
     block: Asserter<E>.() -> Unit
-  ): Asserter<E>
+  ): DescribeableAsserter<E>
 
   /**
    * Evaluates a composed assertion on the original subject.

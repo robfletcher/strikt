@@ -6,27 +6,6 @@ import kotlin.jvm.internal.CallableReference
  * Holds a subject of type [T] that you can then make assertions about.
  */
 interface Asserter<T> {
-  /**
-   * Adds a description to the assertion.
-   *
-   * @param description a description of the subject of the assertion. The
-   * description may include a [String.format] style placeholder for the value
-   * itself.
-   * @return the same assertion with the new description applied.
-   */
-  // TODO: doesn't really make sense to expose this method in a way that it can be called any time other than right after expect, create a new interface that extends this one and adds this one method
-  fun describedAs(description: String): Asserter<T>
-
-  /**
-   * Evaluates multiple assertions against the subject.
-   *
-   * @param block a closure that can perform multiple assertions that will all
-   * be evaluated regardless of whether preceding ones pass or fail.
-   *
-   * @see expect
-   */
-  // TODO: not 100% happy with the name, or the need for this method
-  fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T>
 
   /**
    * Evaluates a condition that may pass or fail.
@@ -165,7 +144,7 @@ interface Asserter<T> {
    * @return an assertion whose subject is the value returned by [function].
    */
   // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-  fun <R> map(function: T.() -> R): Asserter<R> =
+  fun <R> map(function: T.() -> R): DescribeableAsserter<R> =
     when (function) {
       is CallableReference -> map(".${function.propertyName} %s", function)
       else -> map("%s", function)
@@ -182,7 +161,7 @@ interface Asserter<T> {
    * @param function a lambda whose receiver is the current assertion subject.
    * @return an assertion whose subject is the value returned by [function].
    */
-  fun <R> map(description: String, function: T.() -> R): Asserter<R>
+  fun <R> map(description: String, function: T.() -> R): DescribeableAsserter<R>
 
   /**
    * Reverses any assertions chained after this method.

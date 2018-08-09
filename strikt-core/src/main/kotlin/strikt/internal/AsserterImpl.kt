@@ -5,6 +5,7 @@ import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
+import strikt.api.DescribeableAsserter
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
@@ -16,19 +17,12 @@ internal class AsserterImpl<T>(
   private val context: AssertionGroup<T>,
   private val mode: Mode, // TODO: can we replace with with just checking for context being top level?
   private val negated: Boolean = false
-) : Asserter<T> {
+) : DescribeableAsserter<T> {
 
   override fun describedAs(description: String): Asserter<T> {
     context.description = description
     return this
   }
-
-  override fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T> =
-    AsserterImpl(context, COLLECT, negated)
-      .apply(block)
-      .also {
-        throwOnFailure()
-      }
 
   override fun assert(
     description: String,
@@ -104,19 +98,12 @@ internal class AsserterImpl<T>(
     }
 
     val composer = object : AssertionComposer<T> {
-      override fun describedAs(description: String): Asserter<T> {
-        TODO("not implemented")
-      }
-
-      override fun assertAll(block: Asserter<T>.() -> Unit): Asserter<T> {
-        TODO("not implemented")
-      }
 
       override fun compose(description: String, expected: Any?, assertions: AssertionComposer<T>.() -> Unit): CompoundAssertions<T> {
         TODO("not implemented")
       }
 
-      override fun <R> map(description: String, function: T.() -> R): Asserter<R> {
+      override fun <R> map(description: String, function: T.() -> R): DescribeableAsserter<R> {
         TODO("not implemented")
       }
 
@@ -127,11 +114,14 @@ internal class AsserterImpl<T>(
       override val subject: T
         get() = context.subject
 
-      override fun <E> expect(subject: E): Asserter<E> =
+      override fun <E> expect(subject: E): DescribeableAsserter<E> =
         AsserterImpl(AssertionSubject(composedContext, subject), COLLECT)
 
-      override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): Asserter<E> =
-        expect(subject).assertAll(block)
+      override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): DescribeableAsserter<E> =
+        AssertionSubject(composedContext, subject).let { context ->
+          AsserterImpl(context, COLLECT)
+            .apply(block)
+        }
 
       override fun assert(description: String, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
         AsserterImpl(composedContext, COLLECT).assert(description, assert)
@@ -151,7 +141,7 @@ internal class AsserterImpl<T>(
     }
   }
 
-  override fun <R> map(description: String, function: T.() -> R): Asserter<R> =
+  override fun <R> map(description: String, function: T.() -> R): DescribeableAsserter<R> =
     context.subject.function()
       .let { mappedValue ->
         AsserterImpl(

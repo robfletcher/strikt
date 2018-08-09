@@ -13,28 +13,22 @@ import strikt.internal.Mode.FAIL_FAST
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expect(subject: T): Asserter<T> =
+fun <T> expect(subject: T): DescribeableAsserter<T> =
   AsserterImpl(AssertionSubject(subject), FAIL_FAST)
 
 /**
  * Evaluate a block of assertions over [subject].
  * This is the entry-point for the assertion API.
  *
- * This is a shortcut for:
- *
- *     expect(subject).assertAll(block)
- *
  * @param subject the subject of the block of assertions.
  * @param block a closure that can perform multiple assertions that will all
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return an assertion for [subject].
- *
- * @see Asserter.assertAll
  */
 fun <T> expect(
   subject: T,
   block: Asserter<T>.() -> Unit
-): Asserter<T> =
+): DescribeableAsserter<T> =
   AssertionSubject(subject).let { context ->
     AsserterImpl(context, COLLECT)
       .apply {
