@@ -69,7 +69,7 @@ fun <T : Iterable<E>, E> Asserter<T>.contains(vararg elements: E): Asserter<T> {
   }
   return compose("contains the elements %s", elements) {
     elements.forEach { element ->
-      expect(subject).assert("contains %s", element) {
+      assert("contains %s", element) {
         if (subject.contains(element)) {
           pass()
         } else {
@@ -94,7 +94,7 @@ fun <T : Iterable<E>, E> Asserter<T>.doesNotContain(vararg elements: E): Asserte
   }
   return compose("does not contain any of the elements %s", elements) {
     elements.forEach { element ->
-      expect(subject).assert("does not contain %s", element) {
+      assert("does not contain %s", element) {
         if (subject.contains(element)) {
           fail()
         } else {
@@ -116,7 +116,7 @@ fun <T : Iterable<E>, E> Asserter<T>.doesNotContain(vararg elements: E): Asserte
  * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Asserter<T>.containsExactly(vararg elements: E): Asserter<T> =
-  compose("contains exactly the elements %s", elements) {
+  compose("contains exactly the elements %s", elements.toList()) {
     val original = subject.toList()
     val remaining = subject.toMutableList()
     elements.forEachIndexed { i, element ->
@@ -139,7 +139,7 @@ fun <T : Iterable<E>, E> Asserter<T>.containsExactly(vararg elements: E): Assert
       if (remaining.isEmpty()) {
         pass()
       } else {
-        fail(actual = remaining)
+        fail(actual = remaining.toList())
       }
     }
   } then {

@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expect
 import strikt.fails
+import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("assertions on String")
 internal class StringAssertions {
@@ -35,7 +37,7 @@ internal class StringAssertions {
   inner class Blocks {
     @Test
     fun `compiles`() {
-      fails {
+      assertThrows<CompoundAssertionFailure> {
         val subject = "The Enlightened take things Lightly"
         expect(subject = subject) {
           hasLength(5)

@@ -3,10 +3,12 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expect
 import strikt.api.throws
 import strikt.assertions.isA
 import strikt.assertions.throws
+import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("throws assertion")
 internal class Throws {
@@ -33,7 +35,7 @@ internal class Throws {
 
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
-    fails {
+    assertThrows<CompoundAssertionFailure> {
       throws<IllegalStateException> { -> throw NullPointerException() }
     }.let { e ->
       val expected = "▼ Expect that () -> kotlin.Unit:\n" +

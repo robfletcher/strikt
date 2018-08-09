@@ -155,7 +155,7 @@ internal class AsserterImpl<T>(
     context.subject.function()
       .let { mappedValue ->
         AsserterImpl(
-          AssertionSubject<R>(context, mappedValue, description),
+          AssertionSubject(context, mappedValue, description),
           mode,
           negated
         )
@@ -169,7 +169,7 @@ internal class AsserterImpl<T>(
 
   private fun throwOnFailure() {
     if (mode == FAIL_FAST) {
-      context.throwOnFailure()
+      context.toError()?.let { throw it }
     }
   }
 }

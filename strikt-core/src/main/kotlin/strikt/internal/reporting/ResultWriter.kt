@@ -7,8 +7,6 @@ internal interface ResultWriter {
   fun writeTo(writer: Appendable, node: AssertionNode<*>)
   fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
     results.forEach { writeTo(writer, it) }
-
-  val verbose: Boolean
 }
 
 internal fun AssertionNode<*>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =

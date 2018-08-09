@@ -210,10 +210,9 @@ internal class IterableAssertions {
         assertEquals(
           "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
             "  ✗ does not contain any of the elements [\"catflap\", \"wye\", \"marzipan\"]\n" +
-            "    ▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "      ✗ does not contain \"catflap\"\n" +
-            "    ▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "      ✗ does not contain \"marzipan\"",
+            "    ✗ does not contain \"catflap\"\n" +
+            "    ✓ does not contain \"wye\"\n" +
+            "    ✗ does not contain \"marzipan\"",
           e.message
         )
       }

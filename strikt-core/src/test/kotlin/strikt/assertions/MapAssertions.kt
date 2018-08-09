@@ -71,6 +71,7 @@ internal class MapAssertions {
         assertEquals(
           "▼ Expect that {foo=bar, baz=fnord, qux=fnord}:\n" +
             "  ✗ has entries with the keys [\"foo\", \"bar\", \"fnord\"]\n" +
+            "    ✓ has an entry with the key \"foo\"\n" +
             "    ✗ has an entry with the key \"bar\"\n" +
             "    ✗ has an entry with the key \"fnord\"",
           e.message
@@ -110,6 +111,7 @@ internal class MapAssertions {
       }.let { e ->
         assertEquals(
           "▼ Expect that {foo=bar}:\n" +
+            "  ✓ has an entry with the key \"foo\"\n" +
             "  ▼ Expect that entry [\"foo\"] \"bar\":\n" +
             "    ✗ is equal to \"baz\" : found \"bar\"",
           e.message

@@ -25,6 +25,7 @@ internal class Formatting {
 
     val expected =
       "▼ Expect that a couple of words:\n" +
+        "  ✓ has size 3\n" +
         "  ✗ all elements match:\n" +
         "    ▼ Expect that \"catflap\":\n" +
         "      ✗ is upper case\n" +
@@ -54,6 +55,7 @@ internal class Formatting {
         "  ✗ all elements match:\n" +
         "    ▼ Expect that \"catflap\":\n" +
         "      ✗ is upper case\n" +
+        "      ✓ starts with 'c'\n" +
         "    ▼ Expect that \"rubberplant\":\n" +
         "      ✗ is upper case\n" +
         "      ✗ starts with 'c'\n" +
@@ -77,7 +79,10 @@ internal class Formatting {
 
     val expected =
       "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+        "  ✓ has size 3\n" +
         "  ✗ all elements match:\n" +
+        "    ▼ Expect that \"catflap\":\n" +
+        "      ✓ starts with 'c'\n" +
         "    ▼ Expect that \"rubberplant\":\n" +
         "      ✗ starts with 'c'\n" +
         "    ▼ Expect that \"marzipan\":\n" +

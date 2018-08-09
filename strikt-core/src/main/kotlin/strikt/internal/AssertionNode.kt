@@ -26,15 +26,18 @@ internal interface AssertionNode<S> {
 internal interface AssertionGroup<S> : AssertionNode<S> {
   fun append(node: AssertionNode<*>) // TODO: not visible outside of this hierarchy
   val children: Iterable<AssertionNode<*>>
-
-  fun throwOnFailure() {
-    root.toError()?.let { throw it }
-  }
 }
 
 internal interface AssertionResult<S> : AssertionNode<S> {
   val parent: AssertionGroup<S>
   val expected: Any?
+
+  // TODO: rewrite so exceptions contain result tree
+  override fun toError(): Throwable? = when (status) {
+    is Pending -> TestSkippedException(root.writeToString())
+    is Passed -> null
+    is Failed -> AtomicAssertionFailure(this)
+  }
 }
 
 internal class AssertionSubject<S>(
@@ -42,7 +45,6 @@ internal class AssertionSubject<S>(
   override val subject: S,
   override var description: String = "%s"
 ) : AssertionGroup<S> {
-
   constructor(value: S) : this(null, value)
 
   override val root: AssertionNode<*>
@@ -63,17 +65,20 @@ internal class AssertionSubject<S>(
   override val status: Status
     get() = when {
       children.isEmpty() -> Pending
-      children.any { it.status is Status.Pending } -> Pending
-      children.any { it.status is Status.Failed } -> Failed()
+      children.any { it.status is Pending } -> Pending
+      children.any { it.status is Failed } -> Failed()
       else -> Passed
     }
 
-  // TODO: rewrite so exceptions contain result tree
-  override fun toError(): Throwable? = when (status) {
-    is Failed -> CompoundAssertionFailure(writeToString(), children.toErrors())
-    is Pending -> TestSkippedException(writeToString())
-    is Passed -> null
-  }
+  override fun toError(): Throwable? =
+    children
+      .mapNotNull(AssertionNode<*>::toError)
+      .let { errors ->
+        when (errors.size) {
+          0 -> null
+          else -> CompoundAssertionFailure(root.writeToString(), errors)
+        }
+      }
 }
 
 internal abstract class AtomicAssertionNode<S>(
@@ -90,18 +95,6 @@ internal abstract class AtomicAssertionNode<S>(
 
   init {
     parent.also { it.append(this) }
-  }
-
-  // TODO: rewrite so exceptions contain result tree
-  override fun toError(): Throwable? = when (status) {
-    is Pending -> TestSkippedException(writeToString())
-    is Passed -> null
-    is Failed -> AtomicAssertionFailure(
-      writeToString(),
-      expected,
-      (status as? Failed)?.actual,
-      (status as? Failed)?.cause
-    )
   }
 }
 
@@ -128,17 +121,4 @@ internal abstract class CompoundAssertionNode<S>(
   override fun append(node: AssertionNode<*>) {
     _children.add(node)
   }
-
-  // TODO: rewrite so exceptions contain result tree
-  override fun toError(): Throwable? = when (status) {
-    is Pending -> TestSkippedException(writeToString())
-    is Passed -> null
-    is Failed -> CompoundAssertionFailure(
-      writeToString(),
-      children.toErrors()
-    )
-  }
 }
-
-private fun Iterable<AssertionNode<*>>.toErrors() =
-  mapNotNull { it.toError() }

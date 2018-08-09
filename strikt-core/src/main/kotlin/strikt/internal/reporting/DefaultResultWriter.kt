@@ -11,13 +11,9 @@ import strikt.internal.AssertionSubject
 internal open class DefaultResultWriter : ResultWriter {
 
   @Suppress("PlatformExtensionReceiverOfInline")
-  override val verbose: Boolean
-    get() = System.getProperty("strikt.verbose", "false").toBoolean()
 
   override fun writeTo(writer: Appendable, node: AssertionNode<*>) {
-    if (node.shouldWrite) {
-      writeIndented(writer, node)
-    }
+    writeIndented(writer, node)
   }
 
   private fun writeIndented(
@@ -28,10 +24,8 @@ internal open class DefaultResultWriter : ResultWriter {
     writeLine(writer, node, indent)
     if (node is AssertionGroup<*>) {
       node.children.forEach {
-        if (it.shouldWrite) {
-          writeLineEnd(writer, it)
-          writeIndented(writer, it, indent + 1)
-        }
+        writeLineEnd(writer, it)
+        writeIndented(writer, it, indent + 1)
       }
     }
   }
@@ -97,9 +91,6 @@ internal open class DefaultResultWriter : ResultWriter {
   protected open fun writeSubjectIcon(writer: Appendable) {
     writer.append("▼ ")
   }
-
-  private val AssertionNode<*>.shouldWrite: Boolean
-    get() = status != Passed || verbose
 }
 
 private val EOL = System.getProperty("line.separator")
