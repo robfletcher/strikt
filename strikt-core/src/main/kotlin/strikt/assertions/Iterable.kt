@@ -26,7 +26,7 @@ fun <T : Iterable<E>, E> Asserter<T>.last(): Asserter<E> =
 fun <T : Iterable<E>, E> Asserter<T>.all(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("all elements match:") {
     subject.forEach {
-      expect(it, predicate)
+      map { it }.apply(predicate)
     }
   } then {
     if (allPassed) pass() else fail()
@@ -39,7 +39,7 @@ fun <T : Iterable<E>, E> Asserter<T>.all(predicate: Asserter<E>.() -> Unit): Ass
 fun <T : Iterable<E>, E> Asserter<T>.any(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("at least one element matches:") {
     subject.forEach {
-      expect(it, predicate)
+      map { it }.apply(predicate)
     }
   } then {
     if (anyPassed) pass() else fail()
@@ -51,7 +51,7 @@ fun <T : Iterable<E>, E> Asserter<T>.any(predicate: Asserter<E>.() -> Unit): Ass
 fun <T : Iterable<E>, E> Asserter<T>.none(predicate: Asserter<E>.() -> Unit): Asserter<T> =
   compose("no elements match:") {
     subject.forEach {
-      expect(it, predicate)
+      map { it }.apply(predicate)
     }
   } then {
     if (allFailed) pass() else fail()

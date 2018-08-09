@@ -125,19 +125,8 @@ internal class AsserterImpl<T>(
     !negated
   )
 
-  // AssertionComposer methods
-
   override val subject: T
     get() = context.subject
-
-  override fun <E> expect(subject: E): DescribeableAsserter<E> =
-    AsserterImpl(AssertionSubject(context, subject), COLLECT)
-
-  override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): DescribeableAsserter<E> =
-    AssertionSubject(context, subject).let { context ->
-      AsserterImpl(context, COLLECT)
-        .apply(block)
-    }
 
   private fun throwOnFailure() {
     if (mode == FAIL_FAST) {
