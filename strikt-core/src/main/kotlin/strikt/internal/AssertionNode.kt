@@ -32,7 +32,6 @@ internal interface AssertionResult<S> : AssertionNode<S> {
   val parent: AssertionGroup<S>
   val expected: Any?
 
-  // TODO: rewrite so exceptions contain result tree
   override fun toError(): Throwable? = when (status) {
     is Pending -> TestSkippedException(root.writeToString())
     is Passed -> null
