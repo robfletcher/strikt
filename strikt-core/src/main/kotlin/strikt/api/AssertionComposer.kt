@@ -32,40 +32,4 @@ interface AssertionComposer<T> : Asserter<T> { // TODO: this must extend Asserte
     subject: E,
     block: Asserter<E>.() -> Unit
   ): DescribeableAsserter<E>
-
-  /**
-   * Evaluates a composed assertion on the original subject.
-   * This creates a new assertion in the composed context using the same
-   * subject as the overall assertion.
-   * This is useful because it allows for the overall assertion to contain much
-   * more detail in any failure message.
-   *
-   * @param description a description for the conditions the assertion evaluates.
-   * @param assert the assertion implementation that should result in a call
-   * to [Assertion.pass] or [Assertion.fail].
-   * @return this assertion, in order to facilitate a fluent API.
-   */
-  override fun assert(
-    description: String,
-    assert: AtomicAssertion<T>.() -> Unit
-  ): Asserter<T>
-
-  /**
-   * Evaluates a composed assertion on the original subject.
-   * This creates a new assertion in the composed context using the same
-   * subject as the overall assertion.
-   * This is useful because it allows for the overall assertion to contain much
-   * more detail in any failure message.
-   *
-   * @param description a description for the condition the assertion evaluates.
-   * @param expected the expected value of a comparison.
-   * @param assert the assertion implementation that should result in a call
-   * to [Assertion.pass] or [Assertion.fail].
-   * @return this assertion, in order to facilitate a fluent API.
-   */
-  override fun assert(
-    description: String,
-    expected: Any?,
-    assert: AtomicAssertion<T>.() -> Unit
-  ): Asserter<T>
 }
