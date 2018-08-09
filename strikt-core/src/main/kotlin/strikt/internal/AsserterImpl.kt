@@ -17,7 +17,7 @@ internal class AsserterImpl<T>(
   private val context: AssertionGroup<T>,
   private val mode: Mode, // TODO: can we replace with with just checking for context being top level?
   private val negated: Boolean = false
-) : DescribeableAsserter<T> {
+) : DescribeableAsserter<T>, AssertionComposer<T> {
 
   override fun describedAs(description: String): Asserter<T> {
     context.description = description
@@ -97,39 +97,7 @@ internal class AsserterImpl<T>(
         get() = children.all { it.status is Passed }
     }
 
-    val composer = object : AssertionComposer<T> {
-
-      override fun compose(description: String, expected: Any?, assertions: AssertionComposer<T>.() -> Unit): CompoundAssertions<T> {
-        TODO("not implemented")
-      }
-
-      override fun <R> map(description: String, function: T.() -> R): DescribeableAsserter<R> {
-        TODO("not implemented")
-      }
-
-      override fun not(): Asserter<T> {
-        TODO("not implemented")
-      }
-
-      override val subject: T
-        get() = context.subject
-
-      override fun <E> expect(subject: E): DescribeableAsserter<E> =
-        AsserterImpl(AssertionSubject(composedContext, subject), COLLECT)
-
-      override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): DescribeableAsserter<E> =
-        AssertionSubject(composedContext, subject).let { context ->
-          AsserterImpl(context, COLLECT)
-            .apply(block)
-        }
-
-      override fun assert(description: String, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(composedContext, COLLECT).assert(description, assert)
-
-      override fun assert(description: String, expected: Any?, assert: AtomicAssertion<T>.() -> Unit): Asserter<T> =
-        AsserterImpl(composedContext, COLLECT).assert(description, expected, assert)
-    }
-    composer.apply(assertions)
+    AsserterImpl(composedContext, COLLECT, negated).apply(assertions)
     return composedContext.let { result ->
       object : CompoundAssertions<T> {
         override fun then(block: CompoundAssertion<T>.() -> Unit): Asserter<T> {
@@ -156,6 +124,20 @@ internal class AsserterImpl<T>(
     mode,
     !negated
   )
+
+  // AssertionComposer methods
+
+  override val subject: T
+    get() = context.subject
+
+  override fun <E> expect(subject: E): DescribeableAsserter<E> =
+    AsserterImpl(AssertionSubject(context, subject), COLLECT)
+
+  override fun <E> expect(subject: E, block: Asserter<E>.() -> Unit): DescribeableAsserter<E> =
+    AssertionSubject(context, subject).let { context ->
+      AsserterImpl(context, COLLECT)
+        .apply(block)
+    }
 
   private fun throwOnFailure() {
     if (mode == FAIL_FAST) {
