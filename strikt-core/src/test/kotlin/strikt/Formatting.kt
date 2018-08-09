@@ -66,7 +66,7 @@ internal class Formatting {
   }
 
   @Test
-  fun `passing assertions are excluded by default`() {
+  fun `passing assertions are included in the error message`() {
     val e = fails {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expect(subject) {
@@ -75,37 +75,6 @@ internal class Formatting {
           startsWith('c')
         }
       }
-    }
-
-    val expected =
-      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-        "  ✓ has size 3\n" +
-        "  ✗ all elements match:\n" +
-        "    ▼ Expect that \"catflap\":\n" +
-        "      ✓ starts with 'c'\n" +
-        "    ▼ Expect that \"rubberplant\":\n" +
-        "      ✗ starts with 'c'\n" +
-        "    ▼ Expect that \"marzipan\":\n" +
-        "      ✗ starts with 'c'"
-    assertEquals(expected, e.message)
-  }
-
-  @Test
-  fun `passing assertions are included in verbose mode`() {
-    val e = try {
-      System.setProperty("strikt.verbose", "true")
-
-      fails {
-        val subject = setOf("catflap", "rubberplant", "marzipan")
-        expect(subject) {
-          hasSize(3)
-          all {
-            startsWith('c')
-          }
-        }
-      }
-    } finally {
-      System.clearProperty("strikt.verbose")
     }
 
     val expected =
