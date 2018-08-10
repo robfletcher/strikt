@@ -9,7 +9,7 @@ nextPage=additional-modules.html
 # Custom Assertions
 
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
-Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion<T>`.
+Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion.Builder<T>` where `T` is the type of the assertion subject.
 
 ## Atomic assertions
 
@@ -21,7 +21,7 @@ The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simp
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
 ```kotlin
-fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
+fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
@@ -32,21 +32,21 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
 
 Breaking this down: 
 
-1. We declare the assertion function applies only to `Assertion<LocalDate>`.
-2. Note that the function also returns `Assertion<LocalDate>` so we can include this assertion as part of a chain.
+1. We declare the assertion function applies only to `Assertion.Builder<LocalDate>`.
+2. Note that the function also returns `Assertion.Builder<LocalDate>` so we can include this assertion as part of a chain.
 3. We call `assert` passing a description of the assertion and a lambda with the assertion logic.
 4. If `subject` is the value we want we call `pass()` otherwise we call `fail()`
 
 If this assertion fails it will produce a message like:
 
 ```
-Expect that 2018-05-01 (1 failure)
-    is St. Tib's Day 
+▼ Expect that 2018-05-01:
+  ✗ is St. Tib's Day 
 ```
 
 !!! note
-    The method `assert` accepts a description for the assertion being made and a lambda function `AssertionContext<T>.() -> Unit`.
-    That `AssertionContext<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+    The method `assert` accepts a description for the assertion being made and a lambda function `Assertion<T>.() -> Unit`.
+    That `Assertion<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
 
 ## Describing the "actual" value
 
@@ -57,7 +57,7 @@ In order to do this, Strikt provides an overridden version of `fail()` that acce
 The message string should contain a format placeholder for the value.
 
 ```kotlin
-fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
+fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   assert("is St. Tib's Day") { 
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
@@ -72,8 +72,8 @@ fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
 Now if the assertion fails there is a little more detail.
 
 ```
-Expect that 2018-05-01
-    is St. Tib's Day : in fact it is 2018-05-01
+▼ Expect that 2018-05-01:
+  ✗ is St. Tib's Day : in fact it is 2018-05-01
 ```
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
@@ -85,7 +85,7 @@ For the simplest assertion functions, instead of using `assert` and calling `pas
 We can re-implement the example above like this:
 
 ```kotlin
-fun Assertion<LocalDate>.isStTibsDay(): Assertion<LocalDate> =
+fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   passesIf("is St. Tib's Day") { 
     MonthDay.from(this) == MonthDay.of(2, 29)
   }
@@ -106,7 +106,7 @@ Composed assertions are useful for things like:
 Imagine we're creating an assertion function that tests fails if any element of a collection is `null`.
 
 ```kotlin
-fun <T: Iterable<E?>, E> Assertion<T>.containsNoNullElements(): Assertion<T> =
+fun <T: Iterable<E?>, E> Assertion.Builder<T>.containsNoNullElements(): Assertion.Builder<T> =
   compose("does not contain any null elements") {
     subject.forEach {
       expect(it).isNotNull()
@@ -128,15 +128,21 @@ The receiver of the block passed to `result` has the properties `allFailed`, `an
 If the assertion failed we'll see something like this:
 
 ```
-Expect that [catflap, null, rubberplant, marzipan] (1 failure) 
-    does not contain any null elements (1 failure)
-        Expect that null (1 failure) 
-            is not null  
+▼ Expect that ["catflap", null, "rubberplant", "marzipan"]: 
+  ✗ does not contain any null elements
+    ▼ Expect that "catflap": 
+      ✓ is not null  
+    ▼ Expect that null: 
+      ✗ is not null  
+    ▼ Expect that "rubberplant": 
+      ✓ is not null  
+    ▼ Expect that "marzipan": 
+      ✓ is not null  
 ```
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 
 Several assertion functions in Strikt's standard assertions library use nested assertions.
-For example, `Assertion<Iterable<E>>.all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed (`allPassed`).
-On the other hand `Assertion<Iterable<E>>.any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if at least one of those nested assertions passed (`anyPassed`).
-The `Assertion<Iterable<E>>.none` assertion passes only if `allFailed` is true for its nested assertions! 
+For example, `Assertion.Builder<Iterable<E>>.all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed (`allPassed`).
+On the other hand `Assertion.Builder<Iterable<E>>.any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if at least one of those nested assertions passed (`anyPassed`).
+The `Assertion.Builder<Iterable<E>>.none` assertion passes only if `allFailed` is true for its nested assertions! 

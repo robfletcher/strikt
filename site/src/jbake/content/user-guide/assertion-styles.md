@@ -17,7 +17,7 @@ Chained assertions use a fluent API similar to AssertJ.
 They fail fast.
 That is, the first assertion that fails breaks the chain and further assertions are not evaluated.
 
-Each assertion in the chain returns an `Assertion` object that supports further assertions.
+Each assertion in the chain returns an `Assertion.Builder` object that supports further assertions.
 
 ```kotlin
 val subject = "fnord"
@@ -30,15 +30,16 @@ expect(subject)
 Produces the output:
 
 ```
-Expect that "fnord" (1 failure)
-    has length 1 : found 5
+▼ Expect that "fnord":
+  ✓ is an instance of java.lang.String
+  ✗ has length 1 : found 5
 ```
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
 ## Block assertions
 
-Block assertions are declared in a lambda whose receiver is an `Assertion<T>` object.
+Block assertions are declared in a lambda whose receiver is an `Assertion.Builder<T>` object.
 They allow multiple assertions (or assertion chains) to be evaluated against the subject.
 
 Block assertions do _not_ fail fast.
@@ -56,9 +57,10 @@ expect(subject) {
 Produces the output:
 
 ```
-Expect that "fnord" (2 failures)
-    has length 1 : found 5
-    is upper case
+▼ Expect that "fnord":
+  ✓ is an instance of java.lang.String
+  ✗ has length 1 : found 5
+  ✗ is upper case
 ```
 
 All assertions are applied and since two fail there are two errors logged.
@@ -78,9 +80,9 @@ expect(subject) {
 Produces the output:
 
 ```
-Expect that 1
-    is less than 1 : found 1
-    is greater than 1 : found 1
+▼ Expect that 1
+  ✗ is less than 1 : found 1
+  ✗ is greater than 1 : found 1
 ```
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.

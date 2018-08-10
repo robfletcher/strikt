@@ -19,11 +19,11 @@ expect(person.name).isEqualTo("Ziggy")
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion<T>.map` method.  
+Strikt allows for this using the `Assertion.Builder<T>.map` method.  
 
 ## Mapping with lambdas
 
-The method takes a lambda whose receiver is the current subject and returns an `Assertion<R>` where `R` is whatever the lambda returns.
+The method takes a lambda whose receiver is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
 
 This is sometimes useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
@@ -43,11 +43,11 @@ This is useful for generating good quality assertion output with minimal effort.
 For example, if the previous example fails it will format the error message like this:
 
 ```
-Person[name: Ziggy, birthDate: 1972-06-16] (2 failures) 
-    Expect that "Ziggy" (1 failure)
-        is equal to "David" : found "Ziggy"
-    Expect that 1972 (1 failure)
-        is equal to 1947 : found 1972
+▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
+  ▼ Expect that "Ziggy"
+    ✗ is equal to "David" : found "Ziggy"
+  ▼ Expect that 1972
+    ✗ is equal to 1947 : found 1972
 ```
 
 Using property references the output is more useful (although the test code is more verbose).
@@ -61,12 +61,12 @@ expect(subject) {
 ```
 
 ```
-Person[name: Ziggy, birthDate: 1972-06-16] (2 failures) 
-    .name "Ziggy" (1 failure)
-        is equal to "David" : found "Ziggy"
-    .birthDate 1972-06-16 (1 failure) 
-        .year 1972 (1 failure)
-            is equal to 1947 : found 1972
+▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
+  ▼ Expect that .name "Ziggy":
+    ✗ is equal to "David" : found "Ziggy"
+  ▼ Expect that .birthDate 1972-06-16: 
+    ▼ Expect that .year 1972:
+      ✗ is equal to 1947 : found 1972
 ```
 
 ## Re-usable mappings
@@ -76,10 +76,10 @@ If you find yourself frequently using `map` for the same properties or methods, 
 For example:
 
 ```kotlin
-val Assertion<Person>.name: Assertion<String>
+val Assertion.Builder<Person>.name: Assertion.Builder<String>
   get() = map(Person::name)
 
-val Assertion<Person>.yearOfBirth: Assertion<LocalDate>
+val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
   get() = map { dateOfBirth.year }
 ```
 
@@ -95,5 +95,5 @@ expect(subject) {
 
 ## Built-in mappings
 
-Strikt has a number of built in mapping properties and functions such as `Assertion<List<E>>.first()` which returns an `Assertion<E>` whose subject is the first element of the list.
+Strikt has a number of built in mapping properties and functions such as `Assertion.Builder<List<E>>.first()` which returns an `Assertion.Builder<E>` whose subject is the first element of the list.
 See the [API docs](/api/strikt-core/strikt.api/-assertion/) for details.

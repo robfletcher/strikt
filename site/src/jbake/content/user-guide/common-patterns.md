@@ -26,12 +26,14 @@ expect(subject).all {
 This produces the output:
 
 ```
-Expect that [catflap, rubberplant, marzipan] (1 failure)
-    all elements match: (2 failures)
-        Expect that "rubberplant" (1 failure)
-            starts with 'c'
-        Expect that "marzipan" (1 failure)
-            starts with 'c'
+▼ Expect that [catflap, rubberplant, marzipan]:
+  ✗ all elements match:
+    ▼ Expect that "catflap":
+      ✓ starts with 'c'
+    ▼ Expect that "rubberplant":
+      ✗ starts with 'c'
+    ▼ Expect that "marzipan":
+      ✗ starts with 'c'
 ```
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
@@ -46,7 +48,7 @@ expect { service.computeMeaning() }
   .throws<TooMuchFlaxException>()
 ```
 
-The `throws<E>` function returns an `Assertion<E>` so you can chain assertions about the exception after it.
+The `throws<E>` function returns an `Assertion.Builder<E>` so you can chain assertions about the exception after it.
 
 There is also a top level function `throws( () -> Unit )` that makes this even more concise.
 

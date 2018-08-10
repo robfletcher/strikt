@@ -184,9 +184,10 @@ expect(subject) {
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>Expect that "The Enlightened take things Lightly" (2 failures)
-  has length 5 : found 35
-  matches the regular expression /\d+/</code></pre>
+        <pre class="notification content is-medium is-dark"><code>▼ Expect that "The Enlightened take things Lightly":
+  ✗ has length 5 : found 35
+  ✗ matches the regular expression /\d+/
+  ✓ starts with "T"</code></pre>
           </div>
         </section>
 
@@ -241,7 +242,7 @@ expect(subject)
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>fun Assertion&lt;LocalDate&gt;.isStTibsDay() =
+        <pre class="notification content is-medium is-dark"><code>fun Assertion.Builder&lt;LocalDate&gt;.isStTibsDay() =
   assert("is St. Tib's Day") {
     when (MonthDay.from(subject)) {
       MonthDay.of(2, 29) -> pass()
@@ -257,7 +258,7 @@ expect(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>val Assertion&lt;Deity&gt;.realm: Assertion&lt;String&gt;
+        <pre class="notification content is-medium is-dark"><code>val Assertion.Builder&lt;Deity&gt;.realm: Assertion.Builder&lt;String&gt;
   get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
