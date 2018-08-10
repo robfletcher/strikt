@@ -27,5 +27,4 @@ internal class Composition {
       assertEquals(expected, error.message)
     }
   }
-
 }
