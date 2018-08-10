@@ -32,7 +32,6 @@ interface Assertion<T> {
     cause: Throwable? = null
   )
 
-
   /**
    * Used to construct assertions.
    *

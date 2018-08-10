@@ -1,6 +1,9 @@
 package strikt.protobuf
 
+import com.google.protobuf.ByteString
+import com.google.protobuf.Internal.getDefaultInstance
 import com.google.protobuf.Message
+import strikt.api.Assertion.Builder
 
 /**
  * Asserts that a `com.google.protobuf.Any` is empty and does not contain an
