@@ -1,18 +1,18 @@
 package strikt.assertions
 
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 
 /**
  * Asserts that the subject is `null`.
  */
 @Suppress("UNCHECKED_CAST")
-fun <T> Asserter<T?>.isNull(): Asserter<Nothing> =
+fun <T> Builder<T?>.isNull(): Builder<Nothing> =
   assert("is null", null) {
     when (subject) {
       null -> pass()
       else -> fail()
     }
-  } as Asserter<Nothing>
+  } as Builder<Nothing>
 
 /**
  * Asserts that the subject is not `null`.
@@ -20,13 +20,13 @@ fun <T> Asserter<T?>.isNull(): Asserter<Nothing> =
  * @return an assertion for a non-`null` subject.
  */
 @Suppress("UNCHECKED_CAST")
-fun <T> Asserter<T?>.isNotNull(): Asserter<T> =
+fun <T> Builder<T?>.isNotNull(): Builder<T> =
   assert("is not null") {
     when (subject) {
       null -> fail()
       else -> pass()
     }
-  } as Asserter<T>
+  } as Builder<T>
 
 /**
  * Asserts that the subject is an instance of [T].
@@ -34,14 +34,14 @@ fun <T> Asserter<T?>.isNotNull(): Asserter<T> =
  * @return an assertion for [T].
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T> Asserter<*>.isA(): Asserter<T> =
+inline fun <reified T> Builder<*>.isA(): Builder<T> =
   assert("is an instance of %s", T::class.java) {
     when (subject) {
       null -> fail(actual = null)
       is T -> pass()
       else -> fail(actual = subject?.javaClass)
     }
-  } as Asserter<T>
+  } as Builder<T>
 
 /**
  * Asserts that the subject is equal to [expected] according to the standard
@@ -49,7 +49,7 @@ inline fun <reified T> Asserter<*>.isA(): Asserter<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Asserter<T>.isEqualTo(expected: Any?): Asserter<T> =
+fun <T> Builder<T>.isEqualTo(expected: Any?): Builder<T> =
   assert("is equal to %s", expected) {
     when (subject) {
       expected -> pass()
@@ -63,7 +63,7 @@ fun <T> Asserter<T>.isEqualTo(expected: Any?): Asserter<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Asserter<T>.isNotEqualTo(expected: Any?): Asserter<T> =
+fun <T> Builder<T>.isNotEqualTo(expected: Any?): Builder<T> =
   assert("is not equal to %s", expected) {
     when (subject) {
       expected -> fail()
@@ -77,7 +77,7 @@ fun <T> Asserter<T>.isNotEqualTo(expected: Any?): Asserter<T> =
  *
  * @param expected the expected instance.
  */
-fun <T> Asserter<T>.isSameInstanceAs(expected: Any?): Asserter<T> =
+fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
   assert("is the same instance as %s", expected) {
     when {
       subject === expected -> pass()
@@ -91,7 +91,7 @@ fun <T> Asserter<T>.isSameInstanceAs(expected: Any?): Asserter<T> =
  *
  * @param expected the expected instance.
  */
-fun <T> Asserter<T>.isNotSameInstanceAs(expected: Any?): Asserter<T> =
+fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
   assert("is not the same instance as %s", expected) {
     when {
       subject === expected -> fail()

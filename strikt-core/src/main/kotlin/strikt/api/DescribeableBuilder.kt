@@ -1,6 +1,8 @@
 package strikt.api
 
-interface DescribeableAsserter<T> : Asserter<T> {
+import strikt.api.Assertion.Builder
+
+interface DescribeableBuilder<T> : Builder<T> {
   /**
    * Adds a description to the assertion.
    *
@@ -9,5 +11,5 @@ interface DescribeableAsserter<T> : Asserter<T> {
    * itself.
    * @return the same assertion with the new description applied.
    */
-  fun describedAs(description: String): Asserter<T>
+  fun describedAs(description: String): Builder<T>
 }

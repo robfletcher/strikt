@@ -1,13 +1,13 @@
 package strikt.assertions
 
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 
 /**
  * Maps an assertion on an enum to an assertion on its name.
  *
  * @see Enum.name
  */
-val <T : Enum<T>> Asserter<T>.name: Asserter<String>
+val <T : Enum<T>> Builder<T>.name: Builder<String>
   get() = map(Enum<T>::name)
 
 /**
@@ -15,5 +15,5 @@ val <T : Enum<T>> Asserter<T>.name: Asserter<String>
  *
  * @see Enum.ordinal
  */
-val <T : Enum<T>> Asserter<T>.ordinal: Asserter<Int>
+val <T : Enum<T>> Builder<T>.ordinal: Builder<Int>
   get() = map(Enum<T>::ordinal)

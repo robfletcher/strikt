@@ -1,11 +1,11 @@
 package strikt.assertions
 
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 
 /**
  * Asserts that the subject has a [Collection.size] of exactly [expected].
  */
-fun <T : Collection<E>, E> Asserter<T>.hasSize(expected: Int): Asserter<T> =
+fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
   assert("has size %d", expected) {
     when (subject.size) {
       expected -> pass()
@@ -16,13 +16,13 @@ fun <T : Collection<E>, E> Asserter<T>.hasSize(expected: Int): Asserter<T> =
 /**
  * Asserts that the subject collection is empty.
  */
-fun <T : Collection<E>, E> Asserter<T>.isEmpty(): Asserter<T> =
+fun <T : Collection<E>, E> Builder<T>.isEmpty(): Builder<T> =
   passesIf("is empty", Collection<E>::isEmpty)
 
 /**
  * Asserts that the subject collection is _not_ empty.
  */
-fun <T : Collection<E>, E> Asserter<T>.isNotEmpty(): Asserter<T> =
+fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
   passesIf("is not empty", Collection<E>::isNotEmpty)
 
 /**
@@ -30,5 +30,5 @@ fun <T : Collection<E>, E> Asserter<T>.isNotEmpty(): Asserter<T> =
  *
  * @see Collection.size
  */
-val <T : Collection<*>> Asserter<T>.size: Asserter<Int>
+val <T : Collection<*>> Builder<T>.size: Builder<Int>
   get() = map(Collection<*>::size)

@@ -1,7 +1,8 @@
 package strikt.api
 
+import strikt.api.Assertion.Builder
 import strikt.assertions.throws
-import strikt.internal.AsserterImpl
+import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionSubject
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
@@ -13,8 +14,8 @@ import strikt.internal.Mode.FAIL_FAST
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expect(subject: T): DescribeableAsserter<T> =
-  AsserterImpl(AssertionSubject(subject), FAIL_FAST)
+fun <T> expect(subject: T): DescribeableBuilder<T> =
+  AssertionBuilder(AssertionSubject(subject), FAIL_FAST)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -27,10 +28,10 @@ fun <T> expect(subject: T): DescribeableAsserter<T> =
  */
 fun <T> expect(
   subject: T,
-  block: Asserter<T>.() -> Unit
-): DescribeableAsserter<T> =
+  block: Builder<T>.() -> Unit
+): DescribeableBuilder<T> =
   AssertionSubject(subject).let { context ->
-    AsserterImpl(context, COLLECT)
+    AssertionBuilder(context, COLLECT)
       .apply {
         block()
         context.toError()?.let { throw it }
@@ -45,5 +46,5 @@ fun <T> expect(
  */
 inline fun <reified E : Throwable> throws(
   noinline action: () -> Unit
-): Asserter<E> =
+): Builder<E> =
   expect(action).throws()

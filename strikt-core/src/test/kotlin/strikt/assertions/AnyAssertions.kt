@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 import strikt.api.expect
 import strikt.fails
 
@@ -34,9 +34,9 @@ internal class AnyAssertions {
     fun `down-casts the result`() {
       val subject: Any? = null
       expect(subject)
-        .also { assert(it is Asserter<Any?>) }
+        .also { assert(it is Builder<Any?>) }
         .isNull()
-        .also { assert(it is Asserter<Nothing>) }
+        .also { assert(it is Builder<Nothing>) }
     }
   }
 
@@ -62,9 +62,9 @@ internal class AnyAssertions {
     fun `down-casts the result`() {
       val subject: Any? = "fnord"
       expect(subject)
-        .also { assert(it is Asserter<Any?>) }
+        .also { assert(it is Builder<Any?>) }
         .isNotNull()
-        .also { assert(it is Asserter<Any>) }
+        .also { assert(it is Builder<Any>) }
     }
   }
 
@@ -104,11 +104,11 @@ internal class AnyAssertions {
     fun `down-casts the result`() {
       val subject: Any = 1L
       expect(subject)
-        .also { assert(it is Asserter<Any>) }
+        .also { assert(it is Builder<Any>) }
         .isA<Number>()
-        .also { assert(it is Asserter<Number>) }
+        .also { assert(it is Builder<Number>) }
         .isA<Long>()
-        .also { assert(it is Asserter<Long>) }
+        .also { assert(it is Builder<Long>) }
     }
 
     @Suppress("USELESS_IS_CHECK")
@@ -116,9 +116,9 @@ internal class AnyAssertions {
     fun `allows specialized assertions after establishing type`() {
       val subject: Any = "fnord"
       expect(subject)
-        .also { assert(it is Asserter<Any>) }
+        .also { assert(it is Builder<Any>) }
         .isA<String>()
-        .also { assert(it is Asserter<String>) }
+        .also { assert(it is Builder<String>) }
         .hasLength(5) // only available on Assertion<CharSequence>
     }
   }

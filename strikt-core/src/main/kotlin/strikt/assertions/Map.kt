@@ -1,12 +1,12 @@
 package strikt.assertions
 
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 import strikt.internal.reporting.formatValue
 
 /**
  * Asserts that the subject map is empty.
  */
-fun <T : Map<K, V>, K, V> Asserter<T>.isEmpty() =
+fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
   passesIf("is empty") { isEmpty() }
 
 /**
@@ -16,7 +16,7 @@ fun <T : Map<K, V>, K, V> Asserter<T>.isEmpty() =
  * @return An assertion on the value indexed by [key] or `null` if no such entry
  * exists in the subject map.
  */
-operator fun <T : Map<K, V>, K, V> Asserter<T>.get(key: K): Asserter<V?> =
+operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
   map("entry [${formatValue(key)}] %s") { get(key) }
 
 /**
@@ -24,7 +24,7 @@ operator fun <T : Map<K, V>, K, V> Asserter<T>.get(key: K): Asserter<V?> =
  * the map implementation the value associated with [key] may be `null`. This
  * assertion just tests for the existence of the key.
  */
-fun <T : Map<K, V>, K, V> Asserter<T>.containsKey(key: K): Asserter<T> =
+fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
   passesIf("has an entry with the key %s", key) {
     containsKey(key)
   }
@@ -32,7 +32,7 @@ fun <T : Map<K, V>, K, V> Asserter<T>.containsKey(key: K): Asserter<T> =
 /**
  * Asserts that the subject map contains entries for all [keys].
  */
-fun <T : Map<K, V>, K, V> Asserter<T>.containsKeys(vararg keys: K): Asserter<T> =
+fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
   compose("has entries with the keys %s", keys.toList()) {
     keys.forEach { containsKey(it) }
   } then {
@@ -43,8 +43,8 @@ fun <T : Map<K, V>, K, V> Asserter<T>.containsKeys(vararg keys: K): Asserter<T> 
  * Asserts that the subject map contains an entry indexed by [key] with a value
  * equal to [value].
  */
-fun <T : Map<K, V>, K, V> Asserter<T>.hasEntry(
+fun <T : Map<K, V>, K, V> Builder<T>.hasEntry(
   key: K,
   value: V
-): Asserter<T> =
+): Builder<T> =
   apply { containsKey(key)[key].isEqualTo(value) }

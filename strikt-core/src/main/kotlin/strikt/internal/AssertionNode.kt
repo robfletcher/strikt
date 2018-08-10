@@ -90,7 +90,7 @@ internal abstract class AtomicAssertionNode<S>(
     get() = parent.subject
 
   override val root: AssertionNode<*>
-    get() = parent.root ?: this
+    get() = parent.root
 
   init {
     parent.also { it.append(this) }
@@ -107,7 +107,7 @@ internal abstract class CompoundAssertionNode<S>(
     get() = parent.subject
 
   override val root: AssertionNode<*>
-    get() = parent.root ?: this
+    get() = parent.root
 
   init {
     parent.also { it.append(this) }

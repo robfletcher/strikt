@@ -1,11 +1,11 @@
 package strikt.internal
 
-import strikt.api.Asserter
+import strikt.api.Assertion.Builder
 import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
-import strikt.api.DescribeableAsserter
+import strikt.api.DescribeableBuilder
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
@@ -13,13 +13,13 @@ import strikt.api.Status.Pending
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
 
-internal class AsserterImpl<T>(
+internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
   private val mode: Mode, // TODO: can we replace with with just checking for context being top level?
   private val negated: Boolean = false
-) : DescribeableAsserter<T>, AssertionComposer<T> {
+) : DescribeableBuilder<T>, AssertionComposer<T> {
 
-  override fun describedAs(description: String): Asserter<T> {
+  override fun describedAs(description: String): Builder<T> {
     context.description = description
     return this
   }
@@ -28,7 +28,7 @@ internal class AsserterImpl<T>(
     description: String,
     expected: Any?,
     assert: AtomicAssertion<T>.() -> Unit
-  ): AsserterImpl<T> {
+  ): AssertionBuilder<T> {
     object : AtomicAssertionNode<T>(context, description, expected), AtomicAssertion<T> {
       override val subject: T
         get() = context.subject
@@ -97,29 +97,29 @@ internal class AsserterImpl<T>(
         get() = children.all { it.status is Passed }
     }
 
-    AsserterImpl(composedContext, COLLECT, negated).apply(assertions)
+    AssertionBuilder(composedContext, COLLECT, negated).apply(assertions)
     return composedContext.let { result ->
       object : CompoundAssertions<T> {
-        override fun then(block: CompoundAssertion<T>.() -> Unit): Asserter<T> {
+        override fun then(block: CompoundAssertion<T>.() -> Unit): Builder<T> {
           result.block()
           throwOnFailure()
-          return this@AsserterImpl
+          return this@AssertionBuilder
         }
       }
     }
   }
 
-  override fun <R> map(description: String, function: T.() -> R): DescribeableAsserter<R> =
+  override fun <R> map(description: String, function: T.() -> R): DescribeableBuilder<R> =
     context.subject.function()
       .let { mappedValue ->
-        AsserterImpl(
+        AssertionBuilder(
           AssertionSubject(context, mappedValue, description),
           mode,
           negated
         )
       }
 
-  override fun not(): Asserter<T> = AsserterImpl(
+  override fun not(): Builder<T> = AssertionBuilder(
     AssertionSubject(context, context.subject, "%s does not match"),
     mode,
     !negated
