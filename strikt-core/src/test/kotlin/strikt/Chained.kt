@@ -4,12 +4,17 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expect
+import strikt.assertions.containsExactly
+import strikt.assertions.first
+import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isLowerCase
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.isUpperCase
+import strikt.internal.opentest4j.AtomicAssertionFailure
+import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("assertions in chains")
 internal class Chained {
@@ -47,6 +52,28 @@ internal class Chained {
           "    ✗ is lower case",
         error.message
       )
+    }
+  }
+
+  @Test
+  fun `only throws a single exception`() {
+    fails {
+      expect(listOf(1, 2, 3, 4)).containsExactly(1, 2)
+    }.let { error ->
+      val expected = "▼ Expect that [1, 2, 3, 4]:\n" +
+        "  ✗ contains exactly the elements [1, 2]\n" +
+        "    ✓ contains 1\n" +
+        "    ✓ …at index 0\n" +
+        "    ✓ contains 2\n" +
+        "    ✓ …at index 1\n" +
+        "    ✗ contains no further elements : found [3, 4]"
+      assertEquals(expected, error.message)
+      expect(error)
+        .isA<CompoundAssertionFailure>()
+        .map { failures }
+        .hasSize(1)
+        .first()
+        .isA<AtomicAssertionFailure>()
     }
   }
 }
