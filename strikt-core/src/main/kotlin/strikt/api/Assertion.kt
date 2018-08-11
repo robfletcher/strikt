@@ -47,8 +47,6 @@ interface Assertion<T> {
      * inside an extension method on `Assertion<T>` such as those provided in the
      * [strikt.assertions] package.
      *
-     * @sample strikt.samples.AssertionMethods.assert
-     *
      * @param description a description for the condition the assertion evaluates.
      * @param assert the assertion implementation that should result in a call
      * to [Assertion.pass] or [Assertion.fail].
@@ -68,8 +66,6 @@ interface Assertion<T> {
      * While this method _can_ be used directly in a test but is typically used
      * inside an extension method on `Assertion<T>` such as those provided in the
      * [strikt.assertions] package.
-     *
-     * @sample strikt.samples.AssertionMethods.assert
      *
      * @param description a description for the condition the assertion evaluates.
      * @param expected the expected value of a comparison.
@@ -171,8 +167,6 @@ interface Assertion<T> {
      * reference) the subject description will be automatically determined for the
      * returned assertion.
      *
-     * @sample strikt.samples.AssertionMethods.map
-     *
      * @param function a lambda whose receiver is the current assertion subject.
      * @return an assertion whose subject is the value returned by [function].
      */
@@ -188,8 +182,6 @@ interface Assertion<T> {
      * This is useful for chaining to property values or method call results on
      * the subject.
      *
-     * @sample strikt.samples.AssertionMethods.map
-     *
      * @param description a description of the mapped result.
      * @param function a lambda whose receiver is the current assertion subject.
      * @return an assertion whose subject is the value returned by [function].
@@ -198,8 +190,6 @@ interface Assertion<T> {
 
     /**
      * Reverses any assertions chained after this method.
-     *
-     * @sample strikt.samples.AssertionMethods.not
      *
      * @return an assertion that negates the results of any assertions applied to
      * its subject.

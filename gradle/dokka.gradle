@@ -6,7 +6,6 @@ dokka {
   outputFormat = "html"
   outputDirectory = "$buildDir/javadoc"
   jdkVersion = 9
-//  samples = ["$projectDir/src/test/kotlin"]
 }
 
 task(dokkaJar, type: Jar) {
