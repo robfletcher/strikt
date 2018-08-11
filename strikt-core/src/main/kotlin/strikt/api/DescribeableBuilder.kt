@@ -2,6 +2,15 @@ package strikt.api
 
 import strikt.api.Assertion.Builder
 
+/**
+ * Extension of [Assertion.Builder] that enables the description of the
+ * assertion subject.
+ *
+ * Since it doesn't make sense to do this anywhere except directly after the
+ * initial [expect] or [Assertion.Builder.map] call those methods return an
+ * instance of this interface, while assertions themselves just return
+ * [Assertion.Builder].
+ */
 interface DescribeableBuilder<T> : Builder<T> {
   /**
    * Adds a description to the assertion.
