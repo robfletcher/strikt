@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package rpg;
+
+option java_multiple_files = true;
+option java_package = "rpg";
+
+import "google/protobuf/any.proto";
+
+message Character {
+  string name = 1;
+  Role role = 2;
+  google.protobuf.Any weapon = 3;
+}
+
+enum Role {
+  warrior = 0;
+  mage = 1;
+  rogue = 2;
+  priest = 3;
+}
+
+message Sword {
+  string damage = 1;
+}
+
+message Staff {
+  string damage = 1;
+  repeated string powers = 2;
+}
+
+message Dagger {
+  string damage = 1;
+  int32 backstabBonus = 2;
+}
+
+message Mace {
+  string damage = 1;
+}

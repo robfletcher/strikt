@@ -1,4 +1,5 @@
 apply plugin: "java-library"
+apply plugin: "com.google.protobuf"
 apply from: "$rootDir/gradle/kotlin.gradle"
 apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/jupiter.gradle"
@@ -7,10 +8,20 @@ apply from: "$rootDir/gradle/published.gradle"
 dependencies {
   api project(":strikt-core")
   api "com.google.protobuf:protobuf-java:+"
+//  testImplementation testProtobuf
 }
 
 dokka {
   externalDocumentationLink {
     url = new URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
+  }
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:+"
+  }
+  generateProtoTasks {
+    ofSourceSet("test")
   }
 }
