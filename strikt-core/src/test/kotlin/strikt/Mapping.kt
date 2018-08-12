@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import strikt.api.expect
+import strikt.api.throws
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
@@ -12,6 +13,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.last
+import strikt.assertions.message
 import java.time.LocalDate
 
 @DisplayName("mapping assertions")
@@ -45,6 +47,27 @@ internal class Mapping {
     val subject = mapOf("foo" to "bar")
     expect(subject)["foo"].isNotNull().isEqualTo("bar")
     expect(subject)["bar"].isNull()
+  }
+
+  @Test
+  fun `message maps to an exception message`() {
+    throws<IllegalStateException> {
+      throw IllegalStateException("o noes")
+    }.message.isEqualTo("o noes")
+  }
+
+  @Test
+  fun `message fails if the exception message is null`() {
+    throws<AssertionError> {
+      throws<IllegalStateException> {
+        throw IllegalStateException()
+      }.message
+    }.message.isEqualTo(
+      "▼ Expect that () -> kotlin.Unit:\n" +
+        "  ✓ throws java.lang.IllegalStateException\n" +
+        "  ▼ Expect that java.lang.IllegalStateException:\n" +
+        "    ▼ Expect that .message null:\n" +
+        "      ✗ is not null")
   }
 
   data class Person(val name: String, val birthDate: LocalDate)
