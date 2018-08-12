@@ -1,6 +1,6 @@
 apply plugin: "nebula.kotlin"
 
-sourceCompatibility = JavaVersion.VERSION_1_6
+sourceCompatibility = JavaVersion.VERSION_1_10
 
 compileKotlin {
   kotlinOptions {
@@ -11,6 +11,6 @@ compileKotlin {
 compileTestKotlin {
   kotlinOptions {
     languageVersion = "1.2"
-    jvmTarget = JavaVersion.VERSION_1_8
+    jvmTarget = JavaVersion.VERSION_1_10
   }
 }

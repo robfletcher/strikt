@@ -10,3 +10,29 @@ dependencies {
 
   testImplementation "org.junit.jupiter:junit-jupiter-api:+"
 }
+
+ext.moduleName = "io.strikt.core"
+
+compileKotlin {
+  inputs.property("moduleName", moduleName)
+  doFirst {
+    options.compilerArgs = [
+      '--module-path', classpath.asPath,
+    ]
+    classpath = files()
+  }
+}
+
+compileTestKotlin {
+  inputs.property("moduleName", moduleName)
+  doFirst {
+    options.compilerArgs = [
+      '--module-path', classpath.asPath,
+      '--add-modules', 'junit',
+      '--add-reads', "$moduleName=junit",
+      '--patch-module', "$moduleName=" + files(sourceSets.test.kotlin.srcDirs).asPath,
+    ]
+    classpath = files()
+  }
+}
+

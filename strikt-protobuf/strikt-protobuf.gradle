@@ -8,7 +8,6 @@ apply from: "$rootDir/gradle/published.gradle"
 dependencies {
   api project(":strikt-core")
   api "com.google.protobuf:protobuf-java:+"
-//  testImplementation testProtobuf
 }
 
 dokka {
