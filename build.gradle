@@ -6,9 +6,9 @@ buildscript {
   dependencies {
     classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.60"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
-    classpath "gradle.plugin.org.jmailen.gradle:kotlinter-gradle:1.12.0"
+    classpath "org.jmailen.gradle:kotlinter-gradle:1.16.0"
     classpath "com.netflix.nebula:nebula-release-plugin:6.3.5"
-    classpath "com.netflix.nebula:nebula-publishing-plugin:8.1.2"
+    classpath "com.netflix.nebula:nebula-publishing-plugin:8.2.0"
     classpath "com.netflix.nebula:nebula-bintray-plugin:3.5.5"
     classpath "com.ferranpons:twitter-gradle-plugin:1.0.2"
     classpath "org.jbake:jbake-gradle-plugin:1.2.0"
