@@ -20,7 +20,11 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.chrono.JapaneseDate
+import java.time.temporal.ChronoField.MILLI_OF_SECOND
+import java.time.temporal.ChronoField.SECOND_OF_MINUTE
+import java.time.temporal.ChronoField.YEAR
 import java.time.temporal.TemporalAccessor
+import java.time.temporal.TemporalField
 
 @DisplayName("assertions on temporal types")
 internal class TemporalAssertions {
@@ -55,9 +59,9 @@ internal class TemporalAssertions {
         Pair(OffsetTime.from(local), local.plusSeconds(1)), // TODO: potential failure on day boundary
         Pair(Year.from(today), today.plusYears(1)),
         Pair(YearMonth.from(today), today.plusMonths(1))
-      ).map { (actual, expected) ->
-        dynamicTest("passes asserting $actual (${actual.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          expect(actual).isBefore(expected)
+      ).map { (subject, expected) ->
+        dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+          expect(subject).isBefore(expected)
         }
       }
 
@@ -89,10 +93,10 @@ internal class TemporalAssertions {
         Pair(Year.from(today), today.minusYears(1)),
         Pair(YearMonth.from(today), today),
         Pair(YearMonth.from(today), today.minusMonths(1))
-      ).map { (actual, expected) ->
-        dynamicTest("fails asserting $actual (${actual.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).map { (subject, expected) ->
+        dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           fails {
-            expect(actual).isBefore(expected)
+            expect(subject).isBefore(expected)
           }
         }
       }
@@ -102,10 +106,10 @@ internal class TemporalAssertions {
     fun `throws an exception if expected value can't be converted to the subject type`() =
       listOf<Pair<Instant, TemporalAccessor>>(
         Pair(now, LocalDate.of(2008, 10, 2))
-      ).map { (actual, expected) ->
-        dynamicTest("fails asserting $actual is before $expected") {
+      ).map { (subject, expected) ->
+        dynamicTest("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
-            expect(actual).isBefore(expected)
+            expect(subject).isBefore(expected)
           }
         }
       }
@@ -133,9 +137,9 @@ internal class TemporalAssertions {
         Pair(OffsetTime.from(local), local.minusSeconds(1)), // TODO: potential failure on day boundary
         Pair(Year.from(today), today.minusYears(1)),
         Pair(YearMonth.from(today), today.minusMonths(1))
-      ).map { (actual, expected) ->
-        dynamicTest("passes asserting $actual (${actual.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          expect(actual).isAfter(expected)
+      ).map { (subject, expected) ->
+        dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+          expect(subject).isAfter(expected)
         }
       }
 
@@ -167,10 +171,10 @@ internal class TemporalAssertions {
         Pair(Year.from(today), today.plusYears(1)),
         Pair(YearMonth.from(today), today),
         Pair(YearMonth.from(today), today.plusMonths(1))
-      ).map { (actual, expected) ->
-        dynamicTest("fails asserting $actual (${actual.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).map { (subject, expected) ->
+        dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           fails {
-            expect(actual).isAfter(expected)
+            expect(subject).isAfter(expected)
           }
         }
       }
@@ -180,11 +184,45 @@ internal class TemporalAssertions {
     fun `throws an exception if expected value can't be converted to the subject type`() =
       listOf<Pair<Instant, TemporalAccessor>>(
         Pair(now, LocalDate.of(2008, 10, 2))
-      ).map { (actual, expected) ->
-        dynamicTest("fails asserting $actual is before $expected") {
+      ).map { (subject, expected) ->
+        dynamicTest("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
-            expect(actual).isBefore(expected)
+            expect(subject).isBefore(expected)
           }
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("get(TemporalField) mapping")
+  inner class GetMapping {
+    @TestFactory
+    fun `maps to the int value of the specified field`() =
+      listOf<Triple<TemporalAccessor, TemporalField, Int>>(
+        Triple(now, MILLI_OF_SECOND, now.get(MILLI_OF_SECOND)),
+        Triple(local, YEAR, Year.from(today).value),
+        Triple(local, SECOND_OF_MINUTE, local.second),
+        Triple(today, YEAR, Year.from(today).value)
+      ).map { (subject, field, expected) ->
+        dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Int)") {
+          expect(subject).get(field).isEqualTo(expected)
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("getLong(TemporalField) mapping")
+  inner class GetLongMapping {
+    @TestFactory
+    fun `maps to the long value of the specified field`() =
+      listOf<Triple<TemporalAccessor, TemporalField, Long>>(
+        Triple(now, MILLI_OF_SECOND, now.getLong(MILLI_OF_SECOND)),
+        Triple(local, YEAR, Year.from(today).value.toLong()),
+        Triple(local, SECOND_OF_MINUTE, local.second.toLong()),
+        Triple(today, YEAR, Year.from(today).value.toLong())
+      ).map { (subject, field, expected) ->
+        dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Long)") {
+          expect(subject).getLong(field).isEqualTo(expected)
         }
       }
   }

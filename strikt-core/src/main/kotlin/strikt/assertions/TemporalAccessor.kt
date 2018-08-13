@@ -10,6 +10,7 @@ import java.time.Year
 import java.time.YearMonth
 import java.time.chrono.ChronoLocalDate
 import java.time.temporal.TemporalAccessor
+import java.time.temporal.TemporalField
 
 /**
  * Asserts that the subject is before [expected].
@@ -50,3 +51,27 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccess
       else -> throw UnsupportedOperationException("Strikt's isAfter does not (currently) support ${javaClass.simpleName}")
     }
   }
+
+/**
+ * Maps an assertion on the subject to an assertion on the value of the
+ * specified temporal field.
+ *
+ * @throws java.time.temporal.UnsupportedTemporalTypeException if the subject
+ * does not support the [field] type.
+ *
+ * @see TemporalAccessor.get
+ */
+fun <T : TemporalAccessor> Assertion.Builder<T>.get(field: TemporalField): Assertion.Builder<Int> =
+  map { get(field) }
+
+/**
+ * Maps an assertion on the subject to an assertion on the value of the
+ * specified temporal field.
+ *
+ * @throws java.time.temporal.UnsupportedTemporalTypeException if the subject
+ * does not support the [field] type.
+ *
+ * @see TemporalAccessor.getLong
+ */
+fun <T : TemporalAccessor> Assertion.Builder<T>.getLong(field: TemporalField): Assertion.Builder<Long> =
+  map { getLong(field) }
