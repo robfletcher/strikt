@@ -153,7 +153,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder
  * regardless of what order they appear in.
  */
 fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E): Builder<T> =
-  compose("contains exactly the elements %s in any order") {
+  compose("contains exactly the elements %s in any order", elements.toList()) {
     val remaining = subject.toMutableList()
     elements.forEach { element ->
       assert("contains %s", element) {

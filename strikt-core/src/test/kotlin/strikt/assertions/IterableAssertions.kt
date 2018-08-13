@@ -268,6 +268,17 @@ internal class IterableAssertions {
       fun `fails if there are more elements than expected`() {
         fails {
           expect(subject).containsExactly("catflap", "rubberplant")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ …at index 0\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ …at index 1\n" +
+              "    ✗ contains no further elements : found [\"marzipan\"]",
+            error.message
+          )
         }
       }
 
@@ -276,6 +287,20 @@ internal class IterableAssertions {
         fails {
           expect(subject)
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"fnord\"]\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ …at index 0\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ …at index 1\n" +
+              "    ✓ contains \"marzipan\"\n" +
+              "    ✓ …at index 2\n" +
+              "    ✗ contains \"fnord\"\n" +
+              "    ✓ contains no further elements",
+            error.message
+          )
         }
       }
 
@@ -283,6 +308,19 @@ internal class IterableAssertions {
       fun `fails if the order is different`() {
         fails {
           expect(subject).containsExactly("rubberplant", "catflap", "marzipan")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"rubberplant\", \"catflap\", \"marzipan\"]\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✗ …at index 0 : found \"catflap\"\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✗ …at index 1 : found \"rubberplant\"\n" +
+              "    ✓ contains \"marzipan\"\n" +
+              "    ✓ …at index 2\n" +
+              "    ✓ contains no further elements",
+            error.message
+          )
         }
       }
 
@@ -291,6 +329,20 @@ internal class IterableAssertions {
         fails {
           expect(subject)
             .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"marzipan\"]\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ …at index 0\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ …at index 1\n" +
+              "    ✓ contains \"marzipan\"\n" +
+              "    ✓ …at index 2\n" +
+              "    ✗ contains \"marzipan\"\n" +
+              "    ✓ contains no further elements",
+            error.message
+          )
         }
       }
     }
@@ -409,6 +461,15 @@ internal class IterableAssertions {
       fun `fails if there are more elements than expected`() {
         fails {
           expect(subject).containsExactlyInAnyOrder("catflap", "rubberplant")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"] in any order\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✗ contains no further elements : found [\"marzipan\"]",
+            error.message
+          )
         }
       }
 
@@ -417,6 +478,17 @@ internal class IterableAssertions {
         fails {
           expect(subject)
             .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"marzipan\"] in any order\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ contains \"marzipan\"\n" +
+              "    ✗ contains \"marzipan\"\n" +
+              "    ✓ contains no further elements",
+            error.message
+          )
         }
       }
 
@@ -425,6 +497,17 @@ internal class IterableAssertions {
         fails {
           expect(subject)
             .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+        }.let { error ->
+          assertEquals(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"fnord\"] in any order\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ contains \"marzipan\"\n" +
+              "    ✗ contains \"fnord\"\n" +
+              "    ✓ contains no further elements",
+            error.message
+          )
         }
       }
 
