@@ -8,7 +8,6 @@ apply from: "$rootDir/gradle/published.gradle"
 dependencies {
   api project(":strikt-core")
   api "com.google.protobuf:protobuf-java:+"
-//  testImplementation testProtobuf
 }
 
 dokka {
@@ -23,5 +22,16 @@ protobuf {
   }
   generateProtoTasks {
     ofSourceSet("test")
+  }
+}
+
+// This seems to be necessary just to get IntelliJ to notice the proto sources.
+// It works fine from the terminal without this. Also IntelliJ picks up main
+// protos just fine.
+sourceSets {
+  test {
+    kotlin {
+      srcDirs "src/test/kotlin", "$buildDir/generated/source/proto/test/java"
+    }
   }
 }
