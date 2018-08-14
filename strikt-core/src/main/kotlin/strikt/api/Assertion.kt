@@ -3,15 +3,9 @@ package strikt.api
 import kotlin.jvm.internal.CallableReference
 
 /**
- * Allows assertion implementations to assertAll [subject] and determine a
- * result.
+ * Allows assertion implementations to determine a result.
  */
-interface Assertion<T> {
-  /**
-   * The assertion subject.
-   */
-  val subject: T
-
+interface Assertion {
   /**
    * Mark this result as passed.
    */
@@ -56,7 +50,7 @@ interface Assertion<T> {
      */
     fun assert(
       description: String,
-      assert: AtomicAssertion<T>.() -> Unit
+      assert: AtomicAssertion.(T) -> Unit
     ): Builder<T> =
       assert(description, null, assert)
 
@@ -78,7 +72,7 @@ interface Assertion<T> {
     fun assert(
       description: String,
       expected: Any?,
-      assert: AtomicAssertion<T>.() -> Unit
+      assert: AtomicAssertion.(T) -> Unit
     ): Builder<T>
 
     /**
@@ -98,7 +92,7 @@ interface Assertion<T> {
     fun compose(
       description: String,
       expected: Any?,
-      assertions: AssertionComposer<T>.() -> Unit
+      assertions: Builder<T>.(T) -> Unit
     ): CompoundAssertions<T>
 
     /**
@@ -116,7 +110,7 @@ interface Assertion<T> {
      */
     fun compose(
       description: String,
-      assertions: AssertionComposer<T>.() -> Unit
+      assertions: Builder<T>.(T) -> Unit
     ): CompoundAssertions<T> =
       compose(description, null, assertions)
 
@@ -133,7 +127,7 @@ interface Assertion<T> {
     fun passesIf(description: String, assert: T.() -> Boolean): Builder<T> =
       apply {
         assert(description) {
-          if (subject.assert()) pass() else fail()
+          if (it.assert()) pass() else fail()
         }
       }
 
@@ -154,7 +148,7 @@ interface Assertion<T> {
     ): Builder<T> =
       apply {
         assert(description, expected) {
-          if (subject.assert()) pass() else fail()
+          if (it.assert()) pass() else fail()
         }
       }
 

@@ -8,7 +8,7 @@ import strikt.api.Assertion.Builder
 @Suppress("UNCHECKED_CAST")
 fun <T> Builder<T?>.isNull(): Builder<Nothing> =
   assert("is null", null) {
-    when (subject) {
+    when (it) {
       null -> pass()
       else -> fail()
     }
@@ -22,7 +22,7 @@ fun <T> Builder<T?>.isNull(): Builder<Nothing> =
 @Suppress("UNCHECKED_CAST")
 fun <T> Builder<T?>.isNotNull(): Builder<T> =
   assert("is not null") {
-    when (subject) {
+    when (it) {
       null -> fail()
       else -> pass()
     }
@@ -36,10 +36,10 @@ fun <T> Builder<T?>.isNotNull(): Builder<T> =
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> Builder<*>.isA(): Builder<T> =
   assert("is an instance of %s", T::class.java) {
-    when (subject) {
+    when (it) {
       null -> fail(actual = null)
       is T -> pass()
-      else -> fail(actual = subject?.javaClass)
+      else -> fail(actual = it?.javaClass)
     }
   } as Builder<T>
 
@@ -51,9 +51,9 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
  */
 fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
   assert("is equal to %s", expected) {
-    when (subject) {
+    when (it) {
       expected -> pass()
-      else -> fail(actual = subject)
+      else -> fail(actual = it)
     }
   }
 
@@ -65,7 +65,7 @@ fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
  */
 fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
   assert("is not equal to %s", expected) {
-    when (subject) {
+    when (it) {
       expected -> fail()
       else -> pass()
     }
@@ -80,8 +80,8 @@ fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
 fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
   assert("is the same instance as %s", expected) {
     when {
-      subject === expected -> pass()
-      else -> fail(actual = subject)
+      it === expected -> pass()
+      else -> fail(actual = it)
     }
   }
 
@@ -94,7 +94,7 @@ fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
 fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
   assert("is not the same instance as %s", expected) {
     when {
-      subject === expected -> fail()
+      it === expected -> fail()
       else -> pass()
     }
   }

@@ -12,5 +12,5 @@ interface CompoundAssertions<T> {
    * Determine the overall status of a compound assertion based on the results
    * of its child assertions.
    */
-  infix fun then(block: CompoundAssertion<T>.() -> Unit): Builder<T>
+  infix fun then(block: CompoundAssertion.() -> Unit): Builder<T>
 }

@@ -1,7 +1,6 @@
 package strikt.internal
 
 import strikt.api.Assertion.Builder
-import strikt.api.AssertionComposer
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
@@ -17,7 +16,7 @@ internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
   private val mode: Mode, // TODO: can we replace with with just checking for context being top level?
   private val negated: Boolean = false
-) : DescribeableBuilder<T>, AssertionComposer<T> {
+) : DescribeableBuilder<T> {
 
   override fun describedAs(description: String): Builder<T> {
     context.description = description
@@ -27,9 +26,9 @@ internal class AssertionBuilder<T>(
   override fun assert(
     description: String,
     expected: Any?,
-    assert: AtomicAssertion<T>.() -> Unit
+    assert: AtomicAssertion.(T) -> Unit
   ): AssertionBuilder<T> {
-    object : AtomicAssertionNode<T>(context, description, expected), AtomicAssertion<T> {
+    object : AtomicAssertionNode<T>(context, description, expected), AtomicAssertion {
       override val subject: T
         get() = context.subject
 
@@ -53,7 +52,7 @@ internal class AssertionBuilder<T>(
         }
       }
     }
-      .assert()
+      .assert(context.subject)
     throwOnFailure()
     return this
   }
@@ -61,9 +60,9 @@ internal class AssertionBuilder<T>(
   override fun compose(
     description: String,
     expected: Any?,
-    assertions: AssertionComposer<T>.() -> Unit
+    assertions: Builder<T>.(T) -> Unit
   ): CompoundAssertions<T> {
-    val composedContext = object : CompoundAssertionNode<T>(context, description, expected), CompoundAssertion<T> {
+    val composedContext = object : CompoundAssertionNode<T>(context, description, expected), CompoundAssertion {
       override val subject: T
         get() = context.subject
 
@@ -97,10 +96,12 @@ internal class AssertionBuilder<T>(
         get() = children.all { it.status is Passed }
     }
 
-    AssertionBuilder(composedContext, COLLECT, negated).apply(assertions)
+    AssertionBuilder(composedContext, COLLECT, negated).apply {
+      assertions(context.subject)
+    }
     return composedContext.let { result ->
       object : CompoundAssertions<T> {
-        override fun then(block: CompoundAssertion<T>.() -> Unit): Builder<T> {
+        override fun then(block: CompoundAssertion.() -> Unit): Builder<T> {
           result.block()
           throwOnFailure()
           return this@AssertionBuilder
@@ -124,9 +125,6 @@ internal class AssertionBuilder<T>(
     mode,
     !negated
   )
-
-  override val subject: T
-    get() = context.subject
 
   private fun throwOnFailure() {
     if (mode == FAIL_FAST) {
