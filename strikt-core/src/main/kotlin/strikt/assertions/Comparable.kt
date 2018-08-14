@@ -9,7 +9,7 @@ import strikt.api.Assertion.Builder
 fun <T : Comparable<T>> Builder<T>.isGreaterThan(expected: T): Builder<T> =
   assert("is greater than %s", expected) {
     when {
-      subject > expected -> pass()
+      it > expected -> pass()
       else -> fail()
     }
   }
@@ -21,7 +21,7 @@ fun <T : Comparable<T>> Builder<T>.isGreaterThan(expected: T): Builder<T> =
 fun <T : Comparable<T>> Builder<T>.isLessThan(expected: T): Builder<T> =
   assert("is less than %s", expected) {
     when {
-      subject < expected -> pass()
+      it < expected -> pass()
       else -> fail()
     }
   }
@@ -33,7 +33,7 @@ fun <T : Comparable<T>> Builder<T>.isLessThan(expected: T): Builder<T> =
 fun <T : Comparable<T>> Builder<T>.isGreaterThanOrEqualTo(expected: T): Builder<T> =
   assert("is greater than or equal to %s", expected) {
     when {
-      subject >= expected -> pass()
+      it >= expected -> pass()
       else -> fail()
     }
   }
@@ -45,7 +45,7 @@ fun <T : Comparable<T>> Builder<T>.isGreaterThanOrEqualTo(expected: T): Builder<
 fun <T : Comparable<T>> Builder<T>.isLessThanOrEqualTo(expected: T): Builder<T> =
   assert("is less than or equal to %s", expected) {
     when {
-      subject <= expected -> pass()
+      it <= expected -> pass()
       else -> fail()
     }
   }

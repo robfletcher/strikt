@@ -25,10 +25,10 @@ inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): B
     "unpacks to %s",
     getDefaultInstance(T::class.java).descriptorForType.fullName
   ) {
-    if (subject.`is`(T::class.java)) {
+    if (it.`is`(T::class.java)) {
       pass()
     } else {
-      fail(actual = subject.typeUrl)
+      fail(actual = it.typeUrl)
     }
   }
 

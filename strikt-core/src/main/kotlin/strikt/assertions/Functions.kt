@@ -13,7 +13,7 @@ inline fun <reified E : Throwable> Builder<() -> Unit>.throws(): Builder<E> {
   var exception: E? = null
   assert("throws %s", E::class.java) {
     val caught = try {
-      subject()
+      it()
       null
     } catch (e: Throwable) {
       e

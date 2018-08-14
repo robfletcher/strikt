@@ -8,9 +8,9 @@ import kotlin.text.RegexOption.IGNORE_CASE
  */
 fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
   assert("has length %d", expected) {
-    when (subject.length) {
+    when (it.length) {
       expected -> pass()
-      else -> fail(actual = subject.length)
+      else -> fail(actual = it.length)
     }
   }
 

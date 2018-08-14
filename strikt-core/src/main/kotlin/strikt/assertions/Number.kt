@@ -8,7 +8,7 @@ import kotlin.math.absoluteValue
  */
 fun Builder<Double>.isEqualTo(expected: Double, tolerance: Double) =
   assert("is within $tolerance of $expected") {
-    val diff = subject - expected
+    val diff = it - expected
     if (diff.absoluteValue < tolerance)
       pass()
     else
@@ -20,7 +20,7 @@ fun Builder<Double>.isEqualTo(expected: Double, tolerance: Double) =
  */
 fun Builder<Float>.isEqualTo(expected: Float, tolerance: Double) =
   assert("is within $tolerance of $expected") {
-    val diff = subject - expected
+    val diff = it - expected
     if (diff.absoluteValue < tolerance)
       pass()
     else

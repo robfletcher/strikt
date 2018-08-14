@@ -8,7 +8,7 @@ import strikt.api.Assertion.Builder
 fun Builder<String>.isEqualToIgnoringCase(expected: String): Builder<String> =
   assert("is equal to %s (ignoring case)", expected) {
     when {
-      subject.equals(expected, ignoreCase = true) -> pass()
+      it.equals(expected, ignoreCase = true) -> pass()
       else -> fail()
     }
   }
