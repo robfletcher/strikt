@@ -49,7 +49,7 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Builder<T>.isEqualTo(expected: Any?): Builder<T> =
+fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
   assert("is equal to %s", expected) {
     when (subject) {
       expected -> pass()
@@ -63,7 +63,7 @@ fun <T> Builder<T>.isEqualTo(expected: Any?): Builder<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Builder<T>.isNotEqualTo(expected: Any?): Builder<T> =
+fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
   assert("is not equal to %s", expected) {
     when (subject) {
       expected -> fail()

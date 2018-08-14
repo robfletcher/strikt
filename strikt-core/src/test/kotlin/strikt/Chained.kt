@@ -37,7 +37,7 @@ internal class Chained {
   @Test
   fun `not() affects the entire chain`() {
     val subject = "fnord"
-    expect(subject).not().isUpperCase().isA<Int>().isEqualTo(1L)
+    expect(subject).not().isUpperCase().isA<Int>().isEqualTo(1)
   }
 
   @Test

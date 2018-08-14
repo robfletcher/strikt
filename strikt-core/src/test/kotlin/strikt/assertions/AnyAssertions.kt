@@ -149,7 +149,7 @@ internal class AnyAssertions {
     @Test
     fun `specifies type information if the values look the same`() {
       fails {
-        expect(5L).isEqualTo(5)
+        expect<Number>(5L).isEqualTo(5)
       }.let { e ->
         assertEquals(
           """▼ Expect that 5:
