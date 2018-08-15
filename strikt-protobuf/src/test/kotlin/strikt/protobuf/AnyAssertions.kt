@@ -1,11 +1,11 @@
 package strikt.protobuf
 
 import com.google.protobuf.Any
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import rpg.Character
 import rpg.Role
 import rpg.Sword
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
 import strikt.api.expect
 
 @DisplayName("assertions on com.google.protobuf.Any")
@@ -19,8 +19,9 @@ class AnyAssertions {
         name = "Crom"
         role = Role.warrior
       }
+      .build()
 
-    expect(subject).map { weapon }.isEmpty()
+    expect(subject).map(Character::getWeapon).isEmpty()
   }
 
   @Test
@@ -32,7 +33,8 @@ class AnyAssertions {
         role = Role.warrior
         weapon = Any.pack(Sword.newBuilder().setDamage("1d10").build())
       }
+      .build()
 
-    expect(subject).map { weapon }.unpacksTo<Sword>()
+    expect(subject).map(Character::getWeapon).unpacksTo<Sword>()
   }
 }
