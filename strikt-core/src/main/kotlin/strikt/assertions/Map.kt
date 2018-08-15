@@ -17,7 +17,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
  * exists in the subject map.
  */
 operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
-  map("entry [${formatValue(key)}] %s") { get(key) }
+  map("entry [${formatValue(key)}] %s") { it[key] }
 
 /**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on

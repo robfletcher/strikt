@@ -165,7 +165,7 @@ interface Assertion {
      * @return an assertion whose subject is the value returned by [function].
      */
     // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-    fun <R> map(function: T.() -> R): DescribeableBuilder<R> =
+    fun <R> map(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
         is CallableReference -> map(".${function.propertyName} %s", function)
         else -> map("%s", function)
@@ -180,7 +180,7 @@ interface Assertion {
      * @param function a lambda whose receiver is the current assertion subject.
      * @return an assertion whose subject is the value returned by [function].
      */
-    fun <R> map(description: String, function: T.() -> R): DescribeableBuilder<R>
+    fun <R> map(description: String, function: (T) -> R): DescribeableBuilder<R>
 
     /**
      * Reverses any assertions chained after this method.

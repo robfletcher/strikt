@@ -110,8 +110,8 @@ internal class AssertionBuilder<T>(
     }
   }
 
-  override fun <R> map(description: String, function: T.() -> R): DescribeableBuilder<R> =
-    context.subject.function()
+  override fun <R> map(description: String, function: (T) -> R): DescribeableBuilder<R> =
+    function(context.subject)
       .let { mappedValue ->
         AssertionBuilder(
           AssertionSubject(context, mappedValue, description),
