@@ -70,7 +70,7 @@ internal class Chained {
       assertEquals(expected, error.message)
       expect(error)
         .isA<CompoundAssertionFailure>()
-        .map { failures }
+        .map { it.failures }
         .hasSize(1)
         .first()
         .isA<AtomicAssertionFailure>()

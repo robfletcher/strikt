@@ -80,8 +80,8 @@ internal class Mapping {
     @Test
     fun `can map with a closure`() {
       expect(subject) {
-        map { name }.isEqualTo("David")
-        map { birthDate.year }.isEqualTo(1947)
+        map { it.name }.isEqualTo("David")
+        map { it.birthDate.year }.isEqualTo(1947)
       }
     }
 
@@ -96,8 +96,8 @@ internal class Mapping {
     @Test
     fun `closures can call methods`() {
       expect(subject) {
-        map { name.toUpperCase() }.isEqualTo("DAVID")
-        map { birthDate.plusYears(69).plusDays(2) }
+        map { it.name.toUpperCase() }.isEqualTo("DAVID")
+        map { it.birthDate.plusYears(69).plusDays(2) }
           .isEqualTo(LocalDate.of(2016, 1, 10))
       }
     }
@@ -106,8 +106,8 @@ internal class Mapping {
     fun `can be described`() {
       fails {
         expect(subject) {
-          map { name }.describedAs("name").isEqualTo("Ziggy")
-          map { birthDate.year }.describedAs("birth year").isEqualTo(1971)
+          map { it.name }.describedAs("name").isEqualTo("Ziggy")
+          map { it.birthDate.year }.describedAs("birth year").isEqualTo(1971)
         }
       }.let { e ->
         assertEquals(
