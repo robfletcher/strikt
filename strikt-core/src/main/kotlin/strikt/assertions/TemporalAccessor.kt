@@ -20,15 +20,15 @@ import java.time.temporal.TemporalField
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAccessor): Assertion.Builder<T> =
   passesIf("is before %s", expected) {
-    when (this) {
-      is Instant -> isBefore(Instant.from(expected))
-      is ChronoLocalDate -> isBefore(LocalDate.from(expected))
-      is LocalTime -> isBefore(LocalTime.from(expected))
-      is MonthDay -> isBefore(MonthDay.from(expected))
-      is OffsetTime -> isBefore(OffsetTime.from(expected))
-      is Year -> isBefore(Year.from(expected))
-      is YearMonth -> isBefore(YearMonth.from(expected))
-      else -> throw UnsupportedOperationException("Strikt's isBefore does not (currently) support ${javaClass.simpleName}")
+    when (it) {
+      is Instant -> it.isBefore(Instant.from(expected))
+      is ChronoLocalDate -> it.isBefore(LocalDate.from(expected))
+      is LocalTime -> it.isBefore(LocalTime.from(expected))
+      is MonthDay -> it.isBefore(MonthDay.from(expected))
+      is OffsetTime -> it.isBefore(OffsetTime.from(expected))
+      is Year -> it.isBefore(Year.from(expected))
+      is YearMonth -> it.isBefore(YearMonth.from(expected))
+      else -> throw UnsupportedOperationException("Strikt's isBefore does not (currently) support ${it.javaClass.simpleName}")
     }
   }
 
@@ -40,15 +40,15 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAcces
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccessor): Assertion.Builder<T> =
   passesIf("is before %s", expected) {
-    when (this) {
-      is Instant -> isAfter(Instant.from(expected))
-      is ChronoLocalDate -> isAfter(LocalDate.from(expected))
-      is LocalTime -> isAfter(LocalTime.from(expected))
-      is MonthDay -> isAfter(MonthDay.from(expected))
-      is OffsetTime -> isAfter(OffsetTime.from(expected))
-      is Year -> isAfter(Year.from(expected))
-      is YearMonth -> isAfter(YearMonth.from(expected))
-      else -> throw UnsupportedOperationException("Strikt's isAfter does not (currently) support ${javaClass.simpleName}")
+    when (it) {
+      is Instant -> it.isAfter(Instant.from(expected))
+      is ChronoLocalDate -> it.isAfter(LocalDate.from(expected))
+      is LocalTime -> it.isAfter(LocalTime.from(expected))
+      is MonthDay -> it.isAfter(MonthDay.from(expected))
+      is OffsetTime -> it.isAfter(OffsetTime.from(expected))
+      is Year -> it.isAfter(Year.from(expected))
+      is YearMonth -> it.isAfter(YearMonth.from(expected))
+      else -> throw UnsupportedOperationException("Strikt's isAfter does not (currently) support ${it.javaClass.simpleName}")
     }
   }
 

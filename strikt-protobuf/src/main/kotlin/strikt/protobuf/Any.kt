@@ -11,7 +11,7 @@ import strikt.api.Assertion.Builder
  */
 fun Builder<com.google.protobuf.Any>.isEmpty() {
   passesIf("is empty") {
-    value == ByteString.EMPTY
+    it.value == ByteString.EMPTY
   }
 }
 

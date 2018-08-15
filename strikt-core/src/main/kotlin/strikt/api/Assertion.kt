@@ -124,10 +124,10 @@ interface Assertion {
      * @return this assertion, in order to facilitate a fluent API.
      */
     // TODO: this name sucks
-    fun passesIf(description: String, assert: T.() -> Boolean): Builder<T> =
+    fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
       apply {
         assert(description) {
-          if (it.assert()) pass() else fail()
+          if (assert(it)) pass() else fail()
         }
       }
 
@@ -144,11 +144,11 @@ interface Assertion {
     fun passesIf(
       description: String,
       expected: Any?,
-      assert: T.() -> Boolean
+      assert: (T) -> Boolean
     ): Builder<T> =
       apply {
         assert(description, expected) {
-          if (it.assert()) pass() else fail()
+          if (assert(it)) pass() else fail()
         }
       }
 

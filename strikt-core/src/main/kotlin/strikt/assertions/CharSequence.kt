@@ -19,7 +19,7 @@ fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
   passesIf("is lower case") {
-    all { it.isLowerCase() }
+    it.all { it.isLowerCase() }
   }
 
 /**
@@ -27,7 +27,7 @@ fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
   passesIf("is upper case") {
-    all { it.isUpperCase() }
+    it.all { it.isUpperCase() }
   }
 
 /**
@@ -35,7 +35,7 @@ fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
   passesIf("starts with %s", expected) {
-    startsWith(expected)
+    it.startsWith(expected)
   }
 
 /**
@@ -43,7 +43,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T> =
   passesIf("starts with %s", expected) {
-    startsWith(expected)
+    it.startsWith(expected)
   }
 
 /**
@@ -52,7 +52,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T>
  */
 fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
   passesIf("matches the regular expression %s", expected) {
-    matches(expected)
+    it.matches(expected)
   }
 
 /**
@@ -60,9 +60,9 @@ fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<T> =
-  passesIf("matches the regular expression %s (ignoring case)", expected) {
+  passesIf("matches the regular expression %s (ignoring case)", expected) { subject ->
     Regex(expected.pattern, IGNORE_CASE).let {
-      matches(it)
+      subject.matches(it)
     }
   }
 
@@ -72,7 +72,7 @@ fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<
  */
 fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
   passesIf("contains a match for the regular expression %s", expected) {
-    contains(expected)
+    it.contains(expected)
   }
 
 /**
@@ -80,9 +80,9 @@ fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder<T> =
-  passesIf("contains a match for the regular expression %s (ignoring case)", expected) {
+  passesIf("contains a match for the regular expression %s (ignoring case)", expected) { subject ->
     Regex(expected.pattern, IGNORE_CASE).let {
-      contains(it)
+      subject.contains(it)
     }
   }
 
@@ -91,7 +91,7 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder
  */
 fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
   passesIf("contains %s", expected) {
-    contains(expected)
+    it.contains(expected)
   }
 
 /**
@@ -100,7 +100,7 @@ fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): Builder<T> =
   passesIf("contains %s (ignoring case)", expected) {
-    contains(expected, ignoreCase = true)
+    it.contains(expected, ignoreCase = true)
   }
 
 /**

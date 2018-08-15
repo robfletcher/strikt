@@ -7,7 +7,7 @@ import strikt.internal.reporting.formatValue
  * Asserts that the subject map is empty.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
-  passesIf("is empty") { isEmpty() }
+  passesIf("is empty") { it.isEmpty() }
 
 /**
  * Maps this assertion to an assertion on the value indexed by [key] in the
@@ -26,7 +26,7 @@ operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
   passesIf("has an entry with the key %s", key) {
-    containsKey(key)
+    it.containsKey(key)
   }
 
 /**
