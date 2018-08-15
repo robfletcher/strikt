@@ -23,15 +23,15 @@ Strikt allows for this using the `Assertion.Builder<T>.map` method.
 
 ## Mapping with lambdas
 
-The method takes a lambda whose receiver is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
+The method takes a lambda whose parameter is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
 
 This is sometimes useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expect(subject) {
-  map { name }.isEqualTo("David")
-  map { birthDate.year }.isEqualTo(1947)
+  map { it.name }.isEqualTo("David")
+  map { it.birthDate.year }.isEqualTo(1947)
 }
 ```
 
@@ -80,7 +80,7 @@ val Assertion.Builder<Person>.name: Assertion.Builder<String>
   get() = map(Person::name)
 
 val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
-  get() = map { dateOfBirth.year }
+  get() = map("year of birth") { it.dateOfBirth.year }
 ```
 
 You can then write the earlier example as:

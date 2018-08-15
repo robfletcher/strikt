@@ -221,8 +221,8 @@ expect(subject)                // type: Assertion&lt;Any?&gt;
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.ERIS
 expect(subject)
-  .map(Deity::realm)  // reference to a property
-  .map { toString() } // return type of a method call
+  .map(Deity::realm)     // reference to a property
+  .map { it.toString() } // return type of a method call
   .isEqualTo("discord and confusion")</code></pre>
           </div>
         </section>
@@ -244,7 +244,7 @@ expect(subject)
           <div class="column is-8">
         <pre class="notification content is-medium is-dark"><code>fun Assertion.Builder&lt;LocalDate&gt;.isStTibsDay() =
   assert("is St. Tib's Day") {
-    when (MonthDay.from(subject)) {
+    when (MonthDay.from(it)) {
       MonthDay.of(2, 29) -> pass()
       else               -> fail()
     }

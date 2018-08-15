@@ -23,7 +23,7 @@ Let's imagine we're implementing an assertion function for `java.time.LocalDate`
 ```kotlin
 fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   assert("is St. Tib's Day") { 
-    when (MonthDay.from(subject)) {
+    when (MonthDay.from(it)) {
       MonthDay.of(2, 29) -> pass()
       else               -> fail()
     }
@@ -35,7 +35,7 @@ Breaking this down:
 1. We declare the assertion function applies only to `Assertion.Builder<LocalDate>`.
 2. Note that the function also returns `Assertion.Builder<LocalDate>` so we can include this assertion as part of a chain.
 3. We call `assert` passing a description of the assertion and a lambda with the assertion logic.
-4. If `subject` is the value we want we call `pass()` otherwise we call `fail()`
+4. If `it` (the test subject) is the value we want we call `pass()` otherwise we call `fail()`
 
 If this assertion fails it will produce a message like:
 
@@ -45,8 +45,9 @@ If this assertion fails it will produce a message like:
 ```
 
 !!! note
-    The method `assert` accepts a description for the assertion being made and a lambda function `Assertion<T>.() -> Unit`.
-    That `Assertion<T>` receiver provides the lambda everything it needs to access the `subject` of the assertion and report the result via the `pass()` or `fail()` method.
+    The method `assert` accepts a description for the assertion being made and a lambda function `Assertion<T>.(T) -> Unit`.
+    The parameter passed to the lambda is the assertion subject.
+    The `Assertion<T>` receiver provides the lambda the `pass()` and `fail()` methods for reporting the assertion result.
 
 ## Describing the "actual" value
 
@@ -59,7 +60,7 @@ The message string should contain a format placeholder for the value.
 ```kotlin
 fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   assert("is St. Tib's Day") { 
-    when (MonthDay.from(subject)) {
+    when (MonthDay.from(it)) {
       MonthDay.of(2, 29) -> pass()
       else               -> fail(
         message = "in fact it is %s", 
@@ -80,14 +81,14 @@ In this case that's not terribly helpful but when dealing with properties, metho
 
 ## Simple atomic assertions with boolean expressions
 
-For the simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose receiver is the assertion subject that returns a boolean.
+For the simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose parameter is the assertion subject that returns a boolean.
 
 We can re-implement the example above like this:
 
 ```kotlin
 fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
   passesIf("is St. Tib's Day") { 
-    MonthDay.from(this) == MonthDay.of(2, 29)
+    MonthDay.from(it) == MonthDay.of(2, 29)
   }
 ```
 
@@ -107,7 +108,7 @@ Imagine we're creating an assertion function that tests fails if any element of 
 
 ```kotlin
 fun <T: Iterable<E?>, E> Assertion.Builder<T>.containsNoNullElements(): Assertion.Builder<T> =
-  compose("does not contain any null elements") {
+  compose("does not contain any null elements") { subject ->
     subject.forEach {
       expect(it).isNotNull()
     }
@@ -123,7 +124,7 @@ Breaking this down:
 3. Inside the `compose` block we make assertions about each element of the iterable subject.
 4. Inside the `then` block we pass or fail the overall assertion depending on whether the nested assertions all passed.
 
-The receiver of the block passed to `result` has the properties `allFailed`, `anyFailed`, `allPassed` and `anyPassed` along with `pass()` and `fail()` functions similar to those used in simple assertions.
+The receiver of the block passed to `result` has the properties `allFailed`, `anyFailed`, `allPassed` and `anyPassed` along with `pass()` and `fail()` functions used in simple assertions.
 
 If the assertion failed we'll see something like this:
 
