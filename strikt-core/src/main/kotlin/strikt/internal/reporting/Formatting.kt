@@ -24,6 +24,13 @@ internal fun formatValue(value: Any?): Any =
     is CharSequence -> "\"$value\""
     is Char -> "'$value'"
     is Iterable<*> -> value.map(::formatValue)
+    is ByteArray -> "0x${value.toHex()}"
+    is CharArray -> value.map(::formatValue)
+    is ShortArray -> value.map(::formatValue)
+    is IntArray -> value.map(::formatValue)
+    is LongArray -> value.map(::formatValue)
+    is FloatArray -> value.map(::formatValue)
+    is DoubleArray -> value.map(::formatValue)
     is Array<*> -> value.map(::formatValue)
     is Class<*> -> value.name
     is Regex -> "/${value.pattern}/"
@@ -32,3 +39,14 @@ internal fun formatValue(value: Any?): Any =
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
     else -> value
   }
+
+private val hexArray = "0123456789ABCDEF".toCharArray()
+fun ByteArray.toHex(): String {
+  val hexChars = CharArray(size * 2)
+  for (j in indices) {
+    val v: Int = this[j].toInt() and 0xFF
+    hexChars[j * 2] = hexArray[v ushr 4]
+    hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+  }
+  return String(hexChars)
+}
