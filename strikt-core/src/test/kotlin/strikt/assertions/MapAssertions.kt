@@ -112,7 +112,7 @@ internal class MapAssertions {
         assertEquals(
           "▼ Expect that {foo=bar}:\n" +
             "  ✓ has an entry with the key \"foo\"\n" +
-            "  ▼ Expect that entry [\"foo\"] \"bar\":\n" +
+            "  ▼ entry [\"foo\"]:\n" +
             "    ✗ is equal to \"baz\" : found \"bar\"",
           e.message
         )

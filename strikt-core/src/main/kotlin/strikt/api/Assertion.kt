@@ -1,6 +1,8 @@
 package strikt.api
 
 import kotlin.jvm.internal.CallableReference
+import kotlin.reflect.KFunction
+import kotlin.reflect.KProperty
 
 /**
  * Allows assertion implementations to determine a result.
@@ -167,7 +169,9 @@ interface Assertion {
     // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
     fun <R> map(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
-        is CallableReference -> map(".${function.propertyName} %s", function)
+        is KProperty<*> -> map("value of property ${function.name}", function)
+        is KFunction<*> -> map("return value of ${function.name}", function)
+        is CallableReference -> map("value of ${function.propertyName}", function)
         else -> map("%s", function)
       }
 

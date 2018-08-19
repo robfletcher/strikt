@@ -27,5 +27,9 @@ inline fun <reified E : Throwable> Builder<() -> Unit>.throws(): Builder<E> {
       else -> fail(actual = caught.javaClass, description = "%s was thrown", cause = caught)
     }
   }
-  return if (exception != null) map { exception!! } else throw IllegalStateException()
+  return if (exception != null) {
+    map("thrown exception") { exception!! }
+  } else {
+    throw IllegalStateException()
+  }
 }

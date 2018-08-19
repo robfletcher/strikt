@@ -42,13 +42,13 @@ internal class Block {
       }
     }.let { error ->
       val expected = "▼ Expect that \"fnord\":\n" +
-        "  ▼ Expect that \"fnord\" does not match:\n" +
+        "  ▼ does not match:\n" +
         "    ✓ is null\n" +
-        "  ▼ Expect that \"fnord\" does not match:\n" +
+        "  ▼ does not match:\n" +
         "    ✗ is not null\n" +
-        "  ▼ Expect that \"fnord\" does not match:\n" +
+        "  ▼ does not match:\n" +
         "    ✗ is an instance of java.lang.String\n" +
-        "  ▼ Expect that \"fnord\" does not match:\n" +
+        "  ▼ does not match:\n" +
         "    ✓ is an instance of java.lang.Number"
       assertEquals(expected, error.message)
     }

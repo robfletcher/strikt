@@ -49,6 +49,8 @@ internal class AssertionSubject<S>(
   override val root: AssertionNode<*>
     get() = parent?.root ?: this
 
+  val isRoot = root === this
+
   init {
     parent?.also { it.append(this) }
   }

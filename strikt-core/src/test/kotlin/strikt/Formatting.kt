@@ -27,11 +27,11 @@ internal class Formatting {
       "▼ Expect that a couple of words:\n" +
         "  ✓ has size 3\n" +
         "  ✗ all elements match:\n" +
-        "    ▼ Expect that \"catflap\":\n" +
+        "    ▼ \"catflap\":\n" +
         "      ✗ is upper case\n" +
-        "    ▼ Expect that \"rubberplant\":\n" +
+        "    ▼ \"rubberplant\":\n" +
         "      ✗ is upper case\n" +
-        "    ▼ Expect that \"marzipan\":\n" +
+        "    ▼ \"marzipan\":\n" +
         "      ✗ is upper case"
     assertEquals(expected, e.message)
   }
@@ -53,13 +53,13 @@ internal class Formatting {
       "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
         "  ✗ has size 0 : found 3\n" +
         "  ✗ all elements match:\n" +
-        "    ▼ Expect that \"catflap\":\n" +
+        "    ▼ \"catflap\":\n" +
         "      ✗ is upper case\n" +
         "      ✓ starts with 'c'\n" +
-        "    ▼ Expect that \"rubberplant\":\n" +
+        "    ▼ \"rubberplant\":\n" +
         "      ✗ is upper case\n" +
         "      ✗ starts with 'c'\n" +
-        "    ▼ Expect that \"marzipan\":\n" +
+        "    ▼ \"marzipan\":\n" +
         "      ✗ is upper case\n" +
         "      ✗ starts with 'c'"
     assertEquals(expected, e.message)
@@ -81,11 +81,11 @@ internal class Formatting {
       "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
         "  ✓ has size 3\n" +
         "  ✗ all elements match:\n" +
-        "    ▼ Expect that \"catflap\":\n" +
+        "    ▼ \"catflap\":\n" +
         "      ✓ starts with 'c'\n" +
-        "    ▼ Expect that \"rubberplant\":\n" +
+        "    ▼ \"rubberplant\":\n" +
         "      ✗ starts with 'c'\n" +
-        "    ▼ Expect that \"marzipan\":\n" +
+        "    ▼ \"marzipan\":\n" +
         "      ✗ starts with 'c'"
 
     assertEquals(expected, e.message)

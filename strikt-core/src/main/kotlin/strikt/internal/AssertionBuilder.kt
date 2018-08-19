@@ -135,7 +135,7 @@ internal class AssertionBuilder<T>(
       }
 
   override fun not(): Builder<T> = AssertionBuilder(
-    AssertionSubject(context, context.subject, "%s does not match"),
+    AssertionSubject(context, context.subject, "does not match"),
     mode,
     !negated
   )

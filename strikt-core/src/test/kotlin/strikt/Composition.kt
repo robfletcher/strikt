@@ -21,7 +21,7 @@ internal class Composition {
     }.let { error ->
       val expected = "▼ Expect that \"fnord\":\n" +
         "  ✗ matches a negated assertion\n" +
-        "    ▼ Expect that \"fnord\" does not match:\n" +
+        "    ▼ does not match:\n" +
         "      ✗ is lower case\n" +
         "      ✗ has length 5"
       assertEquals(expected, error.message)

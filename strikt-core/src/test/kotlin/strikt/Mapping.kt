@@ -65,8 +65,8 @@ internal class Mapping {
     }.message.isEqualTo(
       "▼ Expect that () -> kotlin.Unit:\n" +
         "  ✓ throws java.lang.IllegalStateException\n" +
-        "  ▼ Expect that java.lang.IllegalStateException:\n" +
-        "    ▼ Expect that .message null:\n" +
+        "  ▼ thrown exception:\n" +
+        "    ▼ value of property message:\n" +
         "      ✗ is not null")
   }
 
@@ -112,9 +112,9 @@ internal class Mapping {
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ Expect that name:\n" +
+            "  ▼ name:\n" +
             "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
-            "  ▼ Expect that birth year:\n" +
+            "  ▼ birth year:\n" +
             "    ✗ is equal to 1971 : found 1947",
           e.message
         )
@@ -128,7 +128,7 @@ internal class Mapping {
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ Expect that .name \"${subject.name}\":\n" +
+            "  ▼ value of property name:\n" +
             "    ✗ is equal to \"Ziggy\" : found \"David\"",
           e.message
         )
@@ -143,8 +143,8 @@ internal class Mapping {
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ Expect that .birthDate ${subject.birthDate}:\n" +
-            "    ▼ Expect that .year ${subject.birthDate.year}:\n" +
+            "  ▼ value of property birthDate:\n" +
+            "    ▼ return value of getYear:\n" + // TODO: treat as property ref
             "      ✗ is equal to 1971 : found 1947",
           e.message
         )

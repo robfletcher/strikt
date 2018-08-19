@@ -10,7 +10,7 @@ import strikt.api.expect
 import strikt.fails
 import strikt.internal.reporting.toHex
 import java.lang.System.nanoTime
-import java.util.Random
+import java.util.*
 
 @DisplayName("assertions on array types")
 internal class ArrayAssertions {
@@ -67,7 +67,7 @@ internal class ArrayAssertions {
         }
       }
   }
-
-  private fun randomBytes(): ByteArray =
-    ByteArray(20).also(Random(nanoTime())::nextBytes)
 }
+
+internal fun randomBytes(): ByteArray =
+  ByteArray(20).also(Random(nanoTime())::nextBytes)

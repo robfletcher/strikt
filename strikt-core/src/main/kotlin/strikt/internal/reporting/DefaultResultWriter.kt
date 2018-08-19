@@ -46,8 +46,10 @@ internal open class DefaultResultWriter : ResultWriter {
   private fun AssertionSubject<*>.writeSubject(writer: Appendable, indent: Int) {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
+    if (isRoot) {
+      writer.append("Expect that ")
+    }
     writer
-      .append("Expect that ")
       .append(description.format(formatValue(subject)))
       .append(":")
   }
