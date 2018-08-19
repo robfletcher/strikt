@@ -10,6 +10,22 @@ nextPage=flow-typing.html
 
 This section contains some common uses of Strikt's standard assertion library.
 
+## Grouping assertions after a null-check
+
+If the declared type of the assertion subject is nullable it can be awkward to use a block of assertions directly with `expect` as every individual assertion in the block needs to deal with the nullable type.
+Instead Strikt provides the `and` method that may be used to add a block of assertions to a chain.
+For example:
+
+```kotlin
+expect(subject)
+  .isNotNull()
+  .and {
+    // perform other assertions on a known non-null subject 
+  }
+```
+
+The type after `expect` is `Assertion.Builder<T?>` (assuming `subject` has a nullable declared type) but the receiever of `and` is `Assertion.Builder<T>` as `isNotNull` has narrowed the subject type.
+
 ## Assertions on elements of a collection
 
 Some assertions on collections include sub-assertions applied to the elements of the collection.
