@@ -10,7 +10,7 @@ import strikt.api.expect
 import strikt.fails
 import strikt.internal.reporting.toHex
 import java.lang.System.nanoTime
-import java.util.*
+import java.util.Random
 
 @DisplayName("assertions on array types")
 internal class ArrayAssertions {
