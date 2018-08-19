@@ -1,7 +1,6 @@
 package strikt.api
 
 import kotlin.jvm.internal.CallableReference
-import kotlin.reflect.KProperty
 
 /**
  * Allows assertion implementations to determine a result.
