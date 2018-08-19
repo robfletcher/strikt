@@ -1,6 +1,7 @@
 package strikt.api
 
 import kotlin.jvm.internal.CallableReference
+import kotlin.reflect.KProperty
 
 /**
  * Allows assertion implementations to determine a result.
@@ -189,6 +190,17 @@ interface Assertion {
      * its subject.
      */
     fun not(): Builder<T>
+
+    /**
+     * Evaluates a block of assertions on the current subject.
+     *
+     * The main use for this method is after [strikt.assertions.isNotNull] when
+     * the original subject is a nullable type and you want to perform a group
+     * of assertions after ensuring it is not `null`.
+     */
+    fun and(
+      assertions: Builder<T>.(T) -> Unit
+    ): Builder<T>
 
     private val CallableReference.propertyName: String
       get() = "^get(.+)$".toRegex().find(name).let { match ->

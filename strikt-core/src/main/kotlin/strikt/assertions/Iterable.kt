@@ -67,6 +67,7 @@ fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> {
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
+  // TODO: if elements is size 1 don't use compose
   return compose("contains the elements %s", elements) {
     elements.forEach { element ->
       assert("contains %s", element) { subject ->

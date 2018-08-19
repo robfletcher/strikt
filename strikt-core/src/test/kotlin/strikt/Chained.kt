@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expect
+import strikt.assertions.contains
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.hasSize
@@ -74,6 +75,31 @@ internal class Chained {
         .hasSize(1)
         .first()
         .isA<AtomicAssertionFailure>()
+    }
+  }
+
+  @Test
+  fun `can connect a block to a chain with and`() {
+    fails {
+      val subject: String? = "fnord"
+      expect(subject)
+        .isNotNull()
+        .and {
+          isLowerCase()
+          contains("f")
+          contains("n")
+          contains("z")
+        }
+    }.let { error ->
+      assertEquals(
+        "▼ Expect that \"fnord\":\n" +
+          "  ✓ is not null\n" +
+          "  ✓ is lower case\n" +
+          "  ✓ contains \"f\"\n" +
+          "  ✓ contains \"n\"\n" +
+          "  ✗ contains \"z\"",
+        error.message
+      )
     }
   }
 }

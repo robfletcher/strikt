@@ -1,5 +1,6 @@
 package strikt.internal
 
+import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
@@ -20,6 +21,19 @@ internal class AssertionBuilder<T>(
 
   override fun describedAs(description: String): Builder<T> {
     context.description = description
+    return this
+  }
+
+  override fun and(
+    assertions: Assertion.Builder<T>.(T) -> Unit
+  ): Assertion.Builder<T> {
+    AssertionBuilder(context, COLLECT)
+      .also { nestedBuilder ->
+        nestedBuilder.assertions(context.subject)
+        if (mode == FAIL_FAST) {
+          context.toError()?.let { throw it }
+        }
+      }
     return this
   }
 
