@@ -202,7 +202,7 @@ interface Assertion {
      * of assertions after ensuring it is not `null`.
      */
     fun and(
-      assertions: Builder<T>.(T) -> Unit
+      assertions: Builder<T>.() -> Unit
     ): Builder<T>
 
     private val CallableReference.propertyName: String
