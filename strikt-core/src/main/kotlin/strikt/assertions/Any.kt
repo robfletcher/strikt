@@ -1,6 +1,7 @@
 package strikt.assertions
 
 import strikt.api.Assertion.Builder
+import kotlin.reflect.full.memberProperties
 
 /**
  * Asserts that the subject is `null`.
@@ -97,4 +98,18 @@ fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
       it === expected -> fail()
       else -> pass()
     }
+  }
+
+fun <T : Any> Builder<T>.allPropertiesAreEqualTo(other: T): Builder<T> =
+  compose("is equal field-by-field to %s", other) {
+    it.javaClass.kotlin.memberProperties.forEach { property ->
+      when {
+        property.returnType.javaClass.isArray ->
+          map(property).isA<Array<*>>().contentEquals(other as Array<*>)
+        else ->
+          map(property).isEqualTo(property.get(other))
+      }
+    }
+  } then {
+    if (allPassed) pass() else fail()
   }
