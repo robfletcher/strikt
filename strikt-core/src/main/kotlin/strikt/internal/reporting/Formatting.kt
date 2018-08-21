@@ -19,11 +19,14 @@ private fun Any.withTypeSuffix(typeOf: Any?) =
   }
 
 internal fun formatValue(value: Any?): Any =
+
   when (value) {
     null -> "null"
     is CharSequence -> "\"$value\""
     is Char -> "'$value'"
-    is Iterable<*> -> value.map(::formatValue)
+    is Iterable<*> -> if (preferToString(value.javaClass)) "\"$value\""
+      else
+      value.map(::formatValue)
     is ByteArray -> "0x${value.toHex()}"
     is CharArray -> value.map(::formatValue)
     is ShortArray -> value.map(::formatValue)
@@ -39,6 +42,8 @@ internal fun formatValue(value: Any?): Any =
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
     else -> value
   }
+
+fun preferToString(javaClass: Class<*>): Boolean = javaClass.getMethod("toString").declaringClass == javaClass
 
 private val hexArray = "0123456789ABCDEF".toCharArray()
 fun ByteArray.toHex(): String {
