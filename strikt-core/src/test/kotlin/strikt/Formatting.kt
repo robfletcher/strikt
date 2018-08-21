@@ -109,7 +109,7 @@ internal class Formatting {
     expect(e.message).isNotNull().contains(whatWeWant).not().contains(whatWeDontWant)
   }
   @Test
-  fun `iterable is used when there is now own toString method`() {
+  fun `iterable is used when there is no own toString method`() {
     val whatWeWant = "useful iterable info"
 
     class IterableWithToString : Iterable<String> {
