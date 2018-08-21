@@ -108,4 +108,17 @@ internal class Formatting {
 
     expect(e.message).isNotNull().contains(whatWeWant).not().contains(whatWeDontWant)
   }
+  @Test
+  fun `iterable is used when there is now own toString method`() {
+    val whatWeWant = "useful iterable info"
+
+    class IterableWithToString : Iterable<String> {
+      override fun iterator(): Iterator<String> = listOf(whatWeWant).iterator()
+    }
+    val e = fails {
+      val subject = IterableWithToString()
+      expect(subject) { isNotEqualTo(subject) } }
+
+    expect(e.message).isNotNull().contains(whatWeWant)
+  }
 }
