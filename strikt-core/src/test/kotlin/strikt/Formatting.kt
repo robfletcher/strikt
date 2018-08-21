@@ -93,32 +93,41 @@ internal class Formatting {
 
     assertEquals(expected, e.message)
   }
+
   @Test
   fun `an own toString is preferred to mapping over iterable`() {
-    val whatWeWant = "useful toString info"
-    val whatWeDontWant = "what we don't want"
+    val toStringOutput = "useful toString info"
+    val iteratorOutput = "less useful iterator output"
 
     class IterableWithToString : Iterable<String> {
-      override fun iterator(): Iterator<String> = listOf(whatWeDontWant).iterator()
-      override fun toString(): String = whatWeWant
+      override fun iterator(): Iterator<String> = listOf(iteratorOutput).iterator()
+      override fun toString(): String = toStringOutput
     }
+
     val e = fails {
       val subject = IterableWithToString()
-      expect(subject) { isNotEqualTo(subject) } }
+      expect(subject) { isNotEqualTo(subject) }
+    }
 
-    expect(e.message).isNotNull().contains(whatWeWant).not().contains(whatWeDontWant)
+    expect(e.message).isNotNull().and {
+      contains(toStringOutput)
+      not().contains(iteratorOutput)
+    }
   }
+
   @Test
   fun `iterable is used when there is no own toString method`() {
-    val whatWeWant = "useful iterable info"
+    val iteratorOutput = "useful iterable info"
 
     class IterableWithToString : Iterable<String> {
-      override fun iterator(): Iterator<String> = listOf(whatWeWant).iterator()
+      override fun iterator(): Iterator<String> = listOf(iteratorOutput).iterator()
     }
+
     val e = fails {
       val subject = IterableWithToString()
-      expect(subject) { isNotEqualTo(subject) } }
+      expect(subject) { isNotEqualTo(subject) }
+    }
 
-    expect(e.message).isNotNull().contains(whatWeWant)
+    expect(e.message).isNotNull().contains(iteratorOutput)
   }
 }
