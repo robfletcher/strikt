@@ -5,7 +5,10 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.all
+import strikt.assertions.contains
 import strikt.assertions.hasSize
+import strikt.assertions.isNotEqualTo
+import strikt.assertions.isNotNull
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
 
@@ -89,5 +92,20 @@ internal class Formatting {
         "      ✗ starts with 'c'"
 
     assertEquals(expected, e.message)
+  }
+  @Test
+  fun `an own toString is preferred to mapping over iterable`() {
+    val whatWeWant = "useful toString info"
+    val whatWeDontWant = "what we don't want"
+
+    class IterableWithToString : Iterable<String> {
+      override fun iterator(): Iterator<String> = listOf(whatWeDontWant).iterator()
+      override fun toString(): String = whatWeWant
+    }
+    val e = fails {
+      val subject = IterableWithToString()
+      expect(subject) { isNotEqualTo(subject) } }
+
+    expect(e.message).isNotNull().contains(whatWeWant).not().contains(whatWeDontWant)
   }
 }
