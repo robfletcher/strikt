@@ -40,7 +40,7 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
     when (it) {
       null -> fail(actual = null)
       is T -> pass()
-      else -> fail(actual = it?.javaClass)
+      else -> fail(actual = it.javaClass)
     }
   } as Builder<T>
 

@@ -25,11 +25,11 @@ internal class AssertionBuilder<T>(
   }
 
   override fun and(
-    assertions: Assertion.Builder<T>.(T) -> Unit
+    assertions: Assertion.Builder<T>.() -> Unit
   ): Assertion.Builder<T> {
     AssertionBuilder(context, COLLECT)
       .also { nestedBuilder ->
-        nestedBuilder.assertions(context.subject)
+        nestedBuilder.assertions()
         if (mode == FAIL_FAST) {
           context.toError()?.let { throw it }
         }
