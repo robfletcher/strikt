@@ -36,13 +36,14 @@ interface Assertion {
      * Evaluates a condition that may pass or fail.
      *
      * While this method _can_ be used directly in a test but is typically used
-     * inside an extension method on `Assertion<T>` such as those provided in the
-     * [strikt.assertions] package.
+     * inside an extension method on `Assertion.Builder<T>` such as those
+     * provided in the [strikt.assertions] package.
      *
-     * @param description a description for the condition the assertion evaluates.
+     * @param description a description for the condition the assertion
+     * evaluates.
      * @param assert the assertion implementation that should result in a call
      * to [Assertion.pass] or [Assertion.fail].
-     * @return this assertion, in order to facilitate a fluent API.
+     * @return this assertion builder, in order to facilitate a fluent API.
      * @see Assertion.pass
      * @see Assertion.fail
      */
@@ -56,14 +57,15 @@ interface Assertion {
      * Evaluates a condition that may pass or fail.
      *
      * While this method _can_ be used directly in a test but is typically used
-     * inside an extension method on `Assertion<T>` such as those provided in the
-     * [strikt.assertions] package.
+     * inside an extension method on `Assertion.Builder<T>` such as those
+     * provided in the [strikt.assertions] package.
      *
-     * @param description a description for the condition the assertion evaluates.
+     * @param description a description for the condition the assertion
+     * evaluates.
      * @param expected the expected value of a comparison.
      * @param assert the assertion implementation that should result in a call
      * to [Assertion.pass] or [Assertion.fail].
-     * @return this assertion, in order to facilitate a fluent API.
+     * @return this assertion builder, in order to facilitate a fluent API.
      * @see Assertion.pass
      * @see Assertion.fail
      */
@@ -80,10 +82,11 @@ interface Assertion {
      * The results of assertions made inside the [assertions] block are included
      * under the overall assertion result.
      *
-     * @param description a description for the condition the assertion evaluates.
+     * @param description a description for the condition the assertion
+     * evaluates.
      * @param expected the expected value of a comparison.
-     * @param assertions a group of assertions that will be evaluated against the
-     * subject.
+     * @param assertions a group of assertions that will be evaluated against
+     * the subject.
      * @return the results of assertions made inside the [assertions] block used
      * to assertAll whether the overall assertion passes or fails.
      */
@@ -100,9 +103,10 @@ interface Assertion {
      * The results of assertions made inside the [assertions] block are included
      * under the overall assertion result.
      *
-     * @param description a description for the condition the assertion evaluates.
-     * @param assertions a group of assertions that will be evaluated against the
-     * subject.
+     * @param description a description for the condition the assertion
+     * evaluates.
+     * @param assertions a group of assertions that will be evaluated against
+     * the subject.
      * @return the results of assertions made inside the [assertions] block used
      * to assertAll whether the overall assertion passes or fails.
      */
@@ -116,10 +120,11 @@ interface Assertion {
      * Evaluates a boolean condition.
      * This is useful for implementing the simplest types of assertion function.
      *
-     * @param description a description for the condition the assertion evaluates.
+     * @param description a description for the condition the assertion
+     * evaluates.
      * @param assert a function that returns `true` (the assertion passes) or
      * `false` (the assertion fails).
-     * @return this assertion, in order to facilitate a fluent API.
+     * @return this assertion builder, in order to facilitate a fluent API.
      */
     // TODO: this name sucks
     fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
@@ -133,11 +138,12 @@ interface Assertion {
      * Evaluates a boolean condition.
      * This is useful for implementing the simplest types of assertion function.
      *
-     * @param description a description for the condition the assertion evaluates.
+     * @param description a description for the condition the assertion
+     * evaluates.
      * @param expected the expected value of a comparison.
      * @param assert a function that returns `true` (the assertion passes) or
      * `false` (the assertion fails).
-     * @return this assertion, in order to facilitate a fluent API.
+     * @return this assertion builder, in order to facilitate a fluent API.
      */
     fun passesIf(
       description: String,
@@ -156,18 +162,24 @@ interface Assertion {
      * the subject.
      *
      * If [function] is a callable reference, (for example a getter or property
-     * reference) the subject description will be automatically determined for the
-     * returned assertion.
+     * reference) the subject description will be automatically determined for
+     * the returned assertion builder.
      *
      * @param function a lambda whose receiver is the current assertion subject.
-     * @return an assertion whose subject is the value returned by [function].
+     * @return an assertion builder whose subject is the value returned by
+     * [function].
      */
     // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
     fun <R> map(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
-        is KProperty<*> -> map("value of property ${function.name}", function)
-        is KFunction<*> -> map("return value of ${function.name}", function)
-        is CallableReference -> map("value of ${function.propertyName}", function)
+        is KProperty<*> ->
+          map("value of property ${function.name}", function)
+        is KFunction<*> ->
+          map("return value of ${function.name}", function)
+        is CallableReference -> map(
+          "value of ${function.propertyName}",
+          function
+        )
         else -> map("%s", function)
       }
 
@@ -178,15 +190,16 @@ interface Assertion {
      *
      * @param description a description of the mapped result.
      * @param function a lambda whose receiver is the current assertion subject.
-     * @return an assertion whose subject is the value returned by [function].
+     * @return an assertion builder whose subject is the value returned by
+     * [function].
      */
     fun <R> map(description: String, function: (T) -> R): DescribeableBuilder<R>
 
     /**
      * Reverses any assertions chained after this method.
      *
-     * @return an assertion that negates the results of any assertions applied to
-     * its subject.
+     * @return an assertion builder that negates the results of any assertions
+     * applied to its subject.
      */
     fun not(): Builder<T>
 
