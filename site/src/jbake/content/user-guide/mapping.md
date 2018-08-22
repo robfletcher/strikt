@@ -44,9 +44,9 @@ For example, if the previous example fails it will format the error message like
 
 ```
 ▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
-  ▼ Expect that "Ziggy"
+  ▼ "Ziggy"
     ✗ is equal to "David" : found "Ziggy"
-  ▼ Expect that 1972
+  ▼ 1972
     ✗ is equal to 1947 : found 1972
 ```
 
@@ -62,10 +62,10 @@ expect(subject) {
 
 ```
 ▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
-  ▼ Expect that .name "Ziggy":
+  ▼ .name:
     ✗ is equal to "David" : found "Ziggy"
-  ▼ Expect that .birthDate 1972-06-16: 
-    ▼ Expect that .year 1972:
+  ▼ .birthDate: 
+    ▼ .year:
       ✗ is equal to 1947 : found 1972
 ```
 

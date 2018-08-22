@@ -44,11 +44,11 @@ This produces the output:
 ```
 ▼ Expect that [catflap, rubberplant, marzipan]:
   ✗ all elements match:
-    ▼ Expect that "catflap":
+    ▼ "catflap":
       ✓ starts with 'c'
-    ▼ Expect that "rubberplant":
+    ▼ "rubberplant":
       ✗ starts with 'c'
-    ▼ Expect that "marzipan":
+    ▼ "marzipan":
       ✗ starts with 'c'
 ```
 

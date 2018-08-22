@@ -11,6 +11,21 @@ nextPage=additional-modules.html
 One of the aims of Strikt is that implementing your own assertions is _really, really_ easy.
 Assertion functions are [extension functions](https://kotlinlang.org/docs/reference/extensions.html) on the interface `Assertion.Builder<T>` where `T` is the type of the assertion subject.
 
+### Tip: Avoiding clashing method signatures
+
+Because of Java's generic type erasure, it's possible that the name of your custom assertion function may clash with an existing one for a different subject type.
+
+To avoid this you can add the `@JvmName` annotation to your assertion function to disambiguate the methods.
+See [Handling signature clashes with `@JvmName`](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#handling-signature-clashes-with-jvmname) in the Kotlin documentation.
+
+For example, if you were defining an `isEmpty` assertion for Gson's `JsonArray` type, you would need to disambiguate it from the `isEmpty` assertion Strikt provides for collections.
+
+```kotlin
+@JvmName("isEmpty_JsonArray")
+fun Assertion.Builder<JsonArray>.isEmpty(): Assertion.Builder<JsonArray> =
+  // ...
+```
+
 ## Atomic assertions
 
 "Atomic" assertions produce a single message on failure.
@@ -44,10 +59,11 @@ If this assertion fails it will produce a message like:
   ✗ is St. Tib's Day 
 ```
 
-!!! note
-    The method `assert` accepts a description for the assertion being made and a lambda function `Assertion<T>.(T) -> Unit`.
-    The parameter passed to the lambda is the assertion subject.
-    The `Assertion<T>` receiver provides the lambda the `pass()` and `fail()` methods for reporting the assertion result.
+### Note
+
+The method `assert` accepts a description for the assertion being made and a lambda function `Assertion<T>.(T) -> Unit`.
+The parameter passed to the lambda is the assertion subject.
+The `Assertion<T>` receiver provides the lambda the `pass()` and `fail()` methods for reporting the assertion result.
 
 ## Describing the "actual" value
 
@@ -131,13 +147,13 @@ If the assertion failed we'll see something like this:
 ```
 ▼ Expect that ["catflap", null, "rubberplant", "marzipan"]: 
   ✗ does not contain any null elements
-    ▼ Expect that "catflap": 
+    ▼ "catflap": 
       ✓ is not null  
-    ▼ Expect that null: 
+    ▼ null: 
       ✗ is not null  
-    ▼ Expect that "rubberplant": 
+    ▼ "rubberplant": 
       ✓ is not null  
-    ▼ Expect that "marzipan": 
+    ▼ "marzipan": 
       ✓ is not null  
 ```
 
