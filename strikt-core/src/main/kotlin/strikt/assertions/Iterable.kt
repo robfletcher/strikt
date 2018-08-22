@@ -128,7 +128,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder
             if (original[i] == element) {
               pass()
             } else {
-              fail(actual = original[i])
+              fail(expected = element, actual = original[i])
             }
           }
         } else {
@@ -140,7 +140,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder
       if (remaining.isEmpty()) {
         pass()
       } else {
-        fail(actual = remaining.toList())
+        fail(expected = emptyList<E>(), actual = remaining.toList())
       }
     }
   } then {
@@ -169,7 +169,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E
       if (remaining.isEmpty()) {
         pass()
       } else {
-        fail(actual = remaining)
+        fail(expected = emptyList<E>(), actual = remaining)
       }
     }
   } then {

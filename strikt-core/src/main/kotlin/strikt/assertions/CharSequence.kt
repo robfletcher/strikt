@@ -10,7 +10,7 @@ fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
   assert("has length %d", expected) {
     when (it.length) {
       expected -> pass()
-      else -> fail(actual = it.length)
+      else -> fail(expected = expected, actual = it.length)
     }
   }
 

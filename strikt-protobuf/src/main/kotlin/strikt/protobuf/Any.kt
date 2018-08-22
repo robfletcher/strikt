@@ -20,17 +20,16 @@ fun Builder<com.google.protobuf.Any>.isEmpty() {
  *
  * @see com.google.protobuf.Any.is
  */
-inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): Builder<com.google.protobuf.Any> =
-  assert(
-    "unpacks to %s",
-    getDefaultInstance(T::class.java).descriptorForType.fullName
-  ) {
+inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): Builder<com.google.protobuf.Any> {
+  val expected = getDefaultInstance(T::class.java).descriptorForType.fullName
+  return assert("unpacks to %s", expected) {
     if (it.`is`(T::class.java)) {
       pass()
     } else {
-      fail(actual = it.typeUrl)
+      fail(expected = expected, actual = it.descriptorForType.fullName)
     }
   }
+}
 
 /**
  * Maps an assertion on `com.google.protobuf.Any` to an assertion on an unpacked

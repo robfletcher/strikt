@@ -7,7 +7,7 @@ import strikt.api.Assertion.Builder
  */
 fun <T : Boolean?> Builder<T>.isTrue() =
   assert("is true", expected = true) {
-    if (it == true) pass() else fail(actual = it)
+    if (it == true) pass() else fail(expected = true, actual = it)
   }
 
 /**
@@ -15,5 +15,5 @@ fun <T : Boolean?> Builder<T>.isTrue() =
  */
 fun <T : Boolean?> Builder<T>.isFalse() =
   assert("is false", expected = false) {
-    if (it == false) pass() else fail(actual = it)
+    if (it == false) pass() else fail(expected = false, actual = it)
   }

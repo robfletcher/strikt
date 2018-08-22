@@ -1,5 +1,6 @@
 package strikt.internal.reporting
 
+import strikt.api.Status.ComparisonFailed
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
@@ -59,7 +60,7 @@ internal open class DefaultResultWriter : ResultWriter {
     writeStatusIcon(writer, this)
     val (formattedExpected, formattedActual) = formatValues(
       expected,
-      (status as? Failed)?.actual
+      (status as? ComparisonFailed)?.actual
     )
     writer.append(description.format(formattedExpected))
     // TODO: not the prettiest code

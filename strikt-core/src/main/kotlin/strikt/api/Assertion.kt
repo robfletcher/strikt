@@ -16,15 +16,11 @@ interface Assertion {
   /**
    * Mark this result as failed.
    *
-   * @param actual an optional actual value, that is the value that differed
-   * from the expectation.
-   * @param description A description of the failure. May contain a
-   * [String.format] style placeholder for the [actual] value.
+   * @param description An optional description of the failure.
    * @property cause The exception that caused the failure, if any.
    */
   fun fail(
-    actual: Any? = null,
-    description: String? = if (actual == null) null else "found %s",
+    description: String? = null,
     cause: Throwable? = null
   )
 

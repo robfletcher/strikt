@@ -9,7 +9,7 @@ fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
   assert("has size %d", expected) {
     when (it.size) {
       expected -> pass()
-      else -> fail(actual = it.size)
+      else -> fail(expected = expected, actual = it.size)
     }
   }
 

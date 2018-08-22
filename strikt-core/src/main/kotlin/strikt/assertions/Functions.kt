@@ -24,7 +24,12 @@ inline fun <reified E : Throwable> Builder<() -> Unit>.throws(): Builder<E> {
         pass()
         exception = caught
       }
-      else -> fail(actual = caught.javaClass, description = "%s was thrown", cause = caught)
+      else -> fail(
+        expected = E::class.java,
+        actual = caught.javaClass,
+        description = "%s was thrown",
+        cause = caught
+      )
     }
   }
   return if (exception != null) {

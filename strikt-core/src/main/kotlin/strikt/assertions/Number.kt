@@ -12,7 +12,7 @@ fun Builder<Double>.isEqualTo(expected: Double, tolerance: Double) =
     if (diff.absoluteValue < tolerance)
       pass()
     else
-      fail(actual = diff, description = "differs by %f")
+      fail(expected = expected, actual = it, description = "differs by $diff")
   }
 
 /**
@@ -24,5 +24,5 @@ fun Builder<Float>.isEqualTo(expected: Float, tolerance: Double) =
     if (diff.absoluteValue < tolerance)
       pass()
     else
-      fail(actual = diff, description = "differs by %f")
+      fail(expected = expected, actual = it, description = "differs by $diff")
   }

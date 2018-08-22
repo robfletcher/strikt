@@ -7,6 +7,8 @@ import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
 import strikt.api.DescribeableBuilder
 import strikt.api.Status
+import strikt.api.Status.AssertionFailed
+import strikt.api.Status.ComparisonFailed
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
@@ -51,18 +53,23 @@ internal class AssertionBuilder<T>(
         get() = _status
 
       override fun pass() {
-        _status = if (negated) {
-          Failed()
-        } else {
-          Passed
+        _status = when {
+          negated -> AssertionFailed()
+          else -> Passed
         }
       }
 
-      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
-        _status = if (negated) {
-          Passed
-        } else {
-          Failed(actual, description, cause)
+      override fun fail(description: String?, cause: Throwable?) {
+        _status = when {
+          negated -> Passed
+          else -> AssertionFailed(description, cause)
+        }
+      }
+
+      override fun fail(expected: Any?, actual: Any?, description: String?, cause: Throwable?) {
+        _status = when {
+          negated -> Passed
+          else -> ComparisonFailed(expected, actual, description, cause)
         }
       }
     }
@@ -85,18 +92,16 @@ internal class AssertionBuilder<T>(
         get() = _status
 
       override fun pass() {
-        _status = if (negated) {
-          Failed()
-        } else {
-          Passed
+        _status = when {
+          negated -> AssertionFailed()
+          else -> Passed
         }
       }
 
-      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
-        _status = if (negated) {
-          Passed
-        } else {
-          Failed(actual, description, cause)
+      override fun fail(description: String?, cause: Throwable?) {
+        _status = when {
+          negated -> Passed
+          else -> AssertionFailed(description, cause)
         }
       }
 

@@ -2,6 +2,7 @@ package strikt.internal
 
 import org.opentest4j.TestSkippedException
 import strikt.api.Status
+import strikt.api.Status.AssertionFailed
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
@@ -67,7 +68,7 @@ internal class AssertionSubject<S>(
     get() = when {
       children.isEmpty() -> Pending
       children.any { it.status is Pending } -> Pending
-      children.any { it.status is Failed } -> Failed()
+      children.any { it.status is Failed } -> AssertionFailed()
       else -> Passed
     }
 
