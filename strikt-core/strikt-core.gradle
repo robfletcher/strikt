@@ -3,6 +3,7 @@ apply from: "$rootDir/gradle/kotlin.gradle"
 apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/jupiter.gradle"
 apply from: "$rootDir/gradle/published.gradle"
+apply from: "$rootDir/gradle/pitest.gradle"
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-reflect"
