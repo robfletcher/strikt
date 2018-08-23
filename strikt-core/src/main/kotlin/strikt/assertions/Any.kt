@@ -100,6 +100,13 @@ fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
     }
   }
 
+/**
+ * Asserts that all properties of the subject match those of [other] according
+ * to either [contentEquals] in the case of array properties or [isEqualTo] in
+ * other cases.
+ *
+ * Properties are identified using Java beans conventions.
+ */
 fun <T : Any> Builder<T>.allPropertiesAreEqualTo(other: T): Builder<T> =
   compose("is equal field-by-field to %s", other) { subject ->
     Introspector.getBeanInfo(subject.javaClass).let { beanInfo ->
