@@ -107,7 +107,7 @@ fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
  *
  * Properties are identified using Java beans conventions.
  */
-fun <T : Any> Builder<T>.allPropertiesAreEqualTo(other: T): Builder<T> =
+fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
   compose("is equal field-by-field to %s", other) { subject ->
     Introspector.getBeanInfo(subject.javaClass).let { beanInfo ->
       beanInfo

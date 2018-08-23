@@ -41,7 +41,7 @@ internal class BeanPropertyAssertions {
       dateOfBirth = LocalDate.of(1972, 2, 10)
     )
     fails {
-      expect(subject).allPropertiesAreEqualTo(other)
+      expect(subject).propertiesAreEqualTo(other)
     }.let { error ->
       expect(error.message) {
         isNotNull()
@@ -75,7 +75,7 @@ internal class BeanPropertyAssertions {
       subject.image
     )
     fails {
-      expect(subject).allPropertiesAreEqualTo(other)
+      expect(subject).propertiesAreEqualTo(other)
     }.let { error ->
       expect(error.message) {
         isNotNull()
@@ -111,7 +111,7 @@ internal class BeanPropertyAssertions {
     val other = Cat(name = "Rocky", breed = "Russian Blue", legs = 4, tails = 1)
 
     fails {
-      expect(subject).allPropertiesAreEqualTo(other)
+      expect(subject).propertiesAreEqualTo(other)
     }.let { error ->
       expect(error.message)
         .isNotNull()
