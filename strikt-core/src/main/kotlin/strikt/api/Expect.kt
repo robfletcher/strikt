@@ -52,5 +52,5 @@ inline fun <reified E : Throwable> throws(
 /**
  * special case expect method to fix blocks that don't return Unit
  */
-fun expect(subject: ()->Unit): DescribeableBuilder<()->Unit> =
+fun expect(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
   AssertionBuilder(AssertionSubject(subject), FAIL_FAST)
