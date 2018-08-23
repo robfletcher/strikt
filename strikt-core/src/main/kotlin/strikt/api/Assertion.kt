@@ -206,9 +206,9 @@ interface Assertion {
     /**
      * Evaluates a block of assertions on the current subject.
      *
-     * The main use for this method is after [strikt.assertions.isNotNull] when
-     * the original subject is a nullable type and you want to perform a group
-     * of assertions after ensuring it is not `null`.
+     * The main use for this method is after [strikt.assertions.isNotNull] or
+     * [strikt.assertions.isA] in order that a group of assertions can more
+     * conveniently be performed on the narrowed subject type.
      */
     fun and(
       assertions: Builder<T>.() -> Unit
