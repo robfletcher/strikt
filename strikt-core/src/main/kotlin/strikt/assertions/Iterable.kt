@@ -63,7 +63,16 @@ fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Buil
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> {
+fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
+  contains(elements.toList())
+
+/**
+ * Asserts that all [elements] are present in the subject.
+ * The elements may exist in any order any number of times and the subject may
+ * contain further elements that were not specified.
+ * If either the subject or [elements] are empty the assertion always fails.
+ */
+fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> {
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
@@ -89,7 +98,16 @@ fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> {
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<T> {
+fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<T> =
+  doesNotContain(elements.toList())
+
+/**
+ * Asserts that none of [elements] are present in the subject.
+ *
+ * If [elements] is empty the assertion always fails.
+ * If the subject is empty the assertion always passe.
+ */
+fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> {
   if (elements.isEmpty()) {
     throw IllegalArgumentException("You must supply some expected elements.")
   }
@@ -117,6 +135,17 @@ fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<
  * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder<T> =
+  containsExactly(elements.toList())
+
+/**
+ * Asserts that all [elements] _and no others_ are present in the subject in the
+ * specified order.
+ *
+ * If the subject has no guaranteed iteration order (for example a [Set]) this
+ * assertion is probably not appropriate and you should use
+ * [containsExactlyInAnyOrder] instead.
+ */
+fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Builder<T> =
   compose("contains exactly the elements %s", elements.toList()) { subject ->
     val original = subject.toList()
     val remaining = subject.toMutableList()
@@ -154,7 +183,19 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder
  * regardless of what order they appear in.
  */
 fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E): Builder<T> =
-  compose("contains exactly the elements %s in any order", elements.toList()) { subject ->
+  containsExactlyInAnyOrder(elements.toList())
+
+/**
+ * Asserts that all [elements] _and no others_ are present in the subject.
+ * Order is not evaluated, so an assertion on a [List] will pass so long as it
+ * contains all the same elements with the same cardinality as [elements]
+ * regardless of what order they appear in.
+ */
+fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collection<E>): Builder<T> =
+  compose(
+    "contains exactly the elements %s in any order",
+    elements.toList()
+  ) { subject ->
     val remaining = subject.toMutableList()
     elements.forEach { element ->
       assert("contains %s", element) { _ ->
