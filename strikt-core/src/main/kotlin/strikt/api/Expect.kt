@@ -48,3 +48,9 @@ inline fun <reified E : Throwable> throws(
   noinline action: () -> Unit
 ): Builder<E> =
   expect(action).throws()
+
+/**
+ * special case expect method to fix blocks that don't return Unit
+ */
+fun expect(subject: ()->Unit): DescribeableBuilder<()->Unit> =
+  AssertionBuilder(AssertionSubject(subject), FAIL_FAST)
