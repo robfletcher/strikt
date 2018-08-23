@@ -70,4 +70,13 @@ internal class Throws {
       assertEquals(expected, e.message)
     }
   }
+  @Test
+  fun `expect - throws works with blocks that don't return unit`() {
+    fails {
+      expect {
+        @Suppress("UNUSED_EXPRESSION")
+        "String"
+      }.throws<IllegalStateException>()
+    }
+  }
 }
