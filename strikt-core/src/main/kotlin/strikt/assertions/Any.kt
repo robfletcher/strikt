@@ -115,9 +115,10 @@ fun <T : Any> Builder<T>.allPropertiesAreEqualTo(other: T): Builder<T> =
         .filter { it.name != "class" }
         .forEach { property ->
           val mappedAssertion = map("value of property ${property.name}") {
-            property.readMethod.invoke(it)
+            property.readMethod(it)
           }
-          val otherValue = property.readMethod.invoke(other)
+          val otherValue = property.readMethod(other)
+          @Suppress("UNCHECKED_CAST")
           when {
             property.propertyType == BooleanArray::class.java ->
               (mappedAssertion as Builder<BooleanArray>)
