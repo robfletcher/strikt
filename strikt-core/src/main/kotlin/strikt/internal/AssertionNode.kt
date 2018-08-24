@@ -22,6 +22,7 @@ internal interface AssertionNode<S> {
   val status: Status
   val root: AssertionNode<*>
   fun toError(): Throwable?
+  val parent: AssertionGroup<*>?
 }
 
 internal interface AssertionGroup<S> : AssertionNode<S> {
@@ -30,7 +31,7 @@ internal interface AssertionGroup<S> : AssertionNode<S> {
 }
 
 internal interface AssertionResult<S> : AssertionNode<S> {
-  val parent: AssertionGroup<S>
+  override val parent: AssertionGroup<S>
   val expected: Any?
 
   override fun toError(): Throwable? = when (status) {
@@ -41,7 +42,7 @@ internal interface AssertionResult<S> : AssertionNode<S> {
 }
 
 internal class AssertionSubject<S>(
-  private val parent: AssertionGroup<*>?,
+  override val parent: AssertionGroup<*>?,
   override val subject: S,
   override var description: String = "%s"
 ) : AssertionGroup<S> {

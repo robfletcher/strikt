@@ -17,6 +17,29 @@ internal open class DefaultResultWriter : ResultWriter {
     writeIndented(writer, node)
   }
 
+  override fun writePathTo(writer: Appendable, node: AssertionResult<*>) {
+    val tree = mutableListOf<AssertionNode<*>>(node)
+    node.addAncestorsTo(tree)
+
+    tree.listIterator().also { iterator ->
+      while (iterator.hasNext()) {
+        val indent = iterator.nextIndex()
+        val n = iterator.next()
+        writeLine(writer, n, indent)
+        if (iterator.hasNext()) {
+          writeLineEnd(writer, n)
+        }
+      }
+    }
+  }
+
+  private fun <S> AssertionNode<S>.addAncestorsTo(tree: MutableList<AssertionNode<*>>) {
+    parent?.also {
+      tree.add(0, it)
+      it.addAncestorsTo(tree)
+    }
+  }
+
   private fun writeIndented(
     writer: Appendable,
     node: AssertionNode<*>,
@@ -44,7 +67,10 @@ internal open class DefaultResultWriter : ResultWriter {
     }
   }
 
-  private fun AssertionSubject<*>.writeSubject(writer: Appendable, indent: Int) {
+  private fun AssertionSubject<*>.writeSubject(
+    writer: Appendable,
+    indent: Int
+  ) {
     writeLineStart(writer, this, indent)
     writeSubjectIcon(writer)
     if (isRoot) {
@@ -65,7 +91,8 @@ internal open class DefaultResultWriter : ResultWriter {
     writer.append(description.format(formattedExpected))
     // TODO: not the prettiest code
     (status as? Failed)?.also { failed ->
-      failed.describe { formattedActual }?.let { writer.append(" : ").append(it) }
+      failed.describe { formattedActual }
+        ?.let { writer.append(" : ").append(it) }
     }
   }
 
@@ -81,7 +108,10 @@ internal open class DefaultResultWriter : ResultWriter {
     writer.append(EOL)
   }
 
-  protected open fun writeStatusIcon(writer: Appendable, node: AssertionNode<*>) {
+  protected open fun writeStatusIcon(
+    writer: Appendable,
+    node: AssertionNode<*>
+  ) {
     writer.append(
       when (node.status) {
         is Passed -> "✓ "
