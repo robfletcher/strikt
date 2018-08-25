@@ -61,10 +61,10 @@ internal class Formatting {
         "      ✓ starts with 'c'\n" +
         "    ▼ \"rubberplant\":\n" +
         "      ✗ is upper case\n" +
-        "      ✗ starts with 'c'\n" +
+        "      ✗ starts with 'c' : found 'r'\n" +
         "    ▼ \"marzipan\":\n" +
         "      ✗ is upper case\n" +
-        "      ✗ starts with 'c'"
+        "      ✗ starts with 'c' : found 'm'"
     assertEquals(expected, e.message)
   }
 
@@ -87,9 +87,9 @@ internal class Formatting {
         "    ▼ \"catflap\":\n" +
         "      ✓ starts with 'c'\n" +
         "    ▼ \"rubberplant\":\n" +
-        "      ✗ starts with 'c'\n" +
+        "      ✗ starts with 'c' : found 'r'\n" +
         "    ▼ \"marzipan\":\n" +
-        "      ✗ starts with 'c'"
+        "      ✗ starts with 'c' : found 'm'"
 
     assertEquals(expected, e.message)
   }
