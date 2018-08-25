@@ -34,16 +34,27 @@ fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
  * Asserts that the subject starts with the [expected] character.
  */
 fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
-  passesIf("starts with %s", expected) {
-    it.startsWith(expected)
+  assert("starts with %s", expected) {
+    if (it.startsWith(expected)) {
+      pass()
+    } else {
+      fail(expected = "a string that starts with '$expected'", actual = it[0])
+    }
   }
 
 /**
  * Asserts that the subject starts with the [expected] string.
  */
 fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T> =
-  passesIf("starts with %s", expected) {
-    it.startsWith(expected)
+  assert("starts with %s", expected) {
+    if (it.startsWith(expected)) {
+      pass()
+    } else {
+      fail(
+        expected = "a string that starts with \"$expected\"",
+        actual = it.subSequence(0 until expected.length)
+      )
+    }
   }
 
 /**
@@ -51,8 +62,12 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T>
  * expression.
  */
 fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
-  passesIf("matches the regular expression %s", expected) {
-    it.matches(expected)
+  assert("matches the regular expression %s", expected) {
+    if (it.matches(expected)) {
+      pass()
+    } else {
+      fail(expected = expected, actual = it)
+    }
   }
 
 /**
@@ -60,9 +75,17 @@ fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<T> =
-  passesIf("matches the regular expression %s (ignoring case)", expected) { subject ->
-    Regex(expected.pattern, IGNORE_CASE).let {
+  assert(
+    "matches the regular expression %s (ignoring case)",
+    expected
+  ) { subject ->
+    val isMatch = Regex(expected.pattern, IGNORE_CASE).let {
       subject.matches(it)
+    }
+    if (isMatch) {
+      pass()
+    } else {
+      fail(expected = expected, actual = subject)
     }
   }
 
@@ -71,8 +94,15 @@ fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<
  * expression.
  */
 fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
-  passesIf("contains a match for the regular expression %s", expected) {
-    it.contains(expected)
+  assert("contains a match for the regular expression %s", expected) {
+    if (it.contains(expected)) {
+      pass()
+    } else {
+      fail(
+        expected = "a string that contains the regular expression /$expected/",
+        actual = it
+      )
+    }
   }
 
 /**
@@ -80,9 +110,20 @@ fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
  * expression regardless of case.
  */
 fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder<T> =
-  passesIf("contains a match for the regular expression %s (ignoring case)", expected) { subject ->
-    Regex(expected.pattern, IGNORE_CASE).let {
+  assert(
+    "contains a match for the regular expression %s (ignoring case)",
+    expected
+  ) { subject ->
+    val isMatch = Regex(expected.pattern, IGNORE_CASE).let {
       subject.contains(it)
+    }
+    if (isMatch) {
+      pass()
+    } else {
+      fail(
+        expected = "a string that contains the regular expression /$expected/",
+        actual = subject
+      )
     }
   }
 
@@ -90,8 +131,12 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder
  * Asserts that the subject contains the [expected] substring.
  */
 fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
-  passesIf("contains %s", expected) {
-    it.contains(expected)
+  assert("contains %s", expected) {
+    if (it.contains(expected)) {
+      pass()
+    } else {
+      fail(expected = "a string that contains \"$expected\"", actual = it)
+    }
   }
 
 /**
@@ -99,8 +144,12 @@ fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
  * case.
  */
 fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): Builder<T> =
-  passesIf("contains %s (ignoring case)", expected) {
-    it.contains(expected, ignoreCase = true)
+  assert("contains %s (ignoring case)", expected) {
+    if (it.contains(expected, ignoreCase = true)) {
+      pass()
+    } else {
+      fail(expected = "a string that contains \"$expected\"", actual = it)
+    }
   }
 
 /**

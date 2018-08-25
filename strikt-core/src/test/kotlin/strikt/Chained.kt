@@ -97,7 +97,7 @@ internal class Chained {
           "  ✓ is lower case\n" +
           "  ✓ contains \"f\"\n" +
           "  ✓ contains \"n\"\n" +
-          "  ✗ contains \"z\"",
+          "  ✗ contains \"z\" : found \"fnord\"",
         error.message
       )
     }
