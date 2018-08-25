@@ -1,12 +1,12 @@
-apply plugin: 'info.solidsoft.pitest'
+apply plugin: "info.solidsoft.pitest"
 
 pitest {
   testPlugin = "junit5"
   avoidCallsTo = ["kotlin.jvm.internal"]
   mutators = ["NEW_DEFAULTS"]
-  targetClasses = ['strikt.*']  //by default "${project.group}.*"
-  targetTests = ['strikt.**.*']
+  targetClasses = ["strikt.*"]  //by default "${project.group}.*"
+  targetTests = ["strikt.**.*"]
   pitestVersion = "1.4.2"
   threads = Runtime.getRuntime().availableProcessors()
-  outputFormats = ['XML', 'HTML']
+  outputFormats = ["XML", "HTML"]
 }
