@@ -61,7 +61,8 @@ interface Assertion {
      * provided in the [strikt.assertions] package.
      *
      * @param description a description for the condition the assertion
-     * evaluates.
+     * evaluates. The description may contain a [String.format] style
+     * placeholder for the [expected] value.
      * @param expected the expected value of a comparison.
      * @param assert the assertion implementation that should result in a call
      * to [Assertion.pass] or [Assertion.fail].

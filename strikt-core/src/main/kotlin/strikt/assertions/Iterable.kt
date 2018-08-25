@@ -153,11 +153,11 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
       assert("contains %s", element) { _ ->
         if (remaining.remove(element)) {
           pass()
-          assert("…at index $i") { _ ->
+          assert("…at index $i", element) { _ ->
             if (original[i] == element) {
               pass()
             } else {
-              fail(expected = element, actual = original[i])
+              fail(actual = original[i])
             }
           }
         } else {
@@ -165,11 +165,11 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
         }
       }
     }
-    assert("contains no further elements") { _ ->
+    assert("contains no further elements", emptyList<E>()) { _ ->
       if (remaining.isEmpty()) {
         pass()
       } else {
-        fail(expected = emptyList<E>(), actual = remaining.toList())
+        fail(actual = remaining.toList())
       }
     }
   } then {
@@ -206,11 +206,11 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collecti
         }
       }
     }
-    assert("contains no further elements") { _ ->
+    assert("contains no further elements", emptyList<E>()) { _ ->
       if (remaining.isEmpty()) {
         pass()
       } else {
-        fail(expected = emptyList<E>(), actual = remaining)
+        fail(actual = remaining)
       }
     }
   } then {

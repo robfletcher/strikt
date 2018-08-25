@@ -10,7 +10,7 @@ fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
   assert("has length %d", expected) {
     when (it.length) {
       expected -> pass()
-      else -> fail(expected = expected, actual = it.length)
+      else -> fail(actual = it.length)
     }
   }
 
@@ -38,7 +38,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
     if (it.startsWith(expected)) {
       pass()
     } else {
-      fail(expected = "a string that starts with '$expected'", actual = it[0])
+      fail(actual = it[0])
     }
   }
 
@@ -50,10 +50,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T>
     if (it.startsWith(expected)) {
       pass()
     } else {
-      fail(
-        expected = "a string that starts with \"$expected\"",
-        actual = it.subSequence(0 until expected.length)
-      )
+      fail(actual = it.subSequence(0 until expected.length))
     }
   }
 
@@ -66,7 +63,7 @@ fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
     if (it.matches(expected)) {
       pass()
     } else {
-      fail(expected = expected, actual = it)
+      fail(actual = it)
     }
   }
 
@@ -85,7 +82,7 @@ fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<
     if (isMatch) {
       pass()
     } else {
-      fail(expected = expected, actual = subject)
+      fail(actual = subject)
     }
   }
 
@@ -98,10 +95,7 @@ fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
     if (it.contains(expected)) {
       pass()
     } else {
-      fail(
-        expected = "a string that contains the regular expression /$expected/",
-        actual = it
-      )
+      fail(actual = it)
     }
   }
 
@@ -120,10 +114,7 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder
     if (isMatch) {
       pass()
     } else {
-      fail(
-        expected = "a string that contains the regular expression /$expected/",
-        actual = subject
-      )
+      fail(actual = subject)
     }
   }
 
@@ -135,7 +126,7 @@ fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
     if (it.contains(expected)) {
       pass()
     } else {
-      fail(expected = "a string that contains \"$expected\"", actual = it)
+      fail(actual = it)
     }
   }
 
@@ -148,7 +139,7 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): 
     if (it.contains(expected, ignoreCase = true)) {
       pass()
     } else {
-      fail(expected = "a string that contains \"$expected\"", actual = it)
+      fail(actual = it)
     }
   }
 

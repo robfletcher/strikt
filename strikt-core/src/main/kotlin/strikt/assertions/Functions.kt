@@ -25,7 +25,6 @@ inline fun <reified E : Throwable> Builder<() -> Unit>.throws(): Builder<E> {
         exception = caught
       }
       else -> fail(
-        expected = E::class.java,
         actual = caught.javaClass,
         description = "%s was thrown",
         cause = caught

@@ -38,9 +38,9 @@ fun <T> Builder<T?>.isNotNull(): Builder<T> =
 inline fun <reified T> Builder<*>.isA(): Builder<T> =
   assert("is an instance of %s", T::class.java) {
     when (it) {
-      null -> fail(expected = T::class.java, actual = null)
+      null -> fail(actual = null)
       is T -> pass()
-      else -> fail(expected = T::class.java, actual = it.javaClass)
+      else -> fail(actual = it.javaClass)
     }
   } as Builder<T>
 
@@ -54,7 +54,7 @@ fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
   assert("is equal to %s", expected) {
     when (it) {
       expected -> pass()
-      else -> fail(expected = expected, actual = it)
+      else -> fail(actual = it)
     }
   }
 
@@ -82,7 +82,7 @@ fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
   assert("is the same instance as %s", expected) {
     when {
       it === expected -> pass()
-      else -> fail(expected = expected, actual = it)
+      else -> fail(actual = it)
     }
   }
 

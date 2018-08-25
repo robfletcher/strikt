@@ -26,7 +26,7 @@ inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): B
     if (it.`is`(T::class.java)) {
       pass()
     } else {
-      fail(expected = expected, actual = it.descriptorForType.fullName)
+      fail(actual = it.descriptorForType.fullName)
     }
   }
 }

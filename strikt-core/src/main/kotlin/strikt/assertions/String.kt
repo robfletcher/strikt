@@ -9,6 +9,6 @@ fun Builder<String>.isEqualToIgnoringCase(expected: String): Builder<String> =
   assert("is equal to %s (ignoring case)", expected) {
     when {
       it.equals(expected, ignoreCase = true) -> pass()
-      else -> fail(expected = expected, actual = it)
+      else -> fail(actual = it)
     }
   }

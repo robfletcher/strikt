@@ -66,7 +66,7 @@ internal class AssertionBuilder<T>(
         }
       }
 
-      override fun fail(expected: Any?, actual: Any?, description: String?, cause: Throwable?) {
+      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
         _status = when {
           negated -> Passed
           else -> ComparisonFailed(expected, actual, description, cause)
