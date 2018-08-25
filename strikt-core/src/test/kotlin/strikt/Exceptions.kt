@@ -3,10 +3,14 @@ package strikt
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.first
+import strikt.assertions.get
 import strikt.assertions.hasLength
 import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isGreaterThan
+import strikt.assertions.isLessThan
+import strikt.assertions.isNotEqualTo
 import strikt.assertions.isUpperCase
 import strikt.assertions.message
 import strikt.assertions.startsWith
@@ -69,7 +73,62 @@ class Exceptions {
     }
   }
 
-  // TODO: nested blocks only have one compound
-  // TODO: atomic messages are just for the condition that failed (with sub-tree)
+  @Test
+  fun `nested assertions raise only a single compound exception`() {
+    fails {
+      expect("fnord") {
+        map(String::length)
+          .isGreaterThan(0)
+          .and {
+            isEqualTo(1)
+            isLessThan(2)
+            isNotEqualTo(5)
+          }
+      }
+    }.let { error ->
+      expect(error)
+        .isA<CompoundAssertionFailure>()
+        .and {
+          message.isEqualTo(
+            "▼ Expect that \"fnord\":\n" +
+              "  ▼ value of property length:\n" +
+              "    ✓ is greater than 0\n" +
+              "    ✗ is equal to 1 : found 5\n" +
+              "    ✗ is less than 2\n" +
+              "    ✗ is not equal to 5"
+          )
+          map { it.failures }
+            .hasSize(3)
+            .and {
+              first()
+                .isA<AtomicAssertionFailure>()
+                .message.isEqualTo(
+                "▼ Expect that \"fnord\":\n" +
+                  "  ▼ value of property length:\n" +
+                  "    ✗ is equal to 1 : found 5"
+              )
+            }
+            .and {
+              get(1)
+                .isA<AtomicAssertionFailure>()
+                .message.isEqualTo(
+                "▼ Expect that \"fnord\":\n" +
+                  "  ▼ value of property length:\n" +
+                  "    ✗ is less than 2"
+              )
+            }
+            .and {
+              get(2)
+                .isA<AtomicAssertionFailure>()
+                .message.isEqualTo(
+                "▼ Expect that \"fnord\":\n" +
+                  "  ▼ value of property length:\n" +
+                  "    ✗ is not equal to 5"
+              )
+            }
+        }
+    }
+  }
+
   // TODO: expected / actual are correctly defined / undefined
 }
