@@ -94,7 +94,7 @@ workflows:
             - build-java10
           filters:
             branches:
-              ignore: gh-pages
+              only: master
       - release:
           requires:
             - build-java8
