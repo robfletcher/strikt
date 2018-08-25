@@ -21,6 +21,8 @@ buildscript {
   }
 }
 
+apply from: "$rootDir/gradle/announce.gradle"
+
 allprojects {
   apply plugin: "nebula.release"
   group = "io.strikt"

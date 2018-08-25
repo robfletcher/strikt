@@ -19,7 +19,9 @@ if (tag) {
       message = "Strikt ${tag} ${releaseName} is available. https://strikt.io"
     }
 
-    rootProject.tasks.postRelease.finalizedBy createTweet
+    afterEvaluate {
+      rootProject.tasks.postRelease.finalizedBy createTweet
+    }
   } catch (IOException e) {
     logger.warn("Could not get release name from GitHub: $e.message")
   }
