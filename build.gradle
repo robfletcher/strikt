@@ -32,19 +32,4 @@ subprojects {
   repositories {
     jcenter()
   }
-
-  configurations {
-    compileClasspath {
-      resolutionStrategy.activateDependencyLocking()
-    }
-    runtimeClasspath {
-      resolutionStrategy.activateDependencyLocking()
-    }
-    testCompileClasspath {
-      resolutionStrategy.activateDependencyLocking()
-    }
-    testRuntimeClasspath {
-      resolutionStrategy.activateDependencyLocking()
-    }
-  }
 }

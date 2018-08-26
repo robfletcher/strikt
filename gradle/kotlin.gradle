@@ -14,3 +14,18 @@ compileTestKotlin {
     jvmTarget = JavaVersion.VERSION_1_8
   }
 }
+
+configurations {
+  compileClasspath {
+    resolutionStrategy.activateDependencyLocking()
+  }
+  runtimeClasspath {
+    resolutionStrategy.activateDependencyLocking()
+  }
+  testCompileClasspath {
+    resolutionStrategy.activateDependencyLocking()
+  }
+  testRuntimeClasspath {
+    resolutionStrategy.activateDependencyLocking()
+  }
+}
