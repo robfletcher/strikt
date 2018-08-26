@@ -3,7 +3,7 @@ type=page
 status=published
 cached=true
 previousPage=getting-started.html
-nextPage=common-patterns.html
+nextPage=collection-elements.html
 ~~~~~~
 
 # Assertion styles

@@ -25,13 +25,20 @@
           <a class="navbar-link"><span class="icon has-text-info"><i
             class="fas fa-book"></i></span><span>User guide</span></a>
           <div class="navbar-dropdown is-right">
-            <a class="navbar-item" href="/user-guide/getting-started.html">Getting started</a>
-            <a class="navbar-item" href="/user-guide/assertion-styles.html">Assertion styles</a>
-            <a class="navbar-item" href="/user-guide/common-patterns.html">Common Assertion Patterns</a>
+            <a class="navbar-item" href="/user-guide/getting-started.html">Getting
+              Started</a>
+            <a class="navbar-item" href="/user-guide/assertion-styles.html">Assertion
+              Styles</a>
+            <a class="navbar-item" href="/user-guide/collection-elements.html">Collection
+              Element Assertions</a>
+            <a class="navbar-item" href="/user-guide/expecting-exceptions.html">Expecting
+              Exceptions</a>
             <a class="navbar-item" href="/user-guide/flow-typing.html">Strongly Typed Assertions</a>
             <a class="navbar-item" href="/user-guide/mapping.html">Mapping Over Assertion Subjects</a>
-            <a class="navbar-item" href="/user-guide/custom-assertions.html">Custom assertions</a>
-            <a class="navbar-item" href="/user-guide/additional-modules.html">Additional modules</a>
+            <a class="navbar-item" href="/user-guide/custom-assertions.html">Custom
+              Assertions</a>
+            <a class="navbar-item" href="/user-guide/additional-modules.html">Additional
+              Modules</a>
           </div>
         </div>
         <div class="navbar-item has-dropdown is-hoverable">

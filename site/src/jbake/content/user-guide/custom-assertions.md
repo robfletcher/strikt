@@ -94,6 +94,7 @@ Now if the assertion fails there is a little more detail.
 ```
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
+When comparing large string values it also means IDEs such as IntelliJ IDEA will present a detailed diff dialog in the event of a test failure.
 
 ## Simple atomic assertions with boolean expressions
 
