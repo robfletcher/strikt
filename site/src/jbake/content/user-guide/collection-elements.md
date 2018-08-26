@@ -25,10 +25,13 @@ This produces the output:
 ▼ Expect that [catflap, rubberplant, marzipan]:
   ✗ all elements match:
     ▼ "catflap":
+      ✓ is lower case
       ✓ starts with 'c'
     ▼ "rubberplant":
+      ✓ is lower case
       ✗ starts with 'c'
     ▼ "marzipan":
+      ✓ is lower case
       ✗ starts with 'c'
 ```
 
