@@ -26,6 +26,8 @@ apply from: "$rootDir/gradle/announce.gradle"
 allprojects {
   apply plugin: "nebula.release"
   group = "io.strikt"
+
+
   configurations.all {
       resolutionStrategy {
         componentSelection {
@@ -33,7 +35,6 @@ allprojects {
             boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'pr'].any { qualifier ->
               selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
             }
-            println(selection.candidate.version + rejected)
             if (rejected) {
               selection.reject('Release candidate')
             }
