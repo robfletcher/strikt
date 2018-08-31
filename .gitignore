@@ -1,7 +1,5 @@
-/.gradle/
-/.idea/
+.gradle/
+.idea/
 build/
 *.iml
-/mkdocs-material/
-/docs/api/
 out/

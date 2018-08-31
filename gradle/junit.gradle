@@ -1,9 +1,0 @@
-dependencies {
-  // enables running in IntelliJ using JUnit runner
-  testRuntimeOnly "org.junit.platform:junit-platform-launcher:+"
-}
-
-test {
-  systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
-  useJUnitPlatform()
-}
