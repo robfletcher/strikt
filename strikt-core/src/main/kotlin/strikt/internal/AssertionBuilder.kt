@@ -29,7 +29,7 @@ internal class AssertionBuilder<T>(
   override fun and(
     assertions: Assertion.Builder<T>.() -> Unit
   ): Assertion.Builder<T> {
-    AssertionBuilder(context, COLLECT)
+    AssertionBuilder(context, COLLECT, negated)
       .also { nestedBuilder ->
         nestedBuilder.assertions()
         if (mode == FAIL_FAST) {

@@ -53,4 +53,12 @@ internal class Block {
       assertEquals(expected, error.message)
     }
   }
+
+  @Test
+  fun `an and block can be negated`() {
+    val subject: Any? = "fnord"
+    expect(subject).not().and {
+      isNull()
+    }
+  }
 }
