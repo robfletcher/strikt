@@ -48,6 +48,8 @@ jobs:
 
   site:
     <<: *defaults
+    docker:
+    - image: circleci/openjdk:8-jdk
     steps:
       - checkout
       - run: ./gradlew publishGhPages
