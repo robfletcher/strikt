@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expect
+import strikt.assertions.contains
 import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
@@ -60,5 +61,10 @@ internal class Block {
     expect(subject).not().and {
       isNull()
     }
+  }
+
+  @Test
+  fun `contains can be negated`() {
+    expect(listOf<String>()).not().contains("blah")
   }
 }

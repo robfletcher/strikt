@@ -110,9 +110,9 @@ internal class AssertionBuilder<T>(
       override val allFailed: Boolean
         get() = children.all { it.status is Failed }
       override val anyPassed: Boolean
-        get() = children.any { it.status is Passed }
+        get() = children.any { it.status is Passed } xor (negated)
       override val allPassed: Boolean
-        get() = children.all { it.status is Passed }
+        get() = children.all { it.status is Passed } xor (negated)
     }
 
     AssertionBuilder(composedContext, COLLECT, negated).apply {
