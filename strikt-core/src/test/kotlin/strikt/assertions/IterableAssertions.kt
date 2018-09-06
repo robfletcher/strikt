@@ -110,7 +110,6 @@ internal class IterableAssertions {
         isUpperCase()
       }
     }
-
   }
 
   @Nested
