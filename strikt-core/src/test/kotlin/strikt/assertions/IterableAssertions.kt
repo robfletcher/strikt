@@ -102,6 +102,15 @@ internal class IterableAssertions {
         }
       }
     }
+
+    @Test
+    fun `works with not`() {
+      val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+      expect(subject).not().none {
+        isUpperCase()
+      }
+    }
+
   }
 
   @Nested

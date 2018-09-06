@@ -108,7 +108,7 @@ internal class AssertionBuilder<T>(
       override val anyFailed: Boolean
         get() = children.any { it.status is Failed }
       override val allFailed: Boolean
-        get() = children.all { it.status is Failed }
+        get() = children.all { it.status is Failed } xor (negated)
       override val anyPassed: Boolean
         get() = children.any { it.status is Passed } xor (negated)
       override val allPassed: Boolean
