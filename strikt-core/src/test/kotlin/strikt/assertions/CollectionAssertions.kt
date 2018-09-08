@@ -3,7 +3,7 @@ package strikt.assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 
 @DisplayName("assertions on Collection")
@@ -15,7 +15,7 @@ internal class CollectionAssertions {
     fun `fails if the subject size is not the expected size`() {
       fails {
         val subject = setOf("catflap", "rubberplant", "marzipan")
-        expect(subject).hasSize(1)
+        expectThat(subject).hasSize(1)
       }
     }
 
@@ -24,13 +24,13 @@ internal class CollectionAssertions {
     inner class IsEmpty {
       @Test
       fun `passes if collection is empty`() {
-        expect(emptyList<AnyAssertions>()).isEmpty()
+        expectThat(emptyList<AnyAssertions>()).isEmpty()
       }
 
       @Test
       fun `fails if the collection is not empty`() {
         fails {
-          expect(listOf("catflap", "rubberplant", "marzipan")).isEmpty()
+          expectThat(listOf("catflap", "rubberplant", "marzipan")).isEmpty()
         }
       }
     }
@@ -41,13 +41,13 @@ internal class CollectionAssertions {
       @Test
       fun `fails if collection is empty`() {
         fails {
-          expect(emptyList<AnyAssertions>()).isNotEmpty()
+          expectThat(emptyList<AnyAssertions>()).isNotEmpty()
         }
       }
 
       @Test
       fun `passes if the collection is not empty`() {
-        expect(listOf("catflap", "rubberplant", "marzipan")).isNotEmpty()
+        expectThat(listOf("catflap", "rubberplant", "marzipan")).isNotEmpty()
       }
     }
   }

@@ -7,13 +7,37 @@ import strikt.internal.AssertionStrategy
 import strikt.internal.AssertionSubject
 
 /**
+ * Starts a block of assertions that will all be evaluated regardless of whether
+ * earlier ones fail.
+ * This is the entry-point for the assertion API.
+ */
+fun expect(block: ExpectationBuilder.() -> Unit) {
+  val subjects = mutableListOf<AssertionSubject<*>>()
+  object : ExpectationBuilder {
+    override fun <T> that(subject: T): DescribeableBuilder<T> =
+      AssertionSubject(subject)
+        .also { subjects.add(it) }
+        .let { AssertionBuilder(it, AssertionStrategy.Collecting) }
+
+    override fun <T> that(
+      subject: T,
+      block: Builder<T>.() -> Unit
+    ): DescribeableBuilder<T> = that(subject).apply(block)
+  }
+    .apply(block)
+    .let {
+      AssertionStrategy.Throwing.evaluate(subjects)
+    }
+}
+
+/**
  * Start a chain of assertions over [subject].
  * This is the entry-point for the assertion API.
  *
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expect(subject: T): DescribeableBuilder<T> =
+fun <T> expectThat(subject: T): DescribeableBuilder<T> =
   AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)
 
 /**
@@ -25,7 +49,7 @@ fun <T> expect(subject: T): DescribeableBuilder<T> =
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return an assertion for [subject].
  */
-fun <T> expect(
+fun <T> expectThat(
   subject: T,
   block: Builder<T>.() -> Unit
 ): DescribeableBuilder<T> =
@@ -38,18 +62,18 @@ fun <T> expect(
   }
 
 /**
- * Asserts that [action] throws an exception of type [E] when executed.
+ * Asserts that [action]throws an exception of type [E] when executed.
  *
  * @return an assertion over the thrown exception, allowing further assertions
  * about messages, root causes, etc.
  */
-inline fun <reified E : Throwable> throws(
+inline fun <reified E : Throwable> expectThrows(
   noinline action: () -> Unit
 ): Builder<E> =
-  expect(action).throws()
+  expectThat(action).throws()
 
 /**
- * special case expect method to fix blocks that don't return Unit
+ * special case expectThat method to fix blocks that don't return Unit
  */
-fun expect(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
+fun expectThat(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
   AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)

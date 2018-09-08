@@ -127,7 +127,7 @@ Imagine we're creating an assertion function that tests fails if any element of 
 fun <T: Iterable<E?>, E> Assertion.Builder<T>.containsNoNullElements(): Assertion.Builder<T> =
   compose("does not contain any null elements") { subject ->
     subject.forEach {
-      expect(it).isNotNull()
+      expectThat(it).isNotNull()
     }
   } then {
     if (allPassed) pass() else fail()

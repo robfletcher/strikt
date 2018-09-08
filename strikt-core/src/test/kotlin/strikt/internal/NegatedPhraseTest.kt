@@ -3,8 +3,8 @@ package strikt.internal
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.opentest4j.AssertionFailedError
-import strikt.api.expect
-import strikt.api.throws
+import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.message
 
@@ -24,8 +24,8 @@ internal class NegatedPhraseTest {
     )
       .map { (phrase, expected) ->
         dynamicTest("\"$phrase\" is negated to \"$expected\"") {
-          throws<AssertionFailedError> {
-            expect("fnord").not().assert(phrase, "foo") { pass() }
+          expectThrows<AssertionFailedError> {
+            expectThat("fnord").not().assert(phrase, "foo") { pass() }
           }
             .message
             .isEqualTo("▼ Expect that \"fnord\":\n  ✗ $expected")

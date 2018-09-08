@@ -11,9 +11,9 @@ nextPage=custom-assertions.html
 Although you can obviously write assertions for the properties of an object with code like this:
 
 ```kotlin
-expect(map.size).isEqualTo(1)
-expect(list.first()).isEqualTo("fnord")
-expect(person.name).isEqualTo("Ziggy")
+expectThat(map.size).isEqualTo(1)
+expectThat(list.first()).isEqualTo("fnord")
+expectThat(person.name).isEqualTo("Ziggy")
 ```
 
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
@@ -29,7 +29,7 @@ This is sometimes useful for making assertions about the properties of an object
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expect(subject) {
+expectThat(subject) {
   map { it.name }.isEqualTo("David")
   map { it.birthDate.year }.isEqualTo(1947)
 }
@@ -54,7 +54,7 @@ Using property references the output is more useful (although the test code is m
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expect(subject) {
+expectThat(subject) {
   map(Person::name).isEqualTo("David")
   map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
 }
@@ -87,7 +87,7 @@ You can then write the earlier example as:
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expect(subject) {
+expectThat(subject) {
   name.isEqualTo("David")
   yearOfBirth.isEqualTo(1947)
 }

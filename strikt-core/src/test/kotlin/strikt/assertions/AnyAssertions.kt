@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import strikt.api.Assertion.Builder
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 
 @DisplayName("assertions on Any")
@@ -18,14 +18,14 @@ internal class AnyAssertions {
     @Test
     fun `passes if the subject is null`() {
       val subject: Any? = null
-      expect(subject).isNull()
+      expectThat(subject).isNull()
     }
 
     @Test
     fun `fails if the subject is not null`() {
       fails {
         val subject: Any? = "fnord"
-        expect(subject).isNull()
+        expectThat(subject).isNull()
       }
     }
 
@@ -33,7 +33,7 @@ internal class AnyAssertions {
     @Test
     fun `down-casts the result`() {
       val subject: Any? = null
-      expect(subject)
+      expectThat(subject)
         .also { assert(it is Builder<Any?>) }
         .isNull()
         .also { assert(it is Builder<Nothing>) }
@@ -47,21 +47,21 @@ internal class AnyAssertions {
     fun `fails if the subject is null`() {
       fails {
         val subject: Any? = null
-        expect(subject).isNotNull()
+        expectThat(subject).isNotNull()
       }
     }
 
     @Test
     fun `passes if the subject is not null`() {
       val subject: Any? = "fnord"
-      expect(subject).isNotNull()
+      expectThat(subject).isNotNull()
     }
 
     @Suppress("USELESS_IS_CHECK")
     @Test
     fun `down-casts the result`() {
       val subject: Any? = "fnord"
-      expect(subject)
+      expectThat(subject)
         .also { assert(it is Builder<Any?>) }
         .isNotNull()
         .also { assert(it is Builder<Any>) }
@@ -75,7 +75,7 @@ internal class AnyAssertions {
     fun `fails if the subject is null`() {
       fails {
         val subject: Any? = null
-        expect(subject).isA<String>()
+        expectThat(subject).isA<String>()
       }
     }
 
@@ -83,27 +83,27 @@ internal class AnyAssertions {
     fun `fails if the subject is a different type`() {
       fails {
         val subject = 1L
-        expect(subject).isA<String>()
+        expectThat(subject).isA<String>()
       }
     }
 
     @Test
     fun `passes if the subject is the same exact type`() {
       val subject = "fnord"
-      expect(subject).isA<String>()
+      expectThat(subject).isA<String>()
     }
 
     @Test
     fun `passes if the subject is a sub-type`() {
       val subject: Any = 1L
-      expect(subject).isA<Number>()
+      expectThat(subject).isA<Number>()
     }
 
     @Suppress("USELESS_IS_CHECK")
     @Test
     fun `down-casts the result`() {
       val subject: Any = 1L
-      expect(subject)
+      expectThat(subject)
         .also { assert(it is Builder<Any>) }
         .isA<Number>()
         .also { assert(it is Builder<Number>) }
@@ -115,7 +115,7 @@ internal class AnyAssertions {
     @Test
     fun `allows specialized assertions after establishing type`() {
       val subject: Any = "fnord"
-      expect(subject)
+      expectThat(subject)
         .also { assert(it is Builder<Any>) }
         .isA<String>()
         .also { assert(it is Builder<String>) }
@@ -128,7 +128,7 @@ internal class AnyAssertions {
   inner class IsEqualTo {
     @Test
     fun `passes if the subject matches the expectation`() {
-      expect("fnord").isEqualTo("fnord")
+      expectThat("fnord").isEqualTo("fnord")
     }
 
     @TestFactory
@@ -141,7 +141,7 @@ internal class AnyAssertions {
       ).map { (subject, expected) ->
         dynamicTest("fails $subject is equal to $expected") {
           fails {
-            expect(subject).isEqualTo(expected)
+            expectThat(subject).isEqualTo(expected)
           }
         }
       }
@@ -149,7 +149,7 @@ internal class AnyAssertions {
     @Test
     fun `specifies type information if the values look the same`() {
       fails {
-        expect<Number>(5L).isEqualTo(5)
+        expectThat<Number>(5L).isEqualTo(5)
       }.let { e ->
         assertEquals(
           """▼ Expect that 5:
@@ -165,7 +165,7 @@ internal class AnyAssertions {
     @Test
     fun `fails if the subject matches the expectation`() {
       fails {
-        expect("fnord").isNotEqualTo("fnord")
+        expectThat("fnord").isNotEqualTo("fnord")
       }
     }
 
@@ -178,7 +178,7 @@ internal class AnyAssertions {
         Pair("fnord", null)
       ).map { (subject, expected) ->
         dynamicTest("passes $subject is not equal to $expected") {
-          expect(subject).isNotEqualTo(expected)
+          expectThat(subject).isNotEqualTo(expected)
         }
       }
 
@@ -196,7 +196,7 @@ internal class AnyAssertions {
         ).map { (subject, expected) ->
           dynamicTest("fails {0} is not the same instance as {1}") {
             fails {
-              expect(subject).isSameInstanceAs(expected)
+              expectThat(subject).isSameInstanceAs(expected)
             }
           }
         }
@@ -211,7 +211,7 @@ internal class AnyAssertions {
           { Pair(it, it) }
         ).map { (subject, expected) ->
           dynamicTest("passes {0} is same instance as {1}") {
-            expect(subject).isSameInstanceAs(expected)
+            expectThat(subject).isSameInstanceAs(expected)
           }
         }
 
@@ -228,7 +228,7 @@ internal class AnyAssertions {
             Pair(1, 1L)
           ).map { (subject, expected) ->
             dynamicTest("passes {0} is not same instance as to {1}") {
-              expect(subject).isNotSameInstanceAs(expected)
+              expectThat(subject).isNotSameInstanceAs(expected)
             }
           }
 
@@ -243,7 +243,7 @@ internal class AnyAssertions {
           ).map { (subject, expected) ->
             dynamicTest("fails {0} is not same instance as {1}") {
               fails {
-                expect(subject).isNotSameInstanceAs(expected)
+                expectThat(subject).isNotSameInstanceAs(expected)
               }
             }
           }

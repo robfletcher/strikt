@@ -34,6 +34,6 @@ import strikt.api.*
 import strikt.assertions.*
 ```
 
-The `strikt.api` package contains top level functions such as `expect` and `throws` that you will use to create assertions as well as the API classes you will interact with if you decide to implement your own assertion functions.
+The `strikt.api` package contains top level functions such as `expect`, `expectThat`, and `expectThrows` that you will use to create assertions as well as the API classes you will interact with if you decide to implement your own assertion functions.
 The `strikt.assertions` package contains the standard library of assertion functions.
 

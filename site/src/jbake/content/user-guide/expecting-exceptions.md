@@ -12,16 +12,16 @@ To assert that some code throws an exception you can use an assertion on a lambd
 For example:
 
 ```kotlin
-expect { service.computeMeaning() }
+expectThat { service.computeMeaning() }
   .throws<TooMuchFlaxException>()
 ```
 
 The `throws<E>` function returns an `Assertion.Builder<E>` so you can chain assertions about the exception after it.
 
-There is also a top level function `throws(() -> Unit)` that makes this even more concise.
+There is also a top level function `expectThrows(() -> Unit)` that makes this even more concise.
 
 ```kotlin
-throws<TooMuchFlaxException> { 
+expectThrows<TooMuchFlaxException> { 
   service.computeMeaning() 
 }
 ```

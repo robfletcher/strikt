@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import rpg.Character
 import rpg.Role
 import rpg.Sword
-import strikt.api.expect
+import strikt.api.expectThat
 
 @DisplayName("assertions on com.google.protobuf.Any")
 class AnyAssertions {
@@ -21,7 +21,7 @@ class AnyAssertions {
       }
       .build()
 
-    expect(subject).map(Character::getWeapon).isEmpty()
+    expectThat(subject).map(Character::getWeapon).isEmpty()
   }
 
   @Test
@@ -35,6 +35,6 @@ class AnyAssertions {
       }
       .build()
 
-    expect(subject).map(Character::getWeapon).unpacksTo<Sword>()
+    expectThat(subject).map(Character::getWeapon).unpacksTo<Sword>()
   }
 }

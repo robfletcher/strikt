@@ -13,7 +13,7 @@ For example, we can assert that _all_ elements conform to a repeated assertion.
 
 ```kotlin
 val subject = setOf("catflap", "rubberplant", "marzipan")
-expect(subject).all {
+expectThat(subject).all {
   isLowerCase()
   startsWith('c')
 }

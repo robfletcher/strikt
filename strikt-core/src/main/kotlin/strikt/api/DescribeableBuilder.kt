@@ -7,7 +7,7 @@ import strikt.api.Assertion.Builder
  * assertion subject.
  *
  * Since it doesn't make sense to do this anywhere except directly after the
- * initial [expect] or [Assertion.Builder.map] call those methods return an
+ * initial [expectThat] or [Assertion.Builder.map] call those methods return an
  * instance of this interface, while assertions themselves just return
  * [Assertion.Builder].
  */

@@ -2,7 +2,7 @@ package strikt
 
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
@@ -25,9 +25,9 @@ class Exceptions {
   @Test
   fun `chained assertions raise an atomic exception`() {
     fails {
-      expect("fnord").hasLength(5).isUpperCase().startsWith("f")
+      expectThat("fnord").hasLength(5).isUpperCase().startsWith("f")
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<AtomicAssertionFailure>()
         .and {
           message.isEqualTo(
@@ -42,13 +42,13 @@ class Exceptions {
   @Test
   fun `block assertions raise a compound exception`() {
     fails {
-      expect("fnord") {
+      expectThat("fnord") {
         hasLength(5)
         isUpperCase()
         startsWith("f")
       }
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
@@ -72,7 +72,7 @@ class Exceptions {
   @Test
   fun `chains involving "and" raise a single compound exception`() {
     fails {
-      expect("fnord")
+      expectThat("fnord")
         .map(String::length)
         .isGreaterThan(0)
         .and {
@@ -81,7 +81,7 @@ class Exceptions {
           isNotEqualTo(5)
         }
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
@@ -131,7 +131,7 @@ class Exceptions {
   @Test
   fun `blocks involving "and" raise a single compound exception`() {
     fails {
-      expect("fnord") {
+      expectThat("fnord") {
         map(String::length)
           .isGreaterThan(0)
           .and {
@@ -141,7 +141,7 @@ class Exceptions {
           }
       }
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
@@ -172,11 +172,11 @@ class Exceptions {
   @Test
   fun `composed assertions raise an atomic exception`() {
     fails {
-      expect(listOf("catflap", "rubberplant", "marzipan"))
+      expectThat(listOf("catflap", "rubberplant", "marzipan"))
         .containsExactly("catflap", "rubberplant")
     }
       .let { error ->
-        expect(error)
+        expectThat(error)
           .isA<AtomicAssertionFailure>()
           .message
           .isEqualTo(
@@ -194,13 +194,13 @@ class Exceptions {
   @Test
   fun `composed assertions in a block are grouped`() {
     fails {
-      expect(listOf("catflap", "rubberplant", "marzipan")) {
+      expectThat(listOf("catflap", "rubberplant", "marzipan")) {
         hasSize(2)
         containsExactly("catflap", "rubberplant")
       }
     }
       .let { error ->
-        expect(error)
+        expectThat(error)
           .isA<CompoundAssertionFailure>()
           .map { it.failures }
           .hasSize(2)
@@ -231,10 +231,10 @@ class Exceptions {
   @Test
   fun `expected and actual are undefined if a failure does not specify an actual`() {
     fails {
-      expect("fnord")
+      expectThat("fnord")
         .assert("is %s", "something") { fail("o noes") }
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<AssertionFailedError>()
         .and {
           map(AssertionFailedError::isExpectedDefined).isFalse()
@@ -246,10 +246,10 @@ class Exceptions {
   @Test
   fun `expected and actual are defined if a failure specifies an actual`() {
     fails {
-      expect("fnord")
+      expectThat("fnord")
         .assert("is %s", "something") { fail("something else", "o noes") }
     }.let { error ->
-      expect(error)
+      expectThat(error)
         .isA<AssertionFailedError>()
         .and {
           map(AssertionFailedError::isExpectedDefined).isTrue()

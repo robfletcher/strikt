@@ -83,7 +83,9 @@ internal sealed class AssertionStrategy {
         get() = children.all { it.status is Passed }
     }
 
-  open fun <T> evaluate(tree: AssertionGroup<T>) {}
+  open fun evaluate(tree: AssertionGroup<*>) {}
+
+  open fun evaluate(trees: Collection<AssertionGroup<*>>) {}
 
   protected open fun provideDescription(default: String) = default
 
@@ -100,7 +102,7 @@ internal sealed class AssertionStrategy {
   object Collecting : AssertionStrategy()
 
   object Throwing : AssertionStrategy() {
-    override fun <T> evaluate(tree: AssertionGroup<T>) {
+    override fun evaluate(tree: AssertionGroup<*>) {
       if (tree.status is Failed) {
         throw CompoundAssertionFailure(
           tree.root.writeToString(),
@@ -109,6 +111,15 @@ internal sealed class AssertionStrategy {
             .filter { it.status is Failed }
             .map { AtomicAssertionFailure(it.writePartialToString(), it) }
         )
+      }
+    }
+
+    override fun evaluate(trees: Collection<AssertionGroup<*>>) {
+      if (trees.any { it.status is Status.Failed }) {
+        val failures = trees
+          .filter { it.status is Status.Failed }
+          .map { AtomicAssertionFailure(it.writeToString(), it) }
+        throw CompoundAssertionFailure(trees.writeToString(), failures)
       }
     }
 

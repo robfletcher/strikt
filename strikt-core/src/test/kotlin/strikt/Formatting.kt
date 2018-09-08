@@ -3,7 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains
 import strikt.assertions.hasSize
@@ -19,7 +19,7 @@ internal class Formatting {
   fun `a failing chained assertion formats the message correctly`() {
     val e = fails {
       val subject = setOf("catflap", "rubberplant", "marzipan")
-      expect(subject)
+      expectThat(subject)
         .describedAs("a couple of words")
         .hasSize(3)
         .all { isUpperCase() }
@@ -43,7 +43,7 @@ internal class Formatting {
   fun `a failing block assertion formats the message correctly`() {
     val e = fails {
       val subject = setOf("catflap", "rubberplant", "marzipan")
-      expect(subject) {
+      expectThat(subject) {
         hasSize(0)
         all {
           isUpperCase()
@@ -72,7 +72,7 @@ internal class Formatting {
   fun `passing assertions are included in the error message`() {
     val e = fails {
       val subject = setOf("catflap", "rubberplant", "marzipan")
-      expect(subject) {
+      expectThat(subject) {
         hasSize(3)
         all {
           startsWith('c')
@@ -106,10 +106,10 @@ internal class Formatting {
 
     val e = fails {
       val subject = IterableWithToString()
-      expect(subject) { isNotEqualTo(subject) }
+      expectThat(subject) { isNotEqualTo(subject) }
     }
 
-    expect(e.message).isNotNull().and {
+    expectThat(e.message).isNotNull().and {
       contains(toStringOutput)
       not().contains(iteratorOutput)
     }
@@ -125,9 +125,9 @@ internal class Formatting {
 
     val e = fails {
       val subject = IterableWithToString()
-      expect(subject) { isNotEqualTo(subject) }
+      expectThat(subject) { isNotEqualTo(subject) }
     }
 
-    expect(e.message).isNotNull().contains(iteratorOutput)
+    expectThat(e.message).isNotNull().contains(iteratorOutput)
   }
 }

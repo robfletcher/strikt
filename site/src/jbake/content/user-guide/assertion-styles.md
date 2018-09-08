@@ -21,7 +21,7 @@ Each assertion in the chain returns an `Assertion.Builder` object that supports 
 
 ```kotlin
 val subject = "fnord"
-expect(subject)
+expectThat(subject)
   .isA<String>()
   .hasLength(1)
   .isUpperCase()
@@ -47,7 +47,7 @@ That is, all assertions in the block are evaluated and the result of the "compou
 
 ```kotlin
 val subject = "fnord"
-expect(subject) {
+expectThat(subject) {
   isA<String>()
   hasLength(1)
   isUpperCase()
@@ -71,7 +71,7 @@ Chained assertions inside a block _will_ still fail fast but will not prevent ot
 
 ```kotlin
 val subject = 1L
-expect(subject) {
+expectThat(subject) {
   lessThan(1).isA<Int>()
   greaterThan(1)
 }
