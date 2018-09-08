@@ -1,7 +1,7 @@
 package strikt.test
 
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.endsWith
 import strikt.assertions.isEqualTo
 import strikt.internal.peek.FileInfo
@@ -15,9 +15,7 @@ class FilePeekTest {
   fun `can get FileInfo`() {
     val fileInfo = FilePeek.getCallerFileInfo()
 
-    expect(
-      fileInfo
-    ) {
+    expectThat(fileInfo) {
       map(FileInfo::sourceFileName)
         .endsWith("src/test/kotlin/strikt/test/FilePeekTest.kt")
       map(FileInfo::line)
@@ -29,9 +27,7 @@ class FilePeekTest {
   fun `can get FileInfo for a block`() {
     val fileInfo = { FilePeek.getCallerFileInfo() }()
 
-    expect(
-      fileInfo
-    ) {
+    expectThat(fileInfo) {
       map(FileInfo::sourceFileName)
         .endsWith("src/test/kotlin/strikt/test/FilePeekTest.kt")
       map(FileInfo::line)
@@ -49,7 +45,7 @@ class FilePeekTest {
       listOf(1, 2, 3).map { it }
     }
 
-    expect(fileInfo).map(FileInfo::line)
+    expectThat(fileInfo).map(FileInfo::line)
       .isEqualTo("val fileInfo = mapMethod {/* LOL! I'm a block body*/listOf(1, 2, 3).map { it }}")
   }
 }

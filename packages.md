@@ -11,24 +11,24 @@ import strikt.api.*
 import strikt.assertions.*
 ```
 
-Create assertions with `expect` and apply assertion functions to create tests.
+Create assertions with `expect` or `expectThat` and apply assertion functions to create tests.
 
 ```kotlin
 val subject = "fnord"
-expect(subject).matches("[cefov]+")
+expectThat(subject).matches("[cefov]+")
 ```
 
 # Package strikt.api
 
-Contains the API classes of Strikt as well as the `expect` and `throws` functions used to create assertions.
+Contains the API classes of Strikt as well as the `expect`, `expectThat`, and `expectThrows` functions used to create assertions.
 
 ## Chained assertions
 
-Assertions chained after `expect` are _fail-fast_.
+Assertions chained after `expectThat` are _fail-fast_.
 That is, the first assertion that fails breaks the chain resulting in any following assertions not being evaluated.
 
 ```kotlin
-expect(person.name)
+expectThat(person.name)
   .isA<String>()
   .matches("[A-Z][a-z]+")
   .map { length }
@@ -37,11 +37,11 @@ expect(person.name)
 
 ## Block assertions
 
-Assertions contained in a lambda function passed to `expect` do _not_ fail fast.
+Assertions contained in a lambda function passed to `expectThat` do _not_ fail fast.
 They are all evaluated and only then are failures reported.
 
 ```kotlin
-expect(person) {
+expectThat(person) {
   isNotNull()
   map { name }.matches("[A-Z][a-z]+")
   map { birthDate }.isGreaterThan(LocalDate.of(1970, 1, 1))

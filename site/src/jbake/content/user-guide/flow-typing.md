@@ -31,11 +31,11 @@ For example:
 
 ```kotlin
 val subject: Map<String, Any> = mapOf("count" to 1, "name" to "Rob")
-expect(subject.get("count"))
+expectThat(subject.get("count"))
   .isA<Number>()
   .isGreaterThan(0)
 
-expect(subject.get("name"))
+expectThat(subject.get("name"))
   .isA<String>()
   .hasLength(3)
 ```
@@ -46,11 +46,11 @@ Without the `isA<T>()` assertion the code would not compile:
 
 ```kotlin
 val subject: Map<String, Any> = mapOf("count" to 1, "name" to "Rob")
-expect(subject.get("count"))
+expectThat(subject.get("count"))
   .isGreaterThan(0) 
   // isGreaterThan does not exist on Assertion.Builder<Any>
   
-expect(subject.get("name"))
+expectThat(subject.get("name"))
   .hasLength(3) 
   // hasLength does not exist on Assertion.Builder<Any>
 ```
@@ -60,19 +60,19 @@ This mechanism means that IDE code-completion is optimally helpful as only asser
 ## Grouping assertions after a null or type check
 
 It's frequently useful to be able to perform a block of assertions after narrowing the subject type.
-For example, if the declared type of an assertion subject is nullable it can be awkward to apply a block of assertions directly with `expect` as every individual assertion in the block needs to deal with the nullable type.
+For example, if the declared type of an assertion subject is nullable it can be awkward to apply a block of assertions directly with `expectThat` as every individual assertion in the block needs to deal with the nullable type.
 The same is true when the subject type is overly broad and you need to narrow the type with `isA<T>` in order to use assertion functions that are specific to the runtime type.
 
 To handle this scenario Strikt provides the `and` method that is used to add a block of assertions to a chain.
 For example:
 
 ```kotlin
-expect(subject)  
+expectThat(subject)  
   .isNotNull()   
   .and {
     // perform other assertions on a known non-null subject 
   }
 ```
 
-The type after `expect` is `Assertion.Builder<T?>` (assuming `subject` has a nullable declared type) but the receiever of `and` is `Assertion.Builder<T>` as `isNotNull` has narrowed the subject type.
+The type after `expectThat` is `Assertion.Builder<T?>` (assuming `subject` has a nullable declared type) but the receiever of `and` is `Assertion.Builder<T>` as `isNotNull` has narrowed the subject type.
 

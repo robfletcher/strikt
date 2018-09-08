@@ -3,7 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isA
 import strikt.assertions.isNotNull
@@ -15,7 +15,7 @@ internal class Block {
   fun `all assertions in a block are evaluated even if some fail`() {
     fails {
       val subject: Any? = "fnord"
-      expect(subject) {
+      expectThat(subject) {
         isNull()
         isNotNull()
         isA<String>()
@@ -35,7 +35,7 @@ internal class Block {
   fun `assertions in a block can be negated`() {
     fails {
       val subject: Any? = "fnord"
-      expect(subject) {
+      expectThat(subject) {
         not().isNull()
         not().isNotNull()
         not().isA<String>()
@@ -54,13 +54,13 @@ internal class Block {
   @Test
   fun `an and block can be negated`() {
     val subject: Any? = "fnord"
-    expect(subject).not().and {
+    expectThat(subject).not().and {
       isNull()
     }
   }
 
   @Test
   fun `contains can be negated`() {
-    expect(listOf<String>()).not().contains("blah")
+    expectThat(listOf<String>()).not().contains("blah")
   }
 }

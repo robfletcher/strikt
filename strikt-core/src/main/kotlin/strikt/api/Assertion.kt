@@ -29,7 +29,7 @@ interface Assertion {
   /**
    * Used to construct assertions.
    *
-   * @see expect
+   * @see expectThat
    * @see Assertion
    */
   interface Builder<T> {

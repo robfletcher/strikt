@@ -1,7 +1,7 @@
 package strikt.assertions
 
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 import strikt.internal.reporting.toHex
 import java.time.LocalDate
@@ -41,9 +41,9 @@ internal class BeanPropertyAssertions {
       dateOfBirth = LocalDate.of(1972, 2, 10)
     )
     fails {
-      expect(subject).propertiesAreEqualTo(other)
+      expectThat(subject).propertiesAreEqualTo(other)
     }.let { error ->
-      expect(error.message) {
+      expectThat(error.message) {
         isNotNull()
         isEqualTo(
           "▼ Expect that Person(David):\n" +
@@ -83,9 +83,9 @@ internal class BeanPropertyAssertions {
       subject.image
     )
     fails {
-      expect(subject).propertiesAreEqualTo(other)
+      expectThat(subject).propertiesAreEqualTo(other)
     }.let { error ->
-      expect(error.message) {
+      expectThat(error.message) {
         isNotNull()
         isEqualTo(
           "▼ Expect that Person(David):\n" +
@@ -119,9 +119,9 @@ internal class BeanPropertyAssertions {
     val other = Cat(name = "Rocky", breed = "Russian Blue", legs = 4, tails = 1)
 
     fails {
-      expect(subject).propertiesAreEqualTo(other)
+      expectThat(subject).propertiesAreEqualTo(other)
     }.let { error ->
-      expect(error.message)
+      expectThat(error.message)
         .isNotNull()
         .isEqualTo(
           "▼ Expect that Cat(Oreo):\n" +

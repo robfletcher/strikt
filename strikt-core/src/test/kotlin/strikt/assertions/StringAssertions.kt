@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
@@ -16,42 +16,43 @@ internal class StringAssertions {
   inner class IsEqualToIgnoringCase {
     @Test
     fun `passes if the subject is identical to the expected value`() {
-      expect("fnord").isEqualToIgnoringCase("fnord")
+      expectThat("fnord").isEqualToIgnoringCase("fnord")
     }
 
     @Test
     fun `fails if the subject is different`() {
       fails {
-        expect("despite the negative press fnord").isEqualToIgnoringCase("fnord")
+        expectThat("despite the negative press fnord")
+          .isEqualToIgnoringCase("fnord")
       }
     }
 
     @Test
     fun `passes if the subject is the same as the expected value apart from case`() {
-      expect("fnord").isEqualToIgnoringCase("fnord")
+      expectThat("fnord").isEqualToIgnoringCase("fnord")
     }
 
     @Test
     fun `can expect string start`() {
-      expect("fnord").startsWith("fno")
+      expectThat("fnord").startsWith("fno")
     }
 
     @Test
     fun `can expect string end`() {
-      expect("fnord").endsWith("nord")
+      expectThat("fnord").endsWith("nord")
     }
 
     @Test
     fun `outputs real end when endsWith fails`() {
-      expect(fails {
-        expect("fnord").endsWith("nor")
+      expectThat(fails {
+        expectThat("fnord").endsWith("nor")
       }).message.contains("""ends with "nor" : found "ord"""")
     }
 
     @Test
     fun `outputs real start when startsWith fails`() {
-      expect(fails {
-        expect("fnord").startsWith("fnrd")
+      expectThat(fails {
+        expectThat("fnord").startsWith("fnrd")
       }).message.contains("""starts with "fnrd" : found "fnor"""")
     }
   }
@@ -63,7 +64,7 @@ internal class StringAssertions {
     fun compiles() {
       assertThrows<CompoundAssertionFailure> {
         val subject = "The Enlightened take things Lightly"
-        expect(subject = subject) {
+        expectThat(subject = subject) {
           hasLength(5)
           matches(Regex("\\d+"))
           startsWith("T")

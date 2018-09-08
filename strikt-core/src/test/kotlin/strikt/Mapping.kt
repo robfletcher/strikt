@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import strikt.api.expect
-import strikt.api.throws
+import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
@@ -21,45 +21,45 @@ internal class Mapping {
   @Test
   fun `first() maps to the first element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
-    expect(subject).first().isEqualTo("catflap")
+    expectThat(subject).first().isEqualTo("catflap")
   }
 
   @Test
   fun `last() maps to the last element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
-    expect(subject).last().isEqualTo("marzipan")
+    expectThat(subject).last().isEqualTo("marzipan")
   }
 
   @Test
   fun `array access maps to an indexed element of a list`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
-    expect(subject)[1].isEqualTo("rubberplant")
+    expectThat(subject)[1].isEqualTo("rubberplant")
   }
 
   @Test
   fun `array access maps to a sub-list of a list`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
-    expect(subject)[1..2].containsExactly("rubberplant", "marzipan")
+    expectThat(subject)[1..2].containsExactly("rubberplant", "marzipan")
   }
 
   @Test
   fun `array access maps to a value of a map`() {
     val subject = mapOf("foo" to "bar")
-    expect(subject)["foo"].isNotNull().isEqualTo("bar")
-    expect(subject)["bar"].isNull()
+    expectThat(subject)["foo"].isNotNull().isEqualTo("bar")
+    expectThat(subject)["bar"].isNull()
   }
 
   @Test
   fun `message maps to an exception message`() {
-    throws<IllegalStateException> {
+    expectThrows<IllegalStateException> {
       throw IllegalStateException("o noes")
     }.message.isEqualTo("o noes")
   }
 
   @Test
   fun `message fails if the exception message is null`() {
-    throws<AssertionError> {
-      throws<IllegalStateException> {
+    expectThrows<AssertionError> {
+      expectThrows<IllegalStateException> {
         throw IllegalStateException()
       }.message
     }.message.isEqualTo(
@@ -80,7 +80,7 @@ internal class Mapping {
 
     @Test
     fun `can map with a closure`() {
-      expect(subject) {
+      expectThat(subject) {
         map { it.name }.isEqualTo("David")
         map { it.birthDate.year }.isEqualTo(1947)
       }
@@ -88,7 +88,7 @@ internal class Mapping {
 
     @Test
     fun `can map with property and method references`() {
-      expect(subject) {
+      expectThat(subject) {
         map(Person::name).isEqualTo("David")
         map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
       }
@@ -96,7 +96,7 @@ internal class Mapping {
 
     @Test
     fun `closures can call methods`() {
-      expect(subject) {
+      expectThat(subject) {
         map { it.name.toUpperCase() }.isEqualTo("DAVID")
         map { it.birthDate.plusYears(69).plusDays(2) }
           .isEqualTo(LocalDate.of(2016, 1, 10))
@@ -106,7 +106,7 @@ internal class Mapping {
     @Test
     fun `can be described`() {
       fails {
-        expect(subject) {
+        expectThat(subject) {
           map { it.name }.describedAs("name").isEqualTo("Ziggy")
           map { it.birthDate.year }.describedAs("birth year").isEqualTo(1971)
         }
@@ -125,7 +125,7 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using property references`() {
       fails {
-        expect(subject).map(Person::name).isEqualTo("Ziggy")
+        expectThat(subject).map(Person::name).isEqualTo("Ziggy")
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
@@ -139,7 +139,7 @@ internal class Mapping {
     @Test
     fun `descriptions also default for blocks`() {
       fails {
-        expect(subject) {
+        expectThat(subject) {
           map { it.name }.isEqualTo("Ziggy")
           map {
             it.birthDate.year
@@ -160,7 +160,7 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
       fails {
-        expect(subject).map(Person::birthDate).map(LocalDate::getYear)
+        expectThat(subject).map(Person::birthDate).map(LocalDate::getYear)
           .isEqualTo(1971)
       }.let { e ->
         assertEquals(

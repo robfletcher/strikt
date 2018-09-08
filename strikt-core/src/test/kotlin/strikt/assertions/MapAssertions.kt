@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 
 @DisplayName("Assertions on Map")
@@ -15,14 +15,14 @@ internal class MapAssertions {
     @Test
     fun `passes if the subject is empty`() {
       val subject = emptyMap<Any, Any>()
-      expect(subject).isEmpty()
+      expectThat(subject).isEmpty()
     }
 
     @Test
     fun `fails if the subject is not empty`() {
       fails {
         val subject = mapOf("Eris" to "Strife and confusion")
-        expect(subject).isEmpty()
+        expectThat(subject).isEmpty()
       }
     }
   }
@@ -33,14 +33,14 @@ internal class MapAssertions {
     @Test
     fun `passes if the subject has a matching key`() {
       val subject = mapOf("foo" to "bar")
-      expect(subject).containsKey("foo")
+      expectThat(subject).containsKey("foo")
     }
 
     @Test
     fun `fails if the subject does not have a matching key`() {
       fails {
         val subject = emptyMap<Any, Any>()
-        expect(subject).containsKey("foo")
+        expectThat(subject).containsKey("foo")
       }.let { e ->
         assertEquals(
           "▼ Expect that {}:\n" +
@@ -58,7 +58,7 @@ internal class MapAssertions {
     fun `passes if the subject has all the specified keys`() {
       val subject =
         mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
-      expect(subject).containsKeys("foo", "baz")
+      expectThat(subject).containsKeys("foo", "baz")
     }
 
     @Test
@@ -66,7 +66,7 @@ internal class MapAssertions {
       fails {
         val subject =
           mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
-        expect(subject).containsKeys("foo", "bar", "fnord")
+        expectThat(subject).containsKeys("foo", "bar", "fnord")
       }.let { e ->
         assertEquals(
           "▼ Expect that {foo=bar, baz=fnord, qux=fnord}:\n" +
@@ -86,14 +86,14 @@ internal class MapAssertions {
     @Test
     fun `passes if the subject has a matching key value pair`() {
       val subject = mapOf("foo" to "bar")
-      expect(subject).hasEntry("foo", "bar")
+      expectThat(subject).hasEntry("foo", "bar")
     }
 
     @Test
     fun `fails if the subject does not have a matching key`() {
       fails {
         val subject = emptyMap<Any, Any>()
-        expect(subject).hasEntry("foo", "bar")
+        expectThat(subject).hasEntry("foo", "bar")
       }.let { e ->
         assertEquals(
           "▼ Expect that {}:\n" +
@@ -107,7 +107,7 @@ internal class MapAssertions {
     fun `fails if the subject has a different value for the key`() {
       fails {
         val subject = mapOf("foo" to "bar")
-        expect(subject).hasEntry("foo", "baz")
+        expectThat(subject).hasEntry("foo", "baz")
       }.let { e ->
         assertEquals(
           "▼ Expect that {foo=bar}:\n" +

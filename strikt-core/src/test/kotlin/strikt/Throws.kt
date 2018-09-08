@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.expect
-import strikt.api.throws
+import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isA
 import strikt.assertions.throws
 import strikt.internal.opentest4j.AtomicAssertionFailure
@@ -14,18 +14,18 @@ import strikt.internal.opentest4j.AtomicAssertionFailure
 internal class Throws {
   @Test
   fun `throws passes if the action throws the expected exception`() {
-    throws<IllegalStateException> { -> throw IllegalStateException() }
+    expectThrows<IllegalStateException> { -> throw IllegalStateException() }
   }
 
   @Test
   fun `throws passes if the action throws a sub-class of the expected exception`() {
-    throws<RuntimeException> { -> throw IllegalStateException() }
+    expectThrows<RuntimeException> { -> throw IllegalStateException() }
   }
 
   @Test
   fun `throws fails if the action does not throw any exception`() {
     fails {
-      throws<IllegalStateException> { -> }
+      expectThrows<IllegalStateException> { -> }
     }.let { e ->
       val expected = "▼ Expect that () -> kotlin.Unit:\n" +
         "  ✗ throws java.lang.IllegalStateException : nothing was thrown"
@@ -36,7 +36,7 @@ internal class Throws {
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
     assertThrows<AtomicAssertionFailure> {
-      throws<IllegalStateException> { -> throw NullPointerException() }
+      expectThrows<IllegalStateException> { -> throw NullPointerException() }
     }.let { e ->
       val expected = "▼ Expect that () -> kotlin.Unit:\n" +
         "  ✗ throws java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
@@ -47,7 +47,7 @@ internal class Throws {
 
   @Test
   fun `throws returns an assertion whose subject is the exception that was caught`() {
-    throws<IllegalStateException> { -> throw IllegalStateException() }
+    expectThrows<IllegalStateException> { -> throw IllegalStateException() }
       .isA<IllegalStateException>()
   }
 
@@ -63,7 +63,7 @@ internal class Throws {
     fails {
       val subject = Thing()
       val fn: () -> Unit = subject::throwSomething
-      expect(fn).throws<IllegalStateException>()
+      expectThat(fn).throws<IllegalStateException>()
     }.let { e ->
       val expected = "▼ Expect that MyThing::throwSomething:\n" +
         "  ✗ throws java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
@@ -74,7 +74,7 @@ internal class Throws {
   @Test
   fun `expect - throws works with blocks that don't return unit`() {
     fails {
-      expect {
+      expectThat {
         @Suppress("UNUSED_EXPRESSION")
         "String"
       }.throws<IllegalStateException>()

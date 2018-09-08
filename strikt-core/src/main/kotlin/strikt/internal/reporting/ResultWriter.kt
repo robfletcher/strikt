@@ -7,7 +7,10 @@ internal interface ResultWriter {
   fun writeTo(writer: Appendable, node: AssertionNode<*>)
 
   fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
-    results.forEach { writeTo(writer, it) }
+    results.forEachIndexed { index, it ->
+      if (index > 0) writer.append("\n")
+      writeTo(writer, it)
+    }
 
   fun writePathTo(writer: Appendable, node: AssertionNode<*>)
 }

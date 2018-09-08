@@ -3,7 +3,7 @@ package strikt.assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 
 @DisplayName("assertions on Boolean")
@@ -14,20 +14,20 @@ internal class BooleanAssertions {
   inner class IsTrue {
     @Test
     fun `passes when the subject is true`() {
-      expect("a" == "a").isTrue()
+      expectThat("a" == "a").isTrue()
     }
 
     @Test
     fun `fails when the subject is false`() {
       fails {
-        expect("a" == "A").isTrue()
+        expectThat("a" == "A").isTrue()
       }
     }
 
     @Test
     fun `fails when the subject is null`() {
       fails {
-        expect(null).isTrue()
+        expectThat(null).isTrue()
       }
     }
   }
@@ -37,20 +37,20 @@ internal class BooleanAssertions {
   inner class IsFalse {
     @Test
     fun `passes when the subject is false`() {
-      expect("a" == "A").isFalse()
+      expectThat("a" == "A").isFalse()
     }
 
     @Test
     fun `fails when the subject is false`() {
       fails {
-        expect("a" == "a").isFalse()
+        expectThat("a" == "a").isFalse()
       }
     }
 
     @Test
     fun `fails when the subject is null`() {
       fails {
-        expect(null).isFalse()
+        expectThat(null).isFalse()
       }
     }
   }

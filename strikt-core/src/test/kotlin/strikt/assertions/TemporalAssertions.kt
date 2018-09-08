@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 import java.time.DateTimeException
 import java.time.Instant
@@ -61,7 +61,7 @@ internal class TemporalAssertions {
         Pair(YearMonth.from(today), today.plusMonths(1))
       ).map { (subject, expected) ->
         dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          expect(subject).isBefore(expected)
+          expectThat(subject).isBefore(expected)
         }
       }
 
@@ -96,7 +96,7 @@ internal class TemporalAssertions {
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           fails {
-            expect(subject).isBefore(expected)
+            expectThat(subject).isBefore(expected)
           }
         }
       }
@@ -109,7 +109,7 @@ internal class TemporalAssertions {
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
-            expect(subject).isBefore(expected)
+            expectThat(subject).isBefore(expected)
           }
         }
       }
@@ -139,7 +139,7 @@ internal class TemporalAssertions {
         Pair(YearMonth.from(today), today.minusMonths(1))
       ).map { (subject, expected) ->
         dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          expect(subject).isAfter(expected)
+          expectThat(subject).isAfter(expected)
         }
       }
 
@@ -174,7 +174,7 @@ internal class TemporalAssertions {
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           fails {
-            expect(subject).isAfter(expected)
+            expectThat(subject).isAfter(expected)
           }
         }
       }
@@ -187,7 +187,7 @@ internal class TemporalAssertions {
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
-            expect(subject).isBefore(expected)
+            expectThat(subject).isBefore(expected)
           }
         }
       }
@@ -205,7 +205,7 @@ internal class TemporalAssertions {
         Triple(today, YEAR, Year.from(today).value)
       ).map { (subject, field, expected) ->
         dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Int)") {
-          expect(subject).get(field).isEqualTo(expected)
+          expectThat(subject).get(field).isEqualTo(expected)
         }
       }
   }
@@ -222,7 +222,7 @@ internal class TemporalAssertions {
         Triple(today, YEAR, Year.from(today).value.toLong())
       ).map { (subject, field, expected) ->
         dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Long)") {
-          expect(subject).getLong(field).isEqualTo(expected)
+          expectThat(subject).getLong(field).isEqualTo(expected)
         }
       }
   }

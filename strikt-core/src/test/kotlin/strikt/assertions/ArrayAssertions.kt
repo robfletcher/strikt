@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-import strikt.api.expect
+import strikt.api.expectThat
 import strikt.fails
 import strikt.internal.reporting.toHex
 import java.lang.System.nanoTime
@@ -20,7 +20,7 @@ internal class ArrayAssertions {
     @Test
     fun `byte arrays are equal if their contents are the same`() {
       val array = randomBytes()
-      expect(array).contentEquals(array.copyOf())
+      expectThat(array).contentEquals(array.copyOf())
     }
 
     @TestFactory
@@ -31,7 +31,7 @@ internal class ArrayAssertions {
       ).map { (array, other) ->
         dynamicTest("0x${array.toHex()} does not equal 0x${other.toHex()}") {
           fails {
-            expect(array).contentEquals(other)
+            expectThat(array).contentEquals(other)
           }.let { error ->
             assertEquals(
               "▼ Expect that 0x${array.toHex()}:\n" +
@@ -45,7 +45,7 @@ internal class ArrayAssertions {
     @Test
     fun `char arrays are equal if their contents are the same`() {
       val array = randomBytes()
-      expect(array).contentEquals(array.copyOf())
+      expectThat(array).contentEquals(array.copyOf())
     }
 
     @TestFactory
@@ -56,7 +56,7 @@ internal class ArrayAssertions {
       ).map { (array, other) ->
         dynamicTest("0x${array.toHex()} does not equal 0x${other.toHex()}") {
           fails {
-            expect(array).contentEquals(other)
+            expectThat(array).contentEquals(other)
           }.let { error ->
             assertEquals(
               "▼ Expect that 0x${array.toHex()}:\n" +
