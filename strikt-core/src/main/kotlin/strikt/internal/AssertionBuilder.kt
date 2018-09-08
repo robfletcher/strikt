@@ -14,6 +14,8 @@ import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
+import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.SingleAssertionFailure
 
 internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
@@ -32,9 +34,7 @@ internal class AssertionBuilder<T>(
     AssertionBuilder(context, COLLECT, negated)
       .also { nestedBuilder ->
         nestedBuilder.assertions()
-        if (mode == FAIL_FAST) {
-          context.toError()?.let { throw it }
-        }
+        throwOnFailure()
       }
     return this
   }
@@ -44,7 +44,8 @@ internal class AssertionBuilder<T>(
     expected: Any?,
     assert: AtomicAssertion.(T) -> Unit
   ): AssertionBuilder<T> {
-    object : AtomicAssertionNode<T>(context, description, expected), AtomicAssertion {
+    object : AtomicAssertionNode<T>(context, description, expected),
+      AtomicAssertion {
       override val subject: T
         get() = context.subject
 
@@ -83,37 +84,39 @@ internal class AssertionBuilder<T>(
     expected: Any?,
     assertions: Builder<T>.(T) -> Unit
   ): CompoundAssertions<T> {
-    val composedContext = object : CompoundAssertionNode<T>(context, description, expected), CompoundAssertion {
-      override val subject: T
-        get() = context.subject
+    val composedContext =
+      object : CompoundAssertionNode<T>(context, description, expected),
+        CompoundAssertion {
+        override val subject: T
+          get() = context.subject
 
-      private var _status: Status = Pending
-      override val status: Status
-        get() = _status
+        private var _status: Status = Pending
+        override val status: Status
+          get() = _status
 
-      override fun pass() {
-        _status = when {
-          negated -> AssertionFailed()
-          else -> Passed
+        override fun pass() {
+          _status = when {
+            negated -> AssertionFailed()
+            else -> Passed
+          }
         }
-      }
 
-      override fun fail(description: String?, cause: Throwable?) {
-        _status = when {
-          negated -> Passed
-          else -> AssertionFailed(description, cause)
+        override fun fail(description: String?, cause: Throwable?) {
+          _status = when {
+            negated -> Passed
+            else -> AssertionFailed(description, cause)
+          }
         }
-      }
 
-      override val anyFailed: Boolean
-        get() = children.any { it.status is Failed }
-      override val allFailed: Boolean
-        get() = children.all { it.status is Failed } xor (negated)
-      override val anyPassed: Boolean
-        get() = children.any { it.status is Passed } xor (negated)
-      override val allPassed: Boolean
-        get() = children.all { it.status is Passed } xor (negated)
-    }
+        override val anyFailed: Boolean
+          get() = children.any { it.status is Failed }
+        override val allFailed: Boolean
+          get() = children.all { it.status is Failed } xor negated
+        override val anyPassed: Boolean
+          get() = children.any { it.status is Passed } xor negated
+        override val allPassed: Boolean
+          get() = children.all { it.status is Passed } xor negated
+      }
 
     AssertionBuilder(composedContext, COLLECT, negated).apply {
       assertions(context.subject)
@@ -129,7 +132,10 @@ internal class AssertionBuilder<T>(
     }
   }
 
-  override fun <R> map(description: String, function: (T) -> R): DescribeableBuilder<R> =
+  override fun <R> map(
+    description: String,
+    function: (T) -> R
+  ): DescribeableBuilder<R> =
     function(context.subject)
       .let { mappedValue ->
         AssertionBuilder(
@@ -146,8 +152,17 @@ internal class AssertionBuilder<T>(
   )
 
   private fun throwOnFailure() {
-    if (mode == FAIL_FAST) {
-      context.toError()?.let { throw it }
+    if (mode == FAIL_FAST && context.status != Passed) {
+      context
+        .toErrors()
+        .let { them ->
+          when (them.size) {
+            0 -> SingleAssertionFailure(context.root, null)
+            1 -> SingleAssertionFailure(context.root, them.first().cause)
+            else -> CompoundAssertionFailure(context.root, them)
+          }
+        }
+        ?.also { throw it }
     }
   }
 }

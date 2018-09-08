@@ -54,7 +54,11 @@ fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Buil
       map { element }.apply(predicate)
     }
   } then {
-    if (allFailed) pass() else fail()
+    if (allFailed) {
+      pass()
+    } else {
+      fail()
+    }
   }
 
 /**

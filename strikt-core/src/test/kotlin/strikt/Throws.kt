@@ -8,7 +8,7 @@ import strikt.api.expect
 import strikt.api.throws
 import strikt.assertions.isA
 import strikt.assertions.throws
-import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.SingleAssertionFailure
 
 @DisplayName("throws assertion")
 internal class Throws {
@@ -35,13 +35,13 @@ internal class Throws {
 
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
-    assertThrows<CompoundAssertionFailure> {
+    assertThrows<SingleAssertionFailure> {
       throws<IllegalStateException> { -> throw NullPointerException() }
     }.let { e ->
       val expected = "▼ Expect that () -> kotlin.Unit:\n" +
         "  ✗ throws java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
       assertEquals(expected, e.message)
-      assertEquals(NullPointerException::class.java, e.failures.first().cause?.javaClass)
+      assertEquals(NullPointerException::class.java, e.cause?.javaClass)
     }
   }
 

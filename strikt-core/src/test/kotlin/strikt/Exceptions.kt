@@ -16,27 +16,20 @@ import strikt.assertions.message
 import strikt.assertions.startsWith
 import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.SingleAssertionFailure
 
 class Exceptions {
   @Test
-  fun `chained assertions raise a compound exception`() {
+  fun `chained assertions raise a single exception`() {
     fails {
       expect("fnord").hasLength(5).isUpperCase().startsWith("f")
     }.let { error ->
       expect(error)
-        .isA<CompoundAssertionFailure>()
+        .isA<SingleAssertionFailure>()
         .and {
           message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
               "  ✓ has length 5\n" +
-              "  ✗ is upper case"
-          )
-          map { it.failures }
-            .hasSize(1)
-            .first()
-            .isA<AtomicAssertionFailure>()
-            .message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
               "  ✗ is upper case"
           )
         }
@@ -44,10 +37,10 @@ class Exceptions {
   }
 
   @Test
-  fun `block assertions raise a compound exception`() {
+  fun `block assertions with multiple failures raise a compound exception`() {
     fails {
       expect("fnord") {
-        hasLength(5)
+        hasLength(4)
         isUpperCase()
         startsWith("f")
       }
@@ -57,19 +50,40 @@ class Exceptions {
         .and {
           message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
-              "  ✓ has length 5\n" +
+              "  ✗ has length 4 : found 5\n" +
               "  ✗ is upper case\n" +
               "  ✓ starts with \"f\""
           )
           map { it.failures }
-            .hasSize(1)
+            .hasSize(2)
             .first()
             .isA<AtomicAssertionFailure>()
             .message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
-              "  ✗ is upper case"
+              "  ✗ has length 4 : found 5"
           )
         }
+    }
+  }
+
+  @Test
+  fun `block assertions with a single failure raise an atomic exception`() {
+    fails {
+      expect("fnord") {
+        hasLength(5)
+        isUpperCase()
+        startsWith("f")
+      }
+    }.let { error ->
+      expect(error)
+        .isA<SingleAssertionFailure>()
+        .message
+        .isEqualTo(
+          "▼ Expect that \"fnord\":\n" +
+            "  ✓ has length 5\n" +
+            "  ✗ is upper case\n" +
+            "  ✓ starts with \"f\""
+        )
     }
   }
 

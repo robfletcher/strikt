@@ -7,7 +7,6 @@ import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 import strikt.internal.opentest4j.AtomicAssertionFailure
-import strikt.internal.opentest4j.CompoundAssertionFailure
 import strikt.internal.reporting.writeToString
 
 /**
@@ -20,25 +19,22 @@ internal interface AssertionNode<S> {
   val subject: S
   var description: String
   val status: Status
-  val root: AssertionNode<*>
-  fun toError(): Throwable?
+  val root: AssertionSubject<*>
+  fun toErrors(): List<Throwable>
   val parent: AssertionGroup<*>?
 }
 
 internal interface AssertionGroup<S> : AssertionNode<S> {
   fun append(node: AssertionNode<*>) // TODO: not visible outside of this hierarchy
   val children: Iterable<AssertionNode<*>>
+
+  override fun toErrors(): List<Throwable> =
+    children.flatMap(AssertionNode<*>::toErrors)
 }
 
 internal interface AssertionResult<S> : AssertionNode<S> {
   override val parent: AssertionGroup<S>
   val expected: Any?
-
-  override fun toError(): Throwable? = when (status) {
-    is Pending -> TestSkippedException(root.writeToString())
-    is Passed -> null
-    is Failed -> AtomicAssertionFailure(this)
-  }
 }
 
 internal class AssertionSubject<S>(
@@ -48,7 +44,7 @@ internal class AssertionSubject<S>(
 ) : AssertionGroup<S> {
   constructor(value: S) : this(null, value)
 
-  override val root: AssertionNode<*>
+  override val root: AssertionSubject<*>
     get() = parent?.root ?: this
 
   val isRoot = root === this
@@ -72,16 +68,6 @@ internal class AssertionSubject<S>(
       children.any { it.status is Failed } -> AssertionFailed()
       else -> Passed
     }
-
-  override fun toError(): Throwable? =
-    children
-      .mapNotNull(AssertionNode<*>::toError)
-      .let { errors ->
-        when (errors.size) {
-          0 -> null
-          else -> CompoundAssertionFailure(root.writeToString(), errors)
-        }
-      }
 }
 
 internal abstract class AtomicAssertionNode<S>(
@@ -93,11 +79,17 @@ internal abstract class AtomicAssertionNode<S>(
   override val subject: S
     get() = parent.subject
 
-  override val root: AssertionNode<*>
+  override val root: AssertionSubject<*>
     get() = parent.root
 
   init {
     parent.also { it.append(this) }
+  }
+
+  override fun toErrors(): List<Throwable> = when (status) {
+    is Pending -> listOf(TestSkippedException(root.writeToString()))
+    is Passed -> emptyList()
+    is Failed -> listOf(AtomicAssertionFailure(this))
   }
 }
 
@@ -110,7 +102,7 @@ internal abstract class CompoundAssertionNode<S>(
   override val subject: S
     get() = parent.subject
 
-  override val root: AssertionNode<*>
+  override val root: AssertionSubject<*>
     get() = parent.root
 
   init {

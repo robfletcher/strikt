@@ -6,16 +6,13 @@ import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.contains
 import strikt.assertions.containsExactly
-import strikt.assertions.first
-import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isLowerCase
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.isUpperCase
-import strikt.internal.opentest4j.AtomicAssertionFailure
-import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.SingleAssertionFailure
 
 @DisplayName("assertions in chains")
 internal class Chained {
@@ -70,11 +67,7 @@ internal class Chained {
         "    ✗ contains no further elements : found [3, 4]"
       assertEquals(expected, error.message)
       expect(error)
-        .isA<CompoundAssertionFailure>()
-        .map { it.failures }
-        .hasSize(1)
-        .first()
-        .isA<AtomicAssertionFailure>()
+        .isA<SingleAssertionFailure>()
     }
   }
 

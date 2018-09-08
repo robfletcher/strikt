@@ -6,6 +6,8 @@ import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionSubject
 import strikt.internal.Mode.COLLECT
 import strikt.internal.Mode.FAIL_FAST
+import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.SingleAssertionFailure
 
 /**
  * Start a chain of assertions over [subject].
@@ -34,7 +36,16 @@ fun <T> expect(
     AssertionBuilder(context, COLLECT)
       .apply {
         block()
-        context.toError()?.let { throw it }
+        context
+          .toErrors()
+          .let { them ->
+            when (them.size) {
+              0 -> null
+              1 -> SingleAssertionFailure(context, them.first().cause)
+              else -> CompoundAssertionFailure(context, them)
+            }
+          }
+          ?.also { throw it }
       }
   }
 
