@@ -2,6 +2,7 @@ package strikt
 
 import org.junit.jupiter.api.Test
 import strikt.api.expect
+import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
 import strikt.assertions.hasLength
@@ -19,24 +20,16 @@ import strikt.internal.opentest4j.CompoundAssertionFailure
 
 class Exceptions {
   @Test
-  fun `chained assertions raise a compound exception`() {
+  fun `chained assertions raise an atomic exception`() {
     fails {
       expect("fnord").hasLength(5).isUpperCase().startsWith("f")
     }.let { error ->
       expect(error)
-        .isA<CompoundAssertionFailure>()
+        .isA<AtomicAssertionFailure>()
         .and {
           message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
               "  ✓ has length 5\n" +
-              "  ✗ is upper case"
-          )
-          map { it.failures }
-            .hasSize(1)
-            .first()
-            .isA<AtomicAssertionFailure>()
-            .message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
               "  ✗ is upper case"
           )
         }
@@ -130,5 +123,63 @@ class Exceptions {
     }
   }
 
+  @Test
+  fun `composed assertions raise an atomic exception`() {
+    fails {
+      expect(listOf("catflap", "rubberplant", "marzipan"))
+        .containsExactly("catflap", "rubberplant")
+    }
+      .let { error ->
+        expect(error)
+          .isA<AtomicAssertionFailure>()
+          .message
+          .isEqualTo(
+            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
+              "    ✓ contains \"catflap\"\n" +
+              "    ✓ …at index 0\n" +
+              "    ✓ contains \"rubberplant\"\n" +
+              "    ✓ …at index 1\n" +
+              "    ✗ contains no further elements : found [\"marzipan\"]"
+          )
+      }
+  }
+
+  @Test
+  fun `composed assertions in a block are grouped`() {
+    fails {
+      expect(listOf("catflap", "rubberplant", "marzipan")) {
+        hasSize(2)
+        containsExactly("catflap", "rubberplant")
+      }
+    }
+      .let { error ->
+        expect(error)
+          .isA<CompoundAssertionFailure>()
+          .map { it.failures }
+          .hasSize(2)
+          .and {
+            first()
+              .isA<AtomicAssertionFailure>()
+              .message
+              .isEqualTo(
+                "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+                  "  ✗ has size 2 : found 3"
+              )
+            get(1)
+              .isA<AtomicAssertionFailure>()
+              .message
+              .isEqualTo(
+                "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+                  "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
+                  "    ✓ contains \"catflap\"\n" +
+                  "    ✓ …at index 0\n" +
+                  "    ✓ contains \"rubberplant\"\n" +
+                  "    ✓ …at index 1\n" +
+                  "    ✗ contains no further elements : found [\"marzipan\"]"
+              )
+          }
+      }
+  }
   // TODO: expected / actual are correctly defined / undefined
 }
