@@ -4,5 +4,6 @@ dependencies {
 }
 
 test {
+  systemProperty 'junit.jupiter.execution.parallel.enabled', 'false'
   useJUnitPlatform()
 }
