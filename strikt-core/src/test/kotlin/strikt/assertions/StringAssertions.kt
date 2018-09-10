@@ -30,6 +30,30 @@ internal class StringAssertions {
     fun `passes if the subject is the same as the expected value apart from case`() {
       expect("fnord").isEqualToIgnoringCase("fnord")
     }
+
+    @Test
+    fun `can expect string start`() {
+      expect("fnord").startsWith("fno")
+    }
+
+    @Test
+    fun `can expect string end`() {
+      expect("fnord").endsWith("nord")
+    }
+
+    @Test
+    fun `outputs real end when endsWith fails`() {
+      expect(fails {
+        expect("fnord").endsWith("nor")
+      }).message.contains("""ends with "nor" : found "ord"""")
+    }
+
+    @Test
+    fun `outputs real start when startsWith fails`() {
+      expect(fails {
+        expect("fnord").startsWith("fnrd")
+      }).message.contains("""starts with "fnrd" : found "fnor"""")
+    }
   }
 
   @Nested
