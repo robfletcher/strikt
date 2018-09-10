@@ -11,8 +11,14 @@ data class FileInfo(
 )
 
 object FilePeek {
-  fun getCallerFileInfo(offset: Int = 2): FileInfo {
-    val callerStackTraceElement = RuntimeException().stackTrace[offset]
+  fun getCallerFileInfo(): FileInfo {
+    val stackTrace = RuntimeException().stackTrace
+
+    val callerStackTraceElement = stackTrace.first {
+      !(it.className.startsWith("strikt.internal") || it.className.startsWith(
+        "strikt.api"
+      ))
+    }
     val className = callerStackTraceElement.className.substringBefore('$')
     val clazz = javaClass.classLoader.loadClass(className)!!
     val classFilePath = File(clazz.protectionDomain.codeSource.location.path)
