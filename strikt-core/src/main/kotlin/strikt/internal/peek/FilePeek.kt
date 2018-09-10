@@ -28,15 +28,10 @@ object FilePeek {
     val sourceFileWithoutExtension =
       classFilePath.replace(buildDir, "src/test/kotlin")
         .plus("/" + className.replace(".", "/"))
-    val sourceFileName =
-      if (File(sourceFileWithoutExtension.plus(".kt")).exists()) sourceFileWithoutExtension.plus(
-        ".kt"
-      ) else sourceFileWithoutExtension.plus(
-        ".java"
-      ).replace("src/test/kotlin", "src/test/java")
-
+    val sourceFile = File(sourceFileWithoutExtension).parentFile
+      .resolve(callerStackTraceElement.fileName)
     val reader = try {
-      FileReader(sourceFileName)
+      FileReader(sourceFile)
     } catch (e: FileNotFoundException) {
       throw RuntimeException("did not find source file for class file $classFilePath")
     }
@@ -46,7 +41,7 @@ object FilePeek {
 
     return FileInfo(
       callerStackTraceElement.lineNumber,
-      sourceFileName = sourceFileName,
+      sourceFileName = sourceFile.absolutePath,
       line = callerLine.trim()
     )
   }

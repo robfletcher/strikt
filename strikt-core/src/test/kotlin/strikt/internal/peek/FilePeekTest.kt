@@ -1,6 +1,5 @@
 package strikt.internal.peek
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.assertions.endsWith
@@ -38,7 +37,6 @@ class FilePeekTest {
 
 class FilePeekTestWithDifferentNameThanItsFile {
   @Test
-  @Disabled("this is currently broken")
   fun `finds classes that have a different name than the file they are in`() {
     FilePeek.getCallerFileInfo()
   }
