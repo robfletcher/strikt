@@ -26,7 +26,7 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
 fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("all elements match:") { subject ->
     subject.forEach { element ->
-      map { element }.apply(predicate)
+      map("%s") { element }.apply(predicate)
     }
   } then {
     if (allPassed) pass() else fail()
@@ -39,7 +39,7 @@ fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("at least one element matches:") { subject ->
     subject.forEach { element ->
-      map { element }.apply(predicate)
+      map("%s") { element }.apply(predicate)
     }
   } then {
     if (anyPassed) pass() else fail()
@@ -51,7 +51,7 @@ fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEach { element ->
-      map { element }.apply(predicate)
+      map("%s") { element }.apply(predicate)
     }
   } then {
     if (allFailed) pass() else fail()
