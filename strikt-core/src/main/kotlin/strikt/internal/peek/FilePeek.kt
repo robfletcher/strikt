@@ -13,13 +13,15 @@ data class FileInfo(
 object FilePeek {
   private val STRIKT_PACKAGES = listOf("strikt.internal", "strikt.api")
 
-  fun getCallerFileInfo(): FileInfo {
-    val stackTrace = RuntimeException().stackTrace
-
-    val callerStackTraceElement = stackTrace.first { el ->
+  fun getCallerFileInfo(
+    filter: (StackTraceElement) -> Boolean = { el ->
       STRIKT_PACKAGES
         .none { el.className.startsWith(it) }
     }
+  ): FileInfo {
+    val stackTrace = RuntimeException().stackTrace
+
+    val callerStackTraceElement = stackTrace.first(filter)
     val className = callerStackTraceElement.className.substringBefore('$')
     val clazz = javaClass.classLoader.loadClass(className)!!
     val classFilePath = File(clazz.protectionDomain.codeSource.location.path)
@@ -42,8 +44,15 @@ object FilePeek {
     } catch (e: FileNotFoundException) {
       throw SourceFileNotFoundException(classFilePath)
     }
-    val callerLine = reader.useLines {
-      it.drop(callerStackTraceElement.lineNumber - 1).first()
+    val callerLine = reader.useLines { lines ->
+      var braces = 0
+      lines.drop(callerStackTraceElement.lineNumber - 1)
+        .takeWhileInclusive { line ->
+          val openBraces = line.count { it == '{' }
+          val closeBraces = line.count { it == '}' }
+          braces += openBraces - closeBraces
+          braces != 0
+        }.map { it.trim() }.joinToString(separator = "")
     }
 
     return FileInfo(
@@ -51,6 +60,15 @@ object FilePeek {
       sourceFileName = sourceFile.absolutePath,
       line = callerLine.trim()
     )
+  }
+}
+
+fun <T> Sequence<T>.takeWhileInclusive(pred: (T) -> Boolean): Sequence<T> {
+  var shouldContinue = true
+  return takeWhile {
+    val result = shouldContinue
+    shouldContinue = pred(it)
+    result
   }
 }
 

@@ -141,7 +141,9 @@ internal class Mapping {
       fails {
         expect(subject) {
           map { it.name }.isEqualTo("Ziggy")
-          map { it.birthDate.year }.isEqualTo(1971)
+          map {
+            it.birthDate.year
+          }.isEqualTo(1971)
         }
       }.let { e ->
         assertEquals(
