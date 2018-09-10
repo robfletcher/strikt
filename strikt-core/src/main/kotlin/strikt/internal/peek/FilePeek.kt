@@ -11,13 +11,14 @@ data class FileInfo(
 )
 
 object FilePeek {
+  private val STRIKT_PACKAGES = listOf("strikt.internal", "strikt.api")
+
   fun getCallerFileInfo(): FileInfo {
     val stackTrace = RuntimeException().stackTrace
 
-    val callerStackTraceElement = stackTrace.first {
-      !(it.className.startsWith("strikt.internal") || it.className.startsWith(
-        "strikt.api"
-      ))
+    val callerStackTraceElement = stackTrace.first { el ->
+      STRIKT_PACKAGES
+        .none { el.className.startsWith(it) }
     }
     val className = callerStackTraceElement.className.substringBefore('$')
     val clazz = javaClass.classLoader.loadClass(className)!!
