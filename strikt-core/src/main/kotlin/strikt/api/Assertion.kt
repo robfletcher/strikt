@@ -1,5 +1,7 @@
 package strikt.api
 
+import strikt.internal.peek.FilePeek
+import strikt.internal.peek.ParsedMapInstruction
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
@@ -181,7 +183,15 @@ interface Assertion {
           "value of ${function.propertyName}",
           function
         )
-        else -> map("%s", function)
+        else -> {
+          val fieldName = try {
+            val line = FilePeek.getCallerFileInfo().line
+            ParsedMapInstruction(line).body.substringAfter("it.")
+          } catch (e: Exception) {
+            "%s"
+          }
+          map(fieldName, function)
+        }
       }
 
     /**

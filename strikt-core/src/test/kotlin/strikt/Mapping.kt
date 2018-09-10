@@ -1,7 +1,6 @@
 package strikt
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -68,7 +67,8 @@ internal class Mapping {
         "  ✓ throws java.lang.IllegalStateException\n" +
         "  ▼ thrown exception:\n" +
         "    ▼ value of property message:\n" +
-        "      ✗ is not null")
+        "      ✗ is not null"
+    )
   }
 
   data class Person(val name: String, val birthDate: LocalDate)
@@ -137,7 +137,6 @@ internal class Mapping {
     }
 
     @Test
-    @Disabled
     fun `descriptions also default for blocks`() {
       fails {
         expect(subject) {
@@ -155,7 +154,6 @@ internal class Mapping {
         )
       }
     }
-
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
