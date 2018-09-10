@@ -40,7 +40,7 @@ object FilePeek {
     val reader = try {
       FileReader(sourceFile)
     } catch (e: FileNotFoundException) {
-      throw RuntimeException("did not find source file for class file $classFilePath")
+      throw SourceFileNotFoundException(classFilePath)
     }
     val callerLine = reader.useLines {
       it.drop(callerStackTraceElement.lineNumber - 1).first()
@@ -53,3 +53,6 @@ object FilePeek {
     )
   }
 }
+
+class SourceFileNotFoundException(classFilePath: String) :
+  java.lang.RuntimeException("did not find source file for class file $classFilePath")
