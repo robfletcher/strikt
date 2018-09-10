@@ -19,7 +19,7 @@ fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
   passesIf("is lower case") {
-    it.all { it.isLowerCase() }
+    it.all(Char::isLowerCase)
   }
 
 /**
@@ -27,7 +27,7 @@ fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
  */
 fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
   passesIf("is upper case") {
-    it.all { it.isUpperCase() }
+    it.all(Char::isUpperCase)
   }
 
 /**

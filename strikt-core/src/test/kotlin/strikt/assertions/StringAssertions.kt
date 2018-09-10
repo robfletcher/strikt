@@ -60,7 +60,7 @@ internal class StringAssertions {
   @DisplayName("block assertions on string subjects")
   inner class Blocks {
     @Test
-    fun `compiles`() {
+    fun compiles() {
       assertThrows<CompoundAssertionFailure> {
         val subject = "The Enlightened take things Lightly"
         expect(subject = subject) {
