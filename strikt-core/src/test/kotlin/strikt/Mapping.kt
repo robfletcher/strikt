@@ -1,6 +1,7 @@
 package strikt
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -134,6 +135,27 @@ internal class Mapping {
         )
       }
     }
+
+    @Test
+    @Disabled
+    fun `descriptions also default for blocks`() {
+      fails {
+        expect(subject) {
+          map { it.name }.isEqualTo("Ziggy")
+          map { it.birthDate.year }.describedAs("birth.year").isEqualTo(1971)
+        }
+      }.let { e ->
+        assertEquals(
+          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+            "  ▼ name:\n" +
+            "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
+            "  ▼ birth.year:\n" +
+            "    ✗ is equal to 1971 : found 1947",
+          e.message
+        )
+      }
+    }
+
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
