@@ -18,7 +18,7 @@ internal open class DefaultResultWriter : ResultWriter {
   }
 
   override fun writePathTo(writer: Appendable, node: AssertionResult<*>) {
-    val tree = mutableListOf<AssertionNode<*>>(node)
+    val tree = mutableListOf<AssertionNode<*>>()
     node.addAncestorsTo(tree)
 
     tree.listIterator().also { iterator ->
@@ -26,11 +26,11 @@ internal open class DefaultResultWriter : ResultWriter {
         val indent = iterator.nextIndex()
         val n = iterator.next()
         writeLine(writer, n, indent)
-        if (iterator.hasNext()) {
-          writeLineEnd(writer, n)
-        }
+        writeLineEnd(writer, n)
       }
     }
+
+    writeIndented(writer, node, tree.size)
   }
 
   private fun <S> AssertionNode<S>.addAncestorsTo(tree: MutableList<AssertionNode<*>>) {
