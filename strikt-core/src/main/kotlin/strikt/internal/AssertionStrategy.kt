@@ -93,9 +93,9 @@ internal sealed class AssertionStrategy {
     cause: Throwable? = null
   ): Status = Failed(description, comparison, cause)
 
-  class Collecting() : AssertionStrategy()
+  object Collecting : AssertionStrategy()
 
-  class Throwing() : AssertionStrategy() {
+  object Throwing : AssertionStrategy() {
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       if (result.status is Failed) {
         throw AtomicAssertionFailure(result.root.writeToString(), result)
