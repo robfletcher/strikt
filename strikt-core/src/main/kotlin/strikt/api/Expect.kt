@@ -1,11 +1,15 @@
 package strikt.api
 
 import strikt.api.Assertion.Builder
+import strikt.api.Status.Failed
 import strikt.assertions.throws
 import strikt.internal.AssertionBuilder
+import strikt.internal.AssertionStrategy
 import strikt.internal.AssertionSubject
-import strikt.internal.Mode.COLLECT
-import strikt.internal.Mode.FAIL_FAST
+import strikt.internal.opentest4j.AtomicAssertionFailure
+import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.reporting.writePartialToString
+import strikt.internal.reporting.writeToString
 
 /**
  * Start a chain of assertions over [subject].
@@ -15,7 +19,7 @@ import strikt.internal.Mode.FAIL_FAST
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T): DescribeableBuilder<T> =
-  AssertionBuilder(AssertionSubject(subject), FAIL_FAST)
+  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing())
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -31,10 +35,18 @@ fun <T> expect(
   block: Builder<T>.() -> Unit
 ): DescribeableBuilder<T> =
   AssertionSubject(subject).let { context ->
-    AssertionBuilder(context, COLLECT)
+    AssertionBuilder(context, AssertionStrategy.Collecting())
       .apply {
         block()
-        context.toError()?.let { throw it }
+        if (context.status is Failed) {
+          throw CompoundAssertionFailure(
+            context.root.writeToString(),
+            context
+              .children
+              .filter { it.status is Failed }
+              .map { AtomicAssertionFailure(it.writePartialToString(), it) }
+          )
+        }
       }
   }
 
@@ -53,4 +65,4 @@ inline fun <reified E : Throwable> throws(
  * special case expect method to fix blocks that don't return Unit
  */
 fun expect(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
-  AssertionBuilder(AssertionSubject(subject), FAIL_FAST)
+  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing())
