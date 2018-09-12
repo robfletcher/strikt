@@ -38,7 +38,7 @@ internal sealed class AssertionStrategy {
       override fun fail(actual: Any?, description: String?, cause: Throwable?) {
         _status = onFail(
           description = description,
-          comparison = ValueComparison(expected, actual),
+          comparison = ComparedValues(expected, actual),
           cause = cause
         )
         afterStatusSet(this)
@@ -88,7 +88,7 @@ internal sealed class AssertionStrategy {
   protected open fun onPass(): Status = Passed
   protected open fun onFail(
     description: String? = null,
-    comparison: ValueComparison<Any?>? = null,
+    comparison: ComparedValues? = null,
     cause: Throwable? = null
   ): Status = Failed(description, comparison, cause)
 
@@ -112,7 +112,7 @@ internal sealed class AssertionStrategy {
 
     override fun onFail(
       description: String?,
-      comparison: ValueComparison<Any?>?,
+      comparison: ComparedValues?,
       cause: Throwable?
     ) = Passed
 

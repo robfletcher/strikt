@@ -1,6 +1,6 @@
 package strikt.api
 
-import strikt.internal.ValueComparison
+import strikt.internal.ComparedValues
 
 /**
  * The basic state of an assertion result.
@@ -18,7 +18,7 @@ internal sealed class Status {
 
   data class Failed(
     val description: String? = null,
-    val comparison: ValueComparison<Any?>? = null, // TODO: declare a type
+    val comparison: ComparedValues? = null,
     val cause: Throwable? = null
   ) : Status() {
     fun describe(formatter: (Any?) -> Any?): String? =
