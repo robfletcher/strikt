@@ -19,7 +19,7 @@ import strikt.internal.reporting.writeToString
  * @return an assertion for [subject].
  */
 fun <T> expect(subject: T): DescribeableBuilder<T> =
-  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing())
+  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -35,7 +35,7 @@ fun <T> expect(
   block: Builder<T>.() -> Unit
 ): DescribeableBuilder<T> =
   AssertionSubject(subject).let { context ->
-    AssertionBuilder(context, AssertionStrategy.Collecting())
+    AssertionBuilder(context, AssertionStrategy.Collecting)
       .apply {
         block()
         if (context.status is Failed) {
@@ -65,4 +65,4 @@ inline fun <reified E : Throwable> throws(
  * special case expect method to fix blocks that don't return Unit
  */
 fun expect(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
-  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing())
+  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)

@@ -25,7 +25,7 @@ internal class AssertionBuilder<T>(
   override fun and(
     assertions: Assertion.Builder<T>.() -> Unit
   ): Assertion.Builder<T> {
-    AssertionBuilder(context, AssertionStrategy.Collecting())
+    AssertionBuilder(context, AssertionStrategy.Collecting)
       .apply(assertions)
     // TODO: this is a shitty hack and duplicates the logic in Expect.kt. Need a method on the strategy to re-evaluate collected assertions
     if (strategy is AssertionStrategy.Throwing) {
@@ -63,7 +63,7 @@ internal class AssertionBuilder<T>(
   ): CompoundAssertions<T> {
     val composedContext =
       strategy.appendCompound(context, description, expected)
-    AssertionBuilder(composedContext, AssertionStrategy.Collecting()).apply {
+    AssertionBuilder(composedContext, AssertionStrategy.Collecting).apply {
       assertions(context.subject)
     }
     return object : CompoundAssertions<T> {
