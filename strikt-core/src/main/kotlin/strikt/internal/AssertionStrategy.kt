@@ -106,8 +106,21 @@ internal sealed class AssertionStrategy {
   class Negating(
     private val delegate: AssertionStrategy
   ) : AssertionStrategy() {
-    // TODO: smarter - detect common phrasing like "is" "has" "contains", fall back to "does not match:"
-    override fun provideDescription(default: String) = "not $default"
+    override fun provideDescription(default: String) =
+      listOf(
+        Regex("^is not\\b") to "is",
+        Regex("^is\\b") to "is not",
+        Regex("^contains\\b") to "does not contain",
+        Regex("^starts with\\b") to "does not start with",
+        Regex("^ends with\\b") to "does not end with",
+        Regex("^matches\\b") to "does not match",
+        Regex("^throws\\b") to "does not throw",
+        Regex("^has\\b") to "does not have"
+      ).find { (regex, _) ->
+        regex.containsMatchIn(default)
+      }?.let { (regex, replacement) ->
+        default.replace(regex, replacement)
+      } ?: "does not match: $default"
 
     override fun onPass() = Failed()
 
