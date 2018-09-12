@@ -67,7 +67,7 @@ class Exceptions {
   }
 
   @Test
-  fun `nested assertions raise only a single compound exception`() {
+  fun `chains involving "and" raise a single compound exception`() {
     fails {
       expect("fnord")
         .map(String::length)
@@ -122,6 +122,47 @@ class Exceptions {
                 "    ✗ is not equal to 5"
             )
         }
+    }
+  }
+
+  @Test
+  fun `blocks involving "and" raise a single compound exception`() {
+    fails {
+      expect("fnord") {
+        map(String::length)
+          .isGreaterThan(0)
+          .and {
+            isEqualTo(1)
+            isLessThan(2)
+            isNotEqualTo(5)
+          }
+      }
+    }.let { error ->
+      expect(error)
+        .isA<CompoundAssertionFailure>()
+        .and {
+          message.isEqualTo(
+            "▼ Expect that \"fnord\":\n" +
+              "  ▼ value of property length:\n" +
+              "    ✓ is greater than 0\n" +
+              "    ✗ is equal to 1 : found 5\n" +
+              "    ✗ is less than 2\n" +
+              "    ✗ is not equal to 5"
+          )
+        }
+        .map { it.failures }
+        .hasSize(1)
+        .first()
+        .isA<AtomicAssertionFailure>()
+        .message
+        .isEqualTo(
+          "▼ Expect that \"fnord\":\n" +
+            "  ▼ value of property length:\n" +
+            "    ✓ is greater than 0\n" +
+            "    ✗ is equal to 1 : found 5\n" +
+            "    ✗ is less than 2\n" +
+            "    ✗ is not equal to 5"
+        )
     }
   }
 
