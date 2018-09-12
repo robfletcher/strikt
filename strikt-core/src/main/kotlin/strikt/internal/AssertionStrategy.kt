@@ -86,6 +86,7 @@ internal sealed class AssertionStrategy {
   protected open fun <T> afterStatusSet(result: AssertionResult<T>) {}
 
   protected open fun onPass(): Status = Passed
+
   protected open fun onFail(
     description: String? = null,
     comparison: ComparedValues? = null,

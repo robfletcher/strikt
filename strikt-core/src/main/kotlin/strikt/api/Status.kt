@@ -20,11 +20,5 @@ internal sealed class Status {
     val description: String? = null,
     val comparison: ComparedValues? = null,
     val cause: Throwable? = null
-  ) : Status() {
-    fun describe(formatter: (Any?) -> Any?): String? =
-      when (comparison) {
-        null -> description
-        else -> description?.format(formatter(comparison.actual))
-      }
-  }
+  ) : Status()
 }
