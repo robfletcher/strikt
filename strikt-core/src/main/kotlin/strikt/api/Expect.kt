@@ -1,15 +1,10 @@
 package strikt.api
 
 import strikt.api.Assertion.Builder
-import strikt.api.Status.Failed
 import strikt.assertions.throws
 import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy
 import strikt.internal.AssertionSubject
-import strikt.internal.opentest4j.AtomicAssertionFailure
-import strikt.internal.opentest4j.CompoundAssertionFailure
-import strikt.internal.reporting.writePartialToString
-import strikt.internal.reporting.writeToString
 
 /**
  * Start a chain of assertions over [subject].
@@ -38,15 +33,7 @@ fun <T> expect(
     AssertionBuilder(context, AssertionStrategy.Collecting)
       .apply {
         block()
-        if (context.status is Failed) {
-          throw CompoundAssertionFailure(
-            context.root.writeToString(),
-            context
-              .children
-              .filter { it.status is Failed }
-              .map { AtomicAssertionFailure(it.writePartialToString(), it) }
-          )
-        }
+        AssertionStrategy.Throwing.evaluate(context)
       }
   }
 

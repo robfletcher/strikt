@@ -6,11 +6,6 @@ import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
 import strikt.api.DescribeableBuilder
-import strikt.api.Status.Failed
-import strikt.internal.opentest4j.AtomicAssertionFailure
-import strikt.internal.opentest4j.CompoundAssertionFailure
-import strikt.internal.reporting.writePartialToString
-import strikt.internal.reporting.writeToString
 
 internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
@@ -25,20 +20,8 @@ internal class AssertionBuilder<T>(
   override fun and(
     assertions: Assertion.Builder<T>.() -> Unit
   ): Assertion.Builder<T> {
-    AssertionBuilder(context, AssertionStrategy.Collecting)
-      .apply(assertions)
-    // TODO: this is a shitty hack and duplicates the logic in Expect.kt. Need a method on the strategy to re-evaluate collected assertions
-    if (strategy is AssertionStrategy.Throwing) {
-      if (context.children.any { it.status is Failed }) {
-        throw CompoundAssertionFailure(
-          context.root.writeToString(),
-          context
-            .children
-            .filter { it.status is Failed }
-            .map { AtomicAssertionFailure(it.writePartialToString(), it) }
-        )
-      }
-    }
+    AssertionBuilder(context, AssertionStrategy.Collecting).apply(assertions)
+    strategy.evaluate(context)
     return this
   }
 
