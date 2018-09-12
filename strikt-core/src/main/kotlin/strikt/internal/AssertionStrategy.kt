@@ -5,6 +5,8 @@ import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 import strikt.internal.opentest4j.AtomicAssertionFailure
+import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
 
 internal sealed class AssertionStrategy {
@@ -81,6 +83,8 @@ internal sealed class AssertionStrategy {
         get() = children.all { it.status is Passed }
     }
 
+  open fun <T> evaluate(tree: AssertionGroup<T>) {}
+
   protected open fun provideDescription(default: String) = default
 
   protected open fun <T> afterStatusSet(result: AssertionResult<T>) {}
@@ -96,6 +100,18 @@ internal sealed class AssertionStrategy {
   object Collecting : AssertionStrategy()
 
   object Throwing : AssertionStrategy() {
+    override fun <T> evaluate(tree: AssertionGroup<T>) {
+      if (tree.status is Failed) {
+        throw CompoundAssertionFailure(
+          tree.root.writeToString(),
+          tree
+            .children
+            .filter { it.status is Failed }
+            .map { AtomicAssertionFailure(it.writePartialToString(), it) }
+        )
+      }
+    }
+
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       if (result.status is Failed) {
         throw AtomicAssertionFailure(result.root.writeToString(), result)
