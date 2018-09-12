@@ -43,10 +43,10 @@ internal class Block {
       }
     }.let { error ->
       val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✓ not is null\n" +
-        "  ✗ not is not null\n" +
-        "  ✗ not is an instance of java.lang.String\n" +
-        "  ✓ not is an instance of java.lang.Number"
+        "  ✓ is not null\n" +
+        "  ✗ is null\n" +
+        "  ✗ is not an instance of java.lang.String\n" +
+        "  ✓ is not an instance of java.lang.Number"
       assertEquals(expected, error.message)
     }
   }

@@ -47,7 +47,7 @@ internal class Chained {
     }.let { error ->
       assertEquals(
         "▼ Expect that \"fnord\":\n" +
-          "  ✗ not is lower case",
+          "  ✗ is not lower case",
         error.message
       )
     }
