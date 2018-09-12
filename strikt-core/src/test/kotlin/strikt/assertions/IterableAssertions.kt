@@ -200,7 +200,8 @@ internal class IterableAssertions {
         arrayOf("xenocracy", "wye", "exercitation")
       ).map { elements ->
         dynamicTest("passes if the subject contains none of the elements ${elements.toList()}") {
-          expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
+          expect(listOf("catflap", "rubberplant", "marzipan"))
+            .doesNotContain(*elements)
         }
       }
 
@@ -213,7 +214,8 @@ internal class IterableAssertions {
       ).map { elements ->
         dynamicTest("passes if the subject contains any of the elements ${elements.toList()}") {
           fails {
-            expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain(*elements)
+            expect(listOf("catflap", "rubberplant", "marzipan"))
+              .doesNotContain(*elements)
           }
         }
       }
@@ -221,7 +223,8 @@ internal class IterableAssertions {
     @Test
     fun `formats its failure message correctly`() =
       fails {
-        expect(listOf("catflap", "rubberplant", "marzipan")).doesNotContain("catflap", "wye", "marzipan")
+        expect(listOf("catflap", "rubberplant", "marzipan"))
+          .doesNotContain("catflap", "wye", "marzipan")
       }.let { e ->
         assertEquals(
           "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
@@ -443,7 +446,8 @@ internal class IterableAssertions {
 
       @Test
       fun `passes if the elements are identical`() {
-        expect(subject).containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
+        expect(subject)
+          .containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
       }
 
       @Test
@@ -457,7 +461,12 @@ internal class IterableAssertions {
       fun `fails if there are fewer elements than expected`() {
         fails {
           expect(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }
       }
     }
@@ -493,7 +502,12 @@ internal class IterableAssertions {
       fun `fails if the cardinality of an element is lower than expected`() {
         fails {
           expect(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "marzipan"
+            )
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
@@ -512,7 +526,12 @@ internal class IterableAssertions {
       fun `fails if there are fewer elements than expected`() {
         fails {
           expect(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
@@ -565,7 +584,12 @@ internal class IterableAssertions {
       fun `fails if there are fewer elements than expected`() {
         fails {
           expect(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }
       }
 
@@ -573,7 +597,12 @@ internal class IterableAssertions {
       fun `fails if the cardinality of an element is lower than expected`() {
         fails {
           expect(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "marzipan"
+            )
         }
       }
 

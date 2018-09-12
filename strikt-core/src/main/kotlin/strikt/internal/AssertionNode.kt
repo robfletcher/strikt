@@ -1,14 +1,11 @@
 package strikt.internal
 
-import org.opentest4j.TestSkippedException
+import strikt.api.AtomicAssertion
+import strikt.api.CompoundAssertion
 import strikt.api.Status
-import strikt.api.Status.AssertionFailed
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
-import strikt.internal.opentest4j.AtomicAssertionFailure
-import strikt.internal.opentest4j.CompoundAssertionFailure
-import strikt.internal.reporting.writeToString
 
 /**
  * Part of a graph of assertion results.
@@ -21,7 +18,6 @@ internal interface AssertionNode<S> {
   var description: String
   val status: Status
   val root: AssertionNode<*>
-  fun toError(): Throwable?
   val parent: AssertionGroup<*>?
 }
 
@@ -33,12 +29,6 @@ internal interface AssertionGroup<S> : AssertionNode<S> {
 internal interface AssertionResult<S> : AssertionNode<S> {
   override val parent: AssertionGroup<S>
   val expected: Any?
-
-  override fun toError(): Throwable? = when (status) {
-    is Pending -> TestSkippedException(root.writeToString())
-    is Passed -> null
-    is Failed -> AtomicAssertionFailure(this)
-  }
 }
 
 internal class AssertionSubject<S>(
@@ -69,26 +59,16 @@ internal class AssertionSubject<S>(
     get() = when {
       children.isEmpty() -> Pending
       children.any { it.status is Pending } -> Pending
-      children.any { it.status is Failed } -> AssertionFailed()
+      children.any { it.status is Failed } -> Failed()
       else -> Passed
     }
-
-  override fun toError(): Throwable? =
-    children
-      .mapNotNull(AssertionNode<*>::toError)
-      .let { errors ->
-        when (errors.size) {
-          0 -> null
-          else -> CompoundAssertionFailure(root.writeToString(), errors)
-        }
-      }
 }
 
 internal abstract class AtomicAssertionNode<S>(
   final override val parent: AssertionGroup<S>,
   override var description: String,
   override val expected: Any? = null
-) : AssertionResult<S> {
+) : AssertionResult<S>, AtomicAssertion {
 
   override val subject: S
     get() = parent.subject
@@ -105,7 +85,7 @@ internal abstract class CompoundAssertionNode<S>(
   final override val parent: AssertionGroup<S>,
   override var description: String,
   override val expected: Any? = null
-) : AssertionGroup<S>, AssertionResult<S> {
+) : AssertionGroup<S>, AssertionResult<S>, CompoundAssertion {
 
   override val subject: S
     get() = parent.subject

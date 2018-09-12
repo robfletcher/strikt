@@ -1,7 +1,6 @@
 package strikt.internal.reporting
 
 import strikt.internal.AssertionNode
-import strikt.internal.AssertionResult
 import java.io.StringWriter
 
 internal interface ResultWriter {
@@ -10,7 +9,7 @@ internal interface ResultWriter {
   fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
     results.forEach { writeTo(writer, it) }
 
-  fun writePathTo(writer: Appendable, node: AssertionResult<*>)
+  fun writePathTo(writer: Appendable, node: AssertionNode<*>)
 }
 
 internal fun AssertionNode<*>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =
@@ -20,7 +19,7 @@ internal fun AssertionNode<*>.writeToString(resultWriter: ResultWriter = Default
       writer.toString()
     }
 
-internal fun AssertionResult<*>.writePartialToString(resultWriter: ResultWriter = DefaultResultWriter()) =
+internal fun AssertionNode<*>.writePartialToString(resultWriter: ResultWriter = DefaultResultWriter()) =
   StringWriter()
     .use { writer ->
       resultWriter.writePathTo(writer, this)
