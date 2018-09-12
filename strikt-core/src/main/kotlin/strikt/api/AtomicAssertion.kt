@@ -15,7 +15,7 @@ interface AtomicAssertion : Assertion {
    */
   fun fail(
     actual: Any?,
-    description: String? = "found %s",
+    description: String? = null,
     cause: Throwable? = null
   )
 }

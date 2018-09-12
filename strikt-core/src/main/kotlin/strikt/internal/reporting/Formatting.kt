@@ -1,14 +1,15 @@
 package strikt.internal.reporting
 
+import strikt.internal.ComparedValues
 import kotlin.jvm.internal.CallableReference
 
-internal fun formatValues(expected: Any?, actual: Any?): Pair<Any?, Any?> {
+internal fun ComparedValues.formatValues(): ComparedValues {
   val e = formatValue(expected)
   val a = formatValue(actual)
   return if (e.toString() == a.toString()) {
-    Pair(e.withTypeSuffix(expected), a.withTypeSuffix(actual))
+    ComparedValues(e.withTypeSuffix(expected), a.withTypeSuffix(actual))
   } else {
-    Pair(e, a)
+    ComparedValues(e, a)
   }
 }
 
