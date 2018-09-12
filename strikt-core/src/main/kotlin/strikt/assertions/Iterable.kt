@@ -72,25 +72,32 @@ fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> {
-  if (elements.isEmpty()) {
-    throw IllegalArgumentException("You must supply some expected elements.")
-  }
-  // TODO: if elements is size 1 don't use compose
-  return compose("contains the elements %s", elements) {
-    elements.forEach { element ->
-      assert("contains %s", element) { subject ->
-        if (subject.contains(element)) {
+fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> =
+  when {
+    elements.isEmpty() -> throw IllegalArgumentException("You must supply some expected elements.")
+    elements.size == 1 ->
+      assert("contains %s", elements.first()) { subject ->
+        if (subject.contains(elements.first())) {
           pass()
         } else {
           fail()
         }
       }
-    }
-  } then {
-    if (allPassed) pass() else fail()
+    else ->
+      compose("contains the elements %s", elements) {
+        elements.forEach { element ->
+          assert("contains %s", element) { subject ->
+            if (subject.contains(element)) {
+              pass()
+            } else {
+              fail()
+            }
+          }
+        }
+      } then {
+        if (allPassed) pass() else fail()
+      }
   }
-}
 
 /**
  * Asserts that none of [elements] are present in the subject.
@@ -107,24 +114,33 @@ fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> {
-  if (elements.isEmpty()) {
-    throw IllegalArgumentException("You must supply some expected elements.")
-  }
-  return compose("does not contain any of the elements %s", elements) {
-    elements.forEach { element ->
-      assert("does not contain %s", element) { subject ->
-        if (subject.contains(element)) {
+fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> =
+  when {
+    elements.isEmpty() ->
+      throw IllegalArgumentException("You must supply some expected elements.")
+    elements.size == 1 ->
+      assert("does not contain %s", elements.first()) { subject ->
+        if (subject.contains(elements.first())) {
           fail()
         } else {
           pass()
         }
       }
-    }
-  } then {
-    if (allPassed) pass() else fail()
+    else ->
+      compose("does not contain any of the elements %s", elements) {
+        elements.forEach { element ->
+          assert("does not contain %s", element) { subject ->
+            if (subject.contains(element)) {
+              fail()
+            } else {
+              pass()
+            }
+          }
+        }
+      } then {
+        if (allPassed) pass() else fail()
+      }
   }
-}
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject in the

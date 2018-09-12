@@ -164,10 +164,33 @@ internal class IterableAssertions {
     }
 
     @Test
-    fun `has a nested failure for each missing element`() {
+    fun `has a nested failure for each missing element when there are multiple`() {
       fails {
         expect(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord", "marzipan", "bojack")
+      }.let { error ->
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains the elements [\"fnord\", \"marzipan\", \"bojack\"]\n" +
+            "    ✗ contains \"fnord\"\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✗ contains \"bojack\"",
+          error.message
+        )
+      }
+    }
+
+    @Test
+    fun `does not nest failures when there is only one element`() {
+      fails {
+        expect(listOf("catflap", "rubberplant", "marzipan"))
+          .contains("fnord")
+      }.let { error ->
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains \"fnord\"",
+          error.message
+        )
       }
     }
   }
@@ -221,7 +244,7 @@ internal class IterableAssertions {
       }
 
     @Test
-    fun `formats its failure message correctly`() =
+    fun `formats its failure message correctly when there are multiple elements`() =
       fails {
         expect(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap", "wye", "marzipan")
@@ -232,6 +255,19 @@ internal class IterableAssertions {
             "    ✗ does not contain \"catflap\"\n" +
             "    ✓ does not contain \"wye\"\n" +
             "    ✗ does not contain \"marzipan\"",
+          e.message
+        )
+      }
+
+    @Test
+    fun `formats its failure message correctly when there is a single element`() =
+      fails {
+        expect(listOf("catflap", "rubberplant", "marzipan"))
+          .doesNotContain("catflap")
+      }.let { e ->
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ does not contain \"catflap\"",
           e.message
         )
       }
