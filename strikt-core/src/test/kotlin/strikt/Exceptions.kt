@@ -1,6 +1,7 @@
 package strikt
 
 import org.junit.jupiter.api.Test
+import org.opentest4j.AssertionFailedError
 import strikt.api.expect
 import strikt.assertions.containsExactly
 import strikt.assertions.first
@@ -9,9 +10,11 @@ import strikt.assertions.hasLength
 import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFalse
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isNotEqualTo
+import strikt.assertions.isTrue
 import strikt.assertions.isUpperCase
 import strikt.assertions.message
 import strikt.assertions.startsWith
@@ -224,5 +227,36 @@ class Exceptions {
           }
       }
   }
-  // TODO: expected / actual are correctly defined / undefined
+
+  @Test
+  fun `expected and actual are undefined if a failure does not specify an actual`() {
+    fails {
+      expect("fnord")
+        .assert("is %s", "something") { fail("o noes") }
+    }.let { error ->
+      expect(error)
+        .isA<AssertionFailedError>()
+        .and {
+          map(AssertionFailedError::isExpectedDefined).isFalse()
+          map(AssertionFailedError::isActualDefined).isFalse()
+        }
+    }
+  }
+
+  @Test
+  fun `expected and actual are defined if a failure specifies an actual`() {
+    fails {
+      expect("fnord")
+        .assert("is %s", "something") { fail("something else", "o noes") }
+    }.let { error ->
+      expect(error)
+        .isA<AssertionFailedError>()
+        .and {
+          map(AssertionFailedError::isExpectedDefined).isTrue()
+          map { it.expected.value }.isEqualTo("something")
+          map(AssertionFailedError::isActualDefined).isTrue()
+          map { it.actual.value }.isEqualTo("something else")
+        }
+    }
+  }
 }
