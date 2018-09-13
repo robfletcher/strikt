@@ -1,6 +1,6 @@
 package strikt.internal.peek
 
-class ParsedMapInstruction(line: String) {
+internal class ParsedMapInstruction(line: String) {
   val body: String
 
   init {

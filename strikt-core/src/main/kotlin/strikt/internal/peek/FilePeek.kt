@@ -4,13 +4,13 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileReader
 
-data class FileInfo(
+internal data class FileInfo(
   val lineNumber: Int,
   val sourceFileName: String,
   val line: String
 )
 
-object FilePeek {
+internal object FilePeek {
   private val STRIKT_PACKAGES = listOf("strikt.internal", "strikt.api")
 
   fun getCallerFileInfo(
