@@ -107,14 +107,21 @@ internal sealed class AssertionStrategy {
           tree
             .children
             .filter { it.status is Failed }
-            .map { createAssertionFailedError(it.writePartialToString(), it) }
+            .map { createAssertionFailedError(
+              it.writePartialToString(),
+              it.status as Failed
+            ) }
         )
       }
     }
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
-      if (result.status is Failed) {
-        throw createAssertionFailedError(result.root.writeToString(), result)
+      val status = result.status
+      when (status) {
+        is Failed -> throw createAssertionFailedError(
+          result.root.writeToString(),
+          status
+        )
       }
     }
   }
@@ -153,18 +160,17 @@ internal sealed class AssertionStrategy {
 
   internal fun createAssertionFailedError(
     message: String,
-    failure: AssertionNode<*>
+    failed: Failed?
   ): AssertionFailedError {
-    val failed = failure.status as? Failed
-    if (failed?.comparison != null)
-      return AssertionFailedError(
+    return if (failed?.comparison != null)
+      AssertionFailedError(
         message,
         failed.comparison.expected,
         failed.comparison.actual,
         failed.cause
       )
     else
-      return AssertionFailedError(
+      AssertionFailedError(
         message,
         failed?.cause
       )
