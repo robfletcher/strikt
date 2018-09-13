@@ -168,6 +168,5 @@ internal sealed class AssertionStrategy {
         message,
         failed?.cause
       )
-
   }
 }
