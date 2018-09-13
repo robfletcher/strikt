@@ -65,10 +65,9 @@ internal class BeanPropertyAssertions {
   @Test
   fun `isEqualTo works with java fields that are null`() {
     val subject = PersonJava(null, null, null, null)
-    val failure = fails {
+    expect(fails {
       expect(subject.name).isEqualTo("Ziggy")
-    } as AtomicAssertionFailure
-    expect(failure) {
+    }).isA<AtomicAssertionFailure>().and {
       map { it.actual }.isEqualTo(null)
       map { it.isActualDefined }.isFalse()
     }
