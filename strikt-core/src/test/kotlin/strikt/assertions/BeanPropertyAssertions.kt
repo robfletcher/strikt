@@ -65,7 +65,7 @@ internal class BeanPropertyAssertions {
   fun `isEqualTo works with java fields that are null`() {
     val subject = PersonJava(null, null, null, null)
     fails {
-      expect(subject.name).isEqualTo("Ziggy")
+      expectThat(subject.name).isEqualTo("Ziggy")
     }
   }
 

@@ -108,7 +108,7 @@
           </div>
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
-expect(subject)
+expectThat(subject)
   .hasLength(35)
   .matches(Regex("[\w\s]+"))
   .startsWith("T")</code></pre>
@@ -130,7 +130,7 @@ expect(subject)
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>expect(subject)
+          <pre class="notification content is-medium is-dark"><code>expectThat(subject)
   .contains("Eris", "Thor", "Anubis")</code></pre>
           </div>
 
@@ -140,7 +140,7 @@ expect(subject)
             </div>
           </div>
           <div class="column is-8">
-            <pre class="notification content is-medium is-dark"><code>expect(subject)[0].isEqualTo("Eris")</code></pre>
+            <pre class="notification content is-medium is-dark"><code>expectThat(subject)[0].isEqualTo("Eris")</code></pre>
           </div>
 
           <div class="column is-4 has-text-right-tablet">
@@ -150,7 +150,7 @@ expect(subject)
           </div>
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.values()
-expect(subject)
+expectThat(subject)
   .isNotEmpty()
   .any { startsWith("E") }</code></pre>
           </div>
@@ -172,7 +172,7 @@ expect(subject)
           </div>
           <div class="column is-8">
         <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
-expect(subject) {
+expectThat(subject) {
   hasLength(5)          // fails
   matches(Regex("\d+")) // fails
   startsWith("T")       // still evaluated and passes
@@ -188,6 +188,18 @@ expect(subject) {
   ✗ has length 5 : found 35
   ✗ matches the regular expression /\d+/
   ✓ starts with "T"</code></pre>
+          </div>
+          <div class="column is-4 has-text-right-tablet">
+            <div class="notification content is-medium">
+              <p>Use lambdas to execute assertions multiple subjects at once&hellip;</p>
+            </div>
+          </div>
+          <div class="column is-8">
+        <pre class="notification content is-medium is-dark"><code>val subject = 
+expect {
+  that(person1).map { it.name }.isEqualTo("David")
+  that(person2).map { it.name }.isEqualTo("Ziggy")
+}</code></pre>
           </div>
         </section>
 
@@ -207,7 +219,7 @@ expect(subject) {
           </div>
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code>val subject: Any? = "The Enlightened take things Lightly"
-expect(subject)                // type: Assertion&lt;Any?&gt;
+expectThat(subject)                // type: Assertion&lt;Any?&gt;
   .isNotNull()                 // type: Assertion&lt;Any&gt;
   .isA&lt;String&gt;()               // type: Assertion&lt;String&gt;
   .matches(Regex("[\\w\\s]+"))
@@ -220,7 +232,7 @@ expect(subject)                // type: Assertion&lt;Any?&gt;
           </div>
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.ERIS
-expect(subject)
+expectThat(subject)
   .map(Deity::realm)     // reference to a property
   .map { it.toString() } // return type of a method call
   .isEqualTo("discord and confusion")</code></pre>
@@ -250,7 +262,7 @@ expect(subject)
     }
   }
 
-expect(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
+expectThat(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
@@ -262,7 +274,7 @@ expect(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
   get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
-expect(subject).realm.isEqualTo("discord and confusion")</code></pre>
+expectThat(subject).realm.isEqualTo("discord and confusion")</code></pre>
           </div>
         </section>
       </div>

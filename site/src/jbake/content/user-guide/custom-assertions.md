@@ -2,7 +2,7 @@ title=Custom Assertions
 type=page
 status=published
 cached=true
-previousPage=mapping.html
+previousPage=grouping-with-and.html
 nextPage=additional-modules.html
 ~~~~~~
 
