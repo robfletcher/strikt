@@ -1,10 +1,10 @@
 package strikt.internal
 
+import org.opentest4j.AssertionFailedError
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
-import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
@@ -107,14 +107,14 @@ internal sealed class AssertionStrategy {
           tree
             .children
             .filter { it.status is Failed }
-            .map { AtomicAssertionFailure(it.writePartialToString(), it) }
+            .map { createAssertionFailedError(it.writePartialToString(), it) }
         )
       }
     }
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       if (result.status is Failed) {
-        throw AtomicAssertionFailure(result.root.writeToString(), result)
+        throw createAssertionFailedError(result.root.writeToString(), result)
       }
     }
   }
@@ -149,5 +149,25 @@ internal sealed class AssertionStrategy {
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       delegate.afterStatusSet(result)
     }
+  }
+
+  internal fun createAssertionFailedError(
+    message: String,
+    failure: AssertionNode<*>
+  ): AssertionFailedError {
+    val failed = failure.status as? Failed
+    if (failed?.comparison != null)
+      return AssertionFailedError(
+        message,
+        failed.comparison.expected,
+        failed.comparison.actual,
+        failed.cause
+      )
+    else
+      return AssertionFailedError(
+        message,
+        failed?.cause
+      )
+
   }
 }
