@@ -3,7 +3,7 @@ type=page
 status=published
 cached=true
 previousPage=flow-typing.html
-nextPage=custom-assertions.html
+nextPage=grouping-with-and.html
 ~~~~~~
 
 # Mapping Over Assertion Subjects
