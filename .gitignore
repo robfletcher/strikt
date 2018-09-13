@@ -4,5 +4,4 @@ build/
 *.iml
 /mkdocs-material/
 /docs/api/
-strikt-core/out/
-strikt-protobuf/out/
+out/
