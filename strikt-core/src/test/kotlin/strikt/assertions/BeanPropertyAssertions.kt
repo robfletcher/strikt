@@ -3,6 +3,7 @@ package strikt.assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expect
 import strikt.fails
+import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.reporting.toHex
 import java.time.LocalDate
 import java.util.Base64
@@ -64,8 +65,12 @@ internal class BeanPropertyAssertions {
   @Test
   fun `isEqualTo works with java fields that are null`() {
     val subject = PersonJava(null, null, null, null)
-    fails {
+    val failure = fails {
       expect(subject.name).isEqualTo("Ziggy")
+    } as AtomicAssertionFailure
+    expect(failure) {
+      map { it.actual }.isEqualTo(null)
+      map { it.isActualDefined }.isFalse()
     }
   }
 
