@@ -6,7 +6,7 @@ buildscript {
   configurations.maybeCreate("pitest")
 
   dependencies {
-    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.61"
+    classpath "com.netflix.nebula:nebula-kotlin-plugin:1.2.70"
     classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
     classpath "org.jmailen.gradle:kotlinter-gradle:1.16.0"
     classpath "com.netflix.nebula:nebula-release-plugin:6.3.5"
