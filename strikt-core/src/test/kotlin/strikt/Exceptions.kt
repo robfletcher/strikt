@@ -18,7 +18,6 @@ import strikt.assertions.isTrue
 import strikt.assertions.isUpperCase
 import strikt.assertions.message
 import strikt.assertions.startsWith
-import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 class Exceptions {
@@ -28,7 +27,7 @@ class Exceptions {
       expect("fnord").hasLength(5).isUpperCase().startsWith("f")
     }.let { error ->
       expect(error)
-        .isA<AtomicAssertionFailure>()
+        .isA<AssertionFailedError>()
         .and {
           message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
@@ -60,7 +59,7 @@ class Exceptions {
           map { it.failures }
             .hasSize(1)
             .first()
-            .isA<AtomicAssertionFailure>()
+            .isA<AssertionFailedError>()
             .message.isEqualTo(
             "▼ Expect that \"fnord\":\n" +
               "  ✗ is upper case"
@@ -97,7 +96,7 @@ class Exceptions {
         .hasSize(3)
         .and {
           first()
-            .isA<AtomicAssertionFailure>()
+            .isA<AssertionFailedError>()
             .message
             .isEqualTo(
               "▼ Expect that \"fnord\":\n" +
@@ -107,7 +106,7 @@ class Exceptions {
         }
         .and {
           get(1)
-            .isA<AtomicAssertionFailure>()
+            .isA<AssertionFailedError>()
             .message
             .isEqualTo(
               "▼ Expect that \"fnord\":\n" +
@@ -117,7 +116,7 @@ class Exceptions {
         }
         .and {
           get(2)
-            .isA<AtomicAssertionFailure>()
+            .isA<AssertionFailedError>()
             .message
             .isEqualTo(
               "▼ Expect that \"fnord\":\n" +
@@ -156,7 +155,7 @@ class Exceptions {
         .map { it.failures }
         .hasSize(1)
         .first()
-        .isA<AtomicAssertionFailure>()
+        .isA<AssertionFailedError>()
         .message
         .isEqualTo(
           "▼ Expect that \"fnord\":\n" +
@@ -177,7 +176,7 @@ class Exceptions {
     }
       .let { error ->
         expect(error)
-          .isA<AtomicAssertionFailure>()
+          .isA<AssertionFailedError>()
           .message
           .isEqualTo(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
@@ -206,14 +205,14 @@ class Exceptions {
           .hasSize(2)
           .and {
             first()
-              .isA<AtomicAssertionFailure>()
+              .isA<AssertionFailedError>()
               .message
               .isEqualTo(
                 "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
                   "  ✗ has size 2 : found 3"
               )
             get(1)
-              .isA<AtomicAssertionFailure>()
+              .isA<AssertionFailedError>()
               .message
               .isEqualTo(
                 "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +

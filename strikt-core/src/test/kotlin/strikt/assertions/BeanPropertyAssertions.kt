@@ -1,9 +1,9 @@
 package strikt.assertions
 
 import org.junit.jupiter.api.Test
+import org.opentest4j.AssertionFailedError
 import strikt.api.expect
 import strikt.fails
-import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.reporting.toHex
 import java.time.LocalDate
 import java.util.Base64
@@ -67,9 +67,9 @@ internal class BeanPropertyAssertions {
     val subject = PersonJava(null, null, null, null)
     expect(fails {
       expect(subject.name).isEqualTo("Ziggy")
-    }).isA<AtomicAssertionFailure>().and {
-      map { it.actual }.isEqualTo(null)
-      map { it.isActualDefined }.isFalse()
+    }).isA<AssertionFailedError>().and {
+      map { it.actual}.isEqualTo(null)
+      map { it.isActualDefined }.isTrue()
     }
   }
 
