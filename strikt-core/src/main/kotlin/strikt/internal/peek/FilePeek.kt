@@ -63,7 +63,7 @@ internal object FilePeek {
   }
 }
 
-fun <T> Sequence<T>.takeWhileInclusive(pred: (T) -> Boolean): Sequence<T> {
+internal fun <T> Sequence<T>.takeWhileInclusive(pred: (T) -> Boolean): Sequence<T> {
   var shouldContinue = true
   return takeWhile {
     val result = shouldContinue
@@ -72,5 +72,5 @@ fun <T> Sequence<T>.takeWhileInclusive(pred: (T) -> Boolean): Sequence<T> {
   }
 }
 
-class SourceFileNotFoundException(classFilePath: String) :
+internal class SourceFileNotFoundException(classFilePath: String) :
   java.lang.RuntimeException("did not find source file for class file $classFilePath")
