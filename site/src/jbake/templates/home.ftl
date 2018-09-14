@@ -107,7 +107,7 @@
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
+          <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject: "The Enlightened take things Lightly"
 expectThat(subject)
   .hasLength(35)
   .matches(Regex("[\w\s]+"))
@@ -130,7 +130,7 @@ expectThat(subject)
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>expectThat(subject)
+          <pre class="notification content is-medium is-dark"><code class="language-kotlin">expectThat(subject)
   .contains("Eris", "Thor", "Anubis")</code></pre>
           </div>
 
@@ -140,7 +140,7 @@ expectThat(subject)
             </div>
           </div>
           <div class="column is-8">
-            <pre class="notification content is-medium is-dark"><code>expectThat(subject)[0].isEqualTo("Eris")</code></pre>
+            <pre class="notification content is-medium is-dark"><code class="language-kotlin">expectThat(subject)[0].isEqualTo("Eris")</code></pre>
           </div>
 
           <div class="column is-4 has-text-right-tablet">
@@ -149,7 +149,7 @@ expectThat(subject)
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.values()
+          <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject = Pantheon.values()
 expectThat(subject)
   .isNotEmpty()
   .any { startsWith("E") }</code></pre>
@@ -171,7 +171,7 @@ expectThat(subject)
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>val subject: "The Enlightened take things Lightly"
+        <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject: "The Enlightened take things Lightly"
 expectThat(subject) {
   hasLength(5)          // fails
   matches(Regex("\d+")) // fails
@@ -195,8 +195,7 @@ expectThat(subject) {
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>
-expect {
+        <pre class="notification content is-medium is-dark"><code class="language-kotlin">expect {
   that(person1).map { it.name }.isEqualTo("David")
   that(person2).map { it.name }.isEqualTo("Ziggy")
 }</code></pre>
@@ -218,8 +217,8 @@ expect {
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>val subject: Any? = "The Enlightened take things Lightly"
-expectThat(subject)                // type: Assertion&lt;Any?&gt;
+          <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject: Any? = "The Enlightened take things Lightly"
+expectThat(subject)            // type: Assertion&lt;Any?&gt;
   .isNotNull()                 // type: Assertion&lt;Any&gt;
   .isA&lt;String&gt;()               // type: Assertion&lt;String&gt;
   .matches(Regex("[\\w\\s]+"))
@@ -231,7 +230,7 @@ expectThat(subject)                // type: Assertion&lt;Any?&gt;
             </div>
           </div>
           <div class="column is-8">
-          <pre class="notification content is-medium is-dark"><code>val subject = Pantheon.ERIS
+          <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject = Pantheon.ERIS
 expectThat(subject)
   .map(Deity::realm)     // reference to a property
   .map { it.toString() } // return type of a method call
@@ -254,7 +253,7 @@ expectThat(subject)
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>fun Assertion.Builder&lt;LocalDate&gt;.isStTibsDay() =
+        <pre class="notification content is-medium is-dark"><code class="language-kotlin">fun Assertion.Builder&lt;LocalDate&gt;.isStTibsDay() =
   assert("is St. Tib's Day") {
     when (MonthDay.from(it)) {
       MonthDay.of(2, 29) -> pass()
@@ -270,11 +269,13 @@ expectThat(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>val Assertion.Builder&lt;Deity&gt;.realm: Assertion.Builder&lt;String&gt;
+        <pre class="notification content is-medium is-dark"><code class="language-kotlin">val Assertion.Builder&lt;Deity&gt;.realm: Assertion.Builder&lt;String&gt;
   get() = map(Deity::realm)
 
 val subject = Pantheon.ERIS
-expectThat(subject).realm.isEqualTo("discord and confusion")</code></pre>
+expectThat(subject)
+  .realm
+  .isEqualTo("discord and confusion")</code></pre>
           </div>
         </section>
       </div>
