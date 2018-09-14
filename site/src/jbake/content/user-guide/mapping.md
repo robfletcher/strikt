@@ -35,22 +35,18 @@ expectThat(subject) {
 }
 ```
 
+strikt will read the test source to find out the name of the variables, so this will work just as well as property references and produce output that looks like this:
+```
+  ▼ name:
+    ✗ is equal to "Ziggy" : found "David"
+  ▼ birthDate.year:
+    ✗ is equal to 1971 : found 1947
+```
+
+
 ## Mapping with property or method references
 
-If you use a Kotlin property or Java method reference as the lambda passed to `map`, Strikt will automatically derive the property name and use it as the subject description on the returned assertion. 
-This is useful for generating good quality assertion output with minimal effort.
-
-For example, if the previous example fails it will format the error message like this:
-
-```
-▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
-  ▼ "Ziggy"
-    ✗ is equal to "David" : found "Ziggy"
-  ▼ 1972
-    ✗ is equal to 1947 : found 1972
-```
-
-Using property references the output is more useful (although the test code is more verbose).
+Using property references used to produce better output, and is still possible. 
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
