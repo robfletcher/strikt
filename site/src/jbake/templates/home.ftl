@@ -191,11 +191,11 @@ expectThat(subject) {
           </div>
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <p>Use lambdas to execute assertions multiple subjects at once&hellip;</p>
+              <p>Use lambdas to execute assertions on multiple subjects at once&hellip;</p>
             </div>
           </div>
           <div class="column is-8">
-        <pre class="notification content is-medium is-dark"><code>val subject = 
+        <pre class="notification content is-medium is-dark"><code>
 expect {
   that(person1).map { it.name }.isEqualTo("David")
   that(person2).map { it.name }.isEqualTo("Ziggy")
