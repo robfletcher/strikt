@@ -35,7 +35,7 @@ expectThat(subject) {
 }
 ```
 
-strikt will read the test source to find out the name of the variables, so this will work just as well as property references and produce output that looks like this:
+Strikt will read the test source to find out the name of the variables, so this will work just as well as property references and produce output that looks like this:
 ```
   ▼ name:
     ✗ is equal to "Ziggy" : found "David"
