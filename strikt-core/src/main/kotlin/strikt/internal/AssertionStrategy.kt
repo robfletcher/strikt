@@ -1,10 +1,10 @@
 package strikt.internal
 
+import org.opentest4j.AssertionFailedError
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
-import strikt.internal.opentest4j.AtomicAssertionFailure
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
@@ -109,7 +109,12 @@ internal sealed class AssertionStrategy {
           tree
             .children
             .filter { it.status is Failed }
-            .map { AtomicAssertionFailure(it.writePartialToString(), it) }
+            .map {
+              createAssertionFailedError(
+                it.writePartialToString(),
+                it.status as Failed
+              )
+            }
         )
       }
     }
@@ -117,15 +122,19 @@ internal sealed class AssertionStrategy {
     override fun evaluate(trees: Collection<AssertionGroup<*>>) {
       if (trees.any { it.status is Status.Failed }) {
         val failures = trees
-          .filter { it.status is Status.Failed }
-          .map { AtomicAssertionFailure(it.writeToString(), it) }
+          .filter { it.status is Failed }
+          .map { createAssertionFailedError(it.writeToString(), it.status as Failed) }
         throw CompoundAssertionFailure(trees.writeToString(), failures)
       }
     }
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
-      if (result.status is Failed) {
-        throw AtomicAssertionFailure(result.root.writeToString(), result)
+      val status = result.status
+      when (status) {
+        is Failed -> throw createAssertionFailedError(
+          result.root.writeToString(),
+          status
+        )
       }
     }
   }
@@ -160,5 +169,23 @@ internal sealed class AssertionStrategy {
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       delegate.afterStatusSet(result)
     }
+  }
+
+  internal fun createAssertionFailedError(
+    message: String,
+    failed: Failed?
+  ): AssertionFailedError {
+    return if (failed?.comparison != null)
+      AssertionFailedError(
+        message,
+        failed.comparison.expected,
+        failed.comparison.actual,
+        failed.cause
+      )
+    else
+      AssertionFailedError(
+        message,
+        failed?.cause
+      )
   }
 }
