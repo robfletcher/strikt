@@ -6,7 +6,10 @@ cached=true
 
 # About Strikt
 
-Strikt was written by [Rob Fletcher](https://github.com/robfletcher).
+Strikt was written by [Rob Fletcher](https://github.com/robfletcher) with contributions from:
+
+* [Paul Merlin](https://github.com/eskatos)
+* [Christoph Sturm](https://github.com/christophsturm)
 
 ## License
 
