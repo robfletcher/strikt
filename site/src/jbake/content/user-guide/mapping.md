@@ -43,10 +43,9 @@ Strikt will read the test source to find out the name of the variables, so this 
     ✗ is equal to 1971 : found 1947
 ```
 
-
 ## Mapping with property or method references
 
-Using property references used to produce better output, and is still possible. 
+It's also possible to use a method reference in place of a lambda. 
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
@@ -54,15 +53,6 @@ expectThat(subject) {
   map(Person::name).isEqualTo("David")
   map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
 }
-```
-
-```
-▼ Expect that Person[name: Ziggy, birthDate: 1972-06-16]: 
-  ▼ .name:
-    ✗ is equal to "David" : found "Ziggy"
-  ▼ .birthDate: 
-    ▼ .year:
-      ✗ is equal to 1947 : found 1972
 ```
 
 ## Re-usable mappings
