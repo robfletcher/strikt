@@ -67,13 +67,11 @@ fun <T> expectThat(
  * @return an assertion over the thrown exception, allowing further assertions
  * about messages, root causes, etc.
  */
+@Deprecated(
+  "Use the catching function with expectThat",
+  replaceWith = ReplaceWith("expectThat(catching(action)).throws<E>()")
+)
 inline fun <reified E : Throwable> expectThrows(
   noinline action: () -> Unit
 ): Builder<E> =
-  expectThat(action).throws()
-
-/**
- * special case expectThat method to fix blocks that don't return Unit
- */
-fun expectThat(subject: () -> Unit): DescribeableBuilder<() -> Unit> =
-  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)
+  expectThat(catching(action)).throws()

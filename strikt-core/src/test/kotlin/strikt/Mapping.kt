@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import strikt.api.catching
 import strikt.api.expectThat
-import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.get
@@ -14,6 +14,7 @@ import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.last
 import strikt.assertions.message
+import strikt.assertions.throws
 import java.time.LocalDate
 
 @DisplayName("mapping assertions")
@@ -51,24 +52,26 @@ internal class Mapping {
 
   @Test
   fun `message maps to an exception message`() {
-    expectThrows<IllegalStateException> {
-      throw IllegalStateException("o noes")
-    }.message.isEqualTo("o noes")
+    expectThat(catching { throw IllegalStateException("o noes") })
+      .throws<IllegalStateException>()
+      .message
+      .isEqualTo("o noes")
   }
 
   @Test
   fun `message fails if the exception message is null`() {
-    expectThrows<AssertionError> {
-      expectThrows<IllegalStateException> {
-        throw IllegalStateException()
-      }.message
-    }.message.isEqualTo(
-      "▼ Expect that () -> kotlin.Unit:\n" +
-        "  ✓ throws java.lang.IllegalStateException\n" +
-        "  ▼ thrown exception:\n" +
-        "    ▼ value of property message:\n" +
-        "      ✗ is not null"
-    )
+    fails {
+      expectThat(catching { throw IllegalStateException() })
+        .throws<IllegalStateException>()
+        .message
+    }.let { error ->
+      expectThat(error).message.isEqualTo(
+        "▼ Expect that java.lang.IllegalStateException:\n" +
+          "  ✓ threw java.lang.IllegalStateException\n" +
+          "  ▼ value of property message:\n" +
+          "    ✗ is not null"
+      )
+    }
   }
 
   data class Person(val name: String, val birthDate: LocalDate)
