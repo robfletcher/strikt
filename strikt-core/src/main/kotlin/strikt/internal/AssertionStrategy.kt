@@ -22,23 +22,21 @@ internal sealed class AssertionStrategy {
       expected
     ) {
 
-      private var _status: Status = Pending
-
-      override val status: Status
-        get() = _status
+      override var status: Status = Pending
+        private set
 
       override fun pass() {
-        _status = onPass()
+        status = onPass()
         afterStatusSet(this)
       }
 
       override fun fail(description: String?, cause: Throwable?) {
-        _status = onFail(description = description, cause = cause)
+        status = onFail(description = description, cause = cause)
         afterStatusSet(this)
       }
 
       override fun fail(actual: Any?, description: String?, cause: Throwable?) {
-        _status = onFail(
+        status = onFail(
           description = description,
           comparison = ComparedValues(expected, actual),
           cause = cause
