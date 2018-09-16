@@ -130,12 +130,10 @@ internal sealed class AssertionStrategy {
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       val status = result.status
-      when (status) {
-        is Failed -> throw createAssertionFailedError(
-          result.root.writeToString(),
-          status
-        )
-      }
+      if (status is Failed) throw createAssertionFailedError(
+        result.root.writeToString(),
+        status
+      )
     }
   }
 
