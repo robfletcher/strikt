@@ -49,7 +49,7 @@ internal class Throws {
 
   @Test
   fun `throws returns an assertion whose subject is the exception that was caught`() {
-    expectThat(catching { -> throw IllegalStateException() })
+    expectThat(catching { throw IllegalStateException() })
       .throws<IllegalStateException>()
       .isA<IllegalStateException>()
   }
