@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:0.12.0"
+  testCompile "io.strikt:strikt-core:0.13.0"
 }
 ```
 
