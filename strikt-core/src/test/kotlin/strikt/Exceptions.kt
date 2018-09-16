@@ -231,7 +231,9 @@ class Exceptions {
   fun `expected and actual are undefined if a failure does not specify an actual`() {
     fails {
       expectThat("fnord")
-        .assert("is %s", "something") { fail("o noes") }
+        .assert("is %s", "something") {
+          fail("o noes")
+        }
     }.let { error ->
       expectThat(error)
         .isA<AssertionFailedError>()
@@ -246,7 +248,9 @@ class Exceptions {
   fun `expected and actual are defined if a failure specifies an actual`() {
     fails {
       expectThat("fnord")
-        .assert("is %s", "something") { fail("something else", "o noes") }
+        .assert("is %s", "something") {
+          fail("something else", "o noes")
+        }
     }.let { error ->
       expectThat(error)
         .isA<AssertionFailedError>()
