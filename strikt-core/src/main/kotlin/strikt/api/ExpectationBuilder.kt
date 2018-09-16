@@ -1,5 +1,9 @@
 package strikt.api
 
+/**
+ * Receiver for [expect] providing functions that define assertion subjects and
+ * create assertion chains or blocks.
+ */
 interface ExpectationBuilder {
 
   /**
