@@ -6,6 +6,7 @@ import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import java.util.Collections
 
 /**
  * Part of a graph of assertion results.
@@ -48,8 +49,8 @@ internal class AssertionSubject<S>(
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
-  override val children: List<AssertionNode<*>>
-    get() = _children
+  override val children: List<AssertionNode<*>> =
+    Collections.unmodifiableList(_children)
 
   override fun append(node: AssertionNode<*>) {
     _children.add(node)
@@ -98,8 +99,8 @@ internal abstract class CompoundAssertionNode<S>(
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
-  override val children: List<AssertionNode<*>>
-    get() = _children
+  override val children: List<AssertionNode<*>> =
+    Collections.unmodifiableList(_children)
 
   override fun append(node: AssertionNode<*>) {
     _children.add(node)
