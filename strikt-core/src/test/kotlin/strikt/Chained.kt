@@ -21,7 +21,7 @@ internal class Chained {
   fun `stops on the first failed assertion in the chain`() {
     fails {
       val subject: Any? = null
-      expectThat(subject).isNotNull().isA<String>()
+      expectThat(subject).isNotNull().isEqualTo(null)
     }
   }
 
