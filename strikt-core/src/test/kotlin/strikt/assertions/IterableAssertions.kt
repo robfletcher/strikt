@@ -217,6 +217,7 @@ internal class IterableAssertions {
         }
       }
 
+    @TestFactory
     fun `passes if the subject contains none of the elements`() =
       listOf(
         arrayOf("fnord"),

@@ -6,7 +6,7 @@ import strikt.assertions.endsWith
 import strikt.assertions.isEqualTo
 
 class FilePeekTest {
-  val fileName = "src/test/kotlin/strikt/internal/peek/FilePeekTest.kt"
+  private val fileName = "src/test/kotlin/strikt/internal/peek/FilePeekTest.kt"
 
   @Test
   fun `can get FileInfo`() {

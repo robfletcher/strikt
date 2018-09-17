@@ -48,8 +48,8 @@ internal class AssertionSubject<S>(
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
-  override val children: List<AssertionNode<*>>
-    get() = _children
+  override val children: List<AssertionNode<*>> =
+    _children
 
   override fun append(node: AssertionNode<*>) {
     _children.add(node)
@@ -98,8 +98,8 @@ internal abstract class CompoundAssertionNode<S>(
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
-  override val children: List<AssertionNode<*>>
-    get() = _children
+  override val children: List<AssertionNode<*>> =
+    _children
 
   override fun append(node: AssertionNode<*>) {
     _children.add(node)
