@@ -40,7 +40,7 @@ dependencies {
 }
 
 jbake {
-  flexmarkVersion = "0.34.8"
+  flexmarkVersion = "0.34.28"
 }
 
 clean.doFirst {
