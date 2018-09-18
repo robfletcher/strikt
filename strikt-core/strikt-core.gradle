@@ -1,6 +1,13 @@
-apply plugin: "java-library"
+plugins {
+  id "java-library"
+  id "nebula.release"
+  id "nebula.kotlin"
+  id "org.jetbrains.dokka"
+  id "org.jmailen.kotlinter"
+  id "nebula.maven-publish"
+  id "nebula.nebula-bintray-publishing"
+}
 apply from: "$rootDir/gradle/kotlin.gradle"
-apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/jupiter.gradle"
 apply from: "$rootDir/gradle/published.gradle"
 apply from: "$rootDir/gradle/pitest.gradle"

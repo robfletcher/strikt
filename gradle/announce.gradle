@@ -1,4 +1,4 @@
-apply plugin: "twitter-gradle-plugin"
+import groovy.json.JsonSlurper
 
 def tag = System.getenv("CIRCLE_TAG")
 
@@ -7,7 +7,7 @@ if (tag) {
   def ghReleaseUrl = "https://api.github.com/repos/robfletcher/strikt/releases/tags/$tag?access_token=$ghToken"
   def releaseName = null
   try {
-    releaseName = new groovy.json.JsonSlurper()
+    releaseName = new JsonSlurper()
       .parseText(ghReleaseUrl.toURL().text)
       .name
 
