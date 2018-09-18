@@ -34,17 +34,15 @@ internal object FilePeek {
     }
 
     val sourceFile = sequenceOf("src/test/kotlin", "src/test/java")
-      .map {
+      .map { sourceRoot ->
         val sourceFileWithoutExtension =
-          classFilePath.replace(buildDir, it)
+          classFilePath.replace(buildDir, sourceRoot)
             .plus("/" + className.replace(".", "/"))
 
         File(sourceFileWithoutExtension).parentFile
           .resolve(callerStackTraceElement.fileName)
-      }
-      .single { candidateFile ->
-        candidateFile.exists()
-      }
+      }.single(File::exists)
+
     val callerLine = FileReader(sourceFile).useLines { lines ->
       var braces = 0
       lines.drop(callerStackTraceElement.lineNumber - 1)
