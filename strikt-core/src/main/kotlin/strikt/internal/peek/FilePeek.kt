@@ -43,13 +43,13 @@ internal object FilePeek {
       }.single(File::exists)
 
     val callerLine = sourceFile.bufferedReader().useLines { lines ->
-      var braces = 0
+      var braceDelta = 0
       lines.drop(callerStackTraceElement.lineNumber - 1)
         .takeWhileInclusive { line ->
           val openBraces = line.count { it == '{' }
           val closeBraces = line.count { it == '}' }
-          braces += openBraces - closeBraces
-          braces != 0
+          braceDelta += openBraces - closeBraces
+          braceDelta != 0
         }.map { it.trim() }.joinToString(separator = "")
     }
 
