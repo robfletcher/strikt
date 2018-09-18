@@ -1,7 +1,6 @@
 package strikt.internal.peek
 
 import java.io.File
-import java.io.FileReader
 
 internal data class FileInfo(
   val lineNumber: Int,
@@ -43,7 +42,7 @@ internal object FilePeek {
           .resolve(callerStackTraceElement.fileName)
       }.single(File::exists)
 
-    val callerLine = FileReader(sourceFile).useLines { lines ->
+    val callerLine = sourceFile.bufferedReader().useLines { lines ->
       var braces = 0
       lines.drop(callerStackTraceElement.lineNumber - 1)
         .takeWhileInclusive { line ->
