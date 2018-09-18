@@ -1,3 +1,6 @@
+import org.apache.tools.ant.filters.ConcatFilter
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
   id "org.ajoberstar.github-pages" //version "1.7.2"
   id "org.jbake.site" version "1.2.0"
@@ -6,11 +9,11 @@ plugins {
 task copyApiDocs(type: Copy) {
   from(rootProject.tasks.findByPath(":strikt-core:dokka")) {
     include "**/*.html"
-    filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
+    filter(ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
   }
   from(rootProject.tasks.findByPath(":strikt-protobuf:dokka")) {
     include "**/*.html"
-    filter(org.apache.tools.ant.filters.ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
+    filter(ConcatFilter, prepend: file("${projectDir}/api-header.txt"))
   }
   from(rootProject.tasks.findByPath(":strikt-core:dokka")) {
     include "**/package-list"
@@ -58,7 +61,7 @@ githubPages {
     }
     from(bake) {
       include "**/*.html"
-      filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [
+      filter(ReplaceTokens, tokens: [
         version: (System.getenv('CIRCLE_TAG') ?: '+').replaceFirst(/^v/, '')
       ])
     }
