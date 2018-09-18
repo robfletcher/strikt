@@ -53,7 +53,7 @@ clean.doFirst {
 bake.dependsOn(copyApiDocs)
 
 githubPages {
-  repoUri = "git@github.com:robfletcher/strikt.git"
+  repoUri = "https://github.com/robfletcher/strikt.git"
   targetBranch = "gh-pages"
   pages {
     from(bake) {
