@@ -33,10 +33,10 @@ internal object FilePeek {
       else -> "build/classes/test" // older gradle
     }
 
-    val sourceFile = listOf("src/test/kotlin", "src/test/java").asSequence()
-      .mapNotNull { sourceDir ->
+    val sourceFile = sequenceOf("src/test/kotlin", "src/test/java")
+      .mapNotNull {
         val sourceFileWithoutExtension =
-          classFilePath.replace(buildDir, sourceDir)
+          classFilePath.replace(buildDir, it)
             .plus("/" + className.replace(".", "/"))
 
         val candidateFile = File(sourceFileWithoutExtension).parentFile
