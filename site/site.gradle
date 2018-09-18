@@ -1,5 +1,7 @@
-apply plugin: "org.jbake.site"
-apply plugin: "org.ajoberstar.github-pages"
+plugins {
+  id "org.ajoberstar.github-pages" //version "1.7.2"
+  id "org.jbake.site" version "1.2.0"
+}
 
 task copyApiDocs(type: Copy) {
   from(rootProject.tasks.findByPath(":strikt-core:dokka")) {

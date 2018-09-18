@@ -1,7 +1,3 @@
-apply plugin: "nebula.maven-publish"
-apply plugin: "nebula.source-jar"
-apply plugin: "nebula.nebula-bintray-publishing"
-
 apply from: "$rootDir/gradle/dokka.gradle"
 
 bintray {

@@ -1,5 +1,3 @@
-apply plugin: "org.jetbrains.dokka"
-
 javadoc.enabled = false
 
 dokka {

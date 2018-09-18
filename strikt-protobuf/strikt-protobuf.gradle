@@ -1,7 +1,14 @@
-apply plugin: "java-library"
-apply plugin: "com.google.protobuf"
+plugins {
+  id "java-library"
+  id "nebula.release"
+  id "nebula.kotlin"
+  id "org.jetbrains.dokka"
+  id "org.jmailen.kotlinter"
+  id "nebula.maven-publish"
+  id "nebula.nebula-bintray-publishing"
+  id "com.google.protobuf" version "0.8.6"
+}
 apply from: "$rootDir/gradle/kotlin.gradle"
-apply from: "$rootDir/gradle/kotlinter.gradle"
 apply from: "$rootDir/gradle/jupiter.gradle"
 apply from: "$rootDir/gradle/published.gradle"
 
