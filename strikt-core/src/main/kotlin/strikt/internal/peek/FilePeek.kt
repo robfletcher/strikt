@@ -1,7 +1,6 @@
 package strikt.internal.peek
 
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileReader
 
 internal data class FileInfo(
@@ -34,17 +33,20 @@ internal object FilePeek {
       else -> "build/classes/test" // older gradle
     }
 
-    val sourceFileWithoutExtension =
-      classFilePath.replace(buildDir, "src/test/kotlin")
-        .plus("/" + className.replace(".", "/"))
-    val sourceFile = File(sourceFileWithoutExtension).parentFile
-      .resolve(callerStackTraceElement.fileName)
-    val reader = try {
-      FileReader(sourceFile)
-    } catch (e: FileNotFoundException) {
-      throw SourceFileNotFoundException(classFilePath)
-    }
-    val callerLine = reader.useLines { lines ->
+    val sourceFile = listOf("src/test/kotlin", "src/test/java").asSequence()
+      .mapNotNull { sourceDir ->
+        val sourceFileWithoutExtension =
+          classFilePath.replace(buildDir, sourceDir)
+            .plus("/" + className.replace(".", "/"))
+
+        val candidateFile = File(sourceFileWithoutExtension).parentFile
+          .resolve(callerStackTraceElement.fileName)
+        if (candidateFile.exists())
+          candidateFile
+        else
+          null
+      }.single()
+    val callerLine = FileReader(sourceFile).useLines { lines ->
       var braces = 0
       lines.drop(callerStackTraceElement.lineNumber - 1)
         .takeWhileInclusive { line ->
