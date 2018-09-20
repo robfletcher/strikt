@@ -52,7 +52,7 @@ internal class Mapping {
 
   @Test
   fun `message maps to an exception message`() {
-    expectThat(catching { throw IllegalStateException("o noes") })
+    expectThat(catching { error("o noes") })
       .throws<IllegalStateException>()
       .message
       .isEqualTo("o noes")

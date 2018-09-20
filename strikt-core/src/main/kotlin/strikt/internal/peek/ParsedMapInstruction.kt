@@ -21,6 +21,6 @@ internal class ParsedMapInstruction(line: String) {
       }
       pos += 1
     }
-    throw RuntimeException("could not find matching brackets in $condition")
+    error("could not find matching brackets in $condition")
   }
 }
