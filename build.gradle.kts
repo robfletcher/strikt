@@ -46,7 +46,7 @@ subprojects {
   }
 
   afterEvaluate {
-    if (plugins.hasPlugin("kotlin")) {
+    plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
         sourceCompatibility = VERSION_1_6
       }
@@ -103,7 +103,7 @@ subprojects {
       }
     }
 
-    if (plugins.hasPlugin("info.solidsoft.pitest")) {
+    plugins.withId("info.solidsoft.pitest") {
       configure<PitestPluginExtension> {
         testPlugin = "junit5"
         avoidCallsTo = setOf("kotlin.jvm.internal")
