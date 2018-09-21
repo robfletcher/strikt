@@ -1,9 +1,7 @@
-import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension
 import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension.DestinationCopySpec
 import org.apache.tools.ant.filters.ConcatFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jbake.gradle.JBakeTask
-import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
   id("org.ajoberstar.github-pages")

@@ -1,10 +1,4 @@
 import com.jfrog.bintray.gradle.BintrayExtension
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.delegateClosureOf
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.api.tasks.javadoc.Javadoc
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
 
