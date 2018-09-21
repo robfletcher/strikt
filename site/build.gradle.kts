@@ -8,12 +8,12 @@ plugins {
   id("org.jbake.site") version "1.2.0"
 }
 
-configurations.getByName("jbake") {
-  resolutionStrategy.activateDependencyLocking()
+configurations.jbake.resolutionStrategy {
+  activateDependencyLocking()
 }
 
 dependencies {
-  "jbake"("com.orientechnologies:orientdb-core:2.2.34+")
+  jbake("com.orientechnologies:orientdb-core:2.2.34+")
 }
 
 jbake {
