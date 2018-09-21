@@ -1,5 +1,3 @@
-import org.gradle.api.JavaVersion.VERSION_1_6
-
 plugins {
   id("java-library")
   id("nebula.kotlin")

@@ -2,7 +2,6 @@ import com.google.protobuf.gradle.ProtobufConfigurator
 import com.google.protobuf.gradle.ProtobufConfigurator.JavaGenerateProtoTaskCollection
 import com.google.protobuf.gradle.ExecutableLocator
 import org.gradle.api.internal.HasConvention
-import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.DokkaConfiguration.ExternalDocumentationLink
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet

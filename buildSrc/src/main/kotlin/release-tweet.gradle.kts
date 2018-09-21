@@ -1,9 +1,6 @@
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ferranpons.twitterplugin.TwitterPluginExtension
 import com.ferranpons.twitterplugin.TwitterUpdate
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.getting
 import java.io.IOException
 import java.net.URL
 
