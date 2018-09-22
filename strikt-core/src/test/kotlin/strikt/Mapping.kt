@@ -13,12 +13,21 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.last
+import strikt.assertions.mapAll
 import strikt.assertions.message
 import strikt.assertions.throws
 import java.time.LocalDate
 
 @DisplayName("mapping assertions")
 internal class Mapping {
+  @Test
+  fun `map() on iterable subjects maps to an iterable`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expectThat(subject)
+      .mapAll { it.toUpperCase() }
+      .containsExactly("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+  }
+
   @Test
   fun `first() maps to the first element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")

@@ -2,6 +2,9 @@ package strikt.assertions
 
 import strikt.api.Assertion.Builder
 
+fun <T : Iterable<E>, E, R> Builder<T>.mapAll(function: (E) -> R): Builder<Iterable<R>> =
+  map { it.map(function) }
+
 /**
  * Maps this assertion to an assertion over the first element in the subject
  * iterable.
