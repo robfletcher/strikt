@@ -114,7 +114,7 @@ fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
         .propertyDescriptors
         .filter { it.name != "class" }
         .forEach { property ->
-          val mappedAssertion = map("value of property ${property.name}") {
+          val mappedAssertion = traverse("value of property ${property.name}") {
             property.readMethod(it)
           }
           val otherValue = property.readMethod(other)

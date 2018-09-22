@@ -57,7 +57,7 @@ internal class AssertionBuilder<T>(
     }
   }
 
-  override fun <R> map(
+  override fun <R> traverse(
     description: String,
     function: (T) -> R
   ): DescribeableBuilder<R> =

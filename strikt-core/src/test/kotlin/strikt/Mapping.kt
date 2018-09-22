@@ -13,7 +13,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.last
-import strikt.assertions.mapAll
+import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.throws
 import java.time.LocalDate
@@ -24,7 +24,7 @@ internal class Mapping {
   fun `map() on iterable subjects maps to an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
     expectThat(subject)
-      .mapAll { it.toUpperCase() }
+      .map { it.toUpperCase() }
       .containsExactly("CATFLAP", "RUBBERPLANT", "MARZIPAN")
   }
 
@@ -93,24 +93,24 @@ internal class Mapping {
     @Test
     fun `can map with a closure`() {
       expectThat(subject) {
-        map { it.name }.isEqualTo("David")
-        map { it.birthDate.year }.isEqualTo(1947)
+        traverse { it.name }.isEqualTo("David")
+        traverse { it.birthDate.year }.isEqualTo(1947)
       }
     }
 
     @Test
     fun `can map with property and method references`() {
       expectThat(subject) {
-        map(Person::name).isEqualTo("David")
-        map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
+        traverse(Person::name).isEqualTo("David")
+        traverse(Person::birthDate).traverse(LocalDate::getYear).isEqualTo(1947)
       }
     }
 
     @Test
     fun `closures can call methods`() {
       expectThat(subject) {
-        map { it.name.toUpperCase() }.isEqualTo("DAVID")
-        map { it.birthDate.plusYears(69).plusDays(2) }
+        traverse { it.name.toUpperCase() }.isEqualTo("DAVID")
+        traverse { it.birthDate.plusYears(69).plusDays(2) }
           .isEqualTo(LocalDate.of(2016, 1, 10))
       }
     }
@@ -119,8 +119,9 @@ internal class Mapping {
     fun `can be described`() {
       fails {
         expectThat(subject) {
-          map { it.name }.describedAs("name").isEqualTo("Ziggy")
-          map { it.birthDate.year }.describedAs("birth year").isEqualTo(1971)
+          traverse { it.name }.describedAs("name").isEqualTo("Ziggy")
+          traverse { it.birthDate.year }.describedAs("birth year")
+            .isEqualTo(1971)
         }
       }.let { e ->
         assertEquals(
@@ -137,7 +138,7 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using property references`() {
       fails {
-        expectThat(subject).map(Person::name).isEqualTo("Ziggy")
+        expectThat(subject).traverse(Person::name).isEqualTo("Ziggy")
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
@@ -152,8 +153,8 @@ internal class Mapping {
     fun `descriptions also default for blocks`() {
       fails {
         expectThat(subject) {
-          map { it.name }.isEqualTo("Ziggy")
-          map {
+          traverse { it.name }.isEqualTo("Ziggy")
+          traverse {
             it.birthDate.year
           }.isEqualTo(1971)
         }
@@ -172,7 +173,8 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
       fails {
-        expectThat(subject).map(Person::birthDate).map(LocalDate::getYear)
+        expectThat(subject).traverse(Person::birthDate)
+          .traverse(LocalDate::getYear)
           .isEqualTo(1971)
       }.let { e ->
         assertEquals(

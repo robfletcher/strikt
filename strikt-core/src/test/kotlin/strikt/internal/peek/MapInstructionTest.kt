@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class MapInstructionTest {
   private val niceInstruction =
-    ParsedMapInstruction("""map { it.name }.isEqualTo("Ziggy")""")
+    ParsedMapInstruction("""traverse { it.name }.isEqualTo("Ziggy")""")
 
   @Test
   fun `knows the body`() {
