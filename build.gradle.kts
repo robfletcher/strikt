@@ -43,6 +43,7 @@ subprojects {
 
   repositories {
     jcenter()
+    maven(url = "https://kotlin.bintray.com/kotlinx")
   }
 
   afterEvaluate {
@@ -72,7 +73,7 @@ subprojects {
         sequenceOf("compile", "runtime", "testCompile", "testRuntime")
           .forEach { scope ->
             getByName("${scope}Classpath") {
-              resolutionStrategy.activateDependencyLocking()
+//              resolutionStrategy.activateDependencyLocking()
             }
           }
       }

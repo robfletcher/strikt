@@ -7,5 +7,6 @@ plugins {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
   implementation("org.opentest4j:opentest4j:+")
 }
