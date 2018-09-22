@@ -54,6 +54,13 @@ jobs:
       - checkout
       - run: ./gradlew publishGhPages
 
+  upgradeLocks:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks
+      - run: git diff
+
 #  pitest:
 #    <<: *defaults
 #    steps:
@@ -115,3 +122,14 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
+
+  nightly:
+    triggers:
+    - schedule:
+        cron: "0 0 * * *"
+        filters:
+          branches:
+            only:
+            - master
+    jobs:
+    - upgradeLocks
