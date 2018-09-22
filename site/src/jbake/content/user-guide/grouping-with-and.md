@@ -1,10 +1,12 @@
-title=Grouping Assertions with `and`
+title=Grouping Assertions with and
 type=page
 status=published
 cached=true
 previousPage=flow-typing.html
 nextPage=custom-assertions.html
 ~~~~~~
+
+# Grouping Assertions with _and_
 
 Strikt provides the `and` method that is used to add a block of assertions to a chain.
 This is useful in a couple of scenarios.

@@ -35,7 +35,7 @@
               Exceptions</a>
             <a class="navbar-item" href="/user-guide/flow-typing.html">Strongly Typed Assertions</a>
             <a class="navbar-item" href="/user-guide/mapping.html">Mapping Over Assertion Subjects</a>
-            <a class="navbar-item" href="/user-guide/grouping-with-and.html">Grouping Assertions with <code>and</code></a>
+            <a class="navbar-item" href="/user-guide/grouping-with-and.html">Grouping Assertions with and</a>
             <a class="navbar-item" href="/user-guide/custom-assertions.html">Custom
               Assertions</a>
             <a class="navbar-item" href="/user-guide/additional-modules.html">Additional
