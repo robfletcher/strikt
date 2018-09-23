@@ -3,6 +3,8 @@
 # This file is expected to be part of source control.
 org.jetbrains.kotlin:kotlin-reflect:1.2.71
 org.jetbrains.kotlin:kotlin-stdlib-common:1.2.71
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71
 org.jetbrains.kotlin:kotlin-stdlib:1.2.71
 org.jetbrains:annotations:13.0
 org.opentest4j:opentest4j:1.1.1

@@ -50,26 +50,13 @@ subprojects {
   afterEvaluate {
     plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
-        sourceCompatibility = VERSION_1_6
+        sourceCompatibility = VERSION_1_8
       }
 
       tasks.withType<KotlinCompile> {
         kotlinOptions {
           languageVersion = "1.2"
           freeCompilerArgs += "-Xprogressive"
-        }
-      }
-
-      // build library code for JDK 1.6
-      val compileKotlin by tasks.getting(KotlinCompile::class) {
-        kotlinOptions {
-          jvmTarget = VERSION_1_6.toString()
-        }
-      }
-
-      // build test code for JDK 1.8
-      val compileTestKotlin by tasks.getting(KotlinCompile::class) {
-        kotlinOptions {
           jvmTarget = VERSION_1_8.toString()
         }
       }

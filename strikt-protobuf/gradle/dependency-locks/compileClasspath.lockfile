@@ -3,5 +3,7 @@
 # This file is expected to be part of source control.
 com.google.protobuf:protobuf-java:3.6.1
 org.jetbrains.kotlin:kotlin-stdlib-common:1.2.71
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.71
 org.jetbrains.kotlin:kotlin-stdlib:1.2.71
 org.jetbrains:annotations:13.0
