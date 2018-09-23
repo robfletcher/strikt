@@ -10,7 +10,7 @@ internal class EnumAssertions {
   @TestFactory
   fun `can map to the enum name"`() {
     for (deity in Pantheon.values()) {
-      dynamicTest("Can map name on $deity") {
+      dynamicTest("Can chain name on $deity") {
         expectThat(deity).name.isEqualTo(deity.name)
       }
     }
@@ -19,7 +19,7 @@ internal class EnumAssertions {
   @TestFactory
   fun `can map to the enum ordinal`() {
     for (deity in Pantheon.values()) {
-      dynamicTest("Can map ordinal on $deity") {
+      dynamicTest("Can chain ordinal on $deity") {
         expectThat(deity).ordinal.isEqualTo(deity.ordinal)
       }
     }

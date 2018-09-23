@@ -11,13 +11,13 @@ import strikt.api.DescribeableBuilder
  * @author [Xavier Hanin](https://github.com/xhanin)
  */
 val <T : Throwable> Builder<T>.message: Builder<String>
-  get() = map(Throwable::message).isNotNull()
+  get() = chain(Throwable::message).isNotNull()
 
 /**
  * Maps an assertion on a [Throwable] to an assertion on its [Throwable.cause].
  */
 val <T : Throwable> Builder<T>.cause: DescribeableBuilder<Throwable?>
-  get() = map(Throwable::cause)
+  get() = chain(Throwable::cause)
 
 /**
  * Asserts that an exception is an instance of the expected type.
@@ -25,6 +25,7 @@ val <T : Throwable> Builder<T>.cause: DescribeableBuilder<Throwable?>
  *
  * This assertion is designed for use with the [strikt.api.catching] function.
  */
+@Suppress("UNCHECKED_CAST")
 inline fun <reified E : Throwable> Builder<Throwable?>.throws(): Builder<E> =
   assert("threw %s", E::class.java) {
     when (it) {

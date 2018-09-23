@@ -17,7 +17,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
  * exists in the subject map.
  */
 operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
-  map("entry [${formatValue(key)}]") { it[key] }
+  chain("entry [${formatValue(key)}]") { it[key] }
 
 /**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on
@@ -34,7 +34,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
   compose("has entries with the keys %s", keys.toList()) {
-    keys.forEach { containsKey(it) }
+    keys.forEach { key -> containsKey(key) }
   } then {
     if (allPassed) pass() else fail()
   }

@@ -1,4 +1,4 @@
-title=Mapping Over Assertion Subjects
+title=Traversing Assertion Subjects
 type=page
 status=published
 cached=true
@@ -6,7 +6,7 @@ previousPage=flow-typing.html
 nextPage=grouping-with-and.html
 ~~~~~~
 
-# Mapping Over Assertion Subjects
+# Traversing Assertion Subjects
 
 Although you can obviously write assertions for the properties of an object with code like this:
 
@@ -19,9 +19,9 @@ expectThat(person.name).isEqualTo("Ziggy")
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion.Builder<T>.map` method.  
+Strikt allows for this using the `Assertion.Builder<T>.chain` method.  
 
-## Mapping with lambdas
+## Using _chain_ with lambdas
 
 The method takes a lambda whose parameter is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
 
@@ -30,12 +30,13 @@ This is sometimes useful for making assertions about the properties of an object
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expectThat(subject) {
-  map { it.name }.isEqualTo("David")
-  map { it.birthDate.year }.isEqualTo(1947)
+  chain { it.name }.isEqualTo("David")
+  chain { it.birthDate.year }.isEqualTo(1947)
 }
 ```
 
-Strikt will read the test source to find out the name of the variables, so this will work just as well as property references and produce output that looks like this:
+Strikt will read the test source to find out the name of the variables.
+This example produces output that looks like this:
 ```
   ▼ name:
     ✗ is equal to "Ziggy" : found "David"
@@ -43,30 +44,44 @@ Strikt will read the test source to find out the name of the variables, so this 
     ✗ is equal to 1971 : found 1947
 ```
 
-## Mapping with property or method references
+## Using _chain_ with property or method references
 
 It's also possible to use a method reference in place of a lambda. 
 
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expectThat(subject) {
-  map(Person::name).isEqualTo("David")
-  map(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
+  chain(Person::name).isEqualTo("David")
+  chain(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
 }
 ```
 
+## Mapping elements of collections
+
+If the assertion subject is an `Iterable` Strikt provides a `map` function much like the one in the Kotlin standard library.
+It is effectively like using `chain` on each element of the `Iterable` subject.
+
+```kotlin
+val subject: List<Person> = // get list from somewhere
+expectThat(subject)
+  .map(Person::name)
+  .containsExactly("David", "Ziggy", "Aladdin", "Jareth")
+```
+
+In this case the `map` function is transforming the `Assertion.Buidler<List<Person>>` into an `Assertion.Builder<List<String>>` by applying the `name` property to each element.
+
 ## Re-usable mappings
 
-If you find yourself frequently using `map` for the same properties or methods, consider defining extension property or method to make things even easier.
+If you find yourself frequently using `chain` for the same properties or methods, consider defining extension property or method to make things even easier.
 
 For example:
 
 ```kotlin
 val Assertion.Builder<Person>.name: Assertion.Builder<String>
-  get() = map(Person::name)
+  get() = chain(Person::name)
 
 val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
-  get() = map("year of birth") { it.dateOfBirth.year }
+  get() = chain("year of birth") { it.dateOfBirth.year }
 ```
 
 You can then write the earlier example as:
@@ -79,7 +94,7 @@ expectThat(subject) {
 }
 ```
 
-## Built-in mappings
+## Built-in traversals
 
-Strikt has a number of built in mapping properties and functions such as `Assertion.Builder<List<E>>.first()` which returns an `Assertion.Builder<E>` whose subject is the first element of the list.
+Strikt has a number of built in traversal properties and functions such as `Assertion.Builder<List<E>>.first()` which returns an `Assertion.Builder<E>` whose subject is the first element of the list.
 See the [API docs](/api/strikt-core/strikt.api/-assertion/) for details.

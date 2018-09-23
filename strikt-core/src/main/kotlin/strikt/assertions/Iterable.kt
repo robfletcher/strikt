@@ -3,13 +3,20 @@ package strikt.assertions
 import strikt.api.Assertion.Builder
 
 /**
+ * Applies [Iterable.map] with [function] to the subject and returns an
+ * assertion builder wrapping the result.
+ */
+fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
+  chain { it.map(function) }
+
+/**
  * Maps this assertion to an assertion over the first element in the subject
  * iterable.
  *
  * @see Iterable.first
  */
 fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
-  map("first element %s") { it.first() }
+  chain("first element %s") { it.first() }
 
 /**
  * Maps this assertion to an assertion over the last element in the subject
@@ -18,7 +25,7 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  * @see Iterable.last
  */
 fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
-  map("last element %s") { it.last() }
+  chain("last element %s") { it.last() }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
@@ -26,7 +33,7 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
 fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("all elements match:") { subject ->
     subject.forEach { element ->
-      map("%s") { element }.apply(predicate)
+      chain("%s") { element }.apply(predicate)
     }
   } then {
     if (allPassed) pass() else fail()
@@ -39,7 +46,7 @@ fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("at least one element matches:") { subject ->
     subject.forEach { element ->
-      map("%s") { element }.apply(predicate)
+      chain("%s") { element }.apply(predicate)
     }
   } then {
     if (anyPassed) pass() else fail()
@@ -51,7 +58,7 @@ fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEach { element ->
-      map("%s") { element }.apply(predicate)
+      chain("%s") { element }.apply(predicate)
     }
   } then {
     if (allFailed) pass() else fail()

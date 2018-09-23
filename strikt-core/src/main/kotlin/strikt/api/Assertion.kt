@@ -168,18 +168,20 @@ interface Assertion {
      * reference) the subject description will be automatically determined for
      * the returned assertion builder.
      *
+     * If [function] is a lambda, Strikt will make a best-effort attempt to
+     * determine an appropriate function / property name.
+     *
      * @param function a lambda whose receiver is the current assertion subject.
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    // TODO: not sure about this name, it's fundamentally similar to Kotlin's run. Also it might be nice to have a dedicated `map` for Assertion<Iterable>.
-    fun <R> map(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
-          map("value of property ${function.name}", function)
+          chain("value of property ${function.name}", function)
         is KFunction<*> ->
-          map("return value of ${function.name}", function)
-        is CallableReference -> map(
+          chain("return value of ${function.name}", function)
+        is CallableReference -> chain(
           "value of ${function.propertyName}",
           function
         )
@@ -190,7 +192,7 @@ interface Assertion {
           } catch (e: Exception) {
             "%s"
           }
-          map(fieldName, function)
+          chain(fieldName, function)
         }
       }
 
@@ -204,7 +206,10 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> map(description: String, function: (T) -> R): DescribeableBuilder<R>
+    fun <R> chain(
+      description: String,
+      function: (T) -> R
+    ): DescribeableBuilder<R>
 
     /**
      * Reverses any assertions chained after this method.

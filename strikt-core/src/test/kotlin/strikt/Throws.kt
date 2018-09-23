@@ -12,13 +12,13 @@ import strikt.assertions.throws
 internal class Throws {
   @Test
   fun `throws passes if the action throws the expected exception`() {
-    expectThat(catching { throw IllegalStateException() })
+    expectThat(catching { error("o noes") })
       .throws<IllegalStateException>()
   }
 
   @Test
   fun `throws passes if the action throws a sub-class of the expected exception`() {
-    expectThat(catching { throw IllegalStateException() })
+    expectThat(catching { error("o noes") })
       .throws<RuntimeException>()
   }
 
@@ -37,19 +37,19 @@ internal class Throws {
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
     fails {
-      expectThat(catching { throw NullPointerException() })
-        .throws<IllegalStateException>()
+      expectThat(catching { error("o noes") })
+        .throws<NullPointerException>()
     }.let { e ->
-      val expected = "▼ Expect that java.lang.NullPointerException:\n" +
-        "  ✗ threw java.lang.IllegalStateException : java.lang.NullPointerException was thrown"
+      val expected = "▼ Expect that java.lang.IllegalStateException:\n" +
+        "  ✗ threw java.lang.NullPointerException : java.lang.IllegalStateException was thrown"
       assertEquals(expected, e.message)
-      assertEquals(NullPointerException::class.java, e.cause?.javaClass)
+      assertEquals(IllegalStateException::class.java, e.cause?.javaClass)
     }
   }
 
   @Test
   fun `throws returns an assertion whose subject is the exception that was caught`() {
-    expectThat(catching { throw IllegalStateException() })
+    expectThat(catching { error("o noes") })
       .throws<IllegalStateException>()
       .isA<IllegalStateException>()
   }

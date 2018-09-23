@@ -8,7 +8,7 @@ import strikt.api.Assertion.Builder
  * @see Enum.name
  */
 val <T : Enum<T>> Builder<T>.name: Builder<String>
-  get() = map(Enum<T>::name)
+  get() = chain(Enum<T>::name)
 
 /**
  * Maps an assertion on an enum to an assertion on its ordinal.
@@ -16,4 +16,4 @@ val <T : Enum<T>> Builder<T>.name: Builder<String>
  * @see Enum.ordinal
  */
 val <T : Enum<T>> Builder<T>.ordinal: Builder<Int>
-  get() = map(Enum<T>::ordinal)
+  get() = chain(Enum<T>::ordinal)

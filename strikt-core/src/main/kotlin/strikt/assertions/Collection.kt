@@ -31,4 +31,4 @@ fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
  * @see Collection.size
  */
 val <T : Collection<*>> Builder<T>.size: Builder<Int>
-  get() = map(Collection<*>::size)
+  get() = chain(Collection<*>::size)

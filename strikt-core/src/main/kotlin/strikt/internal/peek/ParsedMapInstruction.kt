@@ -4,7 +4,7 @@ internal class ParsedMapInstruction(line: String) {
   val body: String
 
   init {
-    val firstPossibleBracket = line.indexOf("map") + 3
+    val firstPossibleBracket = line.indexOf("chain") + 3
     val firstBracket = line.indexOf('{', firstPossibleBracket) + 1
     val subjectEnd = findMatchingClosingBracket(line, firstBracket)
     body = line.substring(firstBracket, subjectEnd).trim()
@@ -21,6 +21,6 @@ internal class ParsedMapInstruction(line: String) {
       }
       pos += 1
     }
-    throw RuntimeException("could not find matching brackets in $condition")
+    error("could not find matching brackets in $condition")
   }
 }
