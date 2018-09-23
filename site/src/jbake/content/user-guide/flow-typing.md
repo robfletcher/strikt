@@ -3,7 +3,7 @@ type=page
 status=published
 cached=true
 previousPage=expecting-exceptions.html
-nextPage=mapping.html
+nextPage=traversing-subjects.html
 ~~~~~~
 
 # Strongly Typed Assertions

@@ -2,7 +2,7 @@ title=Grouping Assertions with and
 type=page
 status=published
 cached=true
-previousPage=flow-typing.html
+previousPage=traversing-subjects.html
 nextPage=custom-assertions.html
 ~~~~~~
 
