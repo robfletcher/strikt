@@ -13,9 +13,9 @@ class FilePeekTest {
     val fileInfo = FilePeek.getCallerFileInfo(filterMethod("can get"))
 
     expectThat(fileInfo) {
-      traverse(FileInfo::sourceFileName)
+      chain(FileInfo::sourceFileName)
         .endsWith(fileName)
-      traverse(FileInfo::line)
+      chain(FileInfo::line)
         .isEqualTo("""val fileInfo = FilePeek.getCallerFileInfo(filterMethod("can get"))""")
     }
   }
@@ -25,9 +25,9 @@ class FilePeekTest {
     val fileInfo = { FilePeek.getCallerFileInfo(filterMethod("can get")) }()
 
     expectThat(fileInfo) {
-      traverse(FileInfo::sourceFileName)
+      chain(FileInfo::sourceFileName)
         .endsWith(fileName)
-      traverse(FileInfo::line)
+      chain(FileInfo::line)
         .isEqualTo("""val fileInfo = { FilePeek.getCallerFileInfo(filterMethod("can get")) }()""")
     }
   }
@@ -42,7 +42,7 @@ class FilePeekTest {
       listOf(1, 2, 3).map { it }
     }
 
-    expectThat(fileInfo).traverse(FileInfo::line)
+    expectThat(fileInfo).chain(FileInfo::line)
       .isEqualTo("val fileInfo = mapMethod {/* LOL! I'm a block body*/listOf(1, 2, 3).map { it }}")
   }
 }
@@ -54,7 +54,7 @@ class FilePeekTestWithDifferentNameThanItsFile {
   @Test
   fun `finds classes that have a different name than the file they are in`() {
     expectThat(FilePeek.getCallerFileInfo(filterMethod("finds")))
-      .traverse { it.line }
+      .chain { it.line }
       .isEqualTo("expectThat(FilePeek.getCallerFileInfo(filterMethod(\"finds\")))")
   }
 }

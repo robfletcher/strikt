@@ -38,4 +38,4 @@ inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): B
  * @see com.google.protobuf.Any.unpack
  */
 inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpack(): Builder<T> =
-  traverse { it.unpack(T::class.java) }
+  chain { it.unpack(T::class.java) }

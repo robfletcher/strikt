@@ -161,4 +161,4 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): 
  * @see CharSequence.length
  */
 val <T : CharSequence> Builder<T>.length: Builder<Int>
-  get() = traverse(CharSequence::length)
+  get() = chain(CharSequence::length)

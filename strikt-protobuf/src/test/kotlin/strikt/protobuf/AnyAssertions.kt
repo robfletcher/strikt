@@ -3,9 +3,6 @@ package strikt.protobuf
 import com.google.protobuf.Any
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import rpg.Character
-import rpg.Role
-import rpg.Sword
 import strikt.api.expectThat
 
 @DisplayName("assertions on com.google.protobuf.Any")
@@ -21,7 +18,7 @@ class AnyAssertions {
       }
       .build()
 
-    expectThat(subject).traverse(Character::getWeapon).isEmpty()
+    expectThat(subject).chain(Character::getWeapon).isEmpty()
   }
 
   @Test
@@ -35,6 +32,6 @@ class AnyAssertions {
       }
       .build()
 
-    expectThat(subject).traverse(Character::getWeapon).unpacksTo<Sword>()
+    expectThat(subject).chain(Character::getWeapon).unpacksTo<Sword>()
   }
 }

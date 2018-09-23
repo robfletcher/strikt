@@ -168,17 +168,20 @@ interface Assertion {
      * reference) the subject description will be automatically determined for
      * the returned assertion builder.
      *
+     * If [function] is a lambda, Strikt will make a best-effort attempt to
+     * determine an appropriate function / property name.
+     *
      * @param function a lambda whose receiver is the current assertion subject.
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> traverse(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
-          traverse("value of property ${function.name}", function)
+          chain("value of property ${function.name}", function)
         is KFunction<*> ->
-          traverse("return value of ${function.name}", function)
-        is CallableReference -> traverse(
+          chain("return value of ${function.name}", function)
+        is CallableReference -> chain(
           "value of ${function.propertyName}",
           function
         )
@@ -189,7 +192,7 @@ interface Assertion {
           } catch (e: Exception) {
             "%s"
           }
-          traverse(fieldName, function)
+          chain(fieldName, function)
         }
       }
 
@@ -203,7 +206,7 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> traverse(
+    fun <R> chain(
       description: String,
       function: (T) -> R
     ): DescribeableBuilder<R>

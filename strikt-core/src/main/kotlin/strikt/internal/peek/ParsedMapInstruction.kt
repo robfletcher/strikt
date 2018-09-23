@@ -4,7 +4,7 @@ internal class ParsedMapInstruction(line: String) {
   val body: String
 
   init {
-    val firstPossibleBracket = line.indexOf("traverse") + 3
+    val firstPossibleBracket = line.indexOf("chain") + 3
     val firstBracket = line.indexOf('{', firstPossibleBracket) + 1
     val subjectEnd = findMatchingClosingBracket(line, firstBracket)
     body = line.substring(firstBracket, subjectEnd).trim()
