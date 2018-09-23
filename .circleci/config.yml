@@ -52,7 +52,7 @@ jobs:
     - image: circleci/openjdk:8-jdk
     steps:
       - checkout
-      - run: ./gradlew publishGhPages
+      - run: ./gradlew publishGhPages --stacktrace
 
   upgradeLocks:
     <<: *defaults
