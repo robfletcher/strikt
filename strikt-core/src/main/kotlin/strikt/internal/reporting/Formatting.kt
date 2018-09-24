@@ -22,7 +22,10 @@ private fun Any.withTypeSuffix(typeOf: Any?) =
 internal fun formatValue(value: Any?): Any =
   when (value) {
     null -> "null"
-    is CharSequence -> "\"$value\""
+    is CharSequence -> when (value.length) {
+      in 0..20 -> "\"$value\""
+      else -> "\"${value.substring(0, 20)}...\""
+    }
     is Char -> "'$value'"
     is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(::formatValue)
     is ByteArray -> "0x${value.toHex()}"
