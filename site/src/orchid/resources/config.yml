@@ -1,0 +1,57 @@
+
+site:
+  about:
+    siteName: Strikt
+    siteDescription: Strikt is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
+
+theme:
+  social:
+    github: 'robfletcher/strikt'
+    twitter: 'stri_kt'
+    other:
+      - label: 'Slack'
+        icon: 'fa-slack-hash'
+        link: 'https://kotlinlang.slack.com/messages/CAR7KJ96J'
+        order: '20'
+  menu:
+    - type: 'link'
+      title: 'Home'
+      url: '/'
+    - type: 'page'
+      title: 'About'
+      itemId: 'About Strikt'
+    - type: 'submenu'
+      title: 'User Guide'
+      menu:
+        - type: 'wiki'
+          section: 'user-guide'
+    - type: 'submenu'
+      title: 'API'
+      menu:
+        - type: 'page'
+          title: 'Strikt Core'
+          itemId: 'strikt.api'
+        - type: 'page'
+          title: 'Strikt Assertions'
+          itemId: 'strikt.assertions'
+        - type: 'page'
+          title: 'Strikt Protobuf'
+          itemId: 'strikt.protobuf'
+
+allPages:
+  components:
+    - type: 'pageContent'
+
+wiki:
+  sections:
+    - 'user-guide'
+
+#services:
+#  generators:
+#    disabled:
+#      - 'kotlindoc'
+
+kotlindoc:
+  sourceDirs:
+    - '../../../../strikt-core/src/main/kotlin/'
+    - '../../../../strikt-protobuf/src/main/kotlin/'

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" class="has-spaced-navbar-fixed-top">
+<head>
+{% head %}
+{% styles %}
+{% include 'includes/head' %}
+</head>
+<body>
+{% include 'includes/navbar' %}
+<main class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-10-desktop">
+      {% block contentMain %}
+        <div class="content is-medium">
+        {% page %}
+        </div>
+      {% endblock %}
+      {% include 'includes/pagination' %}
+      </div>
+    </div>
+  </div>
+</main>
+{% include 'includes/footer' %}
+{% scripts %}
+</body>
+</html>

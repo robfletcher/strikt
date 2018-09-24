@@ -26,6 +26,6 @@ internal class EnumAssertions {
   }
 }
 
-internal enum class Pantheon {
+enum class Pantheon {
   NORSE, GREEK, ROMAN
 }
