@@ -80,7 +80,6 @@ subprojects {
       // Test with JUnit 5
       dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:+")
-        "testImplementation"("org.junit.jupiter:junit-jupiter-params:+")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:+")
         "testRuntimeOnly"("org.junit.platform:junit-platform-launcher:+") {
           because("enables running in IntelliJ using JUnit runner")
