@@ -1,0 +1,34 @@
+<footer class="footer">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <p class="has-text-left-tablet has-text-centered-mobile">
+        {% for item in theme.social.items %}
+          <a href="{{ item.link }}" class="button is-dark">
+            <span class="icon"><i class="fab fa-lg {{ item.icon }}"></i></span>
+            <span>{{ item.label }}</span>
+          </a>
+        {% endfor %}
+        </p>
+      </div>
+      <div class="column">
+        <p class="has-text-right-tablet has-text-centered-mobile">
+          <a href="https://bulma.io/">
+            <img
+              src="{{ site.baseUrl }}/assets/images/made-with-bulma--semiblack.png"
+              alt="Bulma"
+              width="171"
+              height="32">
+          </a>
+          <a href="https://orchid.netlify.com/">
+            <img
+              src="{{ site.baseUrl }}/assets/images/orchid.png"
+              alt="Orchid {{ site.orchidVersion }}"
+              width="64"
+              height="32">
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
