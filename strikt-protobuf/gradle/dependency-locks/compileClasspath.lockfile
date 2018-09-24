@@ -2,6 +2,6 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.google.protobuf:protobuf-java:3.6.1
-org.jetbrains.kotlin:kotlin-stdlib-common:1.2.70
-org.jetbrains.kotlin:kotlin-stdlib:1.2.70
+org.jetbrains.kotlin:kotlin-stdlib-common:1.2.71
+org.jetbrains.kotlin:kotlin-stdlib:1.2.71
 org.jetbrains:annotations:13.0
