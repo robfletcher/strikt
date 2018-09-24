@@ -1,11 +1,13 @@
 package strikt
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains
+import strikt.assertions.hasLength
 import strikt.assertions.hasSize
 import strikt.assertions.isNotEqualTo
 import strikt.assertions.isNotNull
@@ -129,5 +131,34 @@ internal class Formatting {
     }
 
     expectThat(e.message).isNotNull().contains(iteratorOutput)
+  }
+
+  @Test
+  fun `toString method prints value when it has at most 20 characters`() {
+    val toStringValue = "twenty chars string!"
+    val expectedMessage = "▼ Expect that \"twenty chars string!\":\n"
+
+    val error = fails {
+      class Text { override fun toString() = toStringValue }
+      expectThat(Text().toString()).hasLength(10)
+    }
+
+    assertTrue(error.message.orEmpty().contains(expectedMessage))
+  }
+
+  @Test
+  fun `toString method trims value when it has more than 20 characters`() {
+    val actualToString = "0".repeat(141)
+    val expectedToString = "0".repeat(20)
+    val expectedMessage =
+      "▼ Expect that \"$expectedToString...\":\n" +
+        "  ✗ has length 140 : found 141"
+
+    val error = fails {
+      class Text { override fun toString() = actualToString }
+      expectThat(Text().toString()).hasLength(140)
+    }
+
+    assertEquals(expectedMessage, error.message)
   }
 }
