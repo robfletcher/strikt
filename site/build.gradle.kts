@@ -34,6 +34,9 @@ orchid {
   if (project.hasProperty("env") && project.property("env") == "prod") {
     baseUrl = "https://strikt.io/"
     environment = "prod"
+  } else if (project.hasProperty("env") && project.property("env") == "staging") {
+    baseUrl = "https://cjbrooks12.github.io/strikt/"
+    environment = "prod"
   } else {
     baseUrl = "http://localhost:8080"
     environment = "debug"
