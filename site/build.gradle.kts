@@ -17,7 +17,6 @@ dependencies {
   val orchid_version = "0.12.3"
   orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidBsDoc:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidPages:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidSearch:$orchid_version")

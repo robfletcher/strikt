@@ -30,9 +30,14 @@ constructor(context: OrchidContext) : Theme(context, "Strikt", 10) {
     addCss("assets/css/bulma.min.css")
     addCss("assets/css/prism.css")
     addCss("assets/css/kotlindoc.scss")
+    addCss("assets/css/orchidSearch.scss")
 
     addJs("assets/js/init.js")
     addJs("assets/js/prism.js")
+
+    addJs("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+    addJs("https://unpkg.com/lunr/lunr.js")
+    addJs("assets/js/orchidSearch.js")
   }
 
 }
