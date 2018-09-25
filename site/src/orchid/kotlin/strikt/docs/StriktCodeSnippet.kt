@@ -13,7 +13,7 @@ class StriktCodeSnippetTag
 @Inject
 constructor(
   val context: OrchidContext
-) : TemplateTag("snippet", Type.Tabbed, true) {
+) : TemplateTag("example", Type.Tabbed, true) {
 
   @Option
   @Description("The name of a test method in a strikt-core test class.")

@@ -19,7 +19,7 @@
       {% if menuItem.hasChildren() %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
-            <span class="icon has-text-info"><i class="fas fa-book"></i></span>
+            <span class="icon has-text-info"><i class="fas fa-{{ menuItem.icon }}"></i></span>
             <span>{{ menuItem.title }}</span>
           </a>
           <div class="navbar-dropdown is-right">
@@ -30,7 +30,7 @@
         </div>
       {% else %}
         <a class="navbar-item" href="{{ menuItem.link }}">
-          <span class="icon has-text-info"><i class="fas fa-home"></i></span>
+          <span class="icon has-text-info"><i class="fas fa-{{ menuItem.icon }}"></i></span>
           <span>{{ menuItem.title }}</span>
         </a>
       {% endif %}

@@ -6,27 +6,37 @@ site:
 
 theme:
   social:
-    github: 'robfletcher/strikt'
-    twitter: 'stri_kt'
     other:
+      - label: 'GitHub'
+        icon: 'fa-github'
+        link: 'https://github.com/robfletcher/strikt/'
+        buttonColor: 'dark'
       - label: 'Slack'
         icon: 'fa-slack-hash'
         link: 'https://kotlinlang.slack.com/messages/CAR7KJ96J'
-        order: '20'
+        buttonColor: 'danger'
+      - label: 'Twitter'
+        icon: 'fa-twitter'
+        link: 'https://twitter.com/stri_kt'
+        buttonColor: 'info'
   menu:
     - type: 'link'
       title: 'Home'
       url: '/'
+      icon: 'home'
     - type: 'page'
       title: 'About'
       itemId: 'About Strikt'
+      icon: 'info-circle'
     - type: 'submenu'
       title: 'User Guide'
+      icon: 'book'
       menu:
         - type: 'wiki'
           section: 'user-guide'
     - type: 'submenu'
       title: 'API'
+      icon: 'book'
       menu:
         - type: 'page'
           title: 'Strikt Core'
