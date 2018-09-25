@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-  testCompile("io.strikt:strikt-core:@version@")
+  testCompile("io.strikt:strikt-core:{{ site.version }}")
 }
 ```
 

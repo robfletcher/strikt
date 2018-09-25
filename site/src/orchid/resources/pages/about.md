@@ -6,10 +6,9 @@ title: About Strikt
 
 Strikt was written by [Rob Fletcher](https://github.com/robfletcher) with contributions from:
 
-* [Casey Brooks](https://github.com/cjbrooks12)
-* [Xavier Hanin](https://github.com/xhanin)
-* [Paul Merlin](https://github.com/eskatos)
-* [Christoph Sturm](https://github.com/christophsturm)
+{%- for contributor in data.contributors %}
+* [{{ contributor.name }}]({{ contributor.link }})
+{%- endfor %}
 
 ## License
 
