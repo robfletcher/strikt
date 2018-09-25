@@ -1,7 +1,10 @@
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_6
 import org.gradle.api.JavaVersion.VERSION_1_8
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
@@ -50,6 +53,10 @@ subprojects {
     plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
         sourceCompatibility = VERSION_1_6
+      }
+
+      extensions.getByType(KotlinJvmProjectExtension::class.java).apply {
+        experimental.coroutines = Coroutines.ENABLE
       }
 
       // build library code for JDK 1.6
