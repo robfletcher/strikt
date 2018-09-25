@@ -62,9 +62,17 @@ constructor(
 
       val m = pattern.matcher(content)
 
-      return if (m.find()) m.group(1).trimIndent().trim() else throw IllegalArgumentException("Snippet $key not found in $testClass")
+      return if (m.find()) formatSnippet(m.group(1)) else throw IllegalArgumentException("Snippet $key not found in $testClass")
     }
 
+    private fun formatSnippet(input: String): String {
+      return input
+        .trimIndent()
+        .trim()
+        .lines()
+        .filter { !it.endsWith("// IGNORE") }
+        .joinToString("\n")
+    }
   }
 
 
