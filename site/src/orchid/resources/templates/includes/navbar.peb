@@ -1,8 +1,8 @@
 <nav class="navbar is-spaced is-fixed-top is-black" role="navigation" aria-label="main navigation">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/">
-        <img src="{{site.baseUrl}}/assets/images/logo-white-28.png" alt="Strikt">
+      <a class="navbar-item" href="{{ site.baseUrl }}">
+        <img src="{{ site.baseUrl }}/assets/images/logo-white-28.png" alt="Strikt">
       </a>
 
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
