@@ -8,10 +8,10 @@ In addition to the core functionality provided by the `strikt-core` module, Stri
 ## Protobuf
 
 Extensions for testing code that uses Protobuf / gRPC.
-See the [API docs](/api/strikt-protobuf/).
+See the {{ anchor('API docs', 'strikt.protobuf') }}.
 
 Add the following to your dependencies:
 
 ```groovy
-testCompile "io.strikt:strikt-protobuf:@version@"
+testCompile "io.strikt:strikt-protobuf:{{ site.version }}"
 ``` 

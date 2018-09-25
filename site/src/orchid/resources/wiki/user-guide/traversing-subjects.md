@@ -92,4 +92,4 @@ expectThat(subject) {
 ## Built-in traversals
 
 Strikt has a number of built in traversal properties and functions such as `Assertion.Builder<List<E>>.first()` which returns an `Assertion.Builder<E>` whose subject is the first element of the list.
-See the [API docs](/api/strikt-core/strikt.api/-assertion/) for details.
+See the {{ anchor('API docs', 'strikt.assertions') }} for details.

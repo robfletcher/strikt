@@ -29,7 +29,7 @@ layout: 'homepage'
 {% homepage_one %}Type-safe fluent assertions{% endhomepage_one %}
 {% endexample %}
 
-{% example "A powerful fluent API" %}
+{% example "Collection handling" %}
 {% homepage_two %}Flexible assertions about collections{% endhomepage_two %}
 {% homepage_three %}“Narrow” the assertion to elements or ranges{% endhomepage_three %}
 {% homepage_four %}Make grouping assertions{% endhomepage_four %}
