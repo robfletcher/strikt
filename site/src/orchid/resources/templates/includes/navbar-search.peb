@@ -1,0 +1,22 @@
+<form id="search-input" data-orchid-search>
+  <div class="field has-addons">
+    <div class="control text-control">
+      <input class="input" type="text" name="query" placeholder="Search Strikt docs...">
+
+      <div id="search-progress" data-orchid-search-progress style="display: none;">
+        <div class="loader">Loading...</div>
+      </div>
+    </div>
+    <div class="control">
+      <input type="submit" class="button is-info" value="Search">
+    </div>
+  </div>
+</form>
+<div id="search-results" data-orchid-search-results style="display: none;">
+  <div class="carat"></div>
+  <b>
+    Search Results
+    <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+  </b>
+  <ul></ul>
+</div>

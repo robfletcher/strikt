@@ -4,7 +4,6 @@
       <a class="navbar-item" href="{{ site.baseUrl }}">
         <img src="{{ site.baseUrl }}/assets/images/logo-white-28.png" alt="Strikt">
       </a>
-
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -12,7 +11,9 @@
       </a>
     </div>
     <div class="navbar-menu" id="navMenu">
-      <div class="navbar-start"></div>
+      <div class="navbar-start">
+        {% include 'includes/navbar-search' %}
+      </div>
       <div class="navbar-end">
 
       {% for menuItem in theme.menu.getMenuItems(page) %}
