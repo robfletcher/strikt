@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.1"
+  id("com.eden.orchidPlugin") version "0.12.3"
 }
 
 repositories {
@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  val orchid_version = "0.12.1"
+  val orchid_version = "0.12.3"
   orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidBsDoc:$orchid_version")

@@ -4,7 +4,7 @@
       <div class="column">
         <p class="has-text-left-tablet has-text-centered-mobile">
         {% for item in theme.social.items %}
-          <a href="{{ item.link }}" class="button is-dark">
+          <a href="{{ item.link }}" class="button is-{{ item.buttonColor }}">
             <span class="icon"><i class="fab fa-lg {{ item.icon }}"></i></span>
             <span>{{ item.label }}</span>
           </a>
