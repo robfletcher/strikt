@@ -55,13 +55,21 @@ wiki:
   sections:
     - 'user-guide'
 
+services:
 # Uncomment this block to temporarily disable Kotlin docs generation. Dokka
 #   takes a few seconds to start up, which makes rapid iteration a bit painful,
 #   so it may be helpful to disable it when making changes to the site.
-#services:
 #  generators:
 #    disabled:
 #      - 'kotlindoc'
+  publications:
+    stages:
+      ghPages:
+        branch: gh-pages
+        latestDirName: latest
+        publishType: CleanBranch
+        username: cjbrooks12
+        repo: strikt
 
 kotlindoc:
   sourceDirs:
