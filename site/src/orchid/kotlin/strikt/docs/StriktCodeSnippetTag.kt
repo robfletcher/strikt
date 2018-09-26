@@ -8,7 +8,6 @@ import com.eden.orchid.api.options.annotations.StringDefault
 import java.util.regex.Pattern
 import javax.inject.Inject
 
-
 class StriktCodeSnippetTag
 @Inject
 constructor(
@@ -74,6 +73,4 @@ constructor(
         .joinToString("\n")
     }
   }
-
-
 }
