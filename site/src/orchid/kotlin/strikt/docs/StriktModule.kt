@@ -15,9 +15,7 @@ class StriktModule : OrchidModule() {
     addToSet<Theme, StriktTheme>()
     addToSet<TemplateTag, StriktCodeSnippetTag>()
   }
-
 }
-
 
 class StriktTheme
 @Inject
@@ -39,5 +37,4 @@ constructor(context: OrchidContext) : Theme(context, "Strikt", 10) {
     addJs("https://unpkg.com/lunr/lunr.js")
     addJs("assets/js/orchidSearch.js")
   }
-
 }

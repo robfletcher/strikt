@@ -130,7 +130,7 @@ internal class DocsSnippets {
     assert("is St. Tib's Day") {
       when (MonthDay.from(it)) {
         MonthDay.of(2, 29) -> pass()
-        else               -> fail()
+        else -> fail()
       }
     }
     expectThat(LocalDate.of(2020, 2, 29)).isStTibsDay()
@@ -139,7 +139,8 @@ internal class DocsSnippets {
 
   // START homepage_eleven
   val Assertion.Builder<Pantheon>.realm: Assertion.Builder<String>
-    get() = chain { "${it.king} to ${it.underworldRuler}"}
+    get() = chain { "${it.king} to ${it.underworldRuler}" }
+
   @Test fun `homepage eleven`() { // IGNORE
     val subject = Pantheon.NORSE
     expectThat(subject)
