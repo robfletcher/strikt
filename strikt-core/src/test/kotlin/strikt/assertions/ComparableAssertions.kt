@@ -1,8 +1,11 @@
 package strikt.assertions
 
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.fails
 import java.time.LocalDate
@@ -97,6 +100,54 @@ internal class ComparableAssertions {
       fails {
         expectThat(LocalDate.of(2018, 5, 2))
           .isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("isIn assertion")
+  inner class IsIn {
+    @TestFactory
+    fun `passes if the subject is an Int in the expected range`(): List<DynamicTest> {
+      val range = 1..10
+      return range.map { i ->
+        dynamicTest("$i is in the range $range") {
+          expectThat(i).isIn(range)
+        }
+      }
+    }
+
+    @TestFactory
+    fun `fails if the subject is an Int outside the expected range`(): List<DynamicTest> {
+      val range = 1..10
+      return ((-5..0) + (11..15)).map { i ->
+        dynamicTest("$i is not in the range $range") {
+          fails {
+            expectThat(i).isIn(range)
+          }
+        }
+      }
+    }
+
+    @TestFactory
+    fun `passes if the subject is a Long in the expected range`(): List<DynamicTest> {
+      val range = 1L..10L
+      return range.map { i ->
+        dynamicTest("$i is in the range $range") {
+          expectThat(i).isIn(range)
+        }
+      }
+    }
+
+    @TestFactory
+    fun `fails if the subject is a Long outside the expected range`(): List<DynamicTest> {
+      val range = 1L..10L
+      return ((-5L..0L) + (11L..15L)).map { i ->
+        dynamicTest("$i is not in the range $range") {
+          fails {
+            expectThat(i).isIn(range)
+          }
+        }
       }
     }
   }
