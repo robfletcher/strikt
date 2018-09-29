@@ -70,4 +70,4 @@ internal class ArrayAssertions {
 }
 
 internal fun randomBytes(): ByteArray =
-  ByteArray(20).also(Random(nanoTime())::nextBytes)
+  ByteArray(8).also(Random(nanoTime())::nextBytes)
