@@ -24,7 +24,9 @@ internal fun formatValue(value: Any?): Any =
     null -> "null"
     is CharSequence -> "\"${value.truncate()}\""
     is Char -> "'$value'"
-    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(::formatValue)
+    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(
+      ::formatValue
+    ).truncate()
     is ByteArray -> "0x${value.toHex()}".truncate()
     is CharArray -> formatValue(value.toList())
     is ShortArray -> formatValue(value.toList())
@@ -64,3 +66,25 @@ private fun CharSequence.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH) =
     in 0..maxLength -> this
     else -> substring(0, maxLength) + "…"
   }
+
+private fun Iterable<Any>.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH): String {
+  val buffer = StringBuilder("[")
+  val itr = toList().listIterator()
+  while (itr.hasNext()) {
+    val first = !itr.hasPrevious()
+    val e = itr.next()
+    val appendedLength =
+      buffer.length + e.toString().length + if (itr.hasNext()) 3 else 2
+    if (appendedLength >= maxLength) {
+      buffer.append("…")
+      break
+    } else {
+      if (!first) {
+        buffer.append(", ")
+      }
+      buffer.append(e)
+    }
+  }
+  buffer.append("]")
+  return buffer.toString()
+}

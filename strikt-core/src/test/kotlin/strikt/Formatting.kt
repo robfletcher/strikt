@@ -172,9 +172,9 @@ internal class Formatting {
   fun `failure message trims a list value when it has more than 40 characters`() {
     val actual = ('A'..'Z').toList().map { it.toString() }
     val expectedToString =
-      "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\", \"H\",…"
+      "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\"…]"
     val expectedMessage =
-      "▼ Expect that \"$expectedToString…\":\n" +
+      "▼ Expect that $expectedToString:\n" +
         "  ✗ has size 25 : found 26"
 
     val error = fails {
