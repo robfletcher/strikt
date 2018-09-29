@@ -170,7 +170,7 @@ internal class Formatting {
 
   @Test
   fun `failure message trims a list value when it has more than 40 characters`() {
-    val actual = ('A'..'Z').toList().map { it.toString() }
+    val subject = ('A'..'Z').toList().map { it.toString() }
     val expectedToString =
       "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\"…]"
     val expectedMessage =
@@ -178,7 +178,24 @@ internal class Formatting {
         "  ✗ has size 25 : found 26"
 
     val error = fails {
-      expectThat(actual).hasSize(25)
+      expectThat(subject).hasSize(25)
+    }
+
+    assertEquals(expectedMessage, error.message)
+  }
+
+  @Test
+  fun `failure message trims a map value when it has more than 40 characters`() {
+    val subject =
+      ('A'..'Z').toList().map { it.toString() to it.toByte() }.toMap()
+    val expectedToString =
+      "{\"A\"=0x41, \"B\"=0x42, \"C\"=0x43…}"
+    val expectedMessage =
+      "▼ Expect that $expectedToString:\n" +
+        "  ✗ has size 25 : found 26"
+
+    val error = fails {
+      expectThat(subject).hasSize(25)
     }
 
     assertEquals(expectedMessage, error.message)

@@ -10,6 +10,17 @@ fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
   passesIf("is empty") { it.isEmpty() }
 
 /**
+ * Asserts that the subject map has the specified number of entries.
+ */
+fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =
+  assert("has size %d", expected) {
+    when (it.size) {
+      expected -> pass()
+      else -> fail(actual = it.size)
+    }
+  }
+
+/**
  * Maps this assertion to an assertion on the value indexed by [key] in the
  * subject list.
  *

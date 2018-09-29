@@ -69,7 +69,7 @@ internal class MapAssertions {
         expectThat(subject).containsKeys("foo", "bar", "fnord")
       }.let { e ->
         assertEquals(
-          "▼ Expect that {\"foo\"=\"bar\", \"baz\"=\"fnord\", \"qux\"=\"fnord\"}:\n" +
+          "▼ Expect that {\"foo\"=\"bar\", \"baz\"=\"fnord\"…}:\n" +
             "  ✗ has entries with the keys [\"foo\", \"bar\", \"fnord\"]\n" +
             "    ✓ has an entry with the key \"foo\"\n" +
             "    ✗ has an entry with the key \"bar\"\n" +
