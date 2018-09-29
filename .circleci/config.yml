@@ -127,6 +127,7 @@ workflows:
             - build-java8
             - build-java9
             - build-java10
+            - build-java11
           filters:
             tags:
               only: /^v.*/
