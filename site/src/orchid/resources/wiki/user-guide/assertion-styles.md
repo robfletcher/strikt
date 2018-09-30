@@ -14,15 +14,11 @@ That is, the first assertion that fails breaks the chain and further assertions 
 
 Each assertion in the chain returns an `Assertion.Builder` object that supports further assertions.
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_1 %}{% endassertion_styles_1 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_1' testClass='Assertions' %}
 
 Produces the output:
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_2 %}{% endassertion_styles_2 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_2' testClass='Assertions' %}
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
@@ -34,15 +30,11 @@ They allow multiple assertions (or assertion chains) to be evaluated against the
 Block assertions do _not_ fail fast.
 That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_3 %}{% endassertion_styles_3 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_3' testClass='Assertions' %}
 
 Produces the output:
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_4 %}{% endassertion_styles_4 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_4' testClass='Assertions' %}
 
 All assertions are applied and since two fail there are two errors logged.
 
@@ -50,15 +42,11 @@ All assertions are applied and since two fail there are two errors logged.
 
 Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_5 %}{% endassertion_styles_5 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_5' testClass='Assertions' %}
 
 Produces the output:
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_6 %}{% endassertion_styles_6 %}
-{% endcodesnippet %}
+{% codesnippet key='assertion_styles_6' testClass='Assertions' %}
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
 The `greaterThan(1)` assertion _was_ evaluated since it was not part of the same chain.
@@ -72,7 +60,4 @@ All assertions inside the `expect` lambda are evaluated.
 
 The previous examples can be combined into a single `expect` block.
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% assertion_styles_7 %}{% endassertion_styles_7 %}
-{% endcodesnippet %}
-
+{% codesnippet key='assertion_styles_7' testClass='Assertions' %}

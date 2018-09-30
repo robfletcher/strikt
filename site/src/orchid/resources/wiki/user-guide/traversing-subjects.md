@@ -5,11 +5,7 @@
 
 Although you can obviously write assertions for the properties of an object with code like this:
 
-```kotlin
-expectThat(map.size).isEqualTo(1)
-expectThat(list.first()).isEqualTo("fnord")
-expectThat(person.name).isEqualTo("Ziggy")
-```
+{% codesnippet key='traversing_subjects_1' testClass='Chaining' %}
 
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
@@ -22,47 +18,25 @@ The method takes a lambda whose receiver is the current subject and returns an `
 
 This is useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
-```kotlin
-val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expectThat(subject) {
-  get { name }.isEqualTo("David")
-  get { birthDate.year }.isEqualTo(1947)
-}
-```
+{% codesnippet key='traversing_subjects_2' testClass='Chaining' %}
 
 Strikt will read the test source to find out the name of the variables.
 This example produces output that looks like this:
-```
-▼ Expect that Person(David):
-  ▼ name:
-    ✗ is equal to "Ziggy" : found "David"
-  ▼ birthDate.year:
-    ✗ is equal to 1971 : found 1947
-```
+
+{% codesnippet key='traversing_subjects_3' testClass='Chaining' %}
 
 ## Using _get_ with property or method references
 
 It's also possible to use a property or method reference in place of a lambda. 
 
-```kotlin
-val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expectThat(subject) {
-  get(Person::name).isEqualTo("David")
-  get(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
-}
-```
+{% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
 
 ## Mapping elements of collections
 
 If the assertion subject is an `Iterable` Strikt provides a `map` function much like the one in the Kotlin standard library.
 It is effectively like using `get` on each element of the `Iterable` subject.
 
-```kotlin
-val subject: List<Person> = // get list from somewhere
-expectThat(subject)
-  .map(Person::name)
-  .containsExactly("David", "Ziggy", "Aladdin", "Jareth")
-```
+{% codesnippet key='traversing_subjects_5' testClass='Chaining' %}
 
 In this case the `map` function is transforming the `Assertion.Buidler<List<Person>>` into an `Assertion.Builder<List<String>>` by applying the `name` property to each element.
 
@@ -72,23 +46,11 @@ If you find yourself frequently using `get` for the same properties or methods, 
 
 For example:
 
-```kotlin
-val Assertion.Builder<Person>.name: Assertion.Builder<String>
-  get() = get(Person::name)
-
-val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
-  get() = get("year of birth") { dateOfBirth.year }
-```
+{% codesnippet key='traversing_subjects_6' testClass='Chaining' %}
 
 You can then write the earlier example as:
 
-```kotlin
-val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
-expectThat(subject) {
-  name.isEqualTo("David")
-  yearOfBirth.isEqualTo(1947)
-}
-```
+{% codesnippet key='traversing_subjects_7' testClass='Chaining' %}
 
 ## Built-in traversals
 

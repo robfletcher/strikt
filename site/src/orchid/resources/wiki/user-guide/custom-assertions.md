@@ -30,15 +30,7 @@ The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simp
 
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
-```kotlin
-fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
-  assert("is St. Tib's Day") { 
-    when (MonthDay.from(it)) {
-      MonthDay.of(2, 29) -> pass()
-      else               -> fail()
-    }
-  }
-```
+{% codesnippet key='custom_assertions_1' testClass='CustomAssertions' %}
 
 Breaking this down: 
 
@@ -49,10 +41,7 @@ Breaking this down:
 
 If this assertion fails it will produce a message like:
 
-```
-▼ Expect that 2018-05-01:
-  ✗ is St. Tib's Day 
-```
+{% codesnippet key='custom_assertions_2' testClass='CustomAssertions' %}
 
 ### Note
 
@@ -68,25 +57,11 @@ That way any assertion failure message will be more helpful.
 In order to do this, Strikt provides an overridden version of `fail()` that accepts a message string and the actual value found.
 The message string should contain a format placeholder for the value.
 
-```kotlin
-fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
-  assert("is St. Tib's Day") { 
-    when (MonthDay.from(it)) {
-      MonthDay.of(2, 29) -> pass()
-      else               -> fail(
-        message = "in fact it is %s", 
-        actual = subject
-      )
-    }
-  }
-```
+{% codesnippet key='custom_assertions_3' testClass='CustomAssertions' %}
 
 Now if the assertion fails there is a little more detail.
 
-```
-▼ Expect that 2018-05-01:
-  ✗ is St. Tib's Day : in fact it is 2018-05-01
-```
+{% codesnippet key='custom_assertions_4' testClass='CustomAssertions' %}
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 When comparing large string values it also means IDEs such as IntelliJ IDEA will present a detailed diff dialog in the event of a test failure.
@@ -97,12 +72,7 @@ For the simplest assertion functions, instead of using `assert` and calling `pas
 
 We can re-implement the example above like this:
 
-```kotlin
-fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
-  passesIf("is St. Tib's Day") { 
-    MonthDay.from(it) == MonthDay.of(2, 29)
-  }
-```
+{% codesnippet key='custom_assertions_5' testClass='CustomAssertions' %}
 
 You should not use this form when you want to provide a meaningful description of the actual value but for simple assertions it's slightly less verbose.
 
@@ -118,16 +88,7 @@ Composed assertions are useful for things like:
 
 Imagine we're creating an assertion function that tests fails if any element of a collection is `null`.
 
-```kotlin
-fun <T: Iterable<E?>, E> Assertion.Builder<T>.containsNoNullElements(): Assertion.Builder<T> =
-  compose("does not contain any null elements") { subject ->
-    subject.forEach {
-      expectThat(it).isNotNull()
-    }
-  } then {
-    if (allPassed) pass() else fail()
-  }
-```
+{% codesnippet key='custom_assertions_6' testClass='CustomAssertions' %}
 
 Breaking this down:
 
@@ -140,18 +101,7 @@ The receiver of the block passed to `result` has the properties `allFailed`, `an
 
 If the assertion failed we'll see something like this:
 
-```
-▼ Expect that ["catflap", null, "rubberplant", "marzipan"]: 
-  ✗ does not contain any null elements
-    ▼ "catflap": 
-      ✓ is not null  
-    ▼ null: 
-      ✗ is not null  
-    ▼ "rubberplant": 
-      ✓ is not null  
-    ▼ "marzipan": 
-      ✓ is not null  
-```
+{% codesnippet key='custom_assertions_7' testClass='CustomAssertions' %}
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 

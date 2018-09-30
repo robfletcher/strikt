@@ -13,6 +13,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isLowerCase
+import strikt.assertions.isNull
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
 import strikt.assertions.throws
@@ -20,6 +21,9 @@ import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("Snippets used in Orchid docs")
 internal class Assertions {
+
+// assertion-styles.md
+// -----------------------------------------------------------------------------
 
   @Test fun `assertion styles 1, 2`() {
     // START assertion_styles_2
@@ -122,6 +126,9 @@ internal class Assertions {
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
+// collection-elements.md
+// -----------------------------------------------------------------------------
+
   @Test fun `collections 1, 2`() {
     // START collections_1
     val s = """ // IGNORE
@@ -150,5 +157,42 @@ internal class Assertions {
     }).throws<AssertionFailedError>()
       .chain { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+  }
+
+// expecting-exceptions.md
+// -----------------------------------------------------------------------------
+
+  @Test fun `catching exceptions 1, 2`() {
+    // START catching_exceptions_1
+    expectThat(catching { identifyHotdog("hamburger") })
+      .throws<NotHotdogException>()
+    // END catching_exceptions_1
+
+    // START catching_exceptions_2
+    expectThat(catching { identifyHotdog("hotdog") })
+      .isNull()
+    // END catching_exceptions_2
+  }
+
+  private fun identifyHotdog(food: String) {
+    if (food != "hotdog") throw NotHotdogException()
+  }
+
+  private class NotHotdogException : Exception()
+
+// flow-typing.md
+// -----------------------------------------------------------------------------
+
+  @Test fun `flow typing 1`() {
+    // START flow_typing_1
+    val subject: Map<String, Any> = mapOf("count" to 1, "name" to "Rob")
+    expectThat(subject.get("count"))
+      .isA<Int>()
+      .isGreaterThan(0)
+
+    expectThat(subject.get("name"))
+      .isA<String>()
+      .hasLength(3)
+    // END flow_typing_1
   }
 }

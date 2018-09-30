@@ -16,13 +16,7 @@ The same is true when the subject type is overly broad and you need to narrow th
 The `and` method is helpful in these scenarios.
 For example:
 
-```kotlin
-expectThat(subject)  
-  .isNotNull()   
-  .and {
-    // perform other assertions on a known non-null subject 
-  }
-```
+{% codesnippet key='grouping_with_and_1' testClass='Chaining' %}
 
 The type after `expectThat` is `Assertion.Builder<T?>` (assuming `subject` has a nullable declared type) but the receiever of `and` is `Assertion.Builder<T>` as `isNotNull` has narrowed the subject type.
 
@@ -31,31 +25,13 @@ The type after `expectThat` is `Assertion.Builder<T?>` (assuming `subject` has a
 Another use for `and` is to create a branch of assertions that apply to a sub-tree of the subject.
 For example, if testing a complex value type with nested properties:
 
-```kotlin
-expectThat(person)
-  .and {
-    map { it.name }.isEqualTo("David")
-  }
-  .and {
-    map { it.dateOfBirth.year }.isEqualTo(1947)
-  }
-```
+{% codesnippet key='grouping_with_and_2' testClass='Chaining' %}
 
 Of course, it may be better to structure the same assertion with separate assertions.
 This is a lot more readable:
 
-```kotlin
-expect {
-  that(person.name).isEqualTo("David")
-  that(person.dateOfBirth.year).isEqualTo(1947)
-}
-```
+{% codesnippet key='grouping_with_and_3' testClass='Chaining' %}
 
 Testing properties of a collection can be done in a similar way:
 
-```kotlin
-expectThat(albums)
-  .hasSize(26)
-  .and { first().map { it.name }.isEqualTo("David Bowie") }
-  .and { last().map { it.name }.isEqualTo("Blackstar") }
-```
+{% codesnippet key='grouping_with_and_4' testClass='Chaining' %}

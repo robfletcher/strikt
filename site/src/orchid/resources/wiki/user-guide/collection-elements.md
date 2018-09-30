@@ -6,15 +6,11 @@
 Some assertions on collections include sub-assertions applied to the elements of the collection.
 For example, we can assert that _all_ elements conform to a repeated assertion.
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% collections_1 %}{% endcollections_1 %}
-{% endcodesnippet %}
+{% codesnippet key='collections_1' testClass='Assertions' %}
 
 This produces the output:
 
-{% codesnippet simple=true testClass='Assertions' %}
-{% collections_2 %}{% endcollections_2 %}
-{% endcodesnippet %}
+{% codesnippet key='collections_2' testClass='Assertions' %}
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
 
