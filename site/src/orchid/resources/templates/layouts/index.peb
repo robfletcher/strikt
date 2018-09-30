@@ -12,6 +12,7 @@
     <div class="columns is-centered">
       <div class="column is-10-desktop">
       {% block contentMain %}
+        {% breadcrumbs %}
         <div class="content is-medium">
         {% page %}
         </div>
