@@ -53,7 +53,9 @@ allPages:
 
 wiki:
   sections:
-    - 'user-guide'
+    - key: 'user-guide'
+      title: 'User Guide'
+      includeIndexInPageTitle: false
 
 services:
 # Uncomment this block to temporarily disable Kotlin docs generation. Dokka
