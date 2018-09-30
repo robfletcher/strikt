@@ -28,7 +28,7 @@ import java.time.MonthDay
 // Code snippets can be referenced from the docs using the {% example %} tag
 // (see homepage.md for sample usage)
 @DisplayName("Snippets used in Orchid docs")
-internal class DocsSnippets {
+internal class Homepage {
   @Test
   fun `homepage one`() {
     // START homepage_one
@@ -148,6 +148,6 @@ internal class DocsSnippets {
       .isEqualTo("Odin to Hel")
   } // IGNORE
   // END homepage_eleven
-}
 
-class Person(val name: String)
+  class Person(val name: String)
+}

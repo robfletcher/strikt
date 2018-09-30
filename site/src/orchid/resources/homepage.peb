@@ -25,28 +25,28 @@ layout: 'homepage'
   </div>
 </section>
 
-{% example "A powerful fluent API" %}
+{% codesnippet "A powerful fluent API" %}
 {% homepage_one %}Type-safe fluent assertions{% endhomepage_one %}
-{% endexample %}
+{% endcodesnippet %}
 
-{% example "Collection handling" %}
+{% codesnippet "Collection handling" %}
 {% homepage_two %}Flexible assertions about collections{% endhomepage_two %}
 {% homepage_three %}“Narrow” the assertion to elements or ranges{% endhomepage_three %}
 {% homepage_four %}Make grouping assertions{% endhomepage_four %}
-{% endexample %}
+{% endcodesnippet %}
 
-{% example "“Soft” assertions" %}
+{% codesnippet "“Soft” assertions" %}
 {% homepage_five %}Use lambdas to execute multiple assertions on a subject at once…{% endhomepage_five %}
 {% homepage_six %}…with structured diagnostics of those that fail{% endhomepage_six %}
 {% homepage_seven %}Use lambdas to execute assertions on multiple subjects at once…{% endhomepage_seven %}
-{% endexample %}
+{% endcodesnippet %}
 
-{% example "Strong typing" %}
+{% codesnippet "Strong typing" %}
 {% homepage_eight %}Assertion functions can "narrow" the type of the assertion{% endhomepage_eight %}
 {% homepage_nine %}Assertions can "map" to properties and method results in a type safe way:{% endhomepage_nine %}
-{% endexample %}
+{% endcodesnippet %}
 
-{% example "Extensibility" %}
+{% codesnippet "Extensibility" %}
 {% homepage_ten %}Custom assertions are extension functions{% endhomepage_ten %}
 {% homepage_eleven %}Custom mappings are extension properties{% endhomepage_eleven %}
-{% endexample %}
+{% endcodesnippet %}

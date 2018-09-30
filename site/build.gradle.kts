@@ -1,5 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+/*
+This project builds the Strikt docs with Orchid.
+
+Commands:
+    gradle :site:orchidServe
+        build the site and serve it locally on http://localhost:8080. Changes to
+        site content will rebuild the site.
+    gradle :site:orchidDeploy -Penv=prod
+        build the site and deploy it to Github Pages. Requires an API token with
+        push access to the repo, set as `github_token` in Gradle properties, or
+        a `GITHUB_TOKEN` environment variable. The `env` project property will
+        set the appropriate site base URL.
+*/
+
 plugins {
   id("nebula.kotlin")
   id("com.eden.orchidPlugin") version "0.12.4"
@@ -28,7 +42,7 @@ dependencies {
 project.version = "${project.version}"
 
 orchid {
-  theme = "Strikt"
+  theme = "StriktTheme"
 
   if (project.hasProperty("env") && project.property("env") == "prod") {
     baseUrl = "https://strikt.io/"
