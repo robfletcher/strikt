@@ -1,3 +1,8 @@
+{% if tag.simple %}
+{% for snippet in tag.tabs %}
+<pre><code class="language-kotlin">{{ snippet.snippetContent }}</code></pre>
+{% endfor %}
+{% else %}
 <section class="columns is-multiline is-gapless">
   <header class="column is-4 has-text-right-tablet">
     <div class="notification content is-medium">
@@ -20,3 +25,4 @@
   {% endfor %}
 
 </section>
+{% endif %}

@@ -19,7 +19,7 @@ class StriktModule : OrchidModule() {
 
 class StriktTheme
 @Inject
-constructor(context: OrchidContext) : Theme(context, "Strikt", 10) {
+constructor(context: OrchidContext) : Theme(context, "StriktTheme", 10) {
 
   @Option
   lateinit var social: Social

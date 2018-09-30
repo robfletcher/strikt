@@ -1,6 +1,5 @@
 package strikt.docs
 
-import com.eden.orchid.api.OrchidContext
 import com.eden.orchid.api.compilers.TemplateTag
 import com.eden.orchid.api.options.annotations.Description
 import com.eden.orchid.api.options.annotations.Option
@@ -10,9 +9,7 @@ import javax.inject.Inject
 
 class StriktCodeSnippetTag
 @Inject
-constructor(
-  val context: OrchidContext
-) : TemplateTag("example", Type.Tabbed, true) {
+constructor() : TemplateTag("codesnippet", Type.Tabbed, true) {
 
   @Option
   @Description("The name of a test method in a strikt-core test class.")
@@ -23,9 +20,18 @@ constructor(
   lateinit var title: String
 
   @Option
-  @StringDefault("strikt/docs/DocsSnippets")
+  @StringDefault("strikt/docs")
   @Description("The path to a test class in the strikt-core module, relative to the test '/kotlin' root.")
+  lateinit var testClassPath: String
+
+  @Option
+  @StringDefault("Homepage")
+  @Description("The path to a test class in the strikt-core module, relative to the test '/kotlin' root in the testClassPath subdirectory.")
   lateinit var testClass: String
+
+  @Option
+  @Description("Whether to render a simple snippet, for the full snippet with descriptions.")
+  var simple: Boolean = false
 
   override fun parameters(): Array<String> {
     return arrayOf("title")
@@ -54,14 +60,14 @@ constructor(
     }
 
     fun getSnippetContent(): String {
-      val resource = context.getLocalResourceEntry("../../../../strikt-core/src/test/kotlin/$testClass.kt")
+      val resource = context.getLocalResourceEntry("../../../../strikt-core/src/test/kotlin/$testClassPath/$testClass.kt")
       val content = resource?.rawContent ?: ""
 
       val pattern = Pattern.compile("(?s)// START $key(.*?)// END $key")
 
       val m = pattern.matcher(content)
 
-      return if (m.find()) formatSnippet(m.group(1)) else throw IllegalArgumentException("Snippet $key not found in $testClass")
+      return if (m.find()) formatSnippet(m.group(1)) else throw IllegalArgumentException("Snippet $key not found in $testClassPath/$testClass")
     }
 
     private fun formatSnippet(input: String): String {
