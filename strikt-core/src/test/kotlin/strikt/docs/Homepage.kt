@@ -2,6 +2,7 @@ package strikt.docs
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import strikt.Person
 import strikt.api.Assertion
 import strikt.api.catching
 import strikt.api.expect
@@ -91,8 +92,8 @@ internal class Homepage {
   @Test
   fun `homepage seven`() {
     // START homepage_seven
-    val person1 = Person("David")
-    val person2 = Person("Ziggy")
+    val person1 = Person(name = "David")
+    val person2 = Person(name = "Ziggy")
     expect {
       that(person1).chain { it.name }.isEqualTo("David")
       that(person2).chain { it.name }.isEqualTo("Ziggy")
@@ -108,7 +109,7 @@ internal class Homepage {
       .isNotNull()                 // type: Assertion<Any>
       .isA<String>()               // type: Assertion<String>
       .matches(Regex("[\\w\\s]+"))
-      // only available on Assertion<CharSequence>
+    // only available on Assertion<CharSequence>
     // END homepage_eight
   }
 
@@ -127,12 +128,12 @@ internal class Homepage {
   fun `homepage ten, eleven`() {
     // START homepage_ten
     fun Assertion.Builder<LocalDate>.isStTibsDay() =
-    assert("is St. Tib's Day") {
-      when (MonthDay.from(it)) {
-        MonthDay.of(2, 29) -> pass()
-        else -> fail()
+      assert("is St. Tib's Day") {
+        when (MonthDay.from(it)) {
+          MonthDay.of(2, 29) -> pass()
+          else -> fail()
+        }
       }
-    }
     expectThat(LocalDate.of(2020, 2, 29)).isStTibsDay()
     // END homepage_ten
   }
@@ -148,6 +149,4 @@ internal class Homepage {
       .isEqualTo("Odin to Hel")
   } // IGNORE
   // END homepage_eleven
-
-  class Person(val name: String)
 }

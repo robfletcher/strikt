@@ -83,8 +83,6 @@ internal class Mapping {
     }
   }
 
-  data class Person(val name: String, val birthDate: LocalDate)
-
   @Nested
   @DisplayName("custom mappings")
   inner class Custom {
@@ -188,3 +186,6 @@ internal class Mapping {
     }
   }
 }
+
+data class Person(val name: String, val birthDate: LocalDate = LocalDate.now())
+data class Album(val name: String)

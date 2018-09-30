@@ -13,7 +13,10 @@ class StriktModule : OrchidModule() {
 
   override fun configure() {
     addToSet<Theme, StriktTheme>()
-    addToSet<TemplateTag, StriktCodeSnippetTag>()
+    addToSet<TemplateTag>(
+      StriktCodeSnippetsTag::class,
+      StriktCodeSnippetTag::class
+    )
   }
 }
 
