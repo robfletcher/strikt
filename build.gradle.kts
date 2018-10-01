@@ -51,10 +51,16 @@ subprojects {
         sourceCompatibility = VERSION_1_6
       }
 
+      tasks.withType<KotlinCompile> {
+        kotlinOptions {
+          languageVersion = "1.2"
+          freeCompilerArgs += "-Xprogressive"
+        }
+      }
+
       // build library code for JDK 1.6
       val compileKotlin by tasks.getting(KotlinCompile::class) {
         kotlinOptions {
-          languageVersion = "1.2"
           jvmTarget = VERSION_1_6.toString()
         }
       }
@@ -62,7 +68,6 @@ subprojects {
       // build test code for JDK 1.8
       val compileTestKotlin by tasks.getting(KotlinCompile::class) {
         kotlinOptions {
-          languageVersion = "1.2"
           jvmTarget = VERSION_1_8.toString()
         }
       }
