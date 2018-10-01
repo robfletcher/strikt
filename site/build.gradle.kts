@@ -16,7 +16,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.4"
+  id("com.eden.orchidPlugin") version "0.12.5"
 }
 
 repositories {
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  val orchid_version = "0.12.4"
+  val orchid_version = "0.12.5"
   orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidPages:$orchid_version")
