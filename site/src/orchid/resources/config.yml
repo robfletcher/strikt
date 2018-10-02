@@ -46,6 +46,8 @@ theme:
         - type: 'page'
           title: 'Strikt Protobuf'
           itemId: 'strikt.protobuf'
+        - type: 'page'
+          itemId: 'Changelog'
 
 allPages:
   components:
@@ -66,12 +68,15 @@ services:
 #      - 'kotlindoc'
   publications:
     stages:
-      ghPages:
-        branch: gh-pages
-        latestDirName: latest
-        publishType: CleanBranch
-        username: cjbrooks12
-        repo: strikt
+# uncomment the following line line to break the build and prevent deploys when
+# there is no changelog entry for the current version.
+#    - type: requireChangelogVersion
+    - type: ghPages
+      branch: gh-pages
+      latestDirName: latest
+      publishType: CleanBranch
+      username: cjbrooks12
+      repo: strikt
 
 kotlindoc:
   sourceDirs:
