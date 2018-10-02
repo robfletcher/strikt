@@ -105,7 +105,7 @@ internal class CustomAssertions {
 
     // START custom_assertions_7
     val s = """ // IGNORE
-    ▼ Expect that ["catflap", null, "rubberplant", "marzipan"]:
+    ▼ Expect that ["catflap", null, "rubberplant"…]:
       ✗ does not contain any null elements
         ▼ "catflap":
           ✓ is not null
