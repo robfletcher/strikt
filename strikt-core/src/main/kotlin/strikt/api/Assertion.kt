@@ -225,8 +225,11 @@ interface Assertion {
      * The main use for this method is after [strikt.assertions.isNotNull] or
      * [strikt.assertions.isA] in order that a group of assertions can more
      * conveniently be performed on the narrowed subject type.
+     *
+     * This method may be used as an infix function which tends to enhance
+     * readability when it directly follows a lambda.
      */
-    fun and(
+    infix fun and(
       assertions: Builder<T>.() -> Unit
     ): Builder<T>
 

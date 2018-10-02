@@ -349,7 +349,7 @@ internal class IterableAssertions {
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"fnord\"]\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
               "    ✓ contains \"catflap\"\n" +
               "    ✓ …at index 0\n" +
               "    ✓ contains \"rubberplant\"\n" +
@@ -392,7 +392,7 @@ internal class IterableAssertions {
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"marzipan\"]\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
               "    ✓ contains \"catflap\"\n" +
               "    ✓ …at index 0\n" +
               "    ✓ contains \"rubberplant\"\n" +
@@ -544,7 +544,7 @@ internal class IterableAssertions {
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"marzipan\"] in any order\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
               "    ✓ contains \"catflap\"\n" +
               "    ✓ contains \"rubberplant\"\n" +
               "    ✓ contains \"marzipan\"\n" +
@@ -563,7 +563,7 @@ internal class IterableAssertions {
         }.let { error ->
           assertEquals(
             "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\", \"fnord\"] in any order\n" +
+              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
               "    ✓ contains \"catflap\"\n" +
               "    ✓ contains \"rubberplant\"\n" +
               "    ✓ contains \"marzipan\"\n" +
