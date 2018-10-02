@@ -68,9 +68,9 @@ internal class Homepage {
   fun `homepage five, six, seven`() {
     // START homepage_six
     val s = """ // IGNORE
-    ▼ Expect that "The Enlightened take...":
+    ▼ Expect that "The Enlightened take things Lightly":
       ✗ has length 5 : found 35
-      ✗ matches the regular expression /\d+/ : found "The Enlightened take..."
+      ✗ matches the regular expression /\d+/ : found "The Enlightened take things Lightly"
       ✓ starts with "T"
     """ // IGNORE
     // END homepage_six
