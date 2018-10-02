@@ -28,7 +28,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =
  * exists in the subject map.
  */
 operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
-  chain("entry [${formatValue(key)}]") { it[key] }
+  get("entry [${formatValue(key)}]") { it[key] }
 
 /**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on

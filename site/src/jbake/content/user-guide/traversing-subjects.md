@@ -19,7 +19,7 @@ expectThat(person.name).isEqualTo("Ziggy")
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion.Builder<T>.chain` method.  
+Strikt allows for this using the `Assertion.Builder<T>.get` method.  
 
 ## Using _chain_ with lambdas
 
@@ -30,8 +30,8 @@ This is sometimes useful for making assertions about the properties of an object
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expectThat(subject) {
-  chain { it.name }.isEqualTo("David")
-  chain { it.birthDate.year }.isEqualTo(1947)
+  get { it.name }.isEqualTo("David")
+  get { it.birthDate.year }.isEqualTo(1947)
 }
 ```
 
@@ -51,15 +51,15 @@ It's also possible to use a method reference in place of a lambda.
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expectThat(subject) {
-  chain(Person::name).isEqualTo("David")
-  chain(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
+  get(Person::name).isEqualTo("David")
+  get(Person::birthDate).map(LocalDate::getYear).isEqualTo(1947)
 }
 ```
 
 ## Mapping elements of collections
 
 If the assertion subject is an `Iterable` Strikt provides a `map` function much like the one in the Kotlin standard library.
-It is effectively like using `chain` on each element of the `Iterable` subject.
+It is effectively like using `get` on each element of the `Iterable` subject.
 
 ```kotlin
 val subject: List<Person> = // get list from somewhere
@@ -72,16 +72,16 @@ In this case the `map` function is transforming the `Assertion.Buidler<List<Pers
 
 ## Re-usable mappings
 
-If you find yourself frequently using `chain` for the same properties or methods, consider defining extension property or method to make things even easier.
+If you find yourself frequently using `get` for the same properties or methods, consider defining extension property or method to make things even easier.
 
 For example:
 
 ```kotlin
 val Assertion.Builder<Person>.name: Assertion.Builder<String>
-  get() = chain(Person::name)
+  get() = get(Person::name)
 
 val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
-  get() = chain("year of birth") { it.dateOfBirth.year }
+  get() = get("year of birth") { it.dateOfBirth.year }
 ```
 
 You can then write the earlier example as:
