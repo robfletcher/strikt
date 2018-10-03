@@ -75,7 +75,7 @@ services:
       branch: gh-pages
       latestDirName: latest
       publishType: CleanBranch
-      username: cjbrooks12
+      username: robfletcher
       repo: strikt
 
 kotlindoc:
