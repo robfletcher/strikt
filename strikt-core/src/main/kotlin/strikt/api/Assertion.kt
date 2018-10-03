@@ -175,7 +175,7 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> get(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
           get("value of property ${function.name}", function)
@@ -188,7 +188,7 @@ interface Assertion {
         else -> {
           val fieldName = try {
             val line = FilePeek.getCallerFileInfo().line
-            ParsedMapInstruction(line).body.substringAfter("it.")
+            ParsedMapInstruction(line).body.trim()
           } catch (e: Exception) {
             "%s"
           }
@@ -208,7 +208,7 @@ interface Assertion {
      */
     fun <R> get(
       description: String,
-      function: (T) -> R
+      function: T.() -> R
     ): DescribeableBuilder<R>
 
     /**

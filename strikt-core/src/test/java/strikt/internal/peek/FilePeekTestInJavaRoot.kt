@@ -8,7 +8,7 @@ class FilePeekTestInJavaRoot {
   @Test
   fun `finds classes that have a different name than the file they are in`() {
     expectThat(FilePeek.getCallerFileInfo(filterMethod("finds")))
-      .get { it.line }
+      .get { line }
       .isEqualTo("expectThat(FilePeek.getCallerFileInfo(filterMethod(\"finds\")))")
   }
 }
