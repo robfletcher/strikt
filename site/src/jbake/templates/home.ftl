@@ -233,7 +233,7 @@ expectThat(subject)            // type: Assertion&lt;Any?&gt;
           <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject = Pantheon.ERIS
 expectThat(subject)
   .get(Deity::realm)     // reference to a property
-  .get { it.toString() } // return type of a method call
+  .get { toString() } // return type of a method call
   .isEqualTo("discord and confusion")</code></pre>
           </div>
         </section>

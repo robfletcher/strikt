@@ -30,8 +30,8 @@ This is sometimes useful for making assertions about the properties of an object
 ```kotlin
 val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
 expectThat(subject) {
-  get { it.name }.isEqualTo("David")
-  get { it.birthDate.year }.isEqualTo(1947)
+  get { name }.isEqualTo("David")
+  get { birthDate.year }.isEqualTo(1947)
 }
 ```
 
@@ -81,7 +81,7 @@ val Assertion.Builder<Person>.name: Assertion.Builder<String>
   get() = get(Person::name)
 
 val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<LocalDate>
-  get() = get("year of birth") { it.dateOfBirth.year }
+  get() = get("year of birth") { dateOfBirth.year }
 ```
 
 You can then write the earlier example as:

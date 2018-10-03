@@ -68,8 +68,8 @@ internal class BeanPropertyAssertions {
     expectThat(fails {
       expectThat(subject.name).isEqualTo("Ziggy")
     }).isA<AssertionFailedError>().and {
-      get { it.actual.value }.isNull()
-      get { it.isActualDefined }.isTrue()
+      get { actual.value }.isNull()
+      get { isActualDefined }.isTrue()
     }
   }
 

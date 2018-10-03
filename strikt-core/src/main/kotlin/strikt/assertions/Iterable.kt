@@ -7,7 +7,7 @@ import strikt.api.Assertion.Builder
  * assertion builder wrapping the result.
  */
 fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
-  get { it.map(function) }
+  get { map(function) }
 
 /**
  * Maps this assertion to an assertion over the first element in the subject
@@ -16,7 +16,7 @@ fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable
  * @see Iterable.first
  */
 fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
-  get("first element %s") { it.first() }
+  get("first element %s") { first() }
 
 /**
  * Maps this assertion to an assertion over the last element in the subject
@@ -25,7 +25,7 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  * @see Iterable.last
  */
 fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
-  get("last element %s") { it.last() }
+  get("last element %s") { last() }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].

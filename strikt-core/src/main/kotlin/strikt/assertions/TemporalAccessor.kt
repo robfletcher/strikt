@@ -62,7 +62,7 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccess
  * @see TemporalAccessor.get
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.get(field: TemporalField): Assertion.Builder<Int> =
-  get(field.toString()) { it.get(field) }
+  get(field.toString()) { this.get(field) }
 
 /**
  * Maps an assertion on the subject to an assertion on the value of the
@@ -74,4 +74,4 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.get(field: TemporalField): Asser
  * @see TemporalAccessor.getLong
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.getLong(field: TemporalField): Assertion.Builder<Long> =
-  get(field.toString()) { it.getLong(field) }
+  get(field.toString()) { this.getLong(field) }
