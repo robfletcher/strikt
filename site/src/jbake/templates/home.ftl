@@ -265,7 +265,7 @@ expectThat(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <p>Custom mappings are extension properties</p>
+              <p>Custom mappings are extension functions or properties</p>
             </div>
           </div>
           <div class="column is-8">
