@@ -10,7 +10,7 @@ Although you can obviously write assertions for the properties of an object with
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion.Builder<T>.chain` method.  
+Strikt allows for this using the `Assertion.Builder<T>.get` method.  
 
 ## Using _chain_ with lambdas
 
@@ -34,7 +34,7 @@ It's also possible to use a method reference in place of a lambda.
 ## Mapping elements of collections
 
 If the assertion subject is an `Iterable` Strikt provides a `map` function much like the one in the Kotlin standard library.
-It is effectively like using `chain` on each element of the `Iterable` subject.
+It is effectively like using `get` on each element of the `Iterable` subject.
 
 {% codesnippet key='traversing_subjects_5' testClass='Chaining' %}
 
@@ -42,7 +42,7 @@ In this case the `map` function is transforming the `Assertion.Buidler<List<Pers
 
 ## Re-usable mappings
 
-If you find yourself frequently using `chain` for the same properties or methods, consider defining extension property or method to make things even easier.
+If you find yourself frequently using `get` for the same properties or methods, consider defining extension property or method to make things even easier.
 
 For example:
 

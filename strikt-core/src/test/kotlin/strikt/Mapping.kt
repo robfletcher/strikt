@@ -91,24 +91,24 @@ internal class Mapping {
     @Test
     fun `can map with a closure`() {
       expectThat(subject) {
-        chain { it.name }.isEqualTo("David")
-        chain { it.birthDate.year }.isEqualTo(1947)
+        get { it.name }.isEqualTo("David")
+        get { it.birthDate.year }.isEqualTo(1947)
       }
     }
 
     @Test
     fun `can map with property and method references`() {
       expectThat(subject) {
-        chain(Person::name).isEqualTo("David")
-        chain(Person::birthDate).chain(LocalDate::getYear).isEqualTo(1947)
+        get(Person::name).isEqualTo("David")
+        get(Person::birthDate).get(LocalDate::getYear).isEqualTo(1947)
       }
     }
 
     @Test
     fun `closures can call methods`() {
       expectThat(subject) {
-        chain { it.name.toUpperCase() }.isEqualTo("DAVID")
-        chain { it.birthDate.plusYears(69).plusDays(2) }
+        get { it.name.toUpperCase() }.isEqualTo("DAVID")
+        get { it.birthDate.plusYears(69).plusDays(2) }
           .isEqualTo(LocalDate.of(2016, 1, 10))
       }
     }
@@ -117,8 +117,8 @@ internal class Mapping {
     fun `can be described`() {
       fails {
         expectThat(subject) {
-          chain { it.name }.describedAs("name").isEqualTo("Ziggy")
-          chain { it.birthDate.year }.describedAs("birth year")
+          get { it.name }.describedAs("name").isEqualTo("Ziggy")
+          get { it.birthDate.year }.describedAs("birth year")
             .isEqualTo(1971)
         }
       }.let { e ->
@@ -136,7 +136,7 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using property references`() {
       fails {
-        expectThat(subject).chain(Person::name).isEqualTo("Ziggy")
+        expectThat(subject).get(Person::name).isEqualTo("Ziggy")
       }.let { e ->
         assertEquals(
           "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
@@ -151,8 +151,8 @@ internal class Mapping {
     fun `descriptions also default for blocks`() {
       fails {
         expectThat(subject) {
-          chain { it.name }.isEqualTo("Ziggy")
-          chain {
+          get { it.name }.isEqualTo("Ziggy")
+          get {
             it.birthDate.year
           }.isEqualTo(1971)
         }
@@ -171,8 +171,8 @@ internal class Mapping {
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
       fails {
-        expectThat(subject).chain(Person::birthDate)
-          .chain(LocalDate::getYear)
+        expectThat(subject).get(Person::birthDate)
+          .get(LocalDate::getYear)
           .isEqualTo(1971)
       }.let { e ->
         assertEquals(

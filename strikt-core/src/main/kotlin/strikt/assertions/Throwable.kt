@@ -11,13 +11,13 @@ import strikt.api.DescribeableBuilder
  * @author [Xavier Hanin](https://github.com/xhanin)
  */
 val <T : Throwable> Builder<T>.message: Builder<String>
-  get() = chain(Throwable::message).isNotNull()
+  get() = get(Throwable::message).isNotNull()
 
 /**
  * Maps an assertion on a [Throwable] to an assertion on its [Throwable.cause].
  */
 val <T : Throwable> Builder<T>.cause: DescribeableBuilder<Throwable?>
-  get() = chain(Throwable::cause)
+  get() = get(Throwable::cause)
 
 /**
  * Asserts that an exception is an instance of the expected type.

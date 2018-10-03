@@ -21,7 +21,7 @@ class AnyAssertions {
       }
       .build()
 
-    expectThat(subject).chain(Character::getWeapon).isEmpty()
+    expectThat(subject).get(Character::getWeapon).isEmpty()
   }
 
   @Test
@@ -35,6 +35,6 @@ class AnyAssertions {
       }
       .build()
 
-    expectThat(subject).chain(Character::getWeapon).unpacksTo<Sword>()
+    expectThat(subject).get(Character::getWeapon).unpacksTo<Sword>()
   }
 }

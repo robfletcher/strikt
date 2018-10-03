@@ -43,7 +43,7 @@ internal class Assertions {
         .isUpperCase()
       // END assertion_styles_1
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -67,7 +67,7 @@ internal class Assertions {
       }
       // END assertion_styles_3
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -90,7 +90,7 @@ internal class Assertions {
       }
       // END assertion_styles_5
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -122,7 +122,7 @@ internal class Assertions {
       }
       // END assertion_styles_7
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -155,7 +155,7 @@ internal class Assertions {
       }
       // END collections_2
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 

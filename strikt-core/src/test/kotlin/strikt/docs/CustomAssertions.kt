@@ -39,7 +39,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -67,7 +67,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -87,7 +87,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -96,7 +96,7 @@ internal class CustomAssertions {
     fun <T : Iterable<E?>, E> Assertion.Builder<T>.containsNoNullElements(): Assertion.Builder<T> =
       compose("does not contain any null elements") { subject ->
         subject.forEach { element ->
-          chain("%s") { element }.isNotNull()
+          get("%s") { element }.isNotNull()
         }
       } then {
         if (allPassed) pass() else fail()
@@ -123,7 +123,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(subject).containsNoNullElements()
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { it.message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 }

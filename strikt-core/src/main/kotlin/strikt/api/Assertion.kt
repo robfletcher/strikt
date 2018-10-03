@@ -175,13 +175,13 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> get(function: (T) -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
-          chain("value of property ${function.name}", function)
+          get("value of property ${function.name}", function)
         is KFunction<*> ->
-          chain("return value of ${function.name}", function)
-        is CallableReference -> chain(
+          get("return value of ${function.name}", function)
+        is CallableReference -> get(
           "value of ${function.propertyName}",
           function
         )
@@ -192,7 +192,7 @@ interface Assertion {
           } catch (e: Exception) {
             "%s"
           }
-          chain(fieldName, function)
+          get(fieldName, function)
         }
       }
 
@@ -206,10 +206,36 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> chain(
+    fun <R> get(
       description: String,
       function: (T) -> R
     ): DescribeableBuilder<R>
+
+    /**
+     * Deprecated form of [get]`((T) -> R)`.
+     *
+     * @see get((T) -> R)
+     */
+    @Deprecated(
+      "Use get instead",
+      replaceWith = ReplaceWith("get(function)")
+    )
+    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
+      get(function)
+
+    /**
+     * Deprecated form of [get]`(String, (T) -> R)`.
+     *
+     * @see get(String (T) -> R)
+     */
+    @Deprecated(
+      "Use get instead",
+      replaceWith = ReplaceWith("get(description, function)")
+    )
+    fun <R> chain(
+      description: String,
+      function: (T) -> R
+    ): DescribeableBuilder<R> = get(description, function)
 
     /**
      * Reverses any assertions chained after this method.
