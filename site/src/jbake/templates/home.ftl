@@ -196,8 +196,8 @@ expectThat(subject) {
           </div>
           <div class="column is-8">
         <pre class="notification content is-medium is-dark"><code class="language-kotlin">expect {
-  that(person1).get { name }.isEqualTo("David")
-  that(person2).get { name }.isEqualTo("Ziggy")
+  that(person1.name).isEqualTo("David")
+  that(person2.name).isEqualTo("Ziggy")
 }</code></pre>
           </div>
         </section>
