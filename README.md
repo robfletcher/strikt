@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:<version>"
+  testImplementation("io.strikt:strikt-core:<version>")
 }
 ```
 
