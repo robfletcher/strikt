@@ -83,6 +83,13 @@ internal class Mapping {
     }
   }
 
+  @Test
+  fun `first maps an iterable to its first element`() {
+    expectThat(listOf("catflap", "rubberplant", "marzipan", "radish")) {
+      first { it.startsWith("r") }.isEqualTo("rubberplant")
+    }
+  }
+
   data class Person(val name: String, val birthDate: LocalDate)
 
   @Nested

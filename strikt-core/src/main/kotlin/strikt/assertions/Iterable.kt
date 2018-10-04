@@ -19,6 +19,15 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
   get("first element %s") { first() }
 
 /**
+ * Maps this assertion to an assertion over the first element in the subject
+ * iterable that matches [predicate].
+ *
+ * @see Iterable.first
+ */
+fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Builder<E> =
+  get("first matching element %s") { first(predicate) }
+
+/**
  * Maps this assertion to an assertion over the last element in the subject
  * iterable.
  *
