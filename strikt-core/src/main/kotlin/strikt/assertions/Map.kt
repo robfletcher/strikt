@@ -36,7 +36,7 @@ operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
  * assertion just tests for the existence of the key.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
-  passesIf("has an entry with the key %s", key) {
+  assertThat("has an entry with the key %s", key) {
     it.containsKey(key)
   }
 

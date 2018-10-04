@@ -19,7 +19,7 @@ import java.time.temporal.TemporalField
  * temporal type.
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAccessor): Assertion.Builder<T> =
-  passesIf("is before %s", expected) {
+  assertThat("is before %s", expected) {
     when (it) {
       is Instant -> it.isBefore(Instant.from(expected))
       is ChronoLocalDate -> it.isBefore(LocalDate.from(expected))
@@ -39,7 +39,7 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAcces
  * temporal type.
  */
 fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccessor): Assertion.Builder<T> =
-  passesIf("is before %s", expected) {
+  assertThat("is before %s", expected) {
     when (it) {
       is Instant -> it.isAfter(Instant.from(expected))
       is ChronoLocalDate -> it.isAfter(LocalDate.from(expected))
