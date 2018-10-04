@@ -37,6 +37,15 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
   get("last element %s") { last() }
 
 /**
+ * Maps this assertion to an assertion over a flattened list of the results of
+ * [transform] for each element in the subject iterable.
+ *
+ * @see Iterable.flatMap
+ */
+fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> =
+  get { flatMap(transform) }
+
+/**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =

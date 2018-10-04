@@ -8,6 +8,7 @@ import strikt.api.catching
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.first
+import strikt.assertions.flatMap
 import strikt.assertions.get
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
@@ -85,9 +86,28 @@ internal class Mapping {
 
   @Test
   fun `first maps an iterable to its first element`() {
-    expectThat(listOf("catflap", "rubberplant", "marzipan", "radish")) {
-      first { it.startsWith("r") }.isEqualTo("rubberplant")
-    }
+    val subject = listOf("catflap", "rubberplant", "marzipan", "radish")
+    expectThat(subject)
+      .first { it.startsWith("r") }
+      .isEqualTo("rubberplant")
+  }
+
+  @Test
+  fun `flatMap maps a result iterable to a flattened iterable`() {
+    val subject = listOf(
+      mapOf("words" to listOf("catflap", "rubberplant", "marzipan")),
+      mapOf("words" to listOf("kattenluik", "rubberboom", "marsepein"))
+    )
+    expectThat(subject)
+      .flatMap { it["words"]!! }
+      .containsExactly(
+        "catflap",
+        "rubberplant",
+        "marzipan",
+        "kattenluik",
+        "rubberboom",
+        "marsepein"
+      )
   }
 
   data class Person(val name: String, val birthDate: LocalDate)
