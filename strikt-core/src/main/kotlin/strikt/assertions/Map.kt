@@ -7,7 +7,7 @@ import strikt.internal.reporting.formatValue
  * Asserts that the subject map is empty.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
-  passesIf("is empty") { it.isEmpty() }
+  assertThat("is empty", Map<K, V>::isEmpty)
 
 /**
  * Asserts that the subject map has the specified number of entries.

@@ -10,7 +10,7 @@ import strikt.api.Assertion.Builder
  * object of any kind.
  */
 fun Builder<com.google.protobuf.Any>.isEmpty() {
-  passesIf("is empty") {
+  assertThat("is empty") {
     it.value == ByteString.EMPTY
   }
 }
