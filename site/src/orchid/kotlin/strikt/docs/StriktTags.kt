@@ -38,7 +38,8 @@ constructor() : TemplateTag("codesnippets", Type.Tabbed, true) {
     return Snippet(key, content)
   }
 
-  inner class Snippet(private val key: String?, private val content: String?) : TemplateTag.Tab {
+  inner class Snippet(private val key: String?, private val content: String?) :
+    TemplateTag.Tab {
 
     @Option
     @Description("The title of the tab")
@@ -95,14 +96,17 @@ fun getSnippetContent(
   testClass: String,
   key: String
 ): String {
-  val resource = context.getLocalResourceEntry("../../../../strikt-core/src/test/kotlin/$testClassPath/$testClass.kt")
+  val resource = context
+    .getLocalResourceEntry("../../../../strikt-core/src/test/kotlin/$testClassPath/$testClass.kt")
   val content = resource?.rawContent ?: ""
 
   val pattern = Pattern.compile("(?s)// START $key(.*?)// END $key")
 
   val m = pattern.matcher(content)
 
-  return if (m.find()) formatSnippet(m.group(1)) else throw IllegalArgumentException("Snippet $key not found in $testClassPath/$testClass")
+  return if (m.find()) formatSnippet(m.group(1)) else throw IllegalArgumentException(
+    "Snippet $key not found in $testClassPath/$testClass"
+  )
 }
 
 private fun formatSnippet(input: String): String {

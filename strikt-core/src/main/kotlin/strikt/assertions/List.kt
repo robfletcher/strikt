@@ -7,7 +7,7 @@ import strikt.api.Assertion.Builder
  * subject list.
  */
 operator fun <T : List<E>, E> Builder<T>.get(i: Int): Builder<E> =
-  get("element [$i] %s") { it[i] }
+  get("element [$i] %s") { this[i] }
 
 /**
  * Maps this assertion to an assertion on the elements at the sub-list
@@ -15,5 +15,5 @@ operator fun <T : List<E>, E> Builder<T>.get(i: Int): Builder<E> =
  */
 operator fun <T : List<E>, E> Builder<T>.get(range: IntRange): Builder<List<E>> =
   get("elements [$range] %s") {
-    it.subList(range.first, range.last + 1)
+    subList(range.first, range.last + 1)
   }

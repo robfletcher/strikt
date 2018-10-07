@@ -1,10 +1,9 @@
-
 contributors:
-  - name: Casey Brooks
-    link: https://github.com/cjbrooks12
-  - name: Xavier Hanin
-    link: https://github.com/xhanin
-  - name: Paul Merlin
-    link: https://github.com/eskatos
-  - name: Christoph Sturm
-    link: https://github.com/christophsturm
+- name: Casey Brooks
+  link: https://github.com/cjbrooks12
+- name: Xavier Hanin
+  link: https://github.com/xhanin
+- name: Paul Merlin
+  link: https://github.com/eskatos
+- name: Christoph Sturm
+  link: https://github.com/christophsturm

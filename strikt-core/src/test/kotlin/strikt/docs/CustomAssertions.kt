@@ -39,7 +39,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -67,14 +67,14 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
   @Test fun `custom assertions 5`() {
     // START custom_assertions_5
     fun Assertion.Builder<LocalDate>.isStTibsDay(): Assertion.Builder<LocalDate> =
-      passesIf("is St. Tib's Day") {
+      assertThat("is St. Tib's Day") {
         MonthDay.from(it) == MonthDay.of(2, 29)
       }
     // END custom_assertions_5
@@ -87,7 +87,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -123,7 +123,7 @@ internal class CustomAssertions {
     expectThat(catching {
       expectThat(subject).containsNoNullElements()
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 }

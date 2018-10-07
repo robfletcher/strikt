@@ -119,6 +119,13 @@ interface Assertion {
     ): CompoundAssertions<T> =
       compose(description, null, assertions)
 
+    @Deprecated(
+      "Use assertThat instead",
+      replaceWith = ReplaceWith("assertThat(description, assert)")
+    )
+    fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
+      assertThat(description, assert)
+
     /**
      * Evaluates a boolean condition.
      * This is useful for implementing the simplest types of assertion function.
@@ -129,8 +136,7 @@ interface Assertion {
      * `false` (the assertion fails).
      * @return this assertion builder, in order to facilitate a fluent API.
      */
-    // TODO: this name sucks
-    fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
+    fun assertThat(description: String, assert: (T) -> Boolean): Builder<T> =
       apply {
         assert(description) {
           if (assert(it)) pass() else fail()
@@ -148,7 +154,29 @@ interface Assertion {
      * `false` (the assertion fails).
      * @return this assertion builder, in order to facilitate a fluent API.
      */
+    @Deprecated(
+      "Use assertThat instead",
+      replaceWith = ReplaceWith("assertThat(description, expected, assert)")
+    )
     fun passesIf(
+      description: String,
+      expected: Any?,
+      assert: (T) -> Boolean
+    ): Builder<T> =
+      assertThat(description, expected, assert)
+
+    /**
+     * Evaluates a boolean condition.
+     * This is useful for implementing the simplest types of assertion function.
+     *
+     * @param description a description for the condition the assertion
+     * evaluates.
+     * @param expected the expected value of a comparison.
+     * @param assert a function that returns `true` (the assertion passes) or
+     * `false` (the assertion fails).
+     * @return this assertion builder, in order to facilitate a fluent API.
+     */
+    fun assertThat(
       description: String,
       expected: Any?,
       assert: (T) -> Boolean
@@ -175,7 +203,7 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> get(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
           get("value of property ${function.name}", function)
@@ -188,7 +216,7 @@ interface Assertion {
         else -> {
           val fieldName = try {
             val line = FilePeek.getCallerFileInfo().line
-            ParsedMapInstruction(line).body.substringAfter("it.")
+            ParsedMapInstruction(line).body.trim()
           } catch (e: Exception) {
             "%s"
           }
@@ -208,7 +236,7 @@ interface Assertion {
      */
     fun <R> get(
       description: String,
-      function: (T) -> R
+      function: T.() -> R
     ): DescribeableBuilder<R>
 
     /**

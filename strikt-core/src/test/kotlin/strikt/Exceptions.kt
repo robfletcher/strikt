@@ -56,7 +56,7 @@ class Exceptions {
               "  ✗ is upper case\n" +
               "  ✓ starts with \"f\""
           )
-          get { it.failures }
+          get { failures }
             .hasSize(1)
             .first()
             .isA<AssertionFailedError>()
@@ -92,7 +92,7 @@ class Exceptions {
               "    ✗ is not equal to 5"
           )
         }
-        .get { it.failures }
+        .get { failures }
         .hasSize(3)
         .and {
           first()
@@ -152,7 +152,7 @@ class Exceptions {
               "    ✗ is not equal to 5"
           )
         }
-        .get { it.failures }
+        .get { failures }
         .hasSize(1)
         .first()
         .isA<AssertionFailedError>()
@@ -201,7 +201,7 @@ class Exceptions {
       .let { error ->
         expectThat(error)
           .isA<CompoundAssertionFailure>()
-          .get { it.failures }
+          .get { failures }
           .hasSize(2)
           .and {
             first()
@@ -256,9 +256,9 @@ class Exceptions {
         .isA<AssertionFailedError>()
         .and {
           get(AssertionFailedError::isExpectedDefined).isTrue()
-          get { it.expected.value }.isEqualTo("something")
+          get { expected.value }.isEqualTo("something")
           get(AssertionFailedError::isActualDefined).isTrue()
-          get { it.actual.value }.isEqualTo("something else")
+          get { actual.value }.isEqualTo("something else")
         }
     }
   }

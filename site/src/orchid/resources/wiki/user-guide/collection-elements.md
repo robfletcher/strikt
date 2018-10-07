@@ -6,7 +6,7 @@
 Some assertions on collections include sub-assertions applied to the elements of the collection.
 For example, we can assert that _all_ elements conform to a repeated assertion.
 
-{% codesnippet key='collections_1' testClass='Assertions' %}
+{% codesnippet key='collections_1' testClass='Assertions' %} 
 
 This produces the output:
 

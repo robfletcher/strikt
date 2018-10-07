@@ -7,7 +7,7 @@ import strikt.internal.reporting.formatValue
  * Asserts that the subject map is empty.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
-  passesIf("is empty") { it.isEmpty() }
+  assertThat("is empty", Map<K, V>::isEmpty)
 
 /**
  * Asserts that the subject map has the specified number of entries.
@@ -28,7 +28,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =
  * exists in the subject map.
  */
 operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
-  get("entry [${formatValue(key)}]") { it[key] }
+  get("entry [${formatValue(key)}]") { this[key] }
 
 /**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on
@@ -36,7 +36,7 @@ operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
  * assertion just tests for the existence of the key.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
-  passesIf("has an entry with the key %s", key) {
+  assertThat("has an entry with the key %s", key) {
     it.containsKey(key)
   }
 

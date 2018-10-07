@@ -68,7 +68,7 @@ When comparing large string values it also means IDEs such as IntelliJ IDEA will
 
 ## Simple atomic assertions with boolean expressions
 
-For the simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `passesIf` with a lambda whose parameter is the assertion subject that returns a boolean.
+For the simplest assertion functions, instead of using `assert` and calling `pass` or `fail`, you can use `assertThat` with a lambda whose parameter is the assertion subject that returns a boolean.
 
 We can re-implement the example above like this:
 

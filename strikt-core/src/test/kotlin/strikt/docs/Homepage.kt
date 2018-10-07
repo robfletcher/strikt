@@ -85,7 +85,7 @@ internal class Homepage {
       }
       // END homepage_five
     }).throws<CompoundAssertionFailure>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -95,8 +95,8 @@ internal class Homepage {
     val person1 = Person(name = "David")
     val person2 = Person(name = "Ziggy")
     expect {
-      that(person1).get { it.name }.isEqualTo("David")
-      that(person2).get { it.name }.isEqualTo("Ziggy")
+      that(person1.name).isEqualTo("David")
+      that(person2.name).isEqualTo("Ziggy")
     }
     // END homepage_seven
   }
@@ -118,8 +118,8 @@ internal class Homepage {
     // START homepage_nine
     val subject = Pantheon.NORSE
     expectThat(subject)
-      .get(Pantheon::king)     // reference to a property
-      .get { it.toString() }   // return type of a method call
+      .get(Pantheon::king) // reference to a property
+      .get { toString() }  // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
   }
@@ -140,7 +140,7 @@ internal class Homepage {
 
   // START homepage_eleven
   val Assertion.Builder<Pantheon>.realm: Assertion.Builder<String>
-    get() = get { "${it.king} to ${it.underworldRuler}" }
+    get() = get { "$king to $underworldRuler" }
 
   @Test fun `homepage eleven`() { // IGNORE
     val subject = Pantheon.NORSE

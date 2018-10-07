@@ -54,12 +54,12 @@ internal class Chaining {
       // START traversing_subjects_2
       val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
       expectThat(subject) {
-        get { it.name }.isEqualTo("Ziggy")
-        get { it.birthDate.year }.isEqualTo(1971)
+        get { name }.isEqualTo("Ziggy")
+        get { birthDate.year }.isEqualTo(1971)
       }
       // END traversing_subjects_2
     }).throws<CompoundAssertionFailure>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -96,7 +96,7 @@ internal class Chaining {
     get() = get(Person::name)
 
   val Assertion.Builder<Person>.yearOfBirth: Assertion.Builder<Int>
-    get() = get("year of birth") { it.birthDate.year }
+    get() = get("year of birth") { birthDate.year }
   // END traversing_subjects_6
 
   @Test fun `traversing subjects 7`() {
@@ -128,10 +128,10 @@ internal class Chaining {
     // START grouping_with_and_2
     expectThat(person)
       .and {
-        get { it.name }.isEqualTo("David")
+        get { name }.isEqualTo("David")
       }
       .and {
-        get { it.birthDate.year }.isEqualTo(1947)
+        get { birthDate.year }.isEqualTo(1947)
       }
     // END grouping_with_and_2
 
@@ -152,8 +152,8 @@ internal class Chaining {
     // START grouping_with_and_4
     expectThat(albums)
       .hasSize(26)
-      .and { first().get { it.name }.isEqualTo("David Bowie") }
-      .and { last().get { it.name }.isEqualTo("Blackstar") }
+      .and { first().get { name }.isEqualTo("David Bowie") }
+      .and { last().get { name }.isEqualTo("Blackstar") }
     // END grouping_with_and_4
   }
 }

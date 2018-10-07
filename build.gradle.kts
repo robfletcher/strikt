@@ -77,7 +77,7 @@ subprojects {
         sequenceOf("compile", "runtime", "testCompile", "testRuntime")
           .forEach { scope ->
             getByName("${scope}Classpath") {
-//              resolutionStrategy.activateDependencyLocking()
+              //              resolutionStrategy.activateDependencyLocking()
             }
           }
       }

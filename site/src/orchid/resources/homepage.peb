@@ -48,5 +48,5 @@ layout: 'homepage'
 
 {% codesnippets "Extensibility" %}
 {% homepage_ten %}Custom assertions are extension functions{% endhomepage_ten %}
-{% homepage_eleven %}Custom mappings are extension properties{% endhomepage_eleven %}
+{% homepage_eleven %}Custom mappings are extension functions or properties{% endhomepage_eleven %}
 {% endcodesnippets %}

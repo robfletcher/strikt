@@ -43,7 +43,7 @@ internal class Assertions {
         .isUpperCase()
       // END assertion_styles_1
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -67,7 +67,7 @@ internal class Assertions {
       }
       // END assertion_styles_3
     }).throws<CompoundAssertionFailure>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -90,7 +90,7 @@ internal class Assertions {
       }
       // END assertion_styles_5
     }).throws<CompoundAssertionFailure>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -122,7 +122,7 @@ internal class Assertions {
       }
       // END assertion_styles_7
     }).throws<CompoundAssertionFailure>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -130,7 +130,7 @@ internal class Assertions {
 // -----------------------------------------------------------------------------
 
   @Test fun `collections 1, 2`() {
-    // START collections_1
+    // START collections_2
     val s = """ // IGNORE
     ▼ Expect that ["catflap", "rubberplant", "marzipan"]:
       ✗ all elements match:
@@ -144,18 +144,18 @@ internal class Assertions {
           ✓ is lower case
           ✗ starts with 'c' : found 'm'
     """ // IGNORE
-    // END collections_1
+    // END collections_2
 
     expectThat(catching {
-      // START collections_2
+      // START collections_1
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject).all {
         isLowerCase()
         startsWith('c')
       }
-      // END collections_2
+      // END collections_1
     }).throws<AssertionFailedError>()
-      .get { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 

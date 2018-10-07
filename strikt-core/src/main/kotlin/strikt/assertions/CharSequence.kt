@@ -18,7 +18,7 @@ fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
  * Asserts that the subject is composed of all lower-case characters.
  */
 fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
-  passesIf("is lower case") {
+  assertThat("is lower case") {
     it.all(Char::isLowerCase)
   }
 
@@ -26,7 +26,7 @@ fun <T : CharSequence> Builder<T>.isLowerCase(): Builder<T> =
  * Asserts that the subject is composed of all upper-case characters.
  */
 fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
-  passesIf("is upper case") {
+  assertThat("is upper case") {
     it.all(Char::isUpperCase)
   }
 
