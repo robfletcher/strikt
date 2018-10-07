@@ -23,7 +23,7 @@ This is useful for making assertions about the properties of an object or the va
 Strikt will read the test source to find out the name of the variables.
 This example produces output that looks like this:
 
-{% codesnippet key='traversing_subjects_3' testClass='Chaining' %}
+{% codesnippet key='traversing_subjects_3' testClass='Chaining' language='text' %}
 
 ## Using _get_ with property or method references
 

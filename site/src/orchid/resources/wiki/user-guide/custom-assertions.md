@@ -41,7 +41,7 @@ Breaking this down:
 
 If this assertion fails it will produce a message like:
 
-{% codesnippet key='custom_assertions_2' testClass='CustomAssertions' %}
+{% codesnippet key='custom_assertions_2' testClass='CustomAssertions' language='text' %}
 
 ### Note
 
@@ -61,7 +61,7 @@ The message string should contain a format placeholder for the value.
 
 Now if the assertion fails there is a little more detail.
 
-{% codesnippet key='custom_assertions_4' testClass='CustomAssertions' %}
+{% codesnippet key='custom_assertions_4' testClass='CustomAssertions' language='text' %}
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 When comparing large string values it also means IDEs such as IntelliJ IDEA will present a detailed diff dialog in the event of a test failure.
@@ -101,7 +101,7 @@ The receiver of the block passed to `result` has the properties `allFailed`, `an
 
 If the assertion failed we'll see something like this:
 
-{% codesnippet key='custom_assertions_7' testClass='CustomAssertions' %}
+{% codesnippet key='custom_assertions_7' testClass='CustomAssertions' language='text' %}
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 

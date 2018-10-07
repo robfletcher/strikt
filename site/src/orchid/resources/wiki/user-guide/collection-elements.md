@@ -10,7 +10,7 @@ For example, we can assert that _all_ elements conform to a repeated assertion.
 
 This produces the output:
 
-{% codesnippet key='collections_2' testClass='Assertions' %}
+{% codesnippet key='collections_2' testClass='Assertions'language='text'  %}
 
 The results are broken down by individual elements in the collection so it's easy to see which failed.
 

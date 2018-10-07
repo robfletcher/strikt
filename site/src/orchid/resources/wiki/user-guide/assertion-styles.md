@@ -18,7 +18,7 @@ Each assertion in the chain returns an `Assertion.Builder` object that supports 
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_2' testClass='Assertions' %}
+{% codesnippet key='assertion_styles_2' testClass='Assertions' language='text' %}
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
@@ -34,7 +34,7 @@ That is, all assertions in the block are evaluated and the result of the "compou
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_4' testClass='Assertions' %}
+{% codesnippet key='assertion_styles_4' testClass='Assertions' language='text' %}
 
 All assertions are applied and since two fail there are two errors logged.
 
@@ -46,7 +46,7 @@ Chained assertions inside a block _will_ still fail fast but will not prevent ot
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_6' testClass='Assertions' %}
+{% codesnippet key='assertion_styles_6' testClass='Assertions' language='text' %}
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
 The `greaterThan(1)` assertion _was_ evaluated since it was not part of the same chain.
