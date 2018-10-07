@@ -54,17 +54,9 @@ jobs:
 
   site:
     <<: *defaults
-    docker:
-    - image: circleci/openjdk:8-jdk
     steps:
-    - run:
-        name: Clone with HTTPS
-        working_directory: /home/circleci/repo
-        command: |
-          git clone https://github.com/robfletcher/strikt.git .
-    - run:
-        working_directory: /home/circleci/repo
-        command: ./gradlew publishGhPages --stacktrace
+    - checkout
+    - run: ./gradlew :site:orchidDeploy -Penv=prod
 
   upgradeLocks:
     <<: *defaults

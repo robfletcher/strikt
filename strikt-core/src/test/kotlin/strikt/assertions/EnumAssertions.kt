@@ -26,6 +26,12 @@ internal class EnumAssertions {
   }
 }
 
-internal enum class Pantheon {
-  NORSE, GREEK, ROMAN
+enum class Pantheon(val king: String, val underworldRuler: String) {
+  NORSE("Odin", "Hel"),
+  GREEK("Zeus", "Hades"),
+  ROMAN("Jupiter", "Pluto")
+}
+
+enum class Deity(val realm: Pantheon) {
+  Eris(Pantheon.GREEK)
 }

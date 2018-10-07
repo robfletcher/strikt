@@ -1,97 +1,67 @@
-import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension.DestinationCopySpec
-import org.apache.tools.ant.filters.ConcatFilter
-import org.apache.tools.ant.filters.ReplaceTokens
-import org.jbake.gradle.JBakeTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+/*
+This project builds the Strikt docs with Orchid.
+
+Commands:
+    gradle :site:orchidServe
+        build the site and serve it locally on http://localhost:8080. Changes to
+        site content will rebuild the site.
+    gradle :site:orchidDeploy -Penv=prod
+        build the site and deploy it to Github Pages. Requires an API token with
+        push access to the repo, set as `github_token` in Gradle properties, or
+        a `GITHUB_TOKEN` environment variable. The `env` project property will
+        set the appropriate site base URL.
+*/
 
 plugins {
-  id("org.ajoberstar.github-pages")
-  id("org.jbake.site") version "1.2.0"
+  id("nebula.kotlin")
+  id("com.eden.orchidPlugin") version "0.12.6"
 }
 
-configurations.jbake.resolutionStrategy {
-  activateDependencyLocking()
+repositories {
+  jcenter()
+  maven(url = "https://kotlin.bintray.com/kotlinx")
+  maven(url = "https://dl.bintray.com/javaeden/Orchid/")
+  maven(url = "https://dl.bintray.com/javaeden/Eden/")
+  maven(url = "https://jitpack.io")
 }
 
 dependencies {
-  jbake("com.orientechnologies:orientdb-core:2.2.34+")
+  val orchid_version = "0.12.6"
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:$orchid_version")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:$orchid_version")
 }
 
-jbake {
-  flexmarkVersion = "0.34.28"
-}
+project.version = "${project.version}"
 
-val copyApiDocs = task<Copy>("copyApiDocs") {
-  rootProject
-    .allprojects
-    .mapNotNull { it -> it.tasks.findByPath("${it.path}:dokka") }
-    .forEach { dokkaTask ->
-      // add JBake header to *.html
-      from(dokkaTask.outputs) {
-        include("**/*.html")
-        filter(
-          ConcatFilter::class,
-          "prepend" to file("$projectDir/api-header.txt")
-        )
-      }
-      from(dokkaTask.outputs) {
-        include("**/package-list")
-      }
-    }
-  into("$projectDir/src/jbake/content/api/")
-  // filter out everything except HTML body as it will be wrapped by JBake template
-  filter { line ->
-    val strip = listOf(
-      "<HTML>",
-      "<HEAD>",
-      "<meta",
-      "<title>",
-      "<link",
-      "</HEAD>",
-      "<BODY>",
-      "</BODY>",
-      "</HTML>"
-    )
-    if (strip.any { line.startsWith(it) }) {
-      ""
-    } else {
-      line
-    }
+orchid {
+  theme = "StriktTheme"
+
+  if (project.hasProperty("env") && project.property("env") == "prod") {
+    baseUrl = "https://strikt.io/"
+    environment = "prod"
+  } else {
+    baseUrl = "http://localhost:8080"
+    environment = "debug"
   }
+
+  args = listOf(
+    "githubToken ${if (project.hasProperty("github_token")) project.property("github_token") else System.getenv(
+      "GITHUB_TOKEN"
+    )}"
+  )
 }
 
-tasks.withType<JBakeTask>() {
-  dependsOn(copyApiDocs)
-}
-
-tasks.getByName("clean").doFirst {
-  delete("$projectDir/src/jbake/content/api/")
-}
-
-githubPages {
-  // authentication is via GRGIT_USER environment variable set to GitHub API key
-  setRepoUri("https://github.com/robfletcher/strikt.git")
-  targetBranch = "gh-pages"
-  pages(delegateClosureOf<DestinationCopySpec> {
-    // necessary as `pages` relies on Groovy @Delegate which doesn't work from Kotlin
-    realSpec.apply {
-      val bakeTask = tasks.getByName("bake")
-      // everything that's NOT *.html gets copied directly
-      from(bakeTask.outputs) {
-        exclude("**/*.html")
-      }
-      // everything that is *.html is filtered for @version@
-      from(bakeTask.outputs) {
-        include("**/*.html")
-        val version = (System.getenv("CIRCLE_TAG") ?: "+").removePrefix("v")
-        filter(
-          ReplaceTokens::class,
-          "tokens" to mapOf("version" to version)
-        )
-      }
-      // include CircleCI config or it will try to build gh-pages branch
-      from(rootDir) {
-        include(".circleci/**/*")
-      }
-    }
-  })
+val compileOrchidKotlin by tasks.getting(KotlinCompile::class) {
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+  }
 }

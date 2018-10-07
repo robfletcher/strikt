@@ -1,0 +1,22 @@
+<section class="columns is-multiline is-gapless">
+  <header class="column is-4 has-text-right-tablet">
+    <div class="notification content is-medium">
+      <h2 class="title is-4">{{ tag.title }}</h2>
+    </div>
+  </header>
+  <div class="column is-8 is-hidden-mobile">
+    <div class="notification is-dark"></div>
+  </div>
+
+  {% for snippet in tag.tabs %}
+    <div class="column is-4 has-text-right-tablet">
+      <div class="notification content is-medium">
+      {{ snippet.content|compileAs('md')|raw }}
+      </div>
+    </div>
+    <div class="column is-8">
+      <pre class="notification content is-medium is-dark"><code class="language-kotlin">{{ snippet.snippetContent }}</code></pre>
+    </div>
+  {% endfor %}
+
+</section>
