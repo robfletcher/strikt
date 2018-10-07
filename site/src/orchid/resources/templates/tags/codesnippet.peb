@@ -1,1 +1,1 @@
-<pre><code class="language-kotlin">{{ tag.snippetContent }}</code></pre>
+<pre><code class="language-{{ tag.language }}">{{ tag.snippetContent }}</code></pre>

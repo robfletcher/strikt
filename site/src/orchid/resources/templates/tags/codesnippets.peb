@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="column is-8">
-      <pre class="notification content is-medium is-dark"><code class="language-kotlin">{{ snippet.snippetContent }}</code></pre>
+      <pre class="notification content is-medium is-dark"><code class="language-{{ snippet.language }}">{{ snippet.snippetContent }}</code></pre>
     </div>
   {% endfor %}
 

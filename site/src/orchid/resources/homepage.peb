@@ -37,7 +37,7 @@ layout: 'homepage'
 
 {% codesnippets "“Soft” assertions" %}
 {% homepage_five %}Use lambdas to execute multiple assertions on a subject at once…{% endhomepage_five %}
-{% homepage_six %}…with structured diagnostics of those that fail{% endhomepage_six %}
+{% homepage_six language='text' %}…with structured diagnostics of those that fail{% endhomepage_six %}
 {% homepage_seven %}Use lambdas to execute assertions on multiple subjects at once…{% endhomepage_seven %}
 {% endcodesnippets %}
 

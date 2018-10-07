@@ -45,6 +45,11 @@ constructor() : TemplateTag("codesnippets", Type.Tabbed, true) {
     @Description("The title of the tab")
     lateinit var title: String
 
+    @Option
+    @StringDefault("kotlin")
+    @Description("The language to markup snippet content.")
+    lateinit var language: String
+
     override fun getKey(): String? {
       return key
     }
@@ -80,6 +85,11 @@ constructor() : TemplateTag("codesnippet", Type.Simple, true) {
   @StringDefault("Homepage")
   @Description("The path to a test class in the strikt-core module, relative to the test '/kotlin' root in the testClassPath subdirectory.")
   lateinit var testClass: String
+
+  @Option
+  @StringDefault("kotlin")
+  @Description("The language to markup snippet content.")
+  lateinit var language: String
 
   override fun parameters(): Array<String> {
     return arrayOf("key", "testClass")
