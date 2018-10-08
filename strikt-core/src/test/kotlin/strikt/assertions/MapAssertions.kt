@@ -28,6 +28,24 @@ internal class MapAssertions {
   }
 
   @Nested
+  @DisplayName("isNotEmpty assertion")
+  inner class IsNotEmpty {
+    @Test
+    fun `fails if the subject is empty`() {
+      fails {
+        val subject = emptyMap<Any, Any>()
+        expectThat(subject).isNotEmpty()
+      }
+    }
+
+    @Test
+    fun `passes if the subject is not empty`() {
+      val subject = mapOf("Eris" to "Strife and confusion")
+      expectThat(subject).isNotEmpty()
+    }
+  }
+
+  @Nested
   @DisplayName("containsKey assertion")
   inner class ContainsKey {
     @Test
