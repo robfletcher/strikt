@@ -86,9 +86,6 @@ subprojects {
       dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:+")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:+")
-        "testRuntimeOnly"("org.junit.platform:junit-platform-launcher:+") {
-          because("enables running in IntelliJ using JUnit runner")
-        }
       }
       tasks.withType<Test> {
         systemProperty("junit.jupiter.execution.parallel.enabled", "false")
