@@ -1,8 +1,10 @@
 package strikt.assertions
 
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.fails
 
@@ -184,5 +186,137 @@ internal class CharSequenceAssertions {
         expectThat("fnord").containsIgnoringCase("meme")
       }
     }
+  }
+
+  @Nested
+  @DisplayName("isNullOrEmpty assertion")
+  inner class IsNullOrEmpty {
+    @TestFactory
+    fun passesIfStringIsNullOrEmpty() =
+      listOf("", null).map { subject ->
+        dynamicTest("passes if subject is ${if (subject == null) "null" else "\"$subject\""}") {
+          expectThat(subject).isNullOrEmpty()
+        }
+      }
+
+    @TestFactory
+    fun failsIfStringIsNotEmpty() =
+      listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
+        dynamicTest("fails if subject is \"$subject\"") {
+          fails {
+            expectThat(subject).isNullOrEmpty()
+          }
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("isNullOrBlank assertion")
+  inner class IsNullOrBlank {
+    @TestFactory
+    fun passesIfStringIsNullOrBlank() =
+      listOf("", null, "\t", "     ", " \n \r\n\t\n").map { subject ->
+        dynamicTest("passes if subject is ${if (subject == null) "null" else "\"$subject\""}") {
+          expectThat(subject).isNullOrBlank()
+        }
+      }
+
+    @TestFactory
+    fun failsIfStringIsNotBlank() =
+      listOf("catflap", "a", "73", "[]").map { subject ->
+        dynamicTest("fails if subject is \"$subject\"") {
+          fails {
+            expectThat(subject).isNullOrBlank()
+          }
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("isEmpty assertion")
+  inner class IsEmpty {
+    @TestFactory
+    fun passesIfStringIsEmpty() =
+      listOf("").map { subject ->
+        dynamicTest("passes if subject is \"$subject\"") {
+          expectThat("").isEmpty()
+        }
+      }
+
+    @TestFactory
+    fun failsIfStringIsNotEmpty() =
+      listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
+        dynamicTest("fails if subject is \"$subject\"") {
+          fails {
+            expectThat(subject).isEmpty()
+          }
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("isBlank assertion")
+  inner class IsBlank {
+    @TestFactory
+    fun passesIfStringIsBlank() =
+      listOf("", "\t", "     ", " \n \r\n\t\n").map {
+        dynamicTest("passes if subject is \"$it\"") {
+          expectThat(it).isBlank()
+        }
+      }
+
+    @TestFactory
+    fun failsIfStringIsNotBlank() =
+      listOf("catflap", "a", "73", "[]").map {
+        dynamicTest("fails if subject is \"$it\"") {
+          fails {
+            expectThat(it).isBlank()
+          }
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("isNotEmpty assertion")
+  inner class IsNotEmpty {
+    @TestFactory
+    fun failsIfStringIsEmpty() =
+      listOf("").map {
+        dynamicTest("passes if subject is \"$it\"") {
+          fails {
+            expectThat("").isNotEmpty()
+          }
+        }
+      }
+
+    @TestFactory
+    fun passesIfStringIsNotEmpty() =
+      listOf("catflap", " ", "\t", "a", "73", "[]").map {
+        dynamicTest("fails if subject is \"$it\"") {
+          expectThat(it).isNotEmpty()
+        }
+      }
+  }
+
+  @Nested
+  @DisplayName("isNotBlank assertion")
+  inner class IsNotBlank {
+    @TestFactory
+    fun failsIfStringIsBlank() =
+      listOf("", "\t", "     ", " \n \r\n\t\n").map {
+        dynamicTest("passes if subject is \"$it\"") {
+          fails {
+            expectThat(it).isNotBlank()
+          }
+        }
+      }
+
+    @TestFactory
+    fun passesIfStringIsNotBlank() =
+      listOf("catflap", "a", "73", "[]").map {
+        dynamicTest("fails if subject is \"$it\"") {
+          expectThat(it).isNotBlank()
+        }
+      }
   }
 }

@@ -10,7 +10,7 @@ import strikt.fails
 @DisplayName("Assertions on Map")
 internal class MapAssertions {
   @Nested
-  @DisplayName("isEmpty assertion")
+  @DisplayName("isNullOrEmpty assertion")
   inner class IsEmpty {
     @Test
     fun `passes if the subject is empty`() {
