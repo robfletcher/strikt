@@ -119,6 +119,16 @@ interface Assertion {
     ): CompoundAssertions<T> =
       compose(description, null, assertions)
 
+    /**
+     * Evaluates a boolean condition.
+     * This is useful for implementing the simplest types of assertion function.
+     *
+     * @param description a description for the condition the assertion
+     * evaluates.
+     * @param assert a function that returns `true` (the assertion passes) or
+     * `false` (the assertion fails).
+     * @return this assertion builder, in order to facilitate a fluent API.
+     */
     @Deprecated(
       "Use assertThat instead",
       replaceWith = ReplaceWith("assertThat(description, assert)")

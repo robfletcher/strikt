@@ -60,14 +60,13 @@ internal class AssertionBuilder<T>(
   override fun <R> get(
     description: String,
     function: (T) -> R
-  ): DescribeableBuilder<R> =
-    function(context.subject)
-      .let { mappedValue ->
-        AssertionBuilder(
-          AssertionSubject(context, mappedValue, description),
-          strategy
-        )
-      }
+  ): DescribeableBuilder<R> {
+    val mappedValue = function(context.subject)
+    return AssertionBuilder(
+      AssertionSubject(context, mappedValue, description),
+      strategy
+    )
+  }
 
   override fun not(): Builder<T> = AssertionBuilder(
     context,

@@ -165,33 +165,31 @@ internal class IterableAssertions {
 
     @Test
     fun `has a nested failure for each missing element when there are multiple`() {
-      fails {
+      val error = fails {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord", "marzipan", "bojack")
-      }.let { error ->
-        assertEquals(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ contains the elements [\"fnord\", \"marzipan\", \"bojack\"]\n" +
-            "    ✗ contains \"fnord\"\n" +
-            "    ✓ contains \"marzipan\"\n" +
-            "    ✗ contains \"bojack\"",
-          error.message
-        )
       }
+      assertEquals(
+        "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+          "  ✗ contains the elements [\"fnord\", \"marzipan\", \"bojack\"]\n" +
+          "    ✗ contains \"fnord\"\n" +
+          "    ✓ contains \"marzipan\"\n" +
+          "    ✗ contains \"bojack\"",
+        error.message
+      )
     }
 
     @Test
     fun `does not nest failures when there is only one element`() {
-      fails {
+      val error = fails {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord")
-      }.let { error ->
-        assertEquals(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ contains \"fnord\"",
-          error.message
-        )
       }
+      assertEquals(
+        "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+          "  ✗ contains \"fnord\"",
+        error.message
+      )
     }
   }
 
@@ -245,33 +243,33 @@ internal class IterableAssertions {
       }
 
     @Test
-    fun `formats its failure message correctly when there are multiple elements`() =
-      fails {
+    fun `formats its failure message correctly when there are multiple elements`() {
+      val error = fails {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap", "wye", "marzipan")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ does not contain any of the elements [\"catflap\", \"wye\", \"marzipan\"]\n" +
-            "    ✗ does not contain \"catflap\"\n" +
-            "    ✓ does not contain \"wye\"\n" +
-            "    ✗ does not contain \"marzipan\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+          "  ✗ does not contain any of the elements [\"catflap\", \"wye\", \"marzipan\"]\n" +
+          "    ✗ does not contain \"catflap\"\n" +
+          "    ✓ does not contain \"wye\"\n" +
+          "    ✗ does not contain \"marzipan\"",
+        error.message
+      )
+    }
 
     @Test
-    fun `formats its failure message correctly when there is a single element`() =
-      fails {
+    fun `formats its failure message correctly when there is a single element`() {
+      val error = fails {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ does not contain \"catflap\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+          "  ✗ does not contain \"catflap\"",
+        error.message
+      )
+    }
   }
 
   @Nested
@@ -325,85 +323,81 @@ internal class IterableAssertions {
 
       @Test
       fun `fails if there are more elements than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject).containsExactly("catflap", "rubberplant")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ …at index 0\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ …at index 1\n" +
-              "    ✗ contains no further elements : found [\"marzipan\"]",
-            error.message
-          )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ …at index 0\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✓ …at index 1\n" +
+            "    ✗ contains no further elements : found [\"marzipan\"]",
+          error.message
+        )
       }
 
       @Test
       fun `fails if there are fewer elements than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject)
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ …at index 0\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ …at index 1\n" +
-              "    ✓ contains \"marzipan\"\n" +
-              "    ✓ …at index 2\n" +
-              "    ✗ contains \"fnord\"\n" +
-              "    ✓ contains no further elements",
-            error.message
-          )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ …at index 0\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✓ …at index 1\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✓ …at index 2\n" +
+            "    ✗ contains \"fnord\"\n" +
+            "    ✓ contains no further elements",
+          error.message
+        )
       }
 
       @Test
       fun `fails if the order is different`() {
-        fails {
+        val error = fails {
           expectThat(subject)
             .containsExactly("rubberplant", "catflap", "marzipan")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"rubberplant\", \"catflap\", \"marzipan\"]\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✗ …at index 0 : found \"catflap\"\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✗ …at index 1 : found \"rubberplant\"\n" +
-              "    ✓ contains \"marzipan\"\n" +
-              "    ✓ …at index 2\n" +
-              "    ✓ contains no further elements",
-            error.message
-          )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"rubberplant\", \"catflap\", \"marzipan\"]\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✗ …at index 0 : found \"catflap\"\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✗ …at index 1 : found \"rubberplant\"\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✓ …at index 2\n" +
+            "    ✓ contains no further elements",
+          error.message
+        )
       }
 
       @Test
       fun `fails if the cardinality of an element is lower than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject)
             .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ …at index 0\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ …at index 1\n" +
-              "    ✓ contains \"marzipan\"\n" +
-              "    ✓ …at index 2\n" +
-              "    ✗ contains \"marzipan\"\n" +
-              "    ✓ contains no further elements",
-            error.message
-          )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…]\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ …at index 0\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✓ …at index 1\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✓ …at index 2\n" +
+            "    ✗ contains \"marzipan\"\n" +
+            "    ✓ contains no further elements",
+          error.message
+        )
       }
     }
 
@@ -503,7 +497,12 @@ internal class IterableAssertions {
       fun `fails if there are fewer elements than expected`() {
         fails {
           expectThat(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }
       }
     }
@@ -521,57 +520,64 @@ internal class IterableAssertions {
 
       @Test
       fun `fails if there are more elements than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject)
             .containsExactlyInAnyOrder("catflap", "rubberplant")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"] in any order\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✗ contains no further elements : found [\"marzipan\"]",
-            error.message
-          )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"] in any order\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✗ contains no further elements : found [\"marzipan\"]",
+          error.message
+        )
       }
 
       @Test
       fun `fails if the cardinality of an element is lower than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ contains \"marzipan\"\n" +
-              "    ✗ contains \"marzipan\"\n" +
-              "    ✓ contains no further elements",
-            error.message
-          )
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "marzipan"
+            )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✗ contains \"marzipan\"\n" +
+            "    ✓ contains no further elements",
+          error.message
+        )
       }
 
       @Test
       fun `fails if there are fewer elements than expected`() {
-        fails {
+        val error = fails {
           expectThat(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
-        }.let { error ->
-          assertEquals(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ contains \"marzipan\"\n" +
-              "    ✗ contains \"fnord\"\n" +
-              "    ✓ contains no further elements",
-            error.message
-          )
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }
+        assertEquals(
+          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
+            "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\", \"marzipan\"…] in any order\n" +
+            "    ✓ contains \"catflap\"\n" +
+            "    ✓ contains \"rubberplant\"\n" +
+            "    ✓ contains \"marzipan\"\n" +
+            "    ✗ contains \"fnord\"\n" +
+            "    ✓ contains no further elements",
+          error.message
+        )
       }
 
       @Test
@@ -590,7 +596,7 @@ internal class IterableAssertions {
       }
 
       @Test
-      fun `passes if the elements are indentical`() {
+      fun `passes if the elements are identical`() {
         expectThat(subject)
           .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
       }
@@ -613,7 +619,12 @@ internal class IterableAssertions {
       fun `fails if there are fewer elements than expected`() {
         fails {
           expectThat(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "fnord")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "fnord"
+            )
         }
       }
 
@@ -621,7 +632,12 @@ internal class IterableAssertions {
       fun `fails if the cardinality of an element is lower than expected`() {
         fails {
           expectThat(subject)
-            .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan", "marzipan")
+            .containsExactlyInAnyOrder(
+              "catflap",
+              "rubberplant",
+              "marzipan",
+              "marzipan"
+            )
         }
       }
 

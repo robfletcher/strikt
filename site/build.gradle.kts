@@ -59,7 +59,7 @@ val copyApiDocs = task<Copy>("copyApiDocs") {
   }
 }
 
-tasks.withType<JBakeTask>() {
+tasks.withType<JBakeTask> {
   dependsOn(copyApiDocs)
 }
 
