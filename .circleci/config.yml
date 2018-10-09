@@ -70,8 +70,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks
-      - run: git diff
+      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
 
 #  pitest:
 #    <<: *defaults
