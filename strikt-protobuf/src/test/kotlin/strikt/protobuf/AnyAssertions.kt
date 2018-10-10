@@ -1,15 +1,29 @@
 package strikt.protobuf
 
 import com.google.protobuf.Any
+import com.google.protobuf.InvalidProtocolBufferException
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
 import rpg.Character
+import rpg.Mace
 import rpg.Role
 import rpg.Sword
 import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 @DisplayName("assertions on com.google.protobuf.Any")
 class AnyAssertions {
+
+  val subject: Character = Character
+    .newBuilder()
+    .apply {
+      name = "Crom"
+      role = Role.warrior
+      weapon = Any.pack(Sword.newBuilder().setDamage("1d10").build())
+    }
+    .build()
 
   @Test
   fun `can assert that an Any field is empty`() {
@@ -21,20 +35,51 @@ class AnyAssertions {
       }
       .build()
 
-    expectThat(subject).get(Character::getWeapon).isEmpty()
+    expectThat(subject)
+      .get { weapon }
+      .isEmpty()
+  }
+
+  @Test
+  fun `assertion fails if an Any field is not empty`() {
+    assertThrows<AssertionFailedError> {
+      expectThat(subject)
+        .get { weapon }
+        .isEmpty()
+    }
   }
 
   @Test
   fun `can assert that an Any field is a particular type`() {
-    val subject = Character
-      .newBuilder()
-      .apply {
-        name = "Crom"
-        role = Role.warrior
-        weapon = Any.pack(Sword.newBuilder().setDamage("1d10").build())
-      }
-      .build()
+    expectThat(subject)
+      .get { weapon }
+      .unpacksTo<Sword>()
+  }
 
-    expectThat(subject).get(Character::getWeapon).unpacksTo<Sword>()
+  @Test
+  fun `assertion fails if an Any field is not the expected type`() {
+    assertThrows<AssertionFailedError> {
+      expectThat(subject)
+        .get { weapon }
+        .unpacksTo<Mace>()
+    }
+  }
+
+  @Test
+  fun `can unpack an any field and make assertions about it`() {
+    expectThat(subject)
+      .get { weapon }
+      .unpack<Sword>()
+      .get { damage }
+      .isEqualTo("1d10")
+  }
+
+  @Test
+  fun `trying to unpack a field to the wrong type throws an exception`() {
+    assertThrows<InvalidProtocolBufferException> {
+      expectThat(subject)
+        .get { weapon }
+        .unpack<Mace>()
+    }
   }
 }
