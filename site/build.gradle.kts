@@ -5,19 +5,15 @@ import org.jbake.gradle.JBakeTask
 
 plugins {
   id("org.ajoberstar.github-pages")
-  id("org.jbake.site") version "1.2.0"
+  id("org.jbake.site") version "1.4.0"
 }
 
 configurations.jbake.resolutionStrategy {
   activateDependencyLocking()
 }
 
-dependencies {
-  jbake("com.orientechnologies:orientdb-core:2.2.34+")
-}
-
 jbake {
-  flexmarkVersion = "0.34.28"
+  flexmarkVersion = "0.34.48"
 }
 
 val copyApiDocs = task<Copy>("copyApiDocs") {
