@@ -21,7 +21,7 @@ Particularly when using soft assertion blocks.
 
 Strikt allows for this using the `Assertion.Builder<T>.get` method.  
 
-## Using _chain_ with lambdas
+## Using _get_ with lambdas
 
 The method takes a lambda whose parameter is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
 
@@ -44,7 +44,7 @@ This example produces output that looks like this:
     ✗ is equal to 1971 : found 1947
 ```
 
-## Using _chain_ with property or method references
+## Using _get_ with property or method references
 
 It's also possible to use a method reference in place of a lambda. 
 
