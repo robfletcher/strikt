@@ -10,7 +10,7 @@ Any suggestions, [issue reports](https://github.com/robfletcher/strikt/issues), 
 
 Strikt is available from JCenter.
 
-```groovy
+```kotlin
 repositories { 
   jcenter() 
 }
@@ -21,6 +21,24 @@ dependencies {
 ```
 
 See the button below for the current version number.
+
+## Additional Libraries
+
+Strikt has the following additional libraries:
+
+* `strikt-javatime` -- supports the JSR-310 `java.time` package.
+* `strikt-protobuf` -- supports Protobuf / gRPC.
+
+Versions are synchronized with the core Strikt library.
+
+To install additional libraries include dependencies in your Gradle build.
+For example:
+
+```kotlin
+dependencies {
+  testImplementation("time")
+}
+```
 
 ## Using Strikt
 

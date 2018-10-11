@@ -2,6 +2,7 @@ import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension.DestinationC
 import org.apache.tools.ant.filters.ConcatFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jbake.gradle.JBakeTask
+import org.jbake.gradle.JBakeServeTask
 
 plugins {
   id("org.ajoberstar.github-pages")
@@ -55,8 +56,12 @@ val copyApiDocs = task<Copy>("copyApiDocs") {
   }
 }
 
-tasks.withType<JBakeTask> {
+val bake by tasks.getting(JBakeTask::class) {
   dependsOn(copyApiDocs)
+}
+
+val bakePreview by tasks.getting(JBakeServeTask::class) {
+  dependsOn(bake)
 }
 
 tasks.getByName("clean").doFirst {
