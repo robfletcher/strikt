@@ -78,5 +78,4 @@ internal class StringAssertions {
   fun `can trim string`() {
     expectThat(" fnord ").trim().isEqualTo("fnord")
   }
-
 }

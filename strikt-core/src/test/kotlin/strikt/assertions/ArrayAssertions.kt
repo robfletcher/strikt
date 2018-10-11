@@ -71,7 +71,6 @@ internal class ArrayAssertions {
     val array = arrayOf("catflap", "rubberplant", "marzipan")
     expectThat(array).toList().first().isEqualTo("catflap")
   }
-
 }
 
 internal fun randomBytes(): ByteArray =
