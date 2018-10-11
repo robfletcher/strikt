@@ -65,6 +65,13 @@ internal class ArrayAssertions {
         }
       }
   }
+
+  @Test
+  fun `can map an array to a list for easier matching`() {
+    val array = arrayOf("catflap", "rubberplant", "marzipan")
+    expectThat(array).toList().first().isEqualTo("catflap")
+  }
+
 }
 
 internal fun randomBytes(): ByteArray =
