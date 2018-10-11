@@ -36,7 +36,7 @@ For example:
 
 ```kotlin
 dependencies {
-  testImplementation("time")
+  testImplementation("io.strikt:strikt-java-time:<version>")
 }
 ```
 
