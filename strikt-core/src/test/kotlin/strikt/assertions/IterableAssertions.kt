@@ -12,36 +12,56 @@ import strikt.fails
 
 @DisplayName("assertions on Iterable")
 internal class IterableAssertions {
+
+  /**
+   * Turns a list subject into various iterable types with the same content.
+   */
+  fun <E : Comparable<E>> List<E>.permute(): List<Iterable<E>> =
+    listOf(
+      this,
+      toSet(),
+      toSortedSet()
+    )
+
+  /**
+   * Turns a list subject with expected values into various iterable types with
+   * the same content and the same expected value.
+   */
+  fun <E : Comparable<E>, EX> List<Pair<List<E>, EX>>.permuteExpected(): List<Pair<Iterable<E>, EX>> =
+    flatMap {
+      listOf(
+        it.first to it.second,
+        it.first.toSet() to it.second,
+        it.first.toSortedSet() to it.second
+      )
+    }
+
   @Nested
   @DisplayName("all assertion")
   inner class All {
     @TestFactory
     fun `passes if all elements conform`() =
-      listOf(
-        setOf("catflap", "rubberplant", "marzipan"),
-        listOf("catflap", "rubberplant", "marzipan")
-      ).map { subject ->
-        dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
-          expectThat(subject).all {
-            isLowerCase()
-          }
-        }
-      }
-
-    @TestFactory
-    fun `fails if any element does not conform`() =
-      listOf(
-        setOf("catflap", "rubberplant", "marzipan"),
-        listOf("catflap", "rubberplant", "marzipan")
-      ).map { subject ->
-        dynamicTest("fails if any element of a ${subject.javaClass.simpleName} conform") {
-          fails {
+      listOf("catflap", "rubberplant", "marzipan").permute()
+        .map { subject ->
+          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).all {
-              startsWith('c')
+              isLowerCase()
             }
           }
         }
-      }
+
+    @TestFactory
+    fun `fails if any element does not conform`() =
+      listOf("catflap", "rubberplant", "marzipan").permute()
+        .map { subject ->
+          dynamicTest("fails if any element of a ${subject.javaClass.simpleName} conform") {
+            fails {
+              expectThat(subject).all {
+                startsWith('c')
+              }
+            }
+          }
+        }
   }
 
   @Nested
@@ -49,44 +69,38 @@ internal class IterableAssertions {
   inner class Any {
     @TestFactory
     fun `passes if all elements conform`() =
-      listOf(
-        setOf("catflap", "rubberplant", "marzipan"),
-        listOf("catflap", "rubberplant", "marzipan")
-      ).map { subject ->
-        dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
-          expectThat(subject).any {
-            isLowerCase()
-          }
-        }
-      }
-
-    @TestFactory
-    fun `passes if any one element conforms`() =
-      listOf(
-        setOf("catflap", "RUBBERPLANT", "MARZIPAN"),
-        listOf("catflap", "RUBBERPLANT", "MARZIPAN")
-      ).map { subject ->
-        dynamicTest("passes if any one element of a ${subject.javaClass.simpleName} conforms") {
-          expectThat(subject).any {
-            isLowerCase()
-          }
-        }
-      }
-
-    @TestFactory
-    fun `fails if no elements conform`() =
-      listOf(
-        setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN"),
-        listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
-      ).map { subject ->
-        dynamicTest("fails if no elements of a ${subject.javaClass.simpleName} conform") {
-          fails {
+      listOf("catflap", "rubberplant", "marzipan").permute()
+        .map { subject ->
+          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).any {
               isLowerCase()
             }
           }
         }
-      }
+
+    @TestFactory
+    fun `passes if any one element conforms`() =
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("passes if any one element of a ${subject.javaClass.simpleName} conforms") {
+            expectThat(subject).any {
+              isLowerCase()
+            }
+          }
+        }
+
+    @TestFactory
+    fun `fails if no elements conform`() =
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("fails if no elements of a ${subject.javaClass.simpleName} conform") {
+            fails {
+              expectThat(subject).any {
+                isLowerCase()
+              }
+            }
+          }
+        }
 
     @Test
     fun `works with not`() {
@@ -102,46 +116,40 @@ internal class IterableAssertions {
   inner class None {
     @TestFactory
     fun `passes if no elements conform`() =
-      listOf(
-        setOf("catflap", "rubberplant", "marzipan"),
-        listOf("catflap", "rubberplant", "marzipan")
-      ).map { subject ->
-        dynamicTest("passes if no elements of a ${subject.javaClass.simpleName} conform") {
-          expectThat(subject).none {
-            isUpperCase()
+      listOf("catflap", "rubberplant", "marzipan").permute()
+        .map { subject ->
+          dynamicTest("passes if no elements of a ${subject.javaClass.simpleName} conform") {
+            expectThat(subject).none {
+              isUpperCase()
+            }
           }
         }
-      }
 
     @TestFactory
     fun `fails if some elements conforms`() =
-      listOf(
-        setOf("catflap", "RUBBERPLANT", "MARZIPAN"),
-        listOf("catflap", "RUBBERPLANT", "MARZIPAN")
-      ).map { subject ->
-        dynamicTest("fails if some elements of a ${subject.javaClass.simpleName} conforms") {
-          fails {
-            expectThat(subject).none {
-              isUpperCase()
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("fails if some elements of a ${subject.javaClass.simpleName} conforms") {
+            fails {
+              expectThat(subject).none {
+                isUpperCase()
+              }
             }
           }
         }
-      }
 
     @TestFactory
     fun `fails if all elements conform`() =
-      listOf(
-        setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN"),
-        listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
-      ).map { subject ->
-        dynamicTest("fails if all elements of a ${subject.javaClass.simpleName} conform") {
-          fails {
-            expectThat(subject).none {
-              isUpperCase()
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("fails if all elements of a ${subject.javaClass.simpleName} conform") {
+            fails {
+              expectThat(subject).none {
+                isUpperCase()
+              }
             }
           }
         }
-      }
 
     @Test
     fun `works with not`() {
@@ -160,15 +168,14 @@ internal class IterableAssertions {
       listOf(
         listOf("catflap") to arrayOf("catflap"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
-          "catflap",
-          "marzipan"
-        )
-      ).map { (subject, expected) ->
-        dynamicTest("passes if $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
-          expectThat(subject).contains(*expected)
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "marzipan")
+      )
+        .permuteExpected()
+        .map { (subject, expected) ->
+          dynamicTest("passes if $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
+            expectThat(subject).contains(*expected)
+          }
         }
-      }
 
     @TestFactory
     fun `fails subject contains expected`() =
@@ -179,13 +186,15 @@ internal class IterableAssertions {
           "fnord"
         ),
         emptyList<String>() to arrayOf("catflap")
-      ).map { (subject, expected) ->
-        dynamicTest("fails $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
-          fails {
-            expectThat(subject).contains(*expected)
+      )
+        .permuteExpected()
+        .map { (subject, expected) ->
+          dynamicTest("fails $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
+            fails {
+              expectThat(subject).contains(*expected)
+            }
           }
         }
-      }
 
     @Test
     fun `rejects an empty array of expected elements`() {
@@ -229,61 +238,60 @@ internal class IterableAssertions {
   inner class DoesNotContain {
     @TestFactory
     fun `always passes for an empty subject`() =
-      listOf(
-        emptyList<String>(),
-        emptySet<String>()
-      ).map { subject ->
-        dynamicTest("always passes for an empty ${subject.javaClass.simpleName}") {
-          expectThat(subject)
-            .doesNotContain("catflap", "rubberplant", "marzipan")
+      emptyList<String>()
+        .permute()
+        .map { subject ->
+          dynamicTest("always passes for an empty ${subject.javaClass.simpleName}") {
+            expectThat(subject)
+              .doesNotContain("catflap", "rubberplant", "marzipan")
+          }
         }
-      }
 
     @TestFactory
     fun `fails if no elements are specified`() =
       listOf(
         emptyList(),
         listOf("catflap", "rubberplant", "marzipan")
-      ).map { subject ->
-        dynamicTest("fails for $subject is if no elements are specified") {
-          assertThrows<IllegalArgumentException> {
-            expectThat(subject).doesNotContain()
+      )
+        .flatMap { it.permute() }
+        .map { subject ->
+          dynamicTest("fails for $subject is if no elements are specified") {
+            assertThrows<IllegalArgumentException> {
+              expectThat(subject).doesNotContain()
+            }
           }
         }
-      }
 
     @TestFactory
     fun `passes if the subject contains none of the elements`() =
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("fnord"),
-        setOf("catflap", "rubberplant", "marzipan") to arrayOf("fnord"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
-          "xenocracy",
-          "wye",
-          "exercitation"
-        )
-      ).map { (subject, elements) ->
-        dynamicTest("passes if a ${subject.javaClass.simpleName} contains none of the elements ${elements.toList()}") {
-          expectThat(subject)
-            .doesNotContain(*elements)
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf("xenocracy", "wye", "exercitation")
+      )
+        .permuteExpected()
+        .map { (subject, elements) ->
+          dynamicTest("passes if a ${subject.javaClass.simpleName} contains none of the elements ${elements.toList()}") {
+            expectThat(subject)
+              .doesNotContain(*elements)
+          }
         }
-      }
 
     @TestFactory
     fun `passes if the subject contains any of the elements`() =
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "kakistocracy", "impeach"),
-        setOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "kakistocracy", "impeach"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("owlbear", "marzipan", "illithid")
-      ).map { (subject, elements) ->
-        dynamicTest("passes if a ${subject.javaClass.simpleName} contains any of the elements ${elements.toList()}") {
-          fails {
-            expectThat(subject)
-              .doesNotContain(*elements)
+      )
+        .permuteExpected()
+        .map { (subject, elements) ->
+          dynamicTest("passes if a ${subject.javaClass.simpleName} contains any of the elements ${elements.toList()}") {
+            fails {
+              expectThat(subject)
+                .doesNotContain(*elements)
+            }
           }
         }
-      }
 
     @Test
     fun `formats its failure message correctly when there are multiple elements`() {
