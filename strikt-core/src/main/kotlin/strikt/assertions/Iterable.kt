@@ -19,6 +19,17 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
   get("first element %s") { first() }
 
 /**
+ * Maps this assertion to an assertion over the single element in the subject
+ * iterable.
+ *
+ * @see Iterable.first
+ */
+fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> {
+  assertThat("has only one element") { it.size == 1 }
+  return get("single element %s") { single() }
+}
+
+/**
  * Maps this assertion to an assertion over the first element in the subject
  * iterable that matches [predicate].
  *
