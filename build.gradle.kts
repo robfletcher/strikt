@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_6
 import org.gradle.api.JavaVersion.VERSION_1_8

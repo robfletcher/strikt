@@ -1,3 +1,5 @@
+@file:Suppress("KDocMissingDocumentation")
+
 import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension.DestinationCopySpec
 import org.apache.tools.ant.filters.ConcatFilter
 import org.apache.tools.ant.filters.ReplaceTokens
