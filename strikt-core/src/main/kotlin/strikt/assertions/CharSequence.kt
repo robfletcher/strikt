@@ -225,3 +225,11 @@ fun <T : CharSequence> Builder<T>.isNotBlank(): Builder<T> =
  */
 val <T : CharSequence> Builder<T>.length: Builder<Int>
   get() = get(CharSequence::length)
+
+/**
+ * trims a CharSequence
+ *
+ * @see CharSequence.trim
+ */
+fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> =
+  get(CharSequence::trim)

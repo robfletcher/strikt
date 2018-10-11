@@ -73,4 +73,10 @@ internal class StringAssertions {
       assertEquals(2, error.failures.size)
     }
   }
+
+  @Test
+  fun `can trim string`() {
+    expectThat(" fnord ").trim().isEqualTo("fnord")
+  }
+
 }
