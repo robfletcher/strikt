@@ -16,6 +16,7 @@ import strikt.assertions.isNull
 import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
+import strikt.assertions.single
 import strikt.assertions.throws
 import java.time.LocalDate
 
@@ -35,6 +36,24 @@ internal class Mapping {
     expectThat(subject).first().isEqualTo("catflap")
   }
 
+  @Test
+  fun `single() maps to the single element of an iterable`() {
+    val subject = listOf("catflap")
+    expectThat(subject).single().isEqualTo("catflap")
+  }
+
+  @Test
+  fun `single() fails when the iterable has multiple entries`() {
+    val subject = listOf("catflap", "rubberplant")
+    fails {
+      expectThat(subject).single().isEqualTo("catflap")
+    }.let { error ->
+      expectThat(error).message.isEqualTo(
+        """▼ Expect that ["catflap", "rubberplant"]:
+  ✗ has only one element"""
+      )
+    }
+  }
   @Test
   fun `last() maps to the last element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
