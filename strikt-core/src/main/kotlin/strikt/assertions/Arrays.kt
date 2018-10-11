@@ -85,7 +85,6 @@ fun Assertion.Builder<CharArray>.contentEquals(other: CharArray): Assertion.Buil
 
 /**
  * Maps an array to a list to make it possible to use the iterable matchers
- * [CharArray.contentEquals].
  */
 fun <T> Assertion.Builder<Array<T>>.toList(): Assertion.Builder<List<T>> =
   get("as list") { toList() }
