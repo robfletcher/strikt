@@ -26,7 +26,7 @@ See the button below for the current version number.
 
 Strikt has the following additional libraries:
 
-* `strikt-javatime` -- supports the JSR-310 `java.time` package.
+* `strikt-java-time` -- supports the JSR-310 `java.time` package.
 * `strikt-protobuf` -- supports Protobuf / gRPC.
 
 Versions are synchronized with the core Strikt library.
