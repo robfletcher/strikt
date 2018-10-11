@@ -76,6 +76,6 @@ internal class StringAssertions {
 
   @Test
   fun `can trim string`() {
-    expectThat(" fnord ").trim().isEqualTo("fnord")
+    expectThat(" fnord ").trim().isEqualToIgnoringCase("fnord")
   }
 }

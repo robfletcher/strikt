@@ -319,4 +319,10 @@ internal class CharSequenceAssertions {
         }
       }
   }
+
+  @Test
+  fun `can trim char sequence`() {
+    expectThat(StringBuilder(" fnord ")).trim().isEqualTo("fnord")
+  }
+
 }

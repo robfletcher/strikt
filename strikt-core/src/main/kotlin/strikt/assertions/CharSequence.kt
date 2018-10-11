@@ -233,3 +233,12 @@ val <T : CharSequence> Builder<T>.length: Builder<Int>
  */
 fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> =
   get(CharSequence::trim)
+
+/**
+ * trims a String
+ *
+ * @see String.trim
+ */
+@JvmName("trimString")
+fun Builder<String>.trim(): Builder<String> =
+  get(String::trim)
