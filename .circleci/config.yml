@@ -54,23 +54,15 @@ jobs:
 
   site:
     <<: *defaults
-    docker:
-    - image: circleci/openjdk:8-jdk
     steps:
-    - run:
-        name: Clone with HTTPS
-        working_directory: /home/circleci/repo
-        command: |
-          git clone https://github.com/robfletcher/strikt.git .
-    - run:
-        working_directory: /home/circleci/repo
-        command: ./gradlew publishGhPages --stacktrace
+      - checkout
+      - run: ./gradlew :site:orchidDeploy -Penv=prod
 
   upgradeLocks:
     <<: *defaults
     steps:
       - checkout
-      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
+      - run: ./gradlew :strikt-core:dependencies :strikt-java-time:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
 
 #  pitest:
 #    <<: *defaults

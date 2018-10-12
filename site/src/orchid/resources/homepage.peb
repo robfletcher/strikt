@@ -1,0 +1,52 @@
+---
+title: 'Strikt'
+extraCss:
+- 'assets/css/homepage.scss'
+layout: 'homepage'
+---
+
+<section class="columns is-centered">
+  <div class="column is-half">
+    <figure class="image">
+      <img src="{{site.baseUrl}}/assets/images/logo.png" alt="Strikt logo">
+    </figure>
+  </div>
+</section>
+
+<section class="columns is-centered">
+  <div class="column is-8">
+    <div class="content is-medium">
+      <p>
+        Strikt is an assertion library for Kotlin intended for use with a test runner such as <a
+        href="https://junit.org/junit5/">JUnit</a> or <a href="http://spekframework.org/">Spek</a>.
+      </p>
+      <p>Strikt gives you…</p>
+    </div>
+  </div>
+</section>
+
+{% codesnippets "A powerful fluent API" %}
+{% homepage_one %}Type-safe fluent assertions{% endhomepage_one %}
+{% endcodesnippets %}
+
+{% codesnippets "Collection handling" %}
+{% homepage_two %}Flexible assertions about collections{% endhomepage_two %}
+{% homepage_three %}“Narrow” the assertion to elements or ranges{% endhomepage_three %}
+{% homepage_four %}Make grouping assertions{% endhomepage_four %}
+{% endcodesnippets %}
+
+{% codesnippets "“Soft” assertions" %}
+{% homepage_five %}Use lambdas to execute multiple assertions on a subject at once…{% endhomepage_five %}
+{% homepage_six language='text' %}…with structured diagnostics of those that fail{% endhomepage_six %}
+{% homepage_seven %}Use lambdas to execute assertions on multiple subjects at once…{% endhomepage_seven %}
+{% endcodesnippets %}
+
+{% codesnippets "Strong typing" %}
+{% homepage_eight %}Assertion functions can "narrow" the type of the assertion{% endhomepage_eight %}
+{% homepage_nine %}Assertions can "map" to properties and method results in a type safe way:{% endhomepage_nine %}
+{% endcodesnippets %}
+
+{% codesnippets "Extensibility" %}
+{% homepage_ten %}Custom assertions are extension functions{% endhomepage_ten %}
+{% homepage_eleven %}Custom mappings are extension properties{% endhomepage_eleven %}
+{% endcodesnippets %}

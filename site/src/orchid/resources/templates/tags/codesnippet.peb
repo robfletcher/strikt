@@ -1,0 +1,1 @@
+<pre><code class="language-{{ tag.language }}">{{ tag.snippetContent }}</code></pre>
