@@ -119,7 +119,7 @@ internal class Homepage {
     val subject = Pantheon.NORSE
     expectThat(subject)
       .get(Pantheon::ruler) // reference to a property
-      .get { toString() }  // return type of a method call
+      .get { toString() }   // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
   }

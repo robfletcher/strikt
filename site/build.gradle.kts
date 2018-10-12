@@ -29,17 +29,25 @@ repositories {
   maven(url = "https://jitpack.io")
 }
 
+configurations {
+  sequenceOf("orchidCompile", "orchidRuntime")
+    .forEach { scope ->
+      getByName("${scope}Classpath") {
+        resolutionStrategy.activateDependencyLocking()
+      }
+    }
+}
+
 dependencies {
-  val orchid_version = "0.12.7"
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:$orchid_version")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:$orchid_version")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:+")
 }
 
 project.version = "${project.version}"
