@@ -227,7 +227,7 @@ val <T : CharSequence> Builder<T>.length: Builder<Int>
   get() = get(CharSequence::length)
 
 /**
- * trims a CharSequence
+ * Trims the subject `CharSequence`.
  *
  * @see CharSequence.trim
  */
@@ -235,7 +235,7 @@ fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> =
   get(CharSequence::trim)
 
 /**
- * trims a String
+ * Trims the subject string.
  *
  * @see String.trim
  */
