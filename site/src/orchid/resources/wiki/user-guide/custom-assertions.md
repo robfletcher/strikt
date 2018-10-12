@@ -11,7 +11,7 @@ Assertion functions are [extension functions](https://kotlinlang.org/docs/refere
 Because of Java's generic type erasure, it's possible that the name of your custom assertion function may clash with an existing one for a different subject type.
 
 To avoid this you can add the `@JvmName` annotation to your assertion function to disambiguate the methods.
-See [Handling signature clashes with `@JvmName`](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#handling-signature-clashes-with-jvmname) in the Kotlin documentation.
+See [Handling signature clashes with _@JvmName_](https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html#handling-signature-clashes-with-jvmname) in the Kotlin documentation.
 
 For example, if you were defining an `isEmpty` assertion for Gson's `JsonArray` type, you would need to disambiguate it from the `isEmpty` assertion Strikt provides for collections.
 

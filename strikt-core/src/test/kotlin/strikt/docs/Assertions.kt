@@ -43,7 +43,7 @@ internal class Assertions {
         .isUpperCase()
       // END assertion_styles_1
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -67,7 +67,7 @@ internal class Assertions {
       }
       // END assertion_styles_3
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -90,7 +90,7 @@ internal class Assertions {
       }
       // END assertion_styles_5
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -122,7 +122,7 @@ internal class Assertions {
       }
       // END assertion_styles_7
     }).throws<CompoundAssertionFailure>()
-      .chain { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -155,7 +155,7 @@ internal class Assertions {
       }
       // END collections_2
     }).throws<AssertionFailedError>()
-      .chain { it.message }
+      .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -186,11 +186,11 @@ internal class Assertions {
   @Test fun `flow typing 1`() {
     // START flow_typing_1
     val subject: Map<String, Any> = mapOf("count" to 1, "name" to "Rob")
-    expectThat(subject.get("count"))
+    expectThat(subject["count"])
       .isA<Int>()
       .isGreaterThan(0)
 
-    expectThat(subject.get("name"))
+    expectThat(subject["name"])
       .isA<String>()
       .hasLength(3)
     // END flow_typing_1
