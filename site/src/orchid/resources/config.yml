@@ -46,6 +46,9 @@ theme:
       title: 'Strikt Protobuf'
       itemId: 'strikt.protobuf'
     - type: 'page'
+      title: 'Strikt Time'
+      itemId: 'strikt.time'
+    - type: 'page'
       itemId: 'Changelog'
 
 allPages:
@@ -81,3 +84,4 @@ kotlindoc:
   sourceDirs:
   - '../../../../strikt-core/src/main/kotlin/'
   - '../../../../strikt-protobuf/src/main/kotlin/'
+  - '../../../../strikt-java-time/src/main/kotlin/'
