@@ -1,3 +1,5 @@
+@file:Suppress("KDocMissingDocumentation")
+
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -16,7 +18,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.6"
+  id("com.eden.orchidPlugin") version "0.12.7"
 }
 
 repositories {
@@ -28,7 +30,7 @@ repositories {
 }
 
 dependencies {
-  val orchid_version = "0.12.6"
+  val orchid_version = "0.12.7"
   orchidCompile("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidCore:$orchid_version")
   orchidRuntime("io.github.javaeden.orchid:OrchidPages:$orchid_version")
@@ -54,7 +56,9 @@ orchid {
   }
 
   args = listOf(
-    "githubToken ${if(project.hasProperty("github_token")) project.property("github_token") else System.getenv("GITHUB_TOKEN")}"
+    "githubToken ${if (project.hasProperty("github_token")) project.property("github_token") else System.getenv(
+      "GITHUB_TOKEN"
+    )}"
   )
 }
 
