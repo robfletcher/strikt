@@ -16,6 +16,7 @@ import strikt.assertions.isNull
 import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
+import strikt.assertions.single
 import strikt.assertions.throws
 import java.time.LocalDate
 
@@ -35,6 +36,24 @@ internal class Mapping {
     expectThat(subject).first().isEqualTo("catflap")
   }
 
+  @Test
+  fun `single() maps to the single element of an iterable`() {
+    val subject = listOf("catflap")
+    expectThat(subject).single().isEqualTo("catflap")
+  }
+
+  @Test
+  fun `single() fails when the iterable has multiple entries`() {
+    val subject = listOf("catflap", "rubberplant")
+    fails {
+      expectThat(subject).single().isEqualTo("catflap")
+    }.let { error ->
+      expectThat(error).message.isEqualTo(
+        """▼ Expect that ["catflap", "rubberplant"]:
+  ✗ has only one element"""
+      )
+    }
+  }
   @Test
   fun `last() maps to the last element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
@@ -144,74 +163,70 @@ internal class Mapping {
 
     @Test
     fun `can be described`() {
-      fails {
+      val error = fails {
         expectThat(subject) {
           get { name }.describedAs("name").isEqualTo("Ziggy")
           get { birthDate.year }.describedAs("birth year")
             .isEqualTo(1971)
         }
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ name:\n" +
-            "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
-            "  ▼ birth year:\n" +
-            "    ✗ is equal to 1971 : found 1947",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+          "  ▼ name:\n" +
+          "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
+          "  ▼ birth year:\n" +
+          "    ✗ is equal to 1971 : found 1947",
+        error.message
+      )
     }
 
     @Test
     fun `descriptions are defaulted when using property references`() {
-      fails {
+      val error = fails {
         expectThat(subject).get(Person::name).isEqualTo("Ziggy")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ value of property name:\n" +
-            "    ✗ is equal to \"Ziggy\" : found \"David\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+          "  ▼ value of property name:\n" +
+          "    ✗ is equal to \"Ziggy\" : found \"David\"",
+        error.message
+      )
     }
 
     @Test
     fun `descriptions also default for blocks`() {
-      fails {
+      val error = fails {
         expectThat(subject) {
           get { name }.isEqualTo("Ziggy")
           get {
             birthDate.year
           }.isEqualTo(1971)
         }
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ name:\n" +
-            "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
-            "  ▼ birthDate.year:\n" +
-            "    ✗ is equal to 1971 : found 1947",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+          "  ▼ name:\n" +
+          "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
+          "  ▼ birthDate.year:\n" +
+          "    ✗ is equal to 1971 : found 1947",
+        error.message
+      )
     }
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
-      fails {
+      val error = fails {
         expectThat(subject).get(Person::birthDate)
           .get(LocalDate::getYear)
           .isEqualTo(1971)
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-            "  ▼ value of property birthDate:\n" +
-            "    ▼ return value of getYear:\n" + // TODO: treat as property ref
-            "      ✗ is equal to 1971 : found 1947",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
+          "  ▼ value of property birthDate:\n" +
+          "    ▼ return value of getYear:\n" + // TODO: treat as property ref
+          "      ✗ is equal to 1971 : found 1947",
+        error.message
+      )
     }
   }
 }

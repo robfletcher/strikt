@@ -42,39 +42,37 @@ internal class Chained {
   @Test
   fun `not() affects the assertion message`() {
     val subject = "fnord"
-    fails {
+    val error = fails {
       expectThat(subject).not().isLowerCase()
-    }.let { error ->
-      assertEquals(
-        "▼ Expect that \"fnord\":\n" +
-          "  ✗ is not lower case",
-        error.message
-      )
     }
+    assertEquals(
+      "▼ Expect that \"fnord\":\n" +
+        "  ✗ is not lower case",
+      error.message
+    )
   }
 
   @Test
   fun `only throws a single exception`() {
-    fails {
+    val error = fails {
       expectThat(listOf(1, 2, 3, 4)).containsExactly(1, 2)
-    }.let { error ->
-      val expected = "▼ Expect that [1, 2, 3, 4]:\n" +
-        "  ✗ contains exactly the elements [1, 2]\n" +
-        "    ✓ contains 1\n" +
-        "    ✓ …at index 0\n" +
-        "    ✓ contains 2\n" +
-        "    ✓ …at index 1\n" +
-        "    ✗ contains no further elements : found [3, 4]"
-      expectThat(error)
-        .isA<AssertionFailedError>()
-        .message
-        .isEqualTo(expected)
     }
+    val expected = "▼ Expect that [1, 2, 3, 4]:\n" +
+      "  ✗ contains exactly the elements [1, 2]\n" +
+      "    ✓ contains 1\n" +
+      "    ✓ …at index 0\n" +
+      "    ✓ contains 2\n" +
+      "    ✓ …at index 1\n" +
+      "    ✗ contains no further elements : found [3, 4]"
+    expectThat(error)
+      .isA<AssertionFailedError>()
+      .message
+      .isEqualTo(expected)
   }
 
   @Test
   fun `can connect a block to a chain with and`() {
-    fails {
+    val error = fails {
       val subject: String? = "fnord"
       expectThat(subject)
         .isNotNull()
@@ -84,16 +82,15 @@ internal class Chained {
           contains("n")
           contains("z")
         }
-    }.let { error ->
-      assertEquals(
-        "▼ Expect that \"fnord\":\n" +
-          "  ✓ is not null\n" +
-          "  ✓ is lower case\n" +
-          "  ✓ contains \"f\"\n" +
-          "  ✓ contains \"n\"\n" +
-          "  ✗ contains \"z\" : found \"fnord\"",
-        error.message
-      )
     }
+    assertEquals(
+      "▼ Expect that \"fnord\":\n" +
+        "  ✓ is not null\n" +
+        "  ✓ is lower case\n" +
+        "  ✓ contains \"f\"\n" +
+        "  ✓ contains \"n\"\n" +
+        "  ✗ contains \"z\" : found \"fnord\"",
+      error.message
+    )
   }
 }

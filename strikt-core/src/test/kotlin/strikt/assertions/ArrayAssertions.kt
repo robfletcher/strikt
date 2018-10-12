@@ -30,15 +30,14 @@ internal class ArrayAssertions {
         randomBytes().let { Pair(it, it.copyOf(it.size / 2)) }
       ).map { (array, other) ->
         dynamicTest("0x${array.toHex()} does not equal 0x${other.toHex()}") {
-          fails {
+          val error = fails {
             expectThat(array).contentEquals(other)
-          }.let { error ->
-            assertEquals(
-              "▼ Expect that 0x${array.toHex()}:\n" +
-                "  ✗ array content equals 0x${other.toHex()}",
-              error.message
-            )
           }
+          assertEquals(
+            "▼ Expect that 0x${array.toHex()}:\n" +
+              "  ✗ array content equals 0x${other.toHex()}",
+            error.message
+          )
         }
       }
 
@@ -55,17 +54,22 @@ internal class ArrayAssertions {
         randomBytes().let { Pair(it, it.copyOf(it.size / 2)) }
       ).map { (array, other) ->
         dynamicTest("0x${array.toHex()} does not equal 0x${other.toHex()}") {
-          fails {
+          val error = fails {
             expectThat(array).contentEquals(other)
-          }.let { error ->
-            assertEquals(
-              "▼ Expect that 0x${array.toHex()}:\n" +
-                "  ✗ array content equals 0x${other.toHex()}",
-              error.message
-            )
           }
+          assertEquals(
+            "▼ Expect that 0x${array.toHex()}:\n" +
+              "  ✗ array content equals 0x${other.toHex()}",
+            error.message
+          )
         }
       }
+  }
+
+  @Test
+  fun `can map an array to a list for easier matching`() {
+    val array = arrayOf("catflap", "rubberplant", "marzipan")
+    expectThat(array).toList().first().isEqualTo("catflap")
   }
 }
 

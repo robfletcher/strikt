@@ -12,11 +12,11 @@ Particularly when using soft assertion blocks.
 
 Strikt allows for this using the `Assertion.Builder<T>.get` method.  
 
-## Using _chain_ with lambdas
+## Using _get_ with lambdas
 
-The method takes a lambda whose parameter is the current subject and returns an `Assertion.Builder<R>` where `R` is the type of whatever the lambda returns.
+The method takes a lambda whose receiver is the current subject and returns an `Assertion.Builder<R>` where `R` (the new subject) is the type of whatever the lambda returns.
 
-This is sometimes useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
+This is useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
 {% codesnippet key='traversing_subjects_2' testClass='Chaining' %}
 
@@ -25,9 +25,9 @@ This example produces output that looks like this:
 
 {% codesnippet key='traversing_subjects_3' testClass='Chaining' language='text' %}
 
-## Using _chain_ with property or method references
+## Using _get_ with property or method references
 
-It's also possible to use a method reference in place of a lambda. 
+It's also possible to use a property or method reference in place of a lambda. 
 
 {% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
 
@@ -40,7 +40,7 @@ It is effectively like using `get` on each element of the `Iterable` subject.
 
 In this case the `map` function is transforming the `Assertion.Buidler<List<Person>>` into an `Assertion.Builder<List<String>>` by applying the `name` property to each element.
 
-## Re-usable mappings
+## Re-usable mapping extensions
 
 If you find yourself frequently using `get` for the same properties or methods, consider defining extension property or method to make things even easier.
 

@@ -62,16 +62,20 @@ internal class StringAssertions {
   inner class Blocks {
     @Test
     fun compiles() {
-      assertThrows<CompoundAssertionFailure> {
+      val error = assertThrows<CompoundAssertionFailure> {
         val subject = "The Enlightened take things Lightly"
         expectThat(subject = subject) {
           hasLength(5)
           matches(Regex("\\d+"))
           startsWith("T")
         }
-      }.let { e ->
-        assertEquals(2, e.failures.size)
       }
+      assertEquals(2, error.failures.size)
     }
+  }
+
+  @Test
+  fun `can trim string`() {
+    expectThat(" fnord ").trim().isEqualToIgnoringCase("fnord")
   }
 }

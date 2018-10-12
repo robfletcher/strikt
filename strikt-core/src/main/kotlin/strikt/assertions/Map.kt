@@ -10,6 +10,12 @@ fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
   assertThat("is empty", Map<K, V>::isEmpty)
 
 /**
+ * Asserts that the subject map is not empty.
+ */
+fun <T : Map<K, V>, K, V> Builder<T>.isNotEmpty() =
+  assertThat("is not empty", Map<K, V>::isNotEmpty as (Map<K, V>) -> Boolean)
+
+/**
  * Asserts that the subject map has the specified number of entries.
  */
 fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =

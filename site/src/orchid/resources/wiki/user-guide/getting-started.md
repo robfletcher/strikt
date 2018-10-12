@@ -11,13 +11,13 @@ It can be used with JUnit, Spek or any other runner that supports tests written 
 Strikt is available from JCenter.
 Add the following to your `build.gradle`.
 
-```groovy
+```kotlin
 repositories {
   jcenter()
 }
 
 dependencies {
-  testCompile "io.strikt:strikt-core:{{ site.version }}"
+  testCompile("io.strikt:strikt-core:{{ site.version }}")
 }
 ```
 

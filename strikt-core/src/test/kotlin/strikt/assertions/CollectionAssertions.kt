@@ -20,7 +20,7 @@ internal class CollectionAssertions {
     }
 
     @Nested
-    @DisplayName("isEmpty assertion")
+    @DisplayName("isNullOrEmpty assertion")
     inner class IsEmpty {
       @Test
       fun `passes if collection is empty`() {

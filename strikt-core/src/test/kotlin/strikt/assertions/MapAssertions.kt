@@ -10,7 +10,7 @@ import strikt.fails
 @DisplayName("Assertions on Map")
 internal class MapAssertions {
   @Nested
-  @DisplayName("isEmpty assertion")
+  @DisplayName("isNullOrEmpty assertion")
   inner class IsEmpty {
     @Test
     fun `passes if the subject is empty`() {
@@ -28,6 +28,24 @@ internal class MapAssertions {
   }
 
   @Nested
+  @DisplayName("isNotEmpty assertion")
+  inner class IsNotEmpty {
+    @Test
+    fun `fails if the subject is empty`() {
+      fails {
+        val subject = emptyMap<Any, Any>()
+        expectThat(subject).isNotEmpty()
+      }
+    }
+
+    @Test
+    fun `passes if the subject is not empty`() {
+      val subject = mapOf("Eris" to "Strife and confusion")
+      expectThat(subject).isNotEmpty()
+    }
+  }
+
+  @Nested
   @DisplayName("containsKey assertion")
   inner class ContainsKey {
     @Test
@@ -38,16 +56,15 @@ internal class MapAssertions {
 
     @Test
     fun `fails if the subject does not have a matching key`() {
-      fails {
+      val error = fails {
         val subject = emptyMap<Any, Any>()
         expectThat(subject).containsKey("foo")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that {}:\n" +
-            "  ✗ has an entry with the key \"foo\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that {}:\n" +
+          "  ✗ has an entry with the key \"foo\"",
+        error.message
+      )
     }
   }
 
@@ -63,20 +80,19 @@ internal class MapAssertions {
 
     @Test
     fun `fails if the subject does not have a matching key`() {
-      fails {
+      val error = fails {
         val subject =
           mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
         expectThat(subject).containsKeys("foo", "bar", "fnord")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that {\"foo\"=\"bar\", \"baz\"=\"fnord\"…}:\n" +
-            "  ✗ has entries with the keys [\"foo\", \"bar\", \"fnord\"]\n" +
-            "    ✓ has an entry with the key \"foo\"\n" +
-            "    ✗ has an entry with the key \"bar\"\n" +
-            "    ✗ has an entry with the key \"fnord\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that {\"foo\"=\"bar\", \"baz\"=\"fnord\"…}:\n" +
+          "  ✗ has entries with the keys [\"foo\", \"bar\", \"fnord\"]\n" +
+          "    ✓ has an entry with the key \"foo\"\n" +
+          "    ✗ has an entry with the key \"bar\"\n" +
+          "    ✗ has an entry with the key \"fnord\"",
+        error.message
+      )
     }
   }
 
@@ -91,32 +107,30 @@ internal class MapAssertions {
 
     @Test
     fun `fails if the subject does not have a matching key`() {
-      fails {
+      val error = fails {
         val subject = emptyMap<Any, Any>()
         expectThat(subject).hasEntry("foo", "bar")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that {}:\n" +
-            "  ✗ has an entry with the key \"foo\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that {}:\n" +
+          "  ✗ has an entry with the key \"foo\"",
+        error.message
+      )
     }
 
     @Test
     fun `fails if the subject has a different value for the key`() {
-      fails {
+      val error = fails {
         val subject = mapOf("foo" to "bar")
         expectThat(subject).hasEntry("foo", "baz")
-      }.let { e ->
-        assertEquals(
-          "▼ Expect that {\"foo\"=\"bar\"}:\n" +
-            "  ✓ has an entry with the key \"foo\"\n" +
-            "  ▼ entry [\"foo\"]:\n" +
-            "    ✗ is equal to \"baz\" : found \"bar\"",
-          e.message
-        )
       }
+      assertEquals(
+        "▼ Expect that {\"foo\"=\"bar\"}:\n" +
+          "  ✓ has an entry with the key \"foo\"\n" +
+          "  ▼ entry [\"foo\"]:\n" +
+          "    ✗ is equal to \"baz\" : found \"bar\"",
+        error.message
+      )
     }
   }
 }
