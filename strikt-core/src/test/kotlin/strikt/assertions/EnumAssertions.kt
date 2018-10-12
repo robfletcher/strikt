@@ -26,7 +26,7 @@ internal class EnumAssertions {
   }
 }
 
-enum class Pantheon(val king: String, val underworldRuler: String) {
+enum class Pantheon(val ruler: String, val underworldRuler: String) {
   NORSE("Odin", "Hel"),
   GREEK("Zeus", "Hades"),
   ROMAN("Jupiter", "Pluto")

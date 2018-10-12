@@ -118,7 +118,7 @@ internal class Homepage {
     // START homepage_nine
     val subject = Pantheon.NORSE
     expectThat(subject)
-      .get(Pantheon::king) // reference to a property
+      .get(Pantheon::ruler) // reference to a property
       .get { toString() }  // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
@@ -140,7 +140,7 @@ internal class Homepage {
 
   // START homepage_eleven
   val Assertion.Builder<Pantheon>.realm: Assertion.Builder<String>
-    get() = get { "$king to $underworldRuler" }
+    get() = get { "$ruler to $underworldRuler" }
 
   @Test fun `homepage eleven`() { // IGNORE
     val subject = Pantheon.NORSE
