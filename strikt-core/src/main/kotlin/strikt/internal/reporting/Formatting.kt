@@ -22,29 +22,32 @@ private fun Any.withTypeSuffix(typeOf: Any?) =
 internal fun formatValue(value: Any?): Any =
   when (value) {
     null -> "null"
-    is CharSequence -> when (value.length) {
-      in 0..20 -> "\"$value\""
-      else -> "\"${value.substring(0, 20)}...\""
-    }
+    is CharSequence -> "\"${value.truncate()}\""
     is Char -> "'$value'"
-    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(::formatValue)
-    is ByteArray -> "0x${value.toHex()}"
-    is CharArray -> value.map(::formatValue)
-    is ShortArray -> value.map(::formatValue)
-    is IntArray -> value.map(::formatValue)
-    is LongArray -> value.map(::formatValue)
-    is FloatArray -> value.map(::formatValue)
-    is DoubleArray -> value.map(::formatValue)
-    is Array<*> -> value.map(::formatValue)
+    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(
+      ::formatValue
+    ).truncate()
+    is Byte -> "0x${value.toString(16)}"
+    is ByteArray -> "0x${value.toHex()}".truncate()
+    is CharArray -> formatValue(value.toList())
+    is ShortArray -> formatValue(value.toList())
+    is IntArray -> formatValue(value.toList())
+    is LongArray -> formatValue(value.toList())
+    is FloatArray -> formatValue(value.toList())
+    is DoubleArray -> formatValue(value.toList())
+    is Array<*> -> formatValue(value.toList())
     is Class<*> -> value.name
     is Regex -> "/${value.pattern}/"
     is Throwable -> value.javaClass.name
     is CallableReference -> "${formatValue(value.boundReceiver)}::${value.name}"
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
-    else -> value
+    is Map<*, *> -> value.map { (k, v) -> formatValue(k) to formatValue(v) }.toMap().truncate()
+    is Number -> value
+    else -> value.toString().truncate()
   }
 
-private fun Class<*>.preferToString(): Boolean = getMethod("toString").declaringClass == this
+private fun Class<*>.preferToString(): Boolean =
+  getMethod("toString").declaringClass == this
 
 private val hexArray = "0123456789ABCDEF".toCharArray()
 internal fun ByteArray.toHex(): String {
@@ -55,4 +58,56 @@ internal fun ByteArray.toHex(): String {
     hexChars[j * 2 + 1] = hexArray[v and 0x0F]
   }
   return String(hexChars)
+}
+
+internal const val FORMATTED_VALUE_MAX_LENGTH = 40
+
+private fun CharSequence.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH) =
+  when (length) {
+    in 0..maxLength -> this
+    else -> substring(0, maxLength) + "…"
+  }
+
+private fun Iterable<Any>.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH): String {
+  val buffer = StringBuilder("[")
+  val itr = toList().listIterator()
+  while (itr.hasNext()) {
+    val first = !itr.hasPrevious()
+    val e = itr.next()
+    val appendedLength =
+      buffer.length + e.toString().length + if (itr.hasNext()) 3 else 2
+    if (appendedLength >= maxLength) {
+      buffer.append("…")
+      break
+    } else {
+      if (!first) {
+        buffer.append(", ")
+      }
+      buffer.append(e)
+    }
+  }
+  buffer.append("]")
+  return buffer.toString()
+}
+
+private fun Map<Any, Any>.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH): String {
+  val buffer = StringBuilder("{")
+  val itr = toList().listIterator()
+  while (itr.hasNext()) {
+    val first = !itr.hasPrevious()
+    val e = itr.next().let { "${it.first}=${it.second}" }
+    val appendedLength =
+      buffer.length + e.length + if (itr.hasNext()) 3 else 2
+    if (appendedLength >= maxLength) {
+      buffer.append("…")
+      break
+    } else {
+      if (!first) {
+        buffer.append(", ")
+      }
+      buffer.append(e)
+    }
+  }
+  buffer.append("}")
+  return buffer.toString()
 }

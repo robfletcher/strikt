@@ -41,24 +41,23 @@ internal class BeanPropertyAssertions {
       name = "Ziggy",
       dateOfBirth = LocalDate.of(1972, 2, 10)
     )
-    fails {
+    val error = fails {
       expectThat(subject).propertiesAreEqualTo(other)
-    }.let { error ->
-      expectThat(error.message) {
-        isNotNull()
-        isEqualTo(
-          "▼ Expect that Person(David):\n" +
-            "  ✗ is equal field-by-field to Person(Ziggy)\n" +
-            "    ▼ value of property dateOfBirth:\n" +
-            "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
-            "    ▼ value of property id:\n" +
-            "      ✓ is equal to ${subject.id}\n" +
-            "    ▼ value of property image:\n" +
-            "      ✓ array content equals 0x${subject.image.toHex()}\n" +
-            "    ▼ value of property name:\n" +
-            "      ✗ is equal to \"Ziggy\" : found \"David\""
-        )
-      }
+    }
+    expectThat(error.message) {
+      isNotNull()
+      isEqualTo(
+        "▼ Expect that Person(David):\n" +
+          "  ✗ is equal field-by-field to Person(Ziggy)\n" +
+          "    ▼ value of property dateOfBirth:\n" +
+          "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
+          "    ▼ value of property id:\n" +
+          "      ✓ is equal to ${subject.id}\n" +
+          "    ▼ value of property image:\n" +
+          "      ✓ array content equals 0x${subject.image.toHex()}\n" +
+          "    ▼ value of property name:\n" +
+          "      ✗ is equal to \"Ziggy\" : found \"David\""
+      )
     }
   }
 
@@ -68,8 +67,8 @@ internal class BeanPropertyAssertions {
     expectThat(fails {
       expectThat(subject.name).isEqualTo("Ziggy")
     }).isA<AssertionFailedError>().and {
-      chain { it.actual.value }.isNull()
-      chain { it.isActualDefined }.isTrue()
+      get { actual.value }.isNull()
+      get { isActualDefined }.isTrue()
     }
   }
 
@@ -86,27 +85,27 @@ internal class BeanPropertyAssertions {
       LocalDate.of(1972, 2, 10),
       subject.image
     )
-    fails {
+    val error = fails {
       expectThat(subject).propertiesAreEqualTo(other)
-    }.let { error ->
-      expectThat(error.message) {
-        isNotNull()
-        isEqualTo(
-          "▼ Expect that Person(David):\n" +
-            "  ✗ is equal field-by-field to Person(Ziggy)\n" +
-            "    ▼ value of property dateOfBirth:\n" +
-            "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
-            "    ▼ value of property id:\n" +
-            "      ✓ is equal to ${subject.id}\n" +
-            "    ▼ value of property image:\n" +
-            "      ✓ array content equals 0x${subject.image.toHex()}\n" +
-            "    ▼ value of property name:\n" +
-            "      ✗ is equal to \"Ziggy\" : found \"David\""
-        )
-      }
+    }
+    expectThat(error.message) {
+      isNotNull()
+      isEqualTo(
+        "▼ Expect that Person(David):\n" +
+          "  ✗ is equal field-by-field to Person(Ziggy)\n" +
+          "    ▼ value of property dateOfBirth:\n" +
+          "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
+          "    ▼ value of property id:\n" +
+          "      ✓ is equal to ${subject.id}\n" +
+          "    ▼ value of property image:\n" +
+          "      ✓ array content equals 0x${subject.image.toHex()}\n" +
+          "    ▼ value of property name:\n" +
+          "      ✗ is equal to \"Ziggy\" : found \"David\""
+      )
     }
   }
 
+  @Suppress("unused", "MemberVisibilityCanBePrivate")
   internal abstract class Animal(
     val name: String,
     val legs: Int,
@@ -115,6 +114,7 @@ internal class BeanPropertyAssertions {
     override fun toString() = "${javaClass.simpleName}($name)"
   }
 
+  @Suppress("unused")
   internal class Cat(name: String, val breed: String, legs: Int, tails: Int) :
     Animal(name, legs, tails)
 

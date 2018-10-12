@@ -49,3 +49,14 @@ fun <T : Comparable<T>> Builder<T>.isLessThanOrEqualTo(expected: T): Builder<T> 
       else -> fail()
     }
   }
+
+/**
+ * Asserts that the subject is in the [expected] range.
+ */
+fun <T : Comparable<T>> Builder<T>.isIn(expected: ClosedRange<T>): Builder<T> =
+  assert("is in the range %s", expected) {
+    when (it) {
+      in expected -> pass()
+      else -> fail()
+    }
+  }

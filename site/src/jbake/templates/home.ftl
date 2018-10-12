@@ -196,8 +196,8 @@ expectThat(subject) {
           </div>
           <div class="column is-8">
         <pre class="notification content is-medium is-dark"><code class="language-kotlin">expect {
-  that(person1).map { it.name }.isEqualTo("David")
-  that(person2).map { it.name }.isEqualTo("Ziggy")
+  that(person1.name).isEqualTo("David")
+  that(person2.name).isEqualTo("Ziggy")
 }</code></pre>
           </div>
         </section>
@@ -226,14 +226,14 @@ expectThat(subject)            // type: Assertion&lt;Any?&gt;
           </div>
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <p>Assertions can "map" to properties and method results in a type safe way:</p>
+              <p>Assertions can get properties and method results in a type safe way:</p>
             </div>
           </div>
           <div class="column is-8">
           <pre class="notification content is-medium is-dark"><code class="language-kotlin">val subject = Pantheon.ERIS
 expectThat(subject)
-  .map(Deity::realm)     // reference to a property
-  .map { it.toString() } // return type of a method call
+  .get(Deity::realm)     // reference to a property
+  .get { toString() } // return type of a method call
   .isEqualTo("discord and confusion")</code></pre>
           </div>
         </section>
@@ -265,12 +265,12 @@ expectThat(LocalDate.of(2018, 5, 15)).isStTibsDay()</code></pre>
           </div>
           <div class="column is-4 has-text-right-tablet">
             <div class="notification content is-medium">
-              <p>Custom mappings are extension properties</p>
+              <p>Custom mappings are extension functions or properties</p>
             </div>
           </div>
           <div class="column is-8">
         <pre class="notification content is-medium is-dark"><code class="language-kotlin">val Assertion.Builder&lt;Deity&gt;.realm: Assertion.Builder&lt;String&gt;
-  get() = map(Deity::realm)
+  get() = get(Deity::realm)
 
 val subject = Pantheon.ERIS
 expectThat(subject)

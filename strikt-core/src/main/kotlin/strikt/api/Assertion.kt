@@ -129,8 +129,24 @@ interface Assertion {
      * `false` (the assertion fails).
      * @return this assertion builder, in order to facilitate a fluent API.
      */
-    // TODO: this name sucks
+    @Deprecated(
+      "Use assertThat instead",
+      replaceWith = ReplaceWith("assertThat(description, assert)")
+    )
     fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
+      assertThat(description, assert)
+
+    /**
+     * Evaluates a boolean condition.
+     * This is useful for implementing the simplest types of assertion function.
+     *
+     * @param description a description for the condition the assertion
+     * evaluates.
+     * @param assert a function that returns `true` (the assertion passes) or
+     * `false` (the assertion fails).
+     * @return this assertion builder, in order to facilitate a fluent API.
+     */
+    fun assertThat(description: String, assert: (T) -> Boolean): Builder<T> =
       apply {
         assert(description) {
           if (assert(it)) pass() else fail()
@@ -148,7 +164,29 @@ interface Assertion {
      * `false` (the assertion fails).
      * @return this assertion builder, in order to facilitate a fluent API.
      */
+    @Deprecated(
+      "Use assertThat instead",
+      replaceWith = ReplaceWith("assertThat(description, expected, assert)")
+    )
     fun passesIf(
+      description: String,
+      expected: Any?,
+      assert: (T) -> Boolean
+    ): Builder<T> =
+      assertThat(description, expected, assert)
+
+    /**
+     * Evaluates a boolean condition.
+     * This is useful for implementing the simplest types of assertion function.
+     *
+     * @param description a description for the condition the assertion
+     * evaluates.
+     * @param expected the expected value of a comparison.
+     * @param assert a function that returns `true` (the assertion passes) or
+     * `false` (the assertion fails).
+     * @return this assertion builder, in order to facilitate a fluent API.
+     */
+    fun assertThat(
       description: String,
       expected: Any?,
       assert: (T) -> Boolean
@@ -175,24 +213,24 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
+    fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
       when (function) {
         is KProperty<*> ->
-          chain("value of property ${function.name}", function)
+          get("value of property ${function.name}", function)
         is KFunction<*> ->
-          chain("return value of ${function.name}", function)
-        is CallableReference -> chain(
+          get("return value of ${function.name}", function)
+        is CallableReference -> get(
           "value of ${function.propertyName}",
           function
         )
         else -> {
           val fieldName = try {
             val line = FilePeek.getCallerFileInfo().line
-            ParsedMapInstruction(line).body.substringAfter("it.")
+            ParsedMapInstruction(line).body.trim()
           } catch (e: Exception) {
             "%s"
           }
-          chain(fieldName, function)
+          get(fieldName, function)
         }
       }
 
@@ -206,10 +244,36 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
+    fun <R> get(
+      description: String,
+      function: T.() -> R
+    ): DescribeableBuilder<R>
+
+    /**
+     * Deprecated form of [get]`((T) -> R)`.
+     *
+     * @see get((T) -> R)
+     */
+    @Deprecated(
+      "Use get instead",
+      replaceWith = ReplaceWith("get(function)")
+    )
+    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
+      get(function)
+
+    /**
+     * Deprecated form of [get]`(String, (T) -> R)`.
+     *
+     * @see get(String (T) -> R)
+     */
+    @Deprecated(
+      "Use get instead",
+      replaceWith = ReplaceWith("get(description, function)")
+    )
     fun <R> chain(
       description: String,
       function: (T) -> R
-    ): DescribeableBuilder<R>
+    ): DescribeableBuilder<R> = get(description, function)
 
     /**
      * Reverses any assertions chained after this method.
@@ -225,8 +289,11 @@ interface Assertion {
      * The main use for this method is after [strikt.assertions.isNotNull] or
      * [strikt.assertions.isA] in order that a group of assertions can more
      * conveniently be performed on the narrowed subject type.
+     *
+     * This method may be used as an infix function which tends to enhance
+     * readability when it directly follows a lambda.
      */
-    fun and(
+    infix fun and(
       assertions: Builder<T>.() -> Unit
     ): Builder<T>
 

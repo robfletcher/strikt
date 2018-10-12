@@ -1,23 +1,22 @@
+@file:Suppress("KDocMissingDocumentation")
+
 import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension.DestinationCopySpec
 import org.apache.tools.ant.filters.ConcatFilter
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.jbake.gradle.JBakeTask
+import org.jbake.gradle.JBakeServeTask
 
 plugins {
   id("org.ajoberstar.github-pages")
-  id("org.jbake.site") version "1.2.0"
+  id("org.jbake.site") version "1.4.0"
 }
 
 configurations.jbake.resolutionStrategy {
   activateDependencyLocking()
 }
 
-dependencies {
-  jbake("com.orientechnologies:orientdb-core:2.2.34+")
-}
-
 jbake {
-  flexmarkVersion = "0.34.28"
+  flexmarkVersion = "0.34.48"
 }
 
 val copyApiDocs = task<Copy>("copyApiDocs") {
@@ -59,8 +58,12 @@ val copyApiDocs = task<Copy>("copyApiDocs") {
   }
 }
 
-tasks.withType<JBakeTask>() {
+val bake by tasks.getting(JBakeTask::class) {
   dependsOn(copyApiDocs)
+}
+
+val bakePreview by tasks.getting(JBakeServeTask::class) {
+  dependsOn(bake)
 }
 
 tasks.getByName("clean").doFirst {

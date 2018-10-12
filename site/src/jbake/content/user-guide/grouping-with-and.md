@@ -18,7 +18,7 @@ For example, if the declared type of an assertion subject is nullable it can be 
 
 The same is true when the subject type is overly broad and you need to narrow the type with `isA<T>` in order to use assertion functions that are specific to the runtime type.
 
-The `and` method is very helpful in these scenarios.
+The `and` method is helpful in these scenarios.
 For example:
 
 ```kotlin

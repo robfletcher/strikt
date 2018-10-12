@@ -17,13 +17,13 @@ fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
  * Asserts that the subject collection is empty.
  */
 fun <T : Collection<E>, E> Builder<T>.isEmpty(): Builder<T> =
-  passesIf("is empty", Collection<E>::isEmpty)
+  assertThat("is empty", Collection<E>::isEmpty)
 
 /**
  * Asserts that the subject collection is _not_ empty.
  */
 fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
-  passesIf("is not empty", Collection<E>::isNotEmpty)
+  assertThat("is not empty", Collection<E>::isNotEmpty)
 
 /**
  * Maps an assertion on a collection to an assertion on its size.
@@ -31,4 +31,4 @@ fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
  * @see Collection.size
  */
 val <T : Collection<*>> Builder<T>.size: Builder<Int>
-  get() = chain(Collection<*>::size)
+  get() = get(Collection<*>::size)

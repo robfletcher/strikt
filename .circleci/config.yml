@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: circleci/openjdk:10-jdk
+  - image: circleci/openjdk:11-jdk
   working_directory: ~/repo
   environment:
     JVM_OPTS: -Xmx3200m
@@ -24,7 +24,7 @@ defaults: &buildsteps
 
 version: 2
 jobs:
-  build-java10:
+  build-java11:
     <<: *defaults
     <<: *buildsteps
 
@@ -40,6 +40,12 @@ jobs:
       - image: circleci/openjdk:9-jdk
     <<: *buildsteps
 
+  build-java10:
+    <<: *defaults
+    docker:
+    - image: circleci/openjdk:10-jdk
+    <<: *buildsteps
+
   release:
     <<: *defaults
     steps:
@@ -51,15 +57,20 @@ jobs:
     docker:
     - image: circleci/openjdk:8-jdk
     steps:
-      - checkout
-      - run: ./gradlew publishGhPages --stacktrace
+    - run:
+        name: Clone with HTTPS
+        working_directory: /home/circleci/repo
+        command: |
+          git clone https://github.com/robfletcher/strikt.git .
+    - run:
+        working_directory: /home/circleci/repo
+        command: ./gradlew publishGhPages --stacktrace
 
   upgradeLocks:
     <<: *defaults
     steps:
       - checkout
-      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks
-      - run: git diff
+      - run: ./gradlew :strikt-core:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
 
 #  pitest:
 #    <<: *defaults
@@ -96,6 +107,12 @@ workflows:
               ignore: gh-pages
             tags:
               only: /.*/
+      - build-java11:
+          filters:
+            branches:
+              ignore: gh-pages
+            tags:
+              only: /.*/
 #      - pitest:
 #          requires:
 #            - build-java8
@@ -109,6 +126,7 @@ workflows:
             - build-java8
             - build-java9
             - build-java10
+            - build-java11
           filters:
             tags:
               only: /^v.*/

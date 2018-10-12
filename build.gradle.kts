@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_6
 import org.gradle.api.JavaVersion.VERSION_1_8
@@ -55,6 +57,13 @@ subprojects {
         sourceCompatibility = VERSION_1_6
       }
 
+      tasks.withType<KotlinCompile> {
+        kotlinOptions {
+          languageVersion = "1.2"
+          freeCompilerArgs += "-Xprogressive"
+        }
+      }
+
       extensions.getByType(KotlinJvmProjectExtension::class.java).apply {
         experimental.coroutines = Coroutines.ENABLE
       }
@@ -62,7 +71,6 @@ subprojects {
       // build library code for JDK 1.6
       val compileKotlin by tasks.getting(KotlinCompile::class) {
         kotlinOptions {
-          languageVersion = "1.2"
           jvmTarget = VERSION_1_6.toString()
         }
       }
@@ -70,7 +78,6 @@ subprojects {
       // build test code for JDK 1.8
       val compileTestKotlin by tasks.getting(KotlinCompile::class) {
         kotlinOptions {
-          languageVersion = "1.2"
           jvmTarget = VERSION_1_8.toString()
         }
       }
@@ -89,9 +96,6 @@ subprojects {
       dependencies {
         "testImplementation"("org.junit.jupiter:junit-jupiter-api:+")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:+")
-        "testRuntimeOnly"("org.junit.platform:junit-platform-launcher:+") {
-          because("enables running in IntelliJ using JUnit runner")
-        }
       }
       tasks.withType<Test> {
         systemProperty("junit.jupiter.execution.parallel.enabled", "false")

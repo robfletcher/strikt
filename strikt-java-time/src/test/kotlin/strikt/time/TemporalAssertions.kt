@@ -1,4 +1,4 @@
-package strikt.assertions
+package strikt.time
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.DynamicTest
@@ -6,8 +6,9 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
-import strikt.fails
+import strikt.assertions.isEqualTo
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
@@ -95,7 +96,7 @@ internal class TemporalAssertions {
         Pair(YearMonth.from(today), today.minusMonths(1))
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          fails {
+          assertThrows<AssertionFailedError> {
             expectThat(subject).isBefore(expected)
           }
         }
@@ -173,7 +174,7 @@ internal class TemporalAssertions {
         Pair(YearMonth.from(today), today.plusMonths(1))
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
-          fails {
+          assertThrows<AssertionFailedError> {
             expectThat(subject).isAfter(expected)
           }
         }

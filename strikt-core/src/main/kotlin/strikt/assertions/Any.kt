@@ -114,8 +114,8 @@ fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
         .propertyDescriptors
         .filter { it.name != "class" }
         .forEach { property ->
-          val mappedAssertion = chain("value of property ${property.name}") {
-            property.readMethod(it)
+          val mappedAssertion = get("value of property ${property.name}") {
+            property.readMethod(this)
           }
           val otherValue = property.readMethod(other)
           @Suppress("UNCHECKED_CAST")

@@ -7,7 +7,7 @@ import strikt.api.Assertion.Builder
  * assertion builder wrapping the result.
  */
 fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
-  chain { it.map(function) }
+  get { map(function) }
 
 /**
  * Maps this assertion to an assertion over the first element in the subject
@@ -16,7 +16,27 @@ fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable
  * @see Iterable.first
  */
 fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
-  chain("first element %s") { it.first() }
+  get("first element %s") { first() }
+
+/**
+ * Maps this assertion to an assertion over the single element in the subject
+ * iterable.
+ *
+ * @see Iterable.single
+ */
+fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> {
+  assertThat("has only one element") { it.size == 1 }
+  return get("single element %s") { single() }
+}
+
+/**
+ * Maps this assertion to an assertion over the first element in the subject
+ * iterable that matches [predicate].
+ *
+ * @see Iterable.first
+ */
+fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Builder<E> =
+  get("first matching element %s") { first(predicate) }
 
 /**
  * Maps this assertion to an assertion over the last element in the subject
@@ -25,7 +45,16 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  * @see Iterable.last
  */
 fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
-  chain("last element %s") { it.last() }
+  get("last element %s") { last() }
+
+/**
+ * Maps this assertion to an assertion over a flattened list of the results of
+ * [transform] for each element in the subject iterable.
+ *
+ * @see Iterable.flatMap
+ */
+fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> =
+  get { flatMap(transform) }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
@@ -33,7 +62,7 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
 fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("all elements match:") { subject ->
     subject.forEach { element ->
-      chain("%s") { element }.apply(predicate)
+      get("%s") { element }.apply(predicate)
     }
   } then {
     if (allPassed) pass() else fail()
@@ -46,7 +75,7 @@ fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("at least one element matches:") { subject ->
     subject.forEach { element ->
-      chain("%s") { element }.apply(predicate)
+      get("%s") { element }.apply(predicate)
     }
   } then {
     if (anyPassed) pass() else fail()
@@ -58,7 +87,7 @@ fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Build
 fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEach { element ->
-      chain("%s") { element }.apply(predicate)
+      get("%s") { element }.apply(predicate)
     }
   } then {
     if (allFailed) pass() else fail()

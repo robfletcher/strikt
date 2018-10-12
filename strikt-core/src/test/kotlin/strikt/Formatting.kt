@@ -13,6 +13,7 @@ import strikt.assertions.isNotEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
+import strikt.internal.reporting.FORMATTED_VALUE_MAX_LENGTH
 
 @DisplayName("error message formatting")
 internal class Formatting {
@@ -101,13 +102,14 @@ internal class Formatting {
     val toStringOutput = "useful toString info"
     val iteratorOutput = "less useful iterator output"
 
-    class IterableWithToString : Iterable<String> {
-      override fun iterator(): Iterator<String> = listOf(iteratorOutput).iterator()
+    val subject = object : Iterable<String> {
+      override fun iterator(): Iterator<String> =
+        listOf(iteratorOutput).iterator()
+
       override fun toString(): String = toStringOutput
     }
 
     val e = fails {
-      val subject = IterableWithToString()
       expectThat(subject) { isNotEqualTo(subject) }
     }
 
@@ -121,12 +123,12 @@ internal class Formatting {
   fun `iterable is used when there is no own toString method`() {
     val iteratorOutput = "useful iterable info"
 
-    class IterableWithToString : Iterable<String> {
-      override fun iterator(): Iterator<String> = listOf(iteratorOutput).iterator()
+    val subject = object : Iterable<String> {
+      override fun iterator(): Iterator<String> =
+        listOf(iteratorOutput).iterator()
     }
 
     val e = fails {
-      val subject = IterableWithToString()
       expectThat(subject) { isNotEqualTo(subject) }
     }
 
@@ -134,29 +136,66 @@ internal class Formatting {
   }
 
   @Test
-  fun `toString method prints value when it has at most 20 characters`() {
-    val toStringValue = "twenty chars string!"
-    val expectedMessage = "▼ Expect that \"twenty chars string!\":\n"
+  fun `toString method prints value when it has at most 40 characters`() {
+    val toStringValue = "forty chars string!"
+    val expectedMessage = "▼ Expect that \"forty chars string!\":\n"
 
     val error = fails {
-      class Text { override fun toString() = toStringValue }
-      expectThat(Text().toString()).hasLength(10)
+      val text = object {
+        override fun toString() = toStringValue
+      }
+      expectThat(text.toString()).hasLength(10)
     }
 
     assertTrue(error.message.orEmpty().contains(expectedMessage))
   }
 
   @Test
-  fun `toString method trims value when it has more than 20 characters`() {
+  fun `toString method trims value when it has more than 40 characters`() {
     val actualToString = "0".repeat(141)
-    val expectedToString = "0".repeat(20)
+    val expectedToString = "0".repeat(FORMATTED_VALUE_MAX_LENGTH)
     val expectedMessage =
-      "▼ Expect that \"$expectedToString...\":\n" +
+      "▼ Expect that \"$expectedToString…\":\n" +
         "  ✗ has length 140 : found 141"
 
     val error = fails {
-      class Text { override fun toString() = actualToString }
-      expectThat(Text().toString()).hasLength(140)
+      val text = object {
+        override fun toString() = actualToString
+      }
+      expectThat(text.toString()).hasLength(140)
+    }
+
+    assertEquals(expectedMessage, error.message)
+  }
+
+  @Test
+  fun `failure message trims a list value when it has more than 40 characters`() {
+    val subject = ('A'..'Z').toList().map { it.toString() }
+    val expectedToString =
+      "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\"…]"
+    val expectedMessage =
+      "▼ Expect that $expectedToString:\n" +
+        "  ✗ has size 25 : found 26"
+
+    val error = fails {
+      expectThat(subject).hasSize(25)
+    }
+
+    assertEquals(expectedMessage, error.message)
+  }
+
+  @Test
+  fun `failure message trims a map value when it has more than 40 characters`() {
+    val subject =
+      ('A'..'Z').toList().map { it.toString() to it.toByte() }.toMap()
+    val expectedToString =
+      "{\"A\"=0x41, \"B\"=0x42, \"C\"=0x43…}"
+    val expectedMessage =
+      "▼ Expect that $expectedToString:\n" +
+        "  ✗ has size 25 : found 26"
+
+    val error = fails {
+      expectThat(subject).hasSize(25)
     }
 
     assertEquals(expectedMessage, error.message)

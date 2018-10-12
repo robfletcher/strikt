@@ -48,6 +48,8 @@
             class="fas fa-book"></i></span><span>API</span></a>
           <div class="navbar-dropdown is-right">
             <a class="navbar-item" href="/api/strikt-core">strikt-core</a>
+            <a class="navbar-item"
+               href="/api/strikt-java-time">strikt-java-time</a>
             <a class="navbar-item" href="/api/strikt-protobuf">strikt-protobuf</a>
           </div>
         </div>

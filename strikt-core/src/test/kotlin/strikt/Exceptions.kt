@@ -56,7 +56,7 @@ class Exceptions {
               "  ✗ is upper case\n" +
               "  ✓ starts with \"f\""
           )
-          chain { it.failures }
+          get { failures }
             .hasSize(1)
             .first()
             .isA<AssertionFailedError>()
@@ -72,7 +72,7 @@ class Exceptions {
   fun `chains involving "and" raise a single compound exception`() {
     fails {
       expectThat("fnord")
-        .chain(String::length)
+        .get(String::length)
         .isGreaterThan(0)
         .and {
           isEqualTo(1)
@@ -92,7 +92,7 @@ class Exceptions {
               "    ✗ is not equal to 5"
           )
         }
-        .chain { it.failures }
+        .get { failures }
         .hasSize(3)
         .and {
           first()
@@ -131,7 +131,7 @@ class Exceptions {
   fun `blocks involving "and" raise a single compound exception`() {
     fails {
       expectThat("fnord") {
-        chain(String::length)
+        get(String::length)
           .isGreaterThan(0)
           .and {
             isEqualTo(1)
@@ -152,7 +152,7 @@ class Exceptions {
               "    ✗ is not equal to 5"
           )
         }
-        .chain { it.failures }
+        .get { failures }
         .hasSize(1)
         .first()
         .isA<AssertionFailedError>()
@@ -201,7 +201,7 @@ class Exceptions {
       .let { error ->
         expectThat(error)
           .isA<CompoundAssertionFailure>()
-          .chain { it.failures }
+          .get { failures }
           .hasSize(2)
           .and {
             first()
@@ -238,8 +238,8 @@ class Exceptions {
       expectThat(error)
         .isA<AssertionFailedError>()
         .and {
-          chain(AssertionFailedError::isExpectedDefined).isFalse()
-          chain(AssertionFailedError::isActualDefined).isFalse()
+          get(AssertionFailedError::isExpectedDefined).isFalse()
+          get(AssertionFailedError::isActualDefined).isFalse()
         }
     }
   }
@@ -255,10 +255,10 @@ class Exceptions {
       expectThat(error)
         .isA<AssertionFailedError>()
         .and {
-          chain(AssertionFailedError::isExpectedDefined).isTrue()
-          chain { it.expected.value }.isEqualTo("something")
-          chain(AssertionFailedError::isActualDefined).isTrue()
-          chain { it.actual.value }.isEqualTo("something else")
+          get(AssertionFailedError::isExpectedDefined).isTrue()
+          get { expected.value }.isEqualTo("something")
+          get(AssertionFailedError::isActualDefined).isTrue()
+          get { actual.value }.isEqualTo("something else")
         }
     }
   }
