@@ -1,0 +1,43 @@
+<nav class="navbar is-spaced is-fixed-top is-black" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="{{ site.baseUrl }}">
+        <img src="{{ site.baseUrl }}/assets/images/logo-white-28.png" alt="Strikt">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" id="navMenu">
+      <div class="navbar-start">
+        {% include 'includes/navbar-search' %}
+      </div>
+      <div class="navbar-end">
+
+      {% for menuItem in theme.menu.getMenuItems(page) %}
+      {% if menuItem.hasChildren() %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            <span class="icon has-text-info"><i class="fas fa-{{ menuItem.icon }}"></i></span>
+            <span>{{ menuItem.title }}</span>
+          </a>
+          <div class="navbar-dropdown is-right">
+          {% for childLink in menuItem.children %}
+            <a class="navbar-item" href="{{ childLink.link }}">{{ childLink.title }}</a>
+          {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <a class="navbar-item" href="{{ menuItem.link }}">
+          <span class="icon has-text-info"><i class="fas fa-{{ menuItem.icon }}"></i></span>
+          <span>{{ menuItem.title }}</span>
+        </a>
+      {% endif %}
+      {% endfor %}
+
+      </div>
+    </div>
+  </div>
+</nav>

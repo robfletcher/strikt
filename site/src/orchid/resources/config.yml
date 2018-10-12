@@ -1,0 +1,87 @@
+site:
+  about:
+    siteName: Strikt
+    siteDescription: Strikt is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
+
+theme:
+  social:
+    other:
+    - label: 'GitHub'
+      icon: 'fa-github'
+      link: 'https://github.com/robfletcher/strikt/'
+      buttonColor: 'dark'
+    - label: 'Slack'
+      icon: 'fa-slack-hash'
+      link: 'https://kotlinlang.slack.com/messages/CAR7KJ96J'
+      buttonColor: 'danger'
+    - label: 'Twitter'
+      icon: 'fa-twitter'
+      link: 'https://twitter.com/stri_kt'
+      buttonColor: 'info'
+  menu:
+  - type: 'link'
+    title: 'Home'
+    url: '/'
+    icon: 'home'
+  - type: 'page'
+    title: 'About'
+    itemId: 'About Strikt'
+    icon: 'info-circle'
+  - type: 'wiki'
+    section: 'user-guide'
+    icon: 'book'
+    asSubmenu: true
+    submenuTitle: 'User Guide'
+  - type: 'submenu'
+    title: 'API'
+    icon: 'book'
+    menu:
+    - type: 'page'
+      title: 'Strikt Core'
+      itemId: 'strikt.api'
+    - type: 'page'
+      title: 'Strikt Assertions'
+      itemId: 'strikt.assertions'
+    - type: 'page'
+      title: 'Strikt Protobuf'
+      itemId: 'strikt.protobuf'
+    - type: 'page'
+      title: 'Strikt Time'
+      itemId: 'strikt.time'
+    - type: 'page'
+      itemId: 'Changelog'
+
+allPages:
+  components:
+  - type: 'pageContent'
+
+wiki:
+  sections:
+  - key: 'user-guide'
+    title: 'User Guide'
+    includeIndexInPageTitle: false
+
+services:
+  # Uncomment this block to temporarily disable Kotlin docs generation. Dokka
+  #   takes a few seconds to start up, which makes rapid iteration a bit painful,
+  #   so it may be helpful to disable it when making changes to the site.
+  #  generators:
+  #    disabled:
+  #      - 'kotlindoc'
+  publications:
+    stages:
+    # uncomment the following line line to break the build and prevent deploys when
+    # there is no changelog entry for the current version.
+    #    - type: requireChangelogVersion
+    - type: ghPages
+      branch: gh-pages
+      latestDirName: latest
+      publishType: CleanBranch
+      username: robfletcher
+      repo: strikt
+
+kotlindoc:
+  sourceDirs:
+  - '../../../../strikt-core/src/main/kotlin/'
+  - '../../../../strikt-protobuf/src/main/kotlin/'
+  - '../../../../strikt-java-time/src/main/kotlin/'

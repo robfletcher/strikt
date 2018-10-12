@@ -1,0 +1,5 @@
+{% extends 'layouts/index' %}
+
+{% block contentMain %}
+{% page %}
+{% endblock %}

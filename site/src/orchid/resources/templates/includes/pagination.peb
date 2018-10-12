@@ -1,0 +1,16 @@
+{% if page.next is not empty or page.previous is not empty %}
+<nav class="pagination is-medium" role="navigation" aria-label="pagination">
+  <a class="pagination-previous button is-large is-link is-outlined"
+  {% if page.previous is not empty %} href="{{ page.previous }}" {% else %}disabled{% endif %}>
+      <span class="icon">
+        <i class="fas fa-arrow-left"></i>
+      </span>
+  </a>
+  <a class="pagination-next button is-large is-link is-outlined"
+  {% if page.next is not empty %} href="{{ page.next }}" {% else %}disabled{% endif %}>
+      <span class="icon">
+        <i class="fas fa-arrow-right"></i>
+      </span>
+  </a>
+</nav>
+{% endif %}

@@ -230,3 +230,6 @@ internal class Mapping {
     }
   }
 }
+
+data class Person(val name: String, val birthDate: LocalDate = LocalDate.now())
+data class Album(val name: String)
