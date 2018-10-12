@@ -24,7 +24,7 @@ if (tag != null) {
       consumerSecret = System.getenv("TWITTER_CONSUMER_SECRET")
       accessToken = System.getenv("TWITTER_ACCESS_TOKEN")
       accessTokenSecret = System.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-      message = "Strikt $tag $releaseName is available. https://strikt.io"
+      message = "Strikt $tag $releaseName is available. https://strikt.io\n\nRelease notes: https://github.com/robfletcher/strikt/releases/$tag"
     }
 
     val createTweet by tasks.getting(TwitterUpdate::class)
