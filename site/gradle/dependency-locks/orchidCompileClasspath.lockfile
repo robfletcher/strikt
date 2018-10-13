@@ -35,7 +35,7 @@ com.vladsch.flexmark:flexmark:0.34.32
 commons-io:commons-io:2.6
 io.bit3:jsass:5.7.3
 io.github.classgraph:classgraph:4.2.1
-io.github.javaeden.orchid:OrchidCore:0.12.7
+io.github.javaeden.orchid:OrchidCore:0.12.8
 io.pebbletemplates:pebble:3.0.4
 javax.inject:javax.inject:1
 javax.validation:validation-api:2.0.1.Final
