@@ -1,19 +1,18 @@
 package strikt
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains
-import strikt.assertions.hasLength
 import strikt.assertions.hasSize
+import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 import strikt.assertions.isNotNull
+import strikt.assertions.isNullOrEmpty
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
-import strikt.internal.reporting.FORMATTED_VALUE_MAX_LENGTH
 
 @DisplayName("error message formatting")
 internal class Formatting {
@@ -136,68 +135,19 @@ internal class Formatting {
   }
 
   @Test
-  fun `toString method prints value when it has at most 40 characters`() {
-    val toStringValue = "forty chars string!"
-    val expectedMessage = "▼ Expect that \"forty chars string!\":\n"
+  fun `newlines are stripped from string values in failure messages`() {
+    val subject = """a string
+      |with
+      |line breaks
+    """.trimMargin()
 
-    val error = fails {
-      val text = object {
-        override fun toString() = toStringValue
-      }
-      expectThat(text.toString()).hasLength(10)
+    val e = fails {
+      expectThat(subject).isNullOrEmpty()
     }
 
-    assertTrue(error.message.orEmpty().contains(expectedMessage))
-  }
-
-  @Test
-  fun `toString method trims value when it has more than 40 characters`() {
-    val actualToString = "0".repeat(141)
-    val expectedToString = "0".repeat(FORMATTED_VALUE_MAX_LENGTH)
-    val expectedMessage =
-      "▼ Expect that \"$expectedToString…\":\n" +
-        "  ✗ has length 140 : found 141"
-
-    val error = fails {
-      val text = object {
-        override fun toString() = actualToString
-      }
-      expectThat(text.toString()).hasLength(140)
-    }
-
-    assertEquals(expectedMessage, error.message)
-  }
-
-  @Test
-  fun `failure message trims a list value when it has more than 40 characters`() {
-    val subject = ('A'..'Z').toList().map { it.toString() }
-    val expectedToString =
-      "[\"A\", \"B\", \"C\", \"D\", \"E\", \"F\", \"G\"…]"
-    val expectedMessage =
-      "▼ Expect that $expectedToString:\n" +
-        "  ✗ has size 25 : found 26"
-
-    val error = fails {
-      expectThat(subject).hasSize(25)
-    }
-
-    assertEquals(expectedMessage, error.message)
-  }
-
-  @Test
-  fun `failure message trims a map value when it has more than 40 characters`() {
-    val subject =
-      ('A'..'Z').toList().map { it.toString() to it.toByte() }.toMap()
-    val expectedToString =
-      "{\"A\"=0x41, \"B\"=0x42, \"C\"=0x43…}"
-    val expectedMessage =
-      "▼ Expect that $expectedToString:\n" +
-        "  ✗ has size 25 : found 26"
-
-    val error = fails {
-      expectThat(subject).hasSize(25)
-    }
-
-    assertEquals(expectedMessage, error.message)
+    expectThat(e.message).isEqualTo(
+      "▼ Expect that \"a string with line breaks\":\n" +
+        "  ✗ is null or empty"
+    )
   }
 }

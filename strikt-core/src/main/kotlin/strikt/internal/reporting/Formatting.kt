@@ -22,11 +22,9 @@ private fun Any.withTypeSuffix(typeOf: Any?) =
 internal fun formatValue(value: Any?): Any =
   when (value) {
     null -> "null"
-    is CharSequence -> "\"${value.truncate()}\""
+    is CharSequence -> "\"${value.normalize()}\""
     is Char -> "'$value'"
-    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(
-      ::formatValue
-    ).truncate()
+    is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(::formatValue)
     is Byte -> "0x${value.toString(16)}"
     is ByteArray -> "0x${value.toHex()}".truncate()
     is CharArray -> formatValue(value.toList())
@@ -41,7 +39,7 @@ internal fun formatValue(value: Any?): Any =
     is Throwable -> value.javaClass.name
     is CallableReference -> "${formatValue(value.boundReceiver)}::${value.name}"
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
-    is Map<*, *> -> value.map { (k, v) -> formatValue(k) to formatValue(v) }.toMap().truncate()
+    is Map<*, *> -> value.map { (k, v) -> formatValue(k) to formatValue(v) }.toMap()
     is Number -> value
     else -> value.toString().truncate()
   }
@@ -62,52 +60,11 @@ internal fun ByteArray.toHex(): String {
 
 internal const val FORMATTED_VALUE_MAX_LENGTH = 40
 
+private fun CharSequence.normalize() =
+  replace("\\n".toRegex(), " ")
+
 private fun CharSequence.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH) =
   when (length) {
     in 0..maxLength -> this
     else -> substring(0, maxLength) + "…"
   }
-
-private fun Iterable<Any>.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH): String {
-  val buffer = StringBuilder("[")
-  val itr = toList().listIterator()
-  while (itr.hasNext()) {
-    val first = !itr.hasPrevious()
-    val e = itr.next()
-    val appendedLength =
-      buffer.length + e.toString().length + if (itr.hasNext()) 3 else 2
-    if (appendedLength >= maxLength) {
-      buffer.append("…")
-      break
-    } else {
-      if (!first) {
-        buffer.append(", ")
-      }
-      buffer.append(e)
-    }
-  }
-  buffer.append("]")
-  return buffer.toString()
-}
-
-private fun Map<Any, Any>.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH): String {
-  val buffer = StringBuilder("{")
-  val itr = toList().listIterator()
-  while (itr.hasNext()) {
-    val first = !itr.hasPrevious()
-    val e = itr.next().let { "${it.first}=${it.second}" }
-    val appendedLength =
-      buffer.length + e.length + if (itr.hasNext()) 3 else 2
-    if (appendedLength >= maxLength) {
-      buffer.append("…")
-      break
-    } else {
-      if (!first) {
-        buffer.append(", ")
-      }
-      buffer.append(e)
-    }
-  }
-  buffer.append("}")
-  return buffer.toString()
-}
