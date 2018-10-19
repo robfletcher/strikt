@@ -41,7 +41,7 @@ internal fun formatValue(value: Any?): Any =
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
     is Map<*, *> -> value.map { (k, v) -> formatValue(k) to formatValue(v) }.toMap()
     is Number -> value
-    else -> value.toString().truncate()
+    else -> value.toString().normalize()
   }
 
 private fun Class<*>.preferToString(): Boolean =
