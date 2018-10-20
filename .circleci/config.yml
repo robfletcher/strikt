@@ -124,14 +124,14 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-#      - site:
-#          requires:
-#            - release
-#          filters:
-#            tags:
-#              only: /^v.*/
-#            branches:
-#              ignore: /.*/
+      - site:
+          requires:
+            - release
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
   nightly:
     triggers:
