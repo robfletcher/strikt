@@ -18,7 +18,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.8"
+  id("com.eden.orchidPlugin") version "0.12.10"
 }
 
 repositories {
