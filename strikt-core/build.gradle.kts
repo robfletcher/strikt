@@ -8,4 +8,6 @@ plugins {
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.opentest4j:opentest4j:+")
+
+  testImplementation("com.oneeyedmen:minutest:+")
 }
