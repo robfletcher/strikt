@@ -56,7 +56,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: ./gradlew :site:orchidDeploy -Penv=prod
+      - run: ./gradlew :site:orchidDeploy -Penv=prod -Prelease.useLastTag=true
 
   upgradeLocks:
     <<: *defaults
