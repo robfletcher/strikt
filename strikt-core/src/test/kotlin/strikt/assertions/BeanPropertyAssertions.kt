@@ -9,7 +9,7 @@ import java.time.LocalDate
 import java.util.Base64
 import java.util.UUID
 
-internal class BeanPropertyAssertions {
+internal object BeanPropertyAssertions {
 
   internal data class PersonKotlin(
     val id: UUID = UUID.randomUUID(),

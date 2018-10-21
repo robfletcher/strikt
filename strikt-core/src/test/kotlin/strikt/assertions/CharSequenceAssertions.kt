@@ -1,323 +1,405 @@
 package strikt.assertions
 
+import com.oneeyedmen.minutest.junit.junitTests
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.fails
 
 @DisplayName("assertions on CharSequence")
-internal class CharSequenceAssertions {
-  @Nested
-  @DisplayName("hasLength assertion")
-  inner class HasLength {
-    @Test
-    fun `passes if the subject has the expected length`() {
-      expectThat("fnord").hasLength(5)
+internal object CharSequenceAssertions {
+  @TestFactory
+  fun hasLength() = junitTests<Pair<CharSequence, Int>> {
+    context("the subject has the expected length") {
+      fixture { "fnord" to 5 }
+
+      test("the assertion passes") {
+        expectThat(first).hasLength(second)
+      }
     }
 
-    @Test
-    fun `fails if the subject does not have the expected length`() {
-      fails {
-        expectThat("fnord").hasLength(1)
+    context("the subject does not have the expected length") {
+      fixture { "fnord" to 1 }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).hasLength(second)
+        }
       }
     }
   }
 
-  @Nested
-  @DisplayName("matches assertion")
-  inner class Matches {
-    @Test
-    fun `passes if the subject is a full match for the regex`() {
-      expectThat("fnord").matches("[dfnor]+".toRegex())
-    }
+  @TestFactory
+  fun matches() = junitTests<Pair<CharSequence, Regex>> {
+    context("the subject is a full match for the regex") {
+      fixture { "fnord" to "[dfnor]+".toRegex() }
 
-    @Test
-    fun `fails if the subject is only a partial match for the regex`() {
-      fails {
-        expectThat("despite the negative press fnord")
-          .matches("[dfnor]+".toRegex())
+      test("the assertion passes") {
+        expectThat(first).matches(second)
       }
     }
 
-    @Test
-    fun `fails if the subject is a case insensitive match for the regex`() {
-      fails {
-        expectThat("fnord").matches("[DFNOR]+".toRegex())
+    context("the subject is only a partial match for the regex") {
+      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).matches(second)
+        }
       }
     }
 
-    @Test
-    fun `fails if the subject does not match the regex`() {
-      fails {
-        expectThat("fnord").matches("\\d+".toRegex())
-      }
-    }
-  }
+    context("the subject is a case insensitive match for the regex") {
+      fixture { "fnord" to "[DFNOR]+".toRegex() }
 
-  @Nested
-  @DisplayName("matchesIgnoringCase assertion")
-  inner class MatchesIgnoringCase {
-    @Test
-    fun `passes if the subject is a full match for the regex`() {
-      expectThat("fnord").matchesIgnoringCase("[dfnor]+".toRegex())
-    }
-
-    @Test
-    fun `fails if the subject is only a partial match for the regex`() {
-      fails {
-        expectThat("despite the negative press fnord")
-          .matchesIgnoringCase("[dfnor]+".toRegex())
+      test("the assertion fails") {
+        fails {
+          expectThat(first).matches(second)
+        }
       }
     }
 
-    @Test
-    fun `passes if the subject is a case insensitive match for the regex`() {
-      expectThat("fnord").matchesIgnoringCase("[DFNOR]+".toRegex())
-    }
+    context("the subject does not match the regex") {
+      fixture { "fnord" to "\\d+".toRegex() }
 
-    @Test
-    fun `fails if the subject does not match the regex`() {
-      fails {
-        expectThat("fnord").matchesIgnoringCase("\\d+".toRegex())
+      test("the assertion fails") {
+        fails {
+          expectThat(first).matches(second)
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
+  fun matchesIgnoringCase() = junitTests<Pair<CharSequence, Regex>> {
+    context("the subject is a full match for the regex") {
+      fixture { "fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).matchesIgnoringCase(second)
+      }
+    }
+
+    context("the subject is only a partial match for the regex") {
+      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).matchesIgnoringCase(second)
+        }
+      }
+    }
+
+    context("the subject is a case insensitive match for the regex") {
+      fixture { "fnord" to "[DFNOR]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).matchesIgnoringCase(second)
+      }
+    }
+
+    context("the subject does not match the regex") {
+      fixture { "fnord" to "\\d+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).matchesIgnoringCase(second)
+        }
+      }
+    }
+  }
+
+  @TestFactory
   @DisplayName("contains(Regex) assertion")
-  inner class Contains_Regex {
-    @Test
-    fun `passes if the subject is a full match for the regex`() {
-      expectThat("fnord").contains("[dfnor]+".toRegex())
-    }
+  fun contains_Regex() = junitTests<Pair<CharSequence, Regex>> {
+    context("the subject is a full match for the regex") {
+      fixture { "fnord" to "[dfnor]+".toRegex() }
 
-    @Test
-    fun `passes if the subject is only a partial match for the regex`() {
-      expectThat("despite the negative press fnord")
-        .contains("[dfnor]+".toRegex())
-    }
-
-    @Test
-    fun `passes if the subject contains a match with a different case`() {
-      fails {
-        expectThat("despite the negative press fnord")
-          .contains("[DFNOR]+".toRegex())
+      test("the assertion passes") {
+        expectThat(first).contains(second)
       }
     }
 
-    @Test
-    fun `fails if the subject does not match the regex`() {
-      fails {
-        expectThat("fnord").contains("\\d+".toRegex())
+    context("the subject is only a partial match for the regex") {
+      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).contains(second)
+      }
+    }
+
+    context("the subject contains a match with a different case") {
+      fixture { "despite the negative press fnord" to "[DFNOR]+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).contains(second)
+        }
+      }
+    }
+
+    context("the subject does not match the regex") {
+      fixture { "fnord" to "\\d+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).contains(second)
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("containsIgnoringCase(Regex) assertion")
-  inner class ContainsIgnoringCase_Regex {
-    @Test
-    fun `passes if the subject is a full match for the regex`() {
-      expectThat("fnord").containsIgnoringCase("[dfnor]+".toRegex())
+  fun containsIgnoringCase_Regex() = junitTests<Pair<CharSequence, Regex>> {
+    context("the subject is a full match for the regex") {
+      fixture { "fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).containsIgnoringCase(second)
+      }
     }
 
-    @Test
-    fun `passes if the subject is only a partial match for the regex`() {
-      expectThat("despite the negative press fnord")
-        .containsIgnoringCase("[dfnor]+".toRegex())
+    context("the subject is only a partial match for the regex") {
+      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).containsIgnoringCase(second)
+      }
     }
 
-    @Test
-    fun `passes if the subject contains a match with a different case`() {
-      expectThat("despite the negative press fnord")
-        .containsIgnoringCase("[DFNOR]+".toRegex())
+    context("the subject contains a match with a different case") {
+      fixture { "despite the negative press fnord" to "[DFNOR]+".toRegex() }
+
+      test("the assertion passes") {
+        expectThat(first).containsIgnoringCase(second)
+      }
     }
 
-    @Test
-    fun `fails if the subject does not match the regex`() {
-      fails {
-        expectThat("fnord").containsIgnoringCase("\\d+".toRegex())
+    context("the subject does not match the regex") {
+      fixture { "fnord" to "\\d+".toRegex() }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).containsIgnoringCase(second)
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("contains(CharSequence) assertion")
-  inner class Contains_CharSequence {
-    @Test
-    fun `passes if the subject contains the expected substring`() {
-      expectThat("fnord").contains("nor")
-    }
+  fun contains_CharSequence() = junitTests<Pair<CharSequence, CharSequence>> {
+    context("the subject contains the expected substring") {
+      fixture { "fnord" to "nor" }
 
-    @Test
-    fun `fails if the subject contains the expected substring in a different case`() {
-      fails {
-        expectThat("fnord").contains("NOR")
+      test("the assertion passes") {
+        expectThat(first).contains(second)
       }
     }
 
-    @Test
-    fun `fails if the subject does not contain the expected substring`() {
-      fails {
-        expectThat("fnord").contains("meme")
+    context("the subject contains the expected substring in a different case") {
+      fixture { "fnord" to "NOR" }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).contains(second)
+        }
+      }
+    }
+
+    context("the subject does not contain the expected substring") {
+      fixture { "fnord" to "meme" }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).contains(second)
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("containsIgnoringCase(CharSequence) assertion")
-  inner class ContainsIgnoringCase_CharSequence {
-    @Test
-    fun `passes if the subject contains the expected substring`() {
-      expectThat("fnord").containsIgnoringCase("nor")
+  fun containsIgnoringCase_CharSequence() = junitTests<Pair<CharSequence, CharSequence>> {
+    context("the subject contains the expected substring") {
+      fixture { "fnord" to "nor" }
+
+      test("the assertion passes") {
+        expectThat(first).containsIgnoringCase(second)
+      }
     }
 
-    @Test
-    fun `passes if the subject contains the expected substring in a different case`() {
-      expectThat("fnord").containsIgnoringCase("NOR")
+    context("the subject contains the expected substring in a different case") {
+      fixture { "fnord" to "NOR" }
+
+      test("the assertion passes") {
+        expectThat(first).containsIgnoringCase(second)
+      }
     }
 
-    @Test
-    fun `fails if the subject does not contain the expected substring`() {
-      fails {
-        expectThat("fnord").containsIgnoringCase("meme")
+    context("the subject does not contain the expected substring") {
+      fixture { "fnord" to "meme" }
+
+      test("the assertion fails") {
+        fails {
+          expectThat(first).containsIgnoringCase(second)
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("isNullOrEmpty assertion")
-  inner class IsNullOrEmpty {
-    @TestFactory
-    fun passesIfStringIsNullOrEmpty() =
-      listOf("", null).map { subject ->
-        dynamicTest("passes if subject is ${if (subject == null) "null" else "\"$subject\""}") {
-          expectThat(subject).isNullOrEmpty()
+  fun isNullOrEmpty() = junitTests<CharSequence?> {
+    listOf("", null).map { subject ->
+      context("the subject is ${if (subject == null) "null" else "\"$subject\""}") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(this).isNullOrEmpty()
         }
       }
+    }
 
-    @TestFactory
-    fun failsIfStringIsNotEmpty() =
-      listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
-        dynamicTest("fails if subject is \"$subject\"") {
+    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion fails") {
           fails {
-            expectThat(subject).isNullOrEmpty()
+            expectThat(this).isNullOrEmpty()
           }
         }
       }
+    }
   }
 
-  @Nested
-  @DisplayName("isNullOrBlank assertion")
-  inner class IsNullOrBlank {
-    @TestFactory
-    fun passesIfStringIsNullOrBlank() =
-      listOf("", null, "\t", "     ", " \n \r\n\t\n").map { subject ->
-        dynamicTest("passes if subject is ${if (subject == null) "null" else "\"$subject\""}") {
-          expectThat(subject).isNullOrBlank()
+  @TestFactory
+  fun isNullOrBlank() = junitTests<CharSequence?> {
+    listOf("", null, "\t", "     ", " \n \r\n\t\n").map { subject ->
+      context("the subject is ${if (subject == null) "null" else "\"$subject\""}") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(this).isNullOrBlank()
         }
       }
+    }
 
-    @TestFactory
-    fun failsIfStringIsNotBlank() =
-      listOf("catflap", "a", "73", "[]").map { subject ->
-        dynamicTest("fails if subject is \"$subject\"") {
+    listOf("catflap", "a", "73", "[]").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion fails") {
           fails {
-            expectThat(subject).isNullOrBlank()
+            expectThat(this).isNullOrBlank()
           }
         }
       }
+    }
   }
 
-  @Nested
-  @DisplayName("isEmpty assertion")
-  inner class IsEmpty {
-    @TestFactory
-    fun passesIfStringIsEmpty() =
-      listOf("").map { subject ->
-        dynamicTest("passes if subject is \"$subject\"") {
-          expectThat("").isEmpty()
+  @TestFactory
+  fun isEmpty() = junitTests<CharSequence> {
+    listOf("").map { subject ->
+      context("subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(this).isEmpty()
         }
       }
+    }
 
-    @TestFactory
-    fun failsIfStringIsNotEmpty() =
-      listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
-        dynamicTest("fails if subject is \"$subject\"") {
+    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion fails") {
           fails {
-            expectThat(subject).isEmpty()
+            expectThat(this).isEmpty()
           }
         }
       }
+    }
   }
 
-  @Nested
-  @DisplayName("isBlank assertion")
-  inner class IsBlank {
-    @TestFactory
-    fun passesIfStringIsBlank() =
-      listOf("", "\t", "     ", " \n \r\n\t\n").map {
-        dynamicTest("passes if subject is \"$it\"") {
-          expectThat(it).isBlank()
+  @TestFactory
+  fun isBlank() = junitTests<CharSequence> {
+    listOf("", "\t", "     ", " \n \r\n\t\n").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(this).isBlank()
         }
       }
+    }
 
-    @TestFactory
-    fun failsIfStringIsNotBlank() =
-      listOf("catflap", "a", "73", "[]").map {
-        dynamicTest("fails if subject is \"$it\"") {
+    listOf("catflap", "a", "73", "[]").map {
+      context("the subject is \"$it\"") {
+        fixture { it }
+
+        test("the assertion fails") {
           fails {
-            expectThat(it).isBlank()
+            expectThat(this).isBlank()
           }
         }
       }
+    }
   }
 
-  @Nested
-  @DisplayName("isNotEmpty assertion")
-  inner class IsNotEmpty {
-    @TestFactory
-    fun failsIfStringIsEmpty() =
-      listOf("").map {
-        dynamicTest("passes if subject is \"$it\"") {
+  @TestFactory
+  fun isNotEmpty() = junitTests<CharSequence> {
+    listOf("").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion fails") {
           fails {
-            expectThat("").isNotEmpty()
+            expectThat(this).isNotEmpty()
           }
         }
       }
+    }
 
-    @TestFactory
-    fun passesIfStringIsNotEmpty() =
-      listOf("catflap", " ", "\t", "a", "73", "[]").map {
-        dynamicTest("fails if subject is \"$it\"") {
-          expectThat(it).isNotEmpty()
+    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(this).isNotEmpty()
         }
       }
+    }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("isNotBlank assertion")
-  inner class IsNotBlank {
-    @TestFactory
-    fun failsIfStringIsBlank() =
-      listOf("", "\t", "     ", " \n \r\n\t\n").map {
-        dynamicTest("passes if subject is \"$it\"") {
+  fun isNotBlank() = junitTests<CharSequence> {
+    listOf("", "\t", "     ", " \n \r\n\t\n").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion fails") {
           fails {
-            expectThat(it).isNotBlank()
+            expectThat(this).isNotBlank()
           }
         }
       }
+    }
 
-    @TestFactory
-    fun passesIfStringIsNotBlank() =
-      listOf("catflap", "a", "73", "[]").map {
-        dynamicTest("fails if subject is \"$it\"") {
-          expectThat(it).isNotBlank()
+    listOf("catflap", "a", "73", "[]").map { subject ->
+      context("the subject is \"$subject\"") {
+        fixture { subject }
+
+        test("the assertion passes") {
+          expectThat(subject).isNotBlank()
         }
       }
+    }
   }
 
   @Test
