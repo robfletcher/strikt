@@ -12,17 +12,17 @@ import strikt.fails
 internal object AnyAssertions {
 
   @TestFactory
-  fun isNull() = junitTests<Unit> {
+  fun isNull() = junitTests<Any?> {
     context("a null subject") {
-      val subject: Any? = null
+      fixture { null }
 
       test("the assertion passes") {
-        expectThat(subject).isNull()
+        expectThat(this).isNull()
       }
 
       test("the assertion down-casts the subject") {
         @Suppress("USELESS_IS_CHECK")
-        expectThat(subject)
+        expectThat(this)
           .also { assert(it is Builder<Any?>) }
           .isNull()
           .also { assert(it is Builder<Nothing>) }
@@ -30,38 +30,38 @@ internal object AnyAssertions {
     }
 
     context("a non-null subject") {
-      val subject: Any? = "fnord"
+      fixture { "fnord" }
 
       test("the assertion fails") {
         fails {
-          expectThat(subject).isNull()
+          expectThat(this).isNull()
         }
       }
     }
   }
 
   @TestFactory
-  fun isNotNull() = junitTests<Unit> {
+  fun isNotNull() = junitTests<Any?> {
     context("a null subject") {
-      val subject: Any? = null
+      fixture { null }
 
       test("the assertion fails") {
         fails {
-          expectThat(subject).isNotNull()
+          expectThat(this).isNotNull()
         }
       }
     }
 
     context("a non-null subject") {
-      val subject: Any? = "fnord"
+      fixture { "fnord" }
 
       test("the assertion passes") {
-        expectThat(subject).isNotNull()
+        expectThat(this).isNotNull()
       }
 
       test("down-casts the result") {
         @Suppress("USELESS_IS_CHECK")
-        expectThat(subject)
+        expectThat(this)
           .also { assert(it is Builder<Any?>) }
           .isNotNull()
           .also { assert(it is Builder<Any>) }
@@ -70,37 +70,37 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isA() = junitTests<Unit> {
+  fun isA() = junitTests<Any?> {
     context("a null subject") {
-      val subject: Any? = null
+      fixture { null }
 
       test("the assertion fails") {
         fails {
-          expectThat(subject).isA<String>()
+          expectThat(this).isA<String>()
         }
       }
     }
 
     context("a subject of the wrong type") {
-      val subject: Any? = 1L
+      fixture { 1L }
 
       test("the assertion fails") {
         fails {
-          expectThat(subject).isA<String>()
+          expectThat(this).isA<String>()
         }
       }
     }
 
     context("a subject of the same type as the expected type") {
-      val subject: Any? = "fnord"
+      fixture { "fnord" }
 
       test("the assertion passes") {
-        expectThat(subject).isA<String>()
+        expectThat(this).isA<String>()
       }
 
       test("the assertion narrows the subject type") {
         @Suppress("USELESS_IS_CHECK")
-        expectThat(subject)
+        expectThat(this)
           .also { assert(it is Builder<Any?>) }
           .isA<String>()
           .also { assert(it is Builder<String>) }
@@ -108,7 +108,7 @@ internal object AnyAssertions {
 
       test("the narrowed type can use specialized assertions") {
         @Suppress("USELESS_IS_CHECK")
-        expectThat(subject)
+        expectThat(this)
           .also { assert(it is Builder<Any?>) }
           .isA<String>()
           .also { assert(it is Builder<String>) }
@@ -117,15 +117,15 @@ internal object AnyAssertions {
     }
 
     context("a subject that is a sub-type of the expected type") {
-      val subject: Any? = 1L
+      fixture { 1L }
 
       test("the assertion passes") {
-        expectThat(subject).isA<Number>()
+        expectThat(this).isA<Number>()
       }
 
       test("the assertion narrows the subject type") {
         @Suppress("USELESS_IS_CHECK")
-        expectThat(subject)
+        expectThat(this)
           .also { assert(it is Builder<Any?>) }
           .isA<Number>()
           .also { assert(it is Builder<Number>) }
@@ -136,37 +136,38 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isEqualTo() = junitTests<Unit> {
+  fun isEqualTo() = junitTests<Pair<Any?, Any?>> {
     context("the subject matches the expectation") {
-      val subject: Any? = "fnord"
+      fixture { "fnord" to "fnord" }
 
       test("the assertion passes") {
-        expectThat(subject).isEqualTo("fnord")
+        expectThat(first).isEqualTo(second)
       }
     }
 
     listOf(
-      Pair("fnord", "FNORD"),
-      Pair(1, 1L),
-      Pair(null, "fnord"),
-      Pair("fnord", null)
-    ).map { (subject, expected) ->
-      context("subject is ${subject.quoted()} and expected value is ${expected.quoted()}") {
+      "fnord" to "FNORD",
+      1 to 1L,
+      null to "fnord",
+      "fnord" to null
+    ).map {
+      context("subject is ${it.first.quoted()} and expected value is ${it.second.quoted()}") {
+        fixture { it }
+
         test("the assertion fails") {
           fails {
-            expectThat(subject).isEqualTo(expected)
+            expectThat(first).isEqualTo(second)
           }
         }
       }
     }
 
     context("subject is a different type but looks the same") {
-      val subject = 5L
-      val expected = 5
+      fixture { 5L to 5 }
 
       test("the failure message specifies the types involved") {
         val e = fails {
-          expectThat<Number>(subject).isEqualTo(expected)
+          expectThat(first).isEqualTo(second)
         }
         assertEquals(
           """▼ Expect that 5:
@@ -177,93 +178,93 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isNotEqualTo() = junitTests<Unit> {
+  fun isNotEqualTo() = junitTests<Pair<Any?, Any?>> {
     context("the subject matches the expectation") {
-      val subject: Any? = "fnord"
+      fixture { "fnord" to "fnord" }
 
       test("the assertion fails") {
         fails {
-          expectThat(subject).isNotEqualTo("fnord")
+          expectThat(first).isNotEqualTo(second)
         }
       }
     }
 
     listOf(
-      Pair("fnord", "FNORD"),
-      Pair(1, 1L),
-      Pair(null, "fnord"),
-      Pair("fnord", null)
-    ).map { (subject, expected) ->
-      context("subject is ${subject.quoted()} and expected value is ${expected.quoted()}") {
+      "fnord" to "FNORD",
+      1 to 1L,
+      null to "fnord",
+      "fnord" to null
+    ).map {
+      context("subject is ${it.first.quoted()} and expected value is ${it.second.quoted()}") {
+        fixture { it }
+
         test("the assertion passes") {
-          expectThat(subject).isNotEqualTo(expected)
+          expectThat(first).isNotEqualTo(second)
         }
       }
     }
   }
 
   @TestFactory
-  fun isSameInstanceAs() = junitTests<Unit> {
+  fun isSameInstanceAs() = junitTests<Pair<Any?, Any?>> {
     listOf(
-      Pair(listOf("fnord"), listOf("fnord")),
-      Pair(null, listOf("fnord")),
-      Pair(listOf("fnord"), null),
-      Pair(1, 1L)
-    ).map { (subject, expected) ->
-      context("${subject.quoted()} is not the same instance as ${expected.quoted()}") {
+      listOf("fnord") to listOf("fnord"),
+      null to listOf("fnord"),
+      listOf("fnord") to null,
+      1 to 1L
+    ).map {
+      context("${it.first.quoted()} is not the same instance as ${it.second.quoted()}") {
+        fixture { it }
+
         test("the assertion fails") {
           fails {
-            expectThat(subject).isSameInstanceAs(expected)
+            expectThat(first).isSameInstanceAs(second)
           }
         }
       }
     }
 
-    listOf(
-      Pair("fnord", "fnord"),
-      Pair(1L, 1L),
-      Pair(null, null),
-      listOf("fnord").let
-      { Pair(it, it) }
-    ).map { (subject, expected) ->
-      context("${subject.quoted()} is the same instance as ${expected.quoted()}") {
-        test("the assertion passes") {
-          expectThat(subject).isSameInstanceAs(expected)
+    listOf("fnord", 1L, null, listOf("fnord"))
+      .map {
+        context("${it.quoted()} is the same instance as itself") {
+          fixture { it to it }
+
+          test("the assertion passes") {
+            expectThat(first).isSameInstanceAs(second)
+          }
         }
       }
-    }
   }
 
   @TestFactory
-  fun isNotSameInstanceAs() = junitTests<Unit> {
+  fun isNotSameInstanceAs() = junitTests<Pair<Any?, Any?>> {
     listOf(
-      Pair(listOf("fnord"), listOf("fnord")),
-      Pair(null, listOf("fnord")),
-      Pair(listOf("fnord"), null),
-      Pair(1, 1L)
-    ).map { (subject, expected) ->
-      context("${subject.quoted()} is not the same instance as ${expected.quoted()}") {
+      listOf("fnord") to listOf("fnord"),
+      null to listOf("fnord"),
+      listOf("fnord") to null,
+      1 to 1L
+    ).map {
+      context("${it.first.quoted()} is not the same instance as ${it.second.quoted()}") {
+        fixture { it }
+
         test("the assertion passes") {
-          expectThat(subject).isNotSameInstanceAs(expected)
+          expectThat(first).isNotSameInstanceAs(second)
         }
       }
     }
 
-    listOf(
-      Pair("fnord", "fnord"),
-      Pair(1L, 1L),
-      Pair(null, null),
-      listOf("fnord").let
-      { Pair(it, it) }
-    ).map { (subject, expected) ->
-      context("${subject.quoted()} is not the same instance as ${expected.quoted()}") {
-        test("the assertion fails") {
-          fails {
-            expectThat(subject).isNotSameInstanceAs(expected)
+    listOf("fnord", 1L, null, listOf("fnord"))
+      .map {
+        context("${it.quoted()} is not the same instance as itself") {
+          fixture { it to it }
+
+          test("the assertion fails") {
+            fails {
+              expectThat(first).isNotSameInstanceAs(second)
+            }
           }
         }
       }
-    }
   }
 
   private fun Any?.quoted(): String = when (this) {
