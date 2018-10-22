@@ -8,7 +8,7 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
   id("nebula.release") version "7.0.1"
-  id("nebula.kotlin") version "1.2.71" apply false
+  id("nebula.kotlin") version "1.3.0" apply false
   id("org.jmailen.kotlinter") version "1.17.0" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
   id("release-tweet")
@@ -23,21 +23,6 @@ buildscript {
 
 allprojects {
   group = "io.strikt"
-
-  // prevent --write-locks from selecting candidates, milestones, etc.
-  configurations.all {
-    resolutionStrategy {
-      componentSelection.all {
-        val rejected = listOf("alpha", "beta", "rc", "cr", "m", "pr")
-          .any { qualifier ->
-            candidate.version.matches("(?i).*[.-]$qualifier[.\\d-]*".toRegex())
-          }
-        if (rejected) {
-          reject("Release candidate")
-        }
-      }
-    }
-  }
 }
 
 subprojects {
@@ -55,8 +40,8 @@ subprojects {
 
       tasks.withType<KotlinCompile> {
         kotlinOptions {
-          languageVersion = "1.2"
-          freeCompilerArgs += "-Xprogressive"
+          languageVersion = "1.3"
+          freeCompilerArgs += "-progressive"
         }
       }
 
