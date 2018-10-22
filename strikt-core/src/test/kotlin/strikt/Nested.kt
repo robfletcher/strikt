@@ -3,6 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -15,7 +16,7 @@ import strikt.assertions.message
 internal class Nested {
   @Test
   fun `all assertions in a block are evaluated even if some fail`() {
-    fails {
+    assertThrows<AssertionError> {
       expect {
         that("fnord" as Any?).isNull()
         that("FNORD").isUpperCase()
@@ -34,7 +35,7 @@ internal class Nested {
 
   @Test
   fun `nested expectations can be described`() {
-    expectThat(fails {
+    expectThat(assertThrows<AssertionError> {
       expect {
         (1 until 3).forEach {
           that("foo").describedAs("pass $it").isEqualTo("bar")

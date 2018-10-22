@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
-import strikt.fails
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("assertions on String")
@@ -21,7 +20,7 @@ internal class StringAssertions {
 
     @Test
     fun `fails if the subject is different`() {
-      fails {
+      assertThrows<AssertionError> {
         expectThat("despite the negative press fnord")
           .isEqualToIgnoringCase("fnord")
       }
@@ -44,14 +43,14 @@ internal class StringAssertions {
 
     @Test
     fun `outputs real end when endsWith fails`() {
-      expectThat(fails {
+      expectThat(assertThrows<AssertionError> {
         expectThat("fnord").endsWith("nor")
       }).message.contains("""ends with "nor" : found "ord"""")
     }
 
     @Test
     fun `outputs real start when startsWith fails`() {
-      expectThat(fails {
+      expectThat(assertThrows<AssertionError> {
         expectThat("fnord").startsWith("fnrd")
       }).message.contains("""starts with "fnrd" : found "fnor"""")
     }

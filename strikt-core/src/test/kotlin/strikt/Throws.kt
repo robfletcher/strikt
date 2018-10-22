@@ -3,6 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.catching
 import strikt.api.expectThat
 import strikt.assertions.isA
@@ -24,7 +25,7 @@ internal class Throws {
 
   @Test
   fun `throws fails if the action does not throw any exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat(catching { })
         .throws<IllegalStateException>()
     }.let { e ->
@@ -36,7 +37,7 @@ internal class Throws {
 
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat(catching { error("o noes") })
         .throws<NullPointerException>()
     }.let { e ->

@@ -1,275 +1,192 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.junit.junitTests
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
-import strikt.fails
 
 @DisplayName("assertions on CharSequence")
 internal object CharSequenceAssertions {
   @TestFactory
-  fun hasLength() = junitTests<Pair<CharSequence, Int>> {
-    context("the subject has the expected length") {
-      fixture { "fnord" to 5 }
+  fun hasLength() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).hasLength(second)
-      }
+    test("passes when the subject has the expected length") {
+      hasLength(5)
     }
 
-    context("the subject does not have the expected length") {
-      fixture { "fnord" to 1 }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).hasLength(second)
-        }
+    test("fails when the subject does not have the expected length") {
+      assertThrows<AssertionFailedError> {
+        hasLength(1)
       }
     }
   }
 
   @TestFactory
-  fun matches() = junitTests<Pair<CharSequence, Regex>> {
-    context("the subject is a full match for the regex") {
-      fixture { "fnord" to "[dfnor]+".toRegex() }
+  fun matches() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).matches(second)
+    test("passes when the subject is a full match for the regex") {
+      matches("[dfnor]+".toRegex())
+    }
+
+    test("fails when the subject is only a partial match for the regex") {
+      assertThrows<AssertionFailedError> {
+        matches("[fn]+".toRegex())
       }
     }
 
-    context("the subject is only a partial match for the regex") {
-      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).matches(second)
-        }
+    test("fails when the subject is a case insensitive match for the regex") {
+      assertThrows<AssertionFailedError> {
+        matches("[DFNOR]+".toRegex())
       }
     }
 
-    context("the subject is a case insensitive match for the regex") {
-      fixture { "fnord" to "[DFNOR]+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).matches(second)
-        }
-      }
-    }
-
-    context("the subject does not match the regex") {
-      fixture { "fnord" to "\\d+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).matches(second)
-        }
+    test("fails when the subject does not match the regex") {
+      assertThrows<AssertionFailedError> {
+        matches("\\d+".toRegex())
       }
     }
   }
 
   @TestFactory
-  fun matchesIgnoringCase() = junitTests<Pair<CharSequence, Regex>> {
-    context("the subject is a full match for the regex") {
-      fixture { "fnord" to "[dfnor]+".toRegex() }
+  fun matchesIgnoringCase() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).matchesIgnoringCase(second)
+    test("passes when the subject is a full match for the regex") {
+      matchesIgnoringCase("[dfnor]+".toRegex())
+    }
+
+    test("fails when the subject is only a partial match for the regex") {
+      assertThrows<AssertionFailedError> {
+        matchesIgnoringCase("[fn]+".toRegex())
       }
     }
 
-    context("the subject is only a partial match for the regex") {
-      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).matchesIgnoringCase(second)
-        }
-      }
+    test("passes when the subject is a case insensitive match for the regex") {
+      matchesIgnoringCase("[DFNOR]+".toRegex())
     }
 
-    context("the subject is a case insensitive match for the regex") {
-      fixture { "fnord" to "[DFNOR]+".toRegex() }
-
-      test("the assertion passes") {
-        expectThat(first).matchesIgnoringCase(second)
-      }
-    }
-
-    context("the subject does not match the regex") {
-      fixture { "fnord" to "\\d+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).matchesIgnoringCase(second)
-        }
+    test("fails when the subject does not match the regex") {
+      assertThrows<AssertionFailedError> {
+        matchesIgnoringCase("\\d+".toRegex())
       }
     }
   }
 
   @TestFactory
-  @DisplayName("contains(Regex) assertion")
-  fun contains_Regex() = junitTests<Pair<CharSequence, Regex>> {
-    context("the subject is a full match for the regex") {
-      fixture { "fnord" to "[dfnor]+".toRegex() }
+  @DisplayName("contains(Regex)")
+  fun contains_Regex() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).contains(second)
+    test("passes when the subject is a full match for the regex") {
+      contains("[dfnor]+".toRegex())
+    }
+
+    test("passes when the subject is only a partial match for the regex") {
+      contains("[fn]+".toRegex())
+    }
+
+    test("fails when the subject contains a match with a different case") {
+      assertThrows<AssertionFailedError> {
+        contains("[DFNOR]+".toRegex())
       }
     }
 
-    context("the subject is only a partial match for the regex") {
-      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
-
-      test("the assertion passes") {
-        expectThat(first).contains(second)
-      }
-    }
-
-    context("the subject contains a match with a different case") {
-      fixture { "despite the negative press fnord" to "[DFNOR]+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).contains(second)
-        }
-      }
-    }
-
-    context("the subject does not match the regex") {
-      fixture { "fnord" to "\\d+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).contains(second)
-        }
+    test("fails when the subject does not match the regex") {
+      assertThrows<AssertionFailedError> {
+        contains("\\d+".toRegex())
       }
     }
   }
 
   @TestFactory
-  @DisplayName("containsIgnoringCase(Regex) assertion")
-  fun containsIgnoringCase_Regex() = junitTests<Pair<CharSequence, Regex>> {
-    context("the subject is a full match for the regex") {
-      fixture { "fnord" to "[dfnor]+".toRegex() }
+  @DisplayName("containsIgnoringCase(Regex)")
+  fun containsIgnoringCase_Regex() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).containsIgnoringCase(second)
-      }
+    test("passes when the subject is a full match for the regex") {
+      containsIgnoringCase("[dfnor]+".toRegex())
     }
 
-    context("the subject is only a partial match for the regex") {
-      fixture { "despite the negative press fnord" to "[dfnor]+".toRegex() }
-
-      test("the assertion passes") {
-        expectThat(first).containsIgnoringCase(second)
-      }
+    test("passes when the subject is only a partial match for the regex") {
+      containsIgnoringCase("[fn]+".toRegex())
     }
 
-    context("the subject contains a match with a different case") {
-      fixture { "despite the negative press fnord" to "[DFNOR]+".toRegex() }
-
-      test("the assertion passes") {
-        expectThat(first).containsIgnoringCase(second)
-      }
+    test("passes when the subject contains a match with a different case") {
+      containsIgnoringCase("[FN]+".toRegex())
     }
 
-    context("the subject does not match the regex") {
-      fixture { "fnord" to "\\d+".toRegex() }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).containsIgnoringCase(second)
-        }
+    test("fails when the subject does not match the regex") {
+      assertThrows<AssertionFailedError> {
+        containsIgnoringCase("\\d+".toRegex())
       }
     }
   }
 
   @TestFactory
-  @DisplayName("contains(CharSequence) assertion")
-  fun contains_CharSequence() = junitTests<Pair<CharSequence, CharSequence>> {
-    context("the subject contains the expected substring") {
-      fixture { "fnord" to "nor" }
+  @DisplayName("contains(CharSequence)")
+  fun contains_CharSequence() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).contains(second)
+    test("passes when the subject contains the expected substring") {
+      contains("nor")
+    }
+
+    test("fails when the subject contains the expected substring in a different case") {
+      assertThrows<AssertionFailedError> {
+        contains("NOR")
       }
     }
 
-    context("the subject contains the expected substring in a different case") {
-      fixture { "fnord" to "NOR" }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).contains(second)
-        }
-      }
-    }
-
-    context("the subject does not contain the expected substring") {
-      fixture { "fnord" to "meme" }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).contains(second)
-        }
+    test("fails when the subject does not contain the expected substring") {
+      assertThrows<AssertionFailedError> {
+        contains("meme")
       }
     }
   }
 
   @TestFactory
-  @DisplayName("containsIgnoringCase(CharSequence) assertion")
-  fun containsIgnoringCase_CharSequence() = junitTests<Pair<CharSequence, CharSequence>> {
-    context("the subject contains the expected substring") {
-      fixture { "fnord" to "nor" }
+  @DisplayName("containsIgnoringCase(CharSequence)")
+  fun containsIgnoringCase_CharSequence() = assertionTests<CharSequence> {
+    fixture { expectThat("fnord") }
 
-      test("the assertion passes") {
-        expectThat(first).containsIgnoringCase(second)
-      }
+    test("passes when the subject contains the expected substring") {
+      containsIgnoringCase("nor")
     }
 
-    context("the subject contains the expected substring in a different case") {
-      fixture { "fnord" to "NOR" }
-
-      test("the assertion passes") {
-        expectThat(first).containsIgnoringCase(second)
-      }
+    test("passes when the subject contains the expected substring in a different case") {
+      containsIgnoringCase("NOR")
     }
 
-    context("the subject does not contain the expected substring") {
-      fixture { "fnord" to "meme" }
-
-      test("the assertion fails") {
-        fails {
-          expectThat(first).containsIgnoringCase(second)
-        }
+    test("fails when the subject does not contain the expected substring") {
+      assertThrows<AssertionFailedError> {
+        containsIgnoringCase("meme")
       }
     }
   }
 
   @TestFactory
-  @DisplayName("isNullOrEmpty assertion")
-  fun isNullOrEmpty() = junitTests<CharSequence?> {
-    listOf("", null).map { subject ->
-      context("the subject is ${if (subject == null) "null" else "\"$subject\""}") {
-        fixture { subject }
+  fun isNullOrEmpty() = assertionTests<CharSequence?> {
+    listOf("", null).forEach<CharSequence?> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion passes") {
-          expectThat(this).isNullOrEmpty()
+          isNullOrEmpty()
         }
       }
     }
 
-    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+    listOf("catflap", " ", "\t", "a", "23", "[]").forEach<CharSequence?> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion fails") {
-          fails {
-            expectThat(this).isNullOrEmpty()
+          assertThrows<AssertionFailedError> {
+            isNullOrEmpty()
           }
         }
       }
@@ -277,24 +194,23 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNullOrBlank() = junitTests<CharSequence?> {
-    listOf("", null, "\t", "     ", " \n \r\n\t\n").map { subject ->
-      context("the subject is ${if (subject == null) "null" else "\"$subject\""}") {
-        fixture { subject }
-
+  fun isNullOrBlank() = assertionTests<CharSequence?> {
+    listOf("", null, "\t", "     ", " \n \r\n\t\n").forEach<CharSequence?> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
         test("the assertion passes") {
-          expectThat(this).isNullOrBlank()
+          isNullOrBlank()
         }
       }
     }
 
-    listOf("catflap", "a", "73", "[]").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+    listOf("catflap", "a", "73", "[]").forEach<CharSequence?> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion fails") {
-          fails {
-            expectThat(this).isNullOrBlank()
+          assertThrows<AssertionFailedError> {
+            isNullOrBlank()
           }
         }
       }
@@ -302,24 +218,22 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isEmpty() = junitTests<CharSequence> {
-    listOf("").map { subject ->
-      context("subject is \"$subject\"") {
-        fixture { subject }
+  fun isEmpty() = assertionTests<CharSequence> {
+    context("when the subject is ${"".quoted()}") {
+      fixture { expectThat("") }
 
-        test("the assertion passes") {
-          expectThat(this).isEmpty()
-        }
+      test("the assertion passes") {
+        isEmpty()
       }
     }
 
-    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+    listOf("catflap", " ", "\t", "a", "73", "[]").forEach {
+      context("${"when the subject is ${it.quoted()}"} : ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion fails") {
-          fails {
-            expectThat(this).isEmpty()
+          assertThrows<AssertionFailedError> {
+            isEmpty()
           }
         }
       }
@@ -327,24 +241,24 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isBlank() = junitTests<CharSequence> {
-    listOf("", "\t", "     ", " \n \r\n\t\n").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+  fun isBlank() = assertionTests<CharSequence> {
+    listOf("", "\t", "     ", " \n \r\n\t\n").forEach<CharSequence> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion passes") {
-          expectThat(this).isBlank()
+          isBlank()
         }
       }
     }
 
-    listOf("catflap", "a", "73", "[]").map {
-      context("the subject is \"$it\"") {
-        fixture { it }
+    listOf("catflap", "a", "23", "[]").forEach<CharSequence> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion fails") {
-          fails {
-            expectThat(this).isBlank()
+          assertThrows<AssertionFailedError> {
+            isBlank()
           }
         }
       }
@@ -352,25 +266,23 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNotEmpty() = junitTests<CharSequence> {
-    listOf("").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+  fun isNotEmpty() = assertionTests<CharSequence> {
+    context("when the subject is ${"".quoted()}") {
+      fixture { expectThat("") }
 
-        test("the assertion fails") {
-          fails {
-            expectThat(this).isNotEmpty()
-          }
+      test("the assertion fails") {
+        assertThrows<AssertionFailedError> {
+          isNotEmpty()
         }
       }
     }
 
-    listOf("catflap", " ", "\t", "a", "73", "[]").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+    listOf("catflap", " ", "\t", "a", "73", "[]").forEach<CharSequence> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion passes") {
-          expectThat(this).isNotEmpty()
+          isNotEmpty()
         }
       }
     }
@@ -378,25 +290,24 @@ internal object CharSequenceAssertions {
 
   @TestFactory
   @DisplayName("isNotBlank assertion")
-  fun isNotBlank() = junitTests<CharSequence> {
-    listOf("", "\t", "     ", " \n \r\n\t\n").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
+  fun isNotBlank() = assertionTests<CharSequence> {
+    listOf("", "\t", "     ", " \n \r\n\t\n").forEach<CharSequence> {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
 
         test("the assertion fails") {
-          fails {
-            expectThat(this).isNotBlank()
+          assertThrows<AssertionFailedError> {
+            isNotBlank()
           }
         }
       }
     }
 
-    listOf("catflap", "a", "73", "[]").map { subject ->
-      context("the subject is \"$subject\"") {
-        fixture { subject }
-
+    listOf("catflap", "a", "73", "[]").forEach {
+      context("when the subject is ${it.quoted()}") {
+        fixture { expectThat(it) }
         test("the assertion passes") {
-          expectThat(subject).isNotBlank()
+          isNotBlank()
         }
       }
     }

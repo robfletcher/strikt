@@ -3,8 +3,8 @@ package strikt.assertions
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
-import strikt.fails
 
 internal class NumberAssertions {
 
@@ -32,7 +32,7 @@ internal class NumberAssertions {
       Triple(5.0, 5.10000001, 0.1)
     ).map { (a, b, tolerance) ->
       dynamicTest("$a is not within $tolerance of $b") {
-        fails {
+        assertThrows<AssertionError> {
           expectThat(a).isEqualTo(b, tolerance)
         }
       }

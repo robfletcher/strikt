@@ -3,6 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.all
 import strikt.assertions.contains
@@ -19,7 +20,7 @@ internal class Formatting {
 
   @Test
   fun `a failing chained assertion formats the message correctly`() {
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject)
         .describedAs("a couple of words")
@@ -29,21 +30,21 @@ internal class Formatting {
     }
 
     val expected =
-      "▼ Expect that a couple of words:\n" +
-        "  ✓ has size 3\n" +
-        "  ✗ all elements match:\n" +
-        "    ▼ \"catflap\":\n" +
-        "      ✗ is upper case\n" +
-        "    ▼ \"rubberplant\":\n" +
-        "      ✗ is upper case\n" +
-        "    ▼ \"marzipan\":\n" +
-        "      ✗ is upper case"
+      """▼ Expect that a couple of words:
+        |  ✓ has size 3
+        |  ✗ all elements match:
+        |    ▼ "catflap":
+        |      ✗ is upper case
+        |    ▼ "rubberplant":
+        |      ✗ is upper case
+        |    ▼ "marzipan":
+        |      ✗ is upper case""".trimMargin()
     assertEquals(expected, e.message)
   }
 
   @Test
   fun `a failing block assertion formats the message correctly`() {
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject) {
         hasSize(0)
@@ -55,24 +56,24 @@ internal class Formatting {
     }
 
     val expected =
-      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-        "  ✗ has size 0 : found 3\n" +
-        "  ✗ all elements match:\n" +
-        "    ▼ \"catflap\":\n" +
-        "      ✗ is upper case\n" +
-        "      ✓ starts with 'c'\n" +
-        "    ▼ \"rubberplant\":\n" +
-        "      ✗ is upper case\n" +
-        "      ✗ starts with 'c' : found 'r'\n" +
-        "    ▼ \"marzipan\":\n" +
-        "      ✗ is upper case\n" +
-        "      ✗ starts with 'c' : found 'm'"
+      """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+        |  ✗ has size 0 : found 3
+        |  ✗ all elements match:
+        |    ▼ "catflap":
+        |      ✗ is upper case
+        |      ✓ starts with 'c'
+        |    ▼ "rubberplant":
+        |      ✗ is upper case
+        |      ✗ starts with 'c' : found 'r'
+        |    ▼ "marzipan":
+        |      ✗ is upper case
+        |      ✗ starts with 'c' : found 'm'""".trimMargin()
     assertEquals(expected, e.message)
   }
 
   @Test
   fun `passing assertions are included in the error message`() {
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject) {
         hasSize(3)
@@ -83,15 +84,15 @@ internal class Formatting {
     }
 
     val expected =
-      "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-        "  ✓ has size 3\n" +
-        "  ✗ all elements match:\n" +
-        "    ▼ \"catflap\":\n" +
-        "      ✓ starts with 'c'\n" +
-        "    ▼ \"rubberplant\":\n" +
-        "      ✗ starts with 'c' : found 'r'\n" +
-        "    ▼ \"marzipan\":\n" +
-        "      ✗ starts with 'c' : found 'm'"
+      """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+        |  ✓ has size 3
+        |  ✗ all elements match:
+        |    ▼ "catflap":
+        |      ✓ starts with 'c'
+        |    ▼ "rubberplant":
+        |      ✗ starts with 'c' : found 'r'
+        |    ▼ "marzipan":
+        |      ✗ starts with 'c' : found 'm'""".trimMargin()
 
     assertEquals(expected, e.message)
   }
@@ -108,7 +109,7 @@ internal class Formatting {
       override fun toString(): String = toStringOutput
     }
 
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       expectThat(subject) { isNotEqualTo(subject) }
     }
 
@@ -127,7 +128,7 @@ internal class Formatting {
         listOf(iteratorOutput).iterator()
     }
 
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       expectThat(subject) { isNotEqualTo(subject) }
     }
 
@@ -141,13 +142,13 @@ internal class Formatting {
       |line breaks
     """.trimMargin()
 
-    val e = fails {
+    val e = assertThrows<AssertionError> {
       expectThat(subject).isNullOrEmpty()
     }
 
     expectThat(e.message).isEqualTo(
-      "▼ Expect that \"a string with line breaks\":\n" +
-        "  ✗ is null or empty"
+      """▼ Expect that "a string with line breaks":
+        |  ✗ is null or empty""".trimMargin()
     )
   }
 }

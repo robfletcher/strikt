@@ -1,6 +1,7 @@
 package strikt
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
@@ -23,7 +24,7 @@ import strikt.internal.opentest4j.CompoundAssertionFailure
 class Exceptions {
   @Test
   fun `chained assertions raise an atomic exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord").hasLength(5).isUpperCase().startsWith("f")
     }.let { error ->
       expectThat(error)
@@ -40,7 +41,7 @@ class Exceptions {
 
   @Test
   fun `block assertions raise a compound exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord") {
         hasLength(5)
         isUpperCase()
@@ -70,7 +71,7 @@ class Exceptions {
 
   @Test
   fun `chains involving "and" raise a single compound exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord")
         .get(String::length)
         .isGreaterThan(0)
@@ -129,7 +130,7 @@ class Exceptions {
 
   @Test
   fun `blocks involving "and" raise a single compound exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord") {
         get(String::length)
           .isGreaterThan(0)
@@ -170,7 +171,7 @@ class Exceptions {
 
   @Test
   fun `composed assertions raise an atomic exception`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat(listOf("catflap", "rubberplant", "marzipan"))
         .containsExactly("catflap", "rubberplant")
     }
@@ -192,7 +193,7 @@ class Exceptions {
 
   @Test
   fun `composed assertions in a block are grouped`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat(listOf("catflap", "rubberplant", "marzipan")) {
         hasSize(2)
         containsExactly("catflap", "rubberplant")
@@ -229,7 +230,7 @@ class Exceptions {
 
   @Test
   fun `expected and actual are undefined if a failure does not specify an actual`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord")
         .assert("is %s", "something") {
           fail("o noes")
@@ -246,7 +247,7 @@ class Exceptions {
 
   @Test
   fun `expected and actual are defined if a failure specifies an actual`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord")
         .assert("is %s", "something") {
           fail("something else", "o noes")

@@ -1,12 +1,11 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.junit.junitTests
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
-import strikt.fails
 import strikt.internal.reporting.toHex
 import java.lang.System.nanoTime
 import java.util.Random
@@ -15,36 +14,38 @@ import java.util.Random
 internal object ArrayAssertions {
 
   @TestFactory
-  fun `byte arrays`() = junitTests<ByteArray> {
-    fixture { randomBytes() }
+  fun `byte arrays`() = assertionTests<ByteArray> {
+    randomBytes().let { subject ->
+      fixture { expectThat(subject) }
 
-    context("contentEquals") {
-      test("contents are equal to a copy of itself") {
-        expectThat(this).contentEquals(this.copyOf())
-      }
-
-      test("contents are not equal to a different array") {
-        val expected = randomBytes()
-        val error = fails {
-          expectThat(this).contentEquals(expected)
+      context("contentEquals") {
+        test("contents are equal to a copy of itself") {
+          contentEquals(subject.copyOf())
         }
-        assertEquals(
-          "▼ Expect that 0x${toHex()}:\n" +
-            "  ✗ array content equals 0x${expected.toHex()}",
-          error.message
-        )
-      }
 
-      test("contents are not equal to a sub-array") {
-        val expected = copyOf(size / 2)
-        val error = fails {
-          expectThat(this).contentEquals(expected)
+        test("contents are not equal to a different array") {
+          val expected = randomBytes()
+          val error = assertThrows<AssertionError> {
+            contentEquals(expected)
+          }
+          assertEquals(
+            "▼ Expect that 0x${subject.toHex()}:\n" +
+              "  ✗ array content equals 0x${expected.toHex()}",
+            error.message
+          )
         }
-        assertEquals(
-          "▼ Expect that 0x${toHex()}:\n" +
-            "  ✗ array content equals 0x${expected.toHex()}",
-          error.message
-        )
+
+        test("contents are not equal to a sub-array") {
+          val expected = subject.copyOf(subject.size / 2)
+          val error = assertThrows<AssertionError> {
+            contentEquals(expected)
+          }
+          assertEquals(
+            "▼ Expect that 0x${subject.toHex()}:\n" +
+              "  ✗ array content equals 0x${expected.toHex()}",
+            error.message
+          )
+        }
       }
     }
   }

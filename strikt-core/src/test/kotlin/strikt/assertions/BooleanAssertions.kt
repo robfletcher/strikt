@@ -3,8 +3,8 @@ package strikt.assertions
 import com.oneeyedmen.minutest.junit.junitTests
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
-import strikt.fails
 
 @DisplayName("assertions on Boolean")
 @Suppress("SimplifyBooleanWithConstants")
@@ -16,13 +16,13 @@ internal object BooleanAssertions {
     }
 
     test("fails when the subject is false") {
-      fails {
+      assertThrows<AssertionError> {
         expectThat("a" == "A").isTrue()
       }
     }
 
     test("fails when the subject is null") {
-      fails {
+      assertThrows<AssertionError> {
         expectThat(null).isTrue()
       }
     }
@@ -35,13 +35,13 @@ internal object BooleanAssertions {
     }
 
     test("fails when the subject is false") {
-      fails {
+      assertThrows<AssertionError> {
         expectThat("a" == "a").isFalse()
       }
     }
 
     test("fails when the subject is null") {
-      fails {
+      assertThrows<AssertionError> {
         expectThat(null).isFalse()
       }
     }
