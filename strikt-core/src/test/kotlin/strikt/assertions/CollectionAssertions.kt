@@ -6,7 +6,7 @@ import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 
 @DisplayName("assertions on Collection")
-internal class CollectionAssertions {
+internal object CollectionAssertions {
   @TestFactory
   fun hasSize() = assertionTests<Collection<Any?>> {
     fixture { expectThat(setOf("catflap", "rubberplant", "marzipan")) }
