@@ -3,7 +3,7 @@ package strikt.assertions
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 
-internal class TupleAssertions {
+internal object TupleAssertions {
   @Test fun `first maps assertion to component1 of a pair`() {
     expectThat("a" to 1).first.isEqualTo("a")
   }

@@ -9,7 +9,7 @@ import strikt.api.expectThat
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("assertions on String")
-internal class StringAssertions {
+internal object StringAssertions {
   @TestFactory
   fun isEqualToIgnoringCase() = assertionTests<String> {
     fixture { expectThat("fnord") }

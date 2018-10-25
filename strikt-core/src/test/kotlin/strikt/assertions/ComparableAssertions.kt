@@ -9,7 +9,7 @@ import strikt.api.expectThat
 import java.time.Instant
 
 @DisplayName("assertions on Comparable")
-internal class ComparableAssertions {
+internal object ComparableAssertions {
 
   fun <T : Comparable<T>> BaseContext<Assertion.Builder<T>>.supportsComparisonAssertions(
     value: T,

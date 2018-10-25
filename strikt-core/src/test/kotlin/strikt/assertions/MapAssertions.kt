@@ -2,135 +2,111 @@ package strikt.assertions
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 
-@DisplayName("Assertions on Map")
-internal class MapAssertions {
-  @Nested
-  @DisplayName("isNullOrEmpty assertion")
-  inner class IsEmpty {
-    @Test
-    fun `passes if the subject is empty`() {
-      val subject = emptyMap<Any, Any>()
-      expectThat(subject).isEmpty()
-    }
+@DisplayName("assertions on Map")
+internal object MapAssertions {
+  @TestFactory
+  fun mapAssertions() = assertionTests<Map<String, String>> {
+    context("an empty subject") {
+      fixture { expectThat(emptyMap()) }
 
-    @Test
-    fun `fails if the subject is not empty`() {
-      assertThrows<AssertionError> {
-        val subject = mapOf("Eris" to "Strife and confusion")
-        expectThat(subject).isEmpty()
+      test("isEmpty assertion passes") {
+        isEmpty()
       }
-    }
-  }
 
-  @Nested
-  @DisplayName("isNotEmpty assertion")
-  inner class IsNotEmpty {
-    @Test
-    fun `fails if the subject is empty`() {
-      assertThrows<AssertionError> {
-        val subject = emptyMap<Any, Any>()
-        expectThat(subject).isNotEmpty()
+      test("isNotEmpty assertion fails") {
+        assertThrows<AssertionError> {
+          isNotEmpty()
+        }
       }
     }
 
-    @Test
-    fun `passes if the subject is not empty`() {
-      val subject = mapOf("Eris" to "Strife and confusion")
-      expectThat(subject).isNotEmpty()
-    }
-  }
+    context("a non-empty map") {
+      fixture { expectThat(mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")) }
 
-  @Nested
-  @DisplayName("containsKey assertion")
-  inner class ContainsKey {
-    @Test
-    fun `passes if the subject has a matching key`() {
-      val subject = mapOf("foo" to "bar")
-      expectThat(subject).containsKey("foo")
-    }
-
-    @Test
-    fun `fails if the subject does not have a matching key`() {
-      val error = assertThrows<AssertionError> {
-        val subject = emptyMap<Any, Any>()
-        expectThat(subject).containsKey("foo")
+      test("isEmpty assertion fails") {
+        assertThrows<AssertionError> {
+          isEmpty()
+        }
       }
-      assertEquals(
-        "▼ Expect that {}:\n" +
-          "  ✗ has an entry with the key \"foo\"",
-        error.message
-      )
-    }
-  }
 
-  @Nested
-  @DisplayName("containsKeys assertion")
-  inner class ContainsKeys {
-    @Test
-    fun `passes if the subject has all the specified keys`() {
-      val subject =
-        mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
-      expectThat(subject).containsKeys("foo", "baz")
-    }
-
-    @Test
-    fun `fails if the subject does not have a matching key`() {
-      val error = assertThrows<AssertionError> {
-        val subject =
-          mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")
-        expectThat(subject).containsKeys("foo", "bar", "fnord")
+      test("isNotEmpty assertion passes") {
+        isNotEmpty()
       }
-      assertEquals(
-        """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
-          |  ✗ has entries with the keys ["foo", "bar", "fnord"]
-          |    ✓ has an entry with the key "foo"
-          |    ✗ has an entry with the key "bar"
-          |    ✗ has an entry with the key "fnord"""".trimMargin(),
-        error.message
-      )
-    }
-  }
 
-  @Nested
-  @DisplayName("hasEntry assertion")
-  inner class HasEntry {
-    @Test
-    fun `passes if the subject has a matching key value pair`() {
-      val subject = mapOf("foo" to "bar")
-      expectThat(subject).hasEntry("foo", "bar")
-    }
+      context("containsKey assertion") {
+        test("passes if the subject has a matching key") {
+          containsKey("foo")
+        }
 
-    @Test
-    fun `fails if the subject does not have a matching key`() {
-      val error = assertThrows<AssertionError> {
-        val subject = emptyMap<Any, Any>()
-        expectThat(subject).hasEntry("foo", "bar")
+        test("fails if the subject does not have a matching key") {
+          val error = assertThrows<AssertionError> {
+            containsKey("bar")
+          }
+          assertEquals(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✗ has an entry with the key "bar""""
+              .trimMargin(),
+            error.message
+          )
+        }
       }
-      assertEquals(
-        """▼ Expect that {}:
-          |  ✗ has an entry with the key "foo"""".trimMargin(),
-        error.message
-      )
-    }
 
-    @Test
-    fun `fails if the subject has a different value for the key`() {
-      val error = assertThrows<AssertionError> {
-        val subject = mapOf("foo" to "bar")
-        expectThat(subject).hasEntry("foo", "baz")
+      context("containsKeys assertion") {
+        test("passes if the subject has all the specified keys") {
+          containsKeys("foo", "baz")
+        }
+
+        test("fails if the subject does not have a matching key") {
+          val error = assertThrows<AssertionError> {
+            containsKeys("foo", "bar", "fnord")
+          }
+          assertEquals(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✗ has entries with the keys ["foo", "bar", "fnord"]
+              |    ✓ has an entry with the key "foo"
+              |    ✗ has an entry with the key "bar"
+              |    ✗ has an entry with the key "fnord""""
+              .trimMargin(),
+            error.message
+          )
+        }
       }
-      assertEquals(
-        """▼ Expect that {"foo"="bar"}:
-          |  ✓ has an entry with the key "foo"
-          |  ▼ entry ["foo"]:
-          |    ✗ is equal to "baz" : found "bar"""".trimMargin(),
-        error.message
-      )
+
+      context("hasEntry assertion") {
+        test("passes if the subject has a matching key value pair") {
+          hasEntry("foo", "bar")
+        }
+
+        test("fails if the subject does not have a matching key") {
+          val error = assertThrows<AssertionError> {
+            hasEntry("bar", "foo")
+          }
+          assertEquals(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✗ has an entry with the key "bar""""
+              .trimMargin(),
+            error.message
+          )
+        }
+
+        test("fails if the subject has a different value associated with the key") {
+          val error = assertThrows<AssertionError> {
+            hasEntry("foo", "baz")
+          }
+          assertEquals(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✓ has an entry with the key "foo"
+              |  ▼ entry ["foo"]:
+              |    ✗ is equal to "baz" : found "bar""""
+              .trimMargin(),
+            error.message
+          )
+        }
+      }
     }
   }
 }
