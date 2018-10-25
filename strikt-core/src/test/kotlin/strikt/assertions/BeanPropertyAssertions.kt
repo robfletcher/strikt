@@ -1,15 +1,15 @@
 package strikt.assertions
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
-import strikt.fails
 import strikt.internal.reporting.toHex
 import java.time.LocalDate
 import java.util.Base64
 import java.util.UUID
 
-internal class BeanPropertyAssertions {
+internal object BeanPropertyAssertions {
 
   internal data class PersonKotlin(
     val id: UUID = UUID.randomUUID(),
@@ -41,22 +41,22 @@ internal class BeanPropertyAssertions {
       name = "Ziggy",
       dateOfBirth = LocalDate.of(1972, 2, 10)
     )
-    val error = fails {
+    val error = assertThrows<AssertionError> {
       expectThat(subject).propertiesAreEqualTo(other)
     }
     expectThat(error.message) {
       isNotNull()
       isEqualTo(
-        "▼ Expect that Person(David):\n" +
-          "  ✗ is equal field-by-field to Person(Ziggy)\n" +
-          "    ▼ value of property dateOfBirth:\n" +
-          "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
-          "    ▼ value of property id:\n" +
-          "      ✓ is equal to ${subject.id}\n" +
-          "    ▼ value of property image:\n" +
-          "      ✓ array content equals 0x${subject.image.toHex()}\n" +
-          "    ▼ value of property name:\n" +
-          "      ✗ is equal to \"Ziggy\" : found \"David\""
+        """▼ Expect that Person(David):
+          |  ✗ is equal field-by-field to Person(Ziggy)
+          |    ▼ value of property dateOfBirth:
+          |      ✗ is equal to 1972-02-10 : found 1947-01-08
+          |    ▼ value of property id:
+          |      ✓ is equal to ${subject.id}
+          |    ▼ value of property image:
+          |      ✓ array content equals 0x${subject.image.toHex()}
+          |    ▼ value of property name:
+          |      ✗ is equal to "Ziggy" : found "David"""".trimMargin()
       )
     }
   }
@@ -64,7 +64,7 @@ internal class BeanPropertyAssertions {
   @Test
   fun `isEqualTo works with java fields that are null`() {
     val subject = PersonJava(null, null, null, null)
-    expectThat(fails {
+    expectThat(assertThrows<AssertionError> {
       expectThat(subject.name).isEqualTo("Ziggy")
     }).isA<AssertionFailedError>().and {
       get { actual.value }.isNull()
@@ -85,22 +85,22 @@ internal class BeanPropertyAssertions {
       LocalDate.of(1972, 2, 10),
       subject.image
     )
-    val error = fails {
+    val error = assertThrows<AssertionError> {
       expectThat(subject).propertiesAreEqualTo(other)
     }
     expectThat(error.message) {
       isNotNull()
       isEqualTo(
-        "▼ Expect that Person(David):\n" +
-          "  ✗ is equal field-by-field to Person(Ziggy)\n" +
-          "    ▼ value of property dateOfBirth:\n" +
-          "      ✗ is equal to 1972-02-10 : found 1947-01-08\n" +
-          "    ▼ value of property id:\n" +
-          "      ✓ is equal to ${subject.id}\n" +
-          "    ▼ value of property image:\n" +
-          "      ✓ array content equals 0x${subject.image.toHex()}\n" +
-          "    ▼ value of property name:\n" +
-          "      ✗ is equal to \"Ziggy\" : found \"David\""
+        """▼ Expect that Person(David):
+          |  ✗ is equal field-by-field to Person(Ziggy)
+          |    ▼ value of property dateOfBirth:
+          |      ✗ is equal to 1972-02-10 : found 1947-01-08
+          |    ▼ value of property id:
+          |      ✓ is equal to ${subject.id}
+          |    ▼ value of property image:
+          |      ✓ array content equals 0x${subject.image.toHex()}
+          |    ▼ value of property name:
+          |      ✗ is equal to "Ziggy" : found "David"""".trimMargin()
       )
     }
   }
@@ -122,22 +122,22 @@ internal class BeanPropertyAssertions {
     val subject = Cat(name = "Oreo", breed = "Tuxedo", legs = 4, tails = 0)
     val other = Cat(name = "Rocky", breed = "Russian Blue", legs = 4, tails = 1)
 
-    fails {
+    assertThrows<AssertionError> {
       expectThat(subject).propertiesAreEqualTo(other)
     }.let { error ->
       expectThat(error.message)
         .isNotNull()
         .isEqualTo(
-          "▼ Expect that Cat(Oreo):\n" +
-            "  ✗ is equal field-by-field to Cat(Rocky)\n" +
-            "    ▼ value of property breed:\n" +
-            "      ✗ is equal to \"Russian Blue\" : found \"Tuxedo\"\n" +
-            "    ▼ value of property legs:\n" +
-            "      ✓ is equal to 4\n" +
-            "    ▼ value of property name:\n" +
-            "      ✗ is equal to \"Rocky\" : found \"Oreo\"\n" +
-            "    ▼ value of property tails:\n" +
-            "      ✗ is equal to 1 : found 0"
+          """▼ Expect that Cat(Oreo):
+            |  ✗ is equal field-by-field to Cat(Rocky)
+            |    ▼ value of property breed:
+            |      ✗ is equal to "Russian Blue" : found "Tuxedo"
+            |    ▼ value of property legs:
+            |      ✓ is equal to 4
+            |    ▼ value of property name:
+            |      ✗ is equal to "Rocky" : found "Oreo"
+            |    ▼ value of property tails:
+            |      ✗ is equal to 1 : found 0""".trimMargin()
         )
     }
   }

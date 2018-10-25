@@ -2,251 +2,272 @@ package strikt.assertions
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion.Builder
 import strikt.api.expectThat
-import strikt.fails
+import java.time.Instant
 
 @DisplayName("assertions on Any")
-internal class AnyAssertions {
-  @Nested
-  @DisplayName("isNull assertion")
-  inner class IsNull {
-    @Test
-    fun `passes if the subject is null`() {
-      val subject: Any? = null
-      expectThat(subject).isNull()
-    }
+internal object AnyAssertions {
 
-    @Test
-    fun `fails if the subject is not null`() {
-      fails {
-        val subject: Any? = "fnord"
-        expectThat(subject).isNull()
+  @TestFactory
+  fun isNull() = assertionTests<Any?> {
+    context("when the subject is null") {
+      fixture { expectThat(null) }
+
+      test("the assertion passes") {
+        isNull()
+      }
+
+      test("the assertion down-casts the subject") {
+        @Suppress("USELESS_IS_CHECK")
+        also { assert(it is Builder<Any?>) }
+          .isNull()
+          .also { assert(it is Builder<Nothing>) }
       }
     }
 
-    @Suppress("USELESS_IS_CHECK")
-    @Test
-    fun `down-casts the result`() {
-      val subject: Any? = null
-      expectThat(subject)
-        .also { assert(it is Builder<Any?>) }
-        .isNull()
-        .also { assert(it is Builder<Nothing>) }
-    }
-  }
+    listOf("fnord", 1L, "null").forEach {
+      context("a non-null subject : ${it.quoted()}") {
+        fixture { expectThat(it) }
 
-  @Nested
-  @DisplayName("isNotNull assertion")
-  inner class IsNotNull {
-    @Test
-    fun `fails if the subject is null`() {
-      fails {
-        val subject: Any? = null
-        expectThat(subject).isNotNull()
-      }
-    }
-
-    @Test
-    fun `passes if the subject is not null`() {
-      val subject: Any? = "fnord"
-      expectThat(subject).isNotNull()
-    }
-
-    @Suppress("USELESS_IS_CHECK")
-    @Test
-    fun `down-casts the result`() {
-      val subject: Any? = "fnord"
-      expectThat(subject)
-        .also { assert(it is Builder<Any?>) }
-        .isNotNull()
-        .also { assert(it is Builder<Any>) }
-    }
-  }
-
-  @Nested
-  @DisplayName("isA assertion")
-  inner class IsA {
-    @Test
-    fun `fails if the subject is null`() {
-      fails {
-        val subject: Any? = null
-        expectThat(subject).isA<String>()
-      }
-    }
-
-    @Test
-    fun `fails if the subject is a different type`() {
-      fails {
-        val subject = 1L
-        expectThat(subject).isA<String>()
-      }
-    }
-
-    @Test
-    fun `passes if the subject is the same exact type`() {
-      val subject = "fnord"
-      expectThat(subject).isA<String>()
-    }
-
-    @Test
-    fun `passes if the subject is a sub-type`() {
-      val subject: Any = 1L
-      expectThat(subject).isA<Number>()
-    }
-
-    @Suppress("USELESS_IS_CHECK")
-    @Test
-    fun `down-casts the result`() {
-      val subject: Any = 1L
-      expectThat(subject)
-        .also { assert(it is Builder<Any>) }
-        .isA<Number>()
-        .also { assert(it is Builder<Number>) }
-        .isA<Long>()
-        .also { assert(it is Builder<Long>) }
-    }
-
-    @Suppress("USELESS_IS_CHECK")
-    @Test
-    fun `allows specialized assertions after establishing type`() {
-      val subject: Any = "fnord"
-      expectThat(subject)
-        .also { assert(it is Builder<Any>) }
-        .isA<String>()
-        .also { assert(it is Builder<String>) }
-        .hasLength(5) // only available on Assertion<CharSequence>
-    }
-  }
-
-  @Nested
-  @DisplayName("isEqualTo assertion")
-  inner class IsEqualTo {
-    @Test
-    fun `passes if the subject matches the expectation`() {
-      expectThat("fnord").isEqualTo("fnord")
-    }
-
-    @TestFactory
-    fun `fails subject is equal to expected`() =
-      listOf(
-        Pair("fnord", "FNORD"),
-        Pair(1, 1L),
-        Pair(null, "fnord"),
-        Pair("fnord", null)
-      ).map { (subject, expected) ->
-        dynamicTest("fails $subject is equal to $expected") {
-          fails {
-            expectThat(subject).isEqualTo(expected)
+        test("the assertion fails") {
+          assertThrows<AssertionFailedError> {
+            isNull()
           }
         }
       }
-
-    @Test
-    fun `specifies type information if the values look the same`() {
-      val e = fails {
-        expectThat<Number>(5L).isEqualTo(5)
-      }
-      assertEquals(
-        """▼ Expect that 5:
-  ✗ is equal to 5 (Int) : found 5 (Long)""", e.message
-      )
     }
   }
 
-  @Nested
-  @DisplayName("isNotEqualTo assertion")
-  inner class IsNotEqualTo {
-    @Test
-    fun `fails if the subject matches the expectation`() {
-      fails {
-        expectThat("fnord").isNotEqualTo("fnord")
+  @TestFactory
+  fun isNotNull() = assertionTests<Any?> {
+    context("when the subject is null") {
+      fixture { expectThat(null) }
+
+      test("the assertion fails") {
+        assertThrows<AssertionFailedError> {
+          isNotNull()
+        }
       }
     }
 
-    @TestFactory
-    fun `passes subject is not equal to expected`() =
-      listOf(
-        Pair("fnord", "FNORD"),
-        Pair(1, 1L),
-        Pair(null, "fnord"),
-        Pair("fnord", null)
-      ).map { (subject, expected) ->
-        dynamicTest("passes $subject is not equal to $expected") {
-          expectThat(subject).isNotEqualTo(expected)
+    listOf("fnord", 1L, "null").forEach<Any?> {
+      context("a non-null subject : ${it.quoted()}") {
+        fixture { expectThat(it) }
+
+        test("the assertion passes") {
+          isNotNull()
+        }
+
+        test("down-casts the result") {
+          @Suppress("USELESS_IS_CHECK")
+          also { assert(it is Builder<Any?>) }
+            .isNotNull()
+            .also { assert(it is Builder<Any>) }
         }
       }
+    }
+  }
 
-    @Nested
-    @DisplayName("isSameInstanceAs assertion")
-    inner class IsSameInstanceAs {
+  @TestFactory
+  fun isA() = assertionTests<Any?> {
+    context("when the subject is null") {
+      fixture { expectThat(null) }
+      test("the assertion fails") {
+        assertThrows<AssertionFailedError> {
+          isA<String>()
+        }
+      }
+    }
 
-      @TestFactory
-      fun `fails subject is not the same instance as expected`() =
-        listOf(
-          Pair(listOf("fnord"), listOf("fnord")),
-          Pair(null, listOf("fnord")),
-          Pair(listOf("fnord"), null),
-          Pair(1, 1L)
-        ).map { (subject, expected) ->
-          dynamicTest("fails {0} is not the same instance as {1}") {
-            fails {
-              expectThat(subject).isSameInstanceAs(expected)
+    context("a subject of the wrong type") {
+      fixture { expectThat(1L) }
+
+      test("the assertion fails") {
+        assertThrows<AssertionFailedError> {
+          isA<String>()
+        }
+      }
+    }
+
+    context("a subject of the expected type") {
+      fixture { expectThat("fnord") }
+
+      test("the assertion passes") {
+        isA<String>()
+      }
+
+      test("the assertion narrows the subject type") {
+        @Suppress("USELESS_IS_CHECK")
+        also { assert(it is Builder<Any?>) }
+          .isA<String>()
+          .also { assert(it is Builder<String>) }
+      }
+
+      test("the narrowed type can use specialized assertions") {
+        isA<String>().hasLength(5) // only available on Assertion<CharSequence>
+      }
+    }
+
+    context("a subject that is a sub-type of the expected type") {
+      fixture { expectThat(1L) }
+
+      test("the assertion passes") {
+        isA<Number>()
+      }
+
+      test("the assertion narrows the subject type") {
+        @Suppress("USELESS_IS_CHECK")
+        also { assert(it is Builder<Any?>) }
+          .isA<Number>()
+          .also { assert(it is Builder<Number>) }
+          .isA<Long>()
+          .also { assert(it is Builder<Long>) }
+      }
+    }
+  }
+
+  @TestFactory
+  fun isEqualTo() = assertionTests<Any?> {
+    context("a subject that is equal to the expectation") {
+      fixture { expectThat("fnord") }
+
+      test("the assertion passes") {
+        isEqualTo("fnord")
+      }
+    }
+
+    listOf(
+      "fnord" to "FNORD",
+      1 to 1L,
+      null to "fnord",
+      "fnord" to null
+    )
+      .forEach { (subject, expected) ->
+        context("when the subject is ${subject.quoted()}") {
+          fixture { expectThat(subject) }
+
+          test("the assertion fails") {
+            assertThrows<AssertionFailedError> {
+              isEqualTo(expected)
             }
           }
         }
+      }
 
-      @TestFactory
-      fun `succeeds subject is the same instance as expected`() =
-        listOf(
-          Pair("fnord", "fnord"),
-          Pair(1L, 1L),
-          Pair(null, null),
-          listOf("fnord").let
-          { Pair(it, it) }
-        ).map { (subject, expected) ->
-          dynamicTest("passes {0} is same instance as {1}") {
-            expectThat(subject).isSameInstanceAs(expected)
-          }
+    context("subject is a different type but looks the same") {
+      fixture { expectThat(5L) }
+
+      test("the failure message specifies the types involved") {
+        val error = assertThrows<AssertionFailedError> {
+          isEqualTo(5)
         }
-
-      @Nested
-      @DisplayName("isNotSameInstanceAs assertion")
-      inner class IsNotSameInstanceAs {
-
-        @TestFactory
-        fun `succeeds subject is not the same instance as expected`() =
-          listOf(
-            Pair(listOf("fnord"), listOf("fnord")),
-            Pair(null, listOf("fnord")),
-            Pair(listOf("fnord"), null),
-            Pair(1, 1L)
-          ).map { (subject, expected) ->
-            dynamicTest("passes {0} is not same instance as to {1}") {
-              expectThat(subject).isNotSameInstanceAs(expected)
-            }
-          }
-
-        @TestFactory
-        fun `fails subject is not the same instance as expected`() =
-          listOf(
-            Pair("fnord", "fnord"),
-            Pair(1L, 1L),
-            Pair(null, null),
-            listOf("fnord").let
-            { Pair(it, it) }
-          ).map { (subject, expected) ->
-            dynamicTest("fails {0} is not same instance as {1}") {
-              fails {
-                expectThat(subject).isNotSameInstanceAs(expected)
-              }
-            }
-          }
+        assertEquals(
+          """▼ Expect that 5:
+            |  ✗ is equal to 5 (Int) : found 5 (Long)""".trimMargin(),
+          error.message
+        )
       }
     }
+  }
+
+  @TestFactory
+  fun isNotEqualTo() = assertionTests<Any?> {
+    context("the subject matches the expectation") {
+      fixture { expectThat("fnord") }
+
+      test("the assertion fails") {
+        assertThrows<AssertionFailedError> {
+          isNotEqualTo("fnord")
+        }
+      }
+    }
+
+    listOf(
+      "fnord" to "FNORD",
+      1 to 1L,
+      null to "fnord",
+      "fnord" to null
+    )
+      .forEach { (subject, expected) ->
+        context("when the subject is ${subject.quoted()} and the expected value is ${expected.quoted()}") {
+          fixture { expectThat(subject) }
+
+          test("the assertion passes") {
+            isNotEqualTo(expected)
+          }
+        }
+      }
+  }
+
+  @TestFactory
+  fun isSameInstanceAs() = assertionTests<Any?> {
+    listOf(
+      listOf("fnord") to listOf("fnord"),
+      null to listOf("fnord"),
+      listOf("fnord") to null,
+      1 to 1L,
+      Instant.now().let { it to Instant.ofEpochMilli(it.toEpochMilli()) }
+    )
+      .forEach { (subject, expected) ->
+        context("the subject and expected values are different instances") {
+          fixture { expectThat(subject) }
+
+          test("the assertion fails") {
+            assertThrows<AssertionFailedError> {
+              isSameInstanceAs(expected)
+            }
+          }
+        }
+      }
+
+    listOf("fnord", 1L, null, listOf("fnord"), Instant.now())
+      .map { it to it }
+      .forEach { (subject, expected) ->
+        context("the subject and expected values are the same instance") {
+          fixture { expectThat(subject) }
+
+          test("the assertion passes") {
+            isSameInstanceAs(expected)
+          }
+        }
+      }
+  }
+
+  @TestFactory
+  fun isNotSameInstanceAs() = assertionTests<Any?> {
+    listOf(
+      listOf("fnord") to listOf("fnord"),
+      null to listOf("fnord"),
+      listOf("fnord") to null,
+      1 to 1L,
+      Instant.now().let { it to Instant.ofEpochMilli(it.toEpochMilli()) }
+    )
+      .forEach { (subject, expected) ->
+        context("the subject and expected values are different instances") {
+          fixture { expectThat(subject) }
+
+          test("the assertion passes") {
+            isNotSameInstanceAs(expected)
+          }
+        }
+      }
+
+    listOf("fnord", 1L, null, listOf("fnord"), Instant.ofEpochMilli(0))
+      .map { it to it }
+      .forEach { (subject, expected) ->
+        context("the subject and expected values are the same instance") {
+          fixture { expectThat(subject) }
+
+          test("the assertion fails") {
+            assertThrows<AssertionFailedError> {
+              isNotSameInstanceAs(expected)
+            }
+          }
+        }
+      }
   }
 }

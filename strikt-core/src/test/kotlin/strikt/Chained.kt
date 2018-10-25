@@ -3,6 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.contains
@@ -19,7 +20,7 @@ import strikt.assertions.message
 internal class Chained {
   @Test
   fun `stops on the first failed assertion in the chain`() {
-    fails {
+    assertThrows<AssertionError> {
       val subject: Any? = null
       expectThat(subject).isNotNull().isEqualTo(null)
     }
@@ -27,7 +28,7 @@ internal class Chained {
 
   @Test
   fun `not() negates assertions`() {
-    fails {
+    assertThrows<AssertionError> {
       val subject: Any? = null
       expectThat(subject).not().isNull()
     }
@@ -42,7 +43,7 @@ internal class Chained {
   @Test
   fun `not() affects the assertion message`() {
     val subject = "fnord"
-    val error = fails {
+    val error = assertThrows<AssertionError> {
       expectThat(subject).not().isLowerCase()
     }
     assertEquals(
@@ -54,7 +55,7 @@ internal class Chained {
 
   @Test
   fun `only throws a single exception`() {
-    val error = fails {
+    val error = assertThrows<AssertionError> {
       expectThat(listOf(1, 2, 3, 4)).containsExactly(1, 2)
     }
     val expected = "▼ Expect that [1, 2, 3, 4]:\n" +
@@ -72,7 +73,7 @@ internal class Chained {
 
   @Test
   fun `can connect a block to a chain with and`() {
-    val error = fails {
+    val error = assertThrows<AssertionError> {
       val subject: String? = "fnord"
       expectThat(subject)
         .isNotNull()

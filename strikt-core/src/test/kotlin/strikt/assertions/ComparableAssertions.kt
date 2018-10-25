@@ -1,150 +1,158 @@
 package strikt.assertions
 
+import com.oneeyedmen.minutest.BaseContext
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
+import strikt.api.Assertion
 import strikt.api.expectThat
-import strikt.fails
-import java.time.LocalDate
+import java.time.Instant
 
 @DisplayName("assertions on Comparable")
 internal class ComparableAssertions {
-  @Nested
-  @DisplayName("isGreaterThan assertion")
-  inner class IsGreaterThan {
-    @Test
-    fun `passes if the subject is greater than the expected value`() {
-      expectThat(1).isGreaterThan(0)
-    }
 
-    @Test
-    fun `fails if the subject is equal to the expected value`() {
-      fails {
-        expectThat(1).isGreaterThan(1)
+  fun <T : Comparable<T>> BaseContext<Assertion.Builder<T>>.supportsComparisonAssertions(
+    value: T,
+    decrementor: T.() -> T,
+    incrementor: T.() -> T
+  ) {
+    fixture { expectThat(value) }
+
+    context("isGreaterThan assertion") {
+      test("passes if the subject is greater than the expected value") {
+        isGreaterThan(value.decrementor())
+      }
+
+      test("fails if the subject is equal to the expected value") {
+        assertThrows<AssertionError> {
+          isGreaterThan(value)
+        }
+      }
+
+      test("fails if the subject is less than the expected value") {
+        assertThrows<AssertionError> {
+          isGreaterThan(value.incrementor())
+        }
       }
     }
 
-    @Test
-    fun `fails if the subject is less than the expected value`() {
-      fails {
-        expectThat(LocalDate.of(2018, 5, 1))
-          .isGreaterThan(LocalDate.of(2018, 5, 2))
+    context("isGreaterThanOrEqualTo assertion") {
+      test("passes if the subject is greater than the expected value") {
+        isGreaterThanOrEqualTo(value.decrementor())
       }
-    }
-  }
 
-  @Nested
-  @DisplayName("isLessThan assertion")
-  inner class IsLessThan {
-    @Test
-    fun `passes if the subject is less than the expected value`() {
-      expectThat(0).isLessThan(1)
-    }
+      test("passes if the subject is equal to the expected value") {
+        isGreaterThanOrEqualTo(value)
+      }
 
-    @Test
-    fun `fails if the subject is equal to the expected value`() {
-      fails {
-        expectThat(1).isLessThan(1)
+      test("fails if the subject is less than the expected value") {
+        assertThrows<AssertionError> {
+          isGreaterThanOrEqualTo(value.incrementor())
+        }
       }
     }
 
-    @Test
-    fun `fails if the subject is greater than the expected value`() {
-      fails {
-        expectThat(LocalDate.of(2018, 5, 2))
-          .isLessThan(LocalDate.of(2018, 5, 1))
+    context("isLessThan assertion") {
+      test("fails if the subject is greater than the expected value") {
+        assertThrows<AssertionError> {
+          isLessThan(value.decrementor())
+        }
+      }
+
+      test("fails if the subject is equal to the expected value") {
+        assertThrows<AssertionError> {
+          isLessThan(value)
+        }
+      }
+
+      test("passes if the subject is less than the expected value") {
+        isLessThan(value.incrementor())
       }
     }
-  }
 
-  @Nested
-  @DisplayName("isGreaterThanOrEqualTo assertion")
-  inner class IsGreaterThanOrEqualTo {
-    @Test
-    fun `passes if the subject is greater than the expected value`() {
-      expectThat(1).isGreaterThanOrEqualTo(0)
-    }
-
-    @Test
-    fun `passes if the subject is equal to the expected value`() {
-      expectThat(1).isGreaterThanOrEqualTo(1)
-    }
-
-    @Test
-    fun `fails if the subject is less than the expected value`() {
-      fails {
-        expectThat(LocalDate.of(2018, 5, 1))
-          .isGreaterThanOrEqualTo(LocalDate.of(2018, 5, 2))
+    context("isLessThanOrEqualTo assertion") {
+      test("fails if the subject is greater than the expected value") {
+        assertThrows<AssertionError> {
+          isLessThanOrEqualTo(value.decrementor())
+        }
       }
-    }
-  }
 
-  @Nested
-  @DisplayName("isLessThanOrEqualTo assertion")
-  inner class IsLessThanOrEqualTo {
-    @Test
-    fun `passes if the subject is less than the expected value`() {
-      expectThat(0).isLessThanOrEqualTo(1)
-    }
+      test("passes if the subject is equal to the expected value") {
+        isLessThanOrEqualTo(value)
+      }
 
-    @Test
-    fun `passes if the subject is equal to the expected value`() {
-      expectThat(1).isLessThanOrEqualTo(1)
-    }
-
-    @Test
-    fun `fails if the subject is greater than the expected value`() {
-      fails {
-        expectThat(LocalDate.of(2018, 5, 2))
-          .isLessThanOrEqualTo(LocalDate.of(2018, 5, 1))
+      test("passes if the subject is less than the expected value") {
+        isLessThanOrEqualTo(value.incrementor())
       }
     }
   }
 
-  @Nested
-  @DisplayName("isIn assertion")
-  inner class IsIn {
-    @TestFactory
-    fun `passes if the subject is an Int in the expected range`(): List<DynamicTest> {
-      val range = 1..10
-      return range.map { i ->
-        dynamicTest("$i is in the range $range") {
+  @TestFactory
+  fun comparableAssertions_Int() = assertionTests<Int> {
+    context("an Int subject") {
+      supportsComparisonAssertions(1, Int::dec, Int::inc)
+    }
+  }
+
+  @TestFactory
+  fun comparableAssertions_Instant() = assertionTests<Instant> {
+    context("an Instant subject") {
+      supportsComparisonAssertions(Instant.now(), { minusMillis(1) }, { plusMillis(1) })
+    }
+  }
+
+  @TestFactory
+  fun comparableAssertions_String() = assertionTests<String> {
+    context("a String subject") {
+      supportsComparisonAssertions("a", { "A" }, { "z" })
+    }
+  }
+
+  @TestFactory
+  fun isIn_Int() = assertionTests<Int> {
+    val range = 1..10
+    range.forEach { i ->
+      context("a value of $i") {
+        fixture { expectThat(i) }
+
+        test("is in the range ${range.start}..${range.endInclusive}") {
           expectThat(i).isIn(range)
         }
       }
     }
 
-    @TestFactory
-    fun `fails if the subject is an Int outside the expected range`(): List<DynamicTest> {
-      val range = 1..10
-      return ((-5..0) + (11..15)).map { i ->
-        dynamicTest("$i is not in the range $range") {
-          fails {
+    ((-5..0) + (11..15)).forEach { i ->
+      context("a value of $i") {
+        fixture { expectThat(i) }
+
+        test("$i is not in the range ${range.start}..${range.endInclusive}") {
+          assertThrows<AssertionError> {
             expectThat(i).isIn(range)
           }
         }
       }
     }
+  }
 
-    @TestFactory
-    fun `passes if the subject is a Long in the expected range`(): List<DynamicTest> {
-      val range = 1L..10L
-      return range.map { i ->
-        dynamicTest("$i is in the range $range") {
+  @TestFactory
+  fun isIn_Long() = assertionTests<Long> {
+    val range = 1L..10L
+    range.forEach { i ->
+      context("a value of $i") {
+        fixture { expectThat(i) }
+
+        test("is in the range ${range.start}..${range.endInclusive}") {
           expectThat(i).isIn(range)
         }
       }
     }
 
-    @TestFactory
-    fun `fails if the subject is a Long outside the expected range`(): List<DynamicTest> {
-      val range = 1L..10L
-      return ((-5L..0L) + (11L..15L)).map { i ->
-        dynamicTest("$i is not in the range $range") {
-          fails {
+    ((-5L..0L) + (11L..15L)).forEach { i ->
+      context("a value of $i") {
+        fixture { expectThat(i) }
+
+        test("$i is not in the range ${range.start}..${range.endInclusive}") {
+          assertThrows<AssertionError> {
             expectThat(i).isIn(range)
           }
         }

@@ -1,25 +1,25 @@
 package strikt.assertions
 
+import com.oneeyedmen.minutest.junit.junitTests
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 
 @DisplayName("assertions on enums")
-internal class EnumAssertions {
+internal object EnumAssertions {
   @TestFactory
-  fun `can map to the enum name"`() {
+  fun `can map to the enum name"`() = junitTests<Unit> {
     for (deity in Pantheon.values()) {
-      dynamicTest("Can get name on $deity") {
+      test("Can get name on $deity") {
         expectThat(deity).name.isEqualTo(deity.name)
       }
     }
   }
 
   @TestFactory
-  fun `can map to the enum ordinal`() {
+  fun `can map to the enum ordinal`() = junitTests<Unit> {
     for (deity in Pantheon.values()) {
-      dynamicTest("Can get ordinal on $deity") {
+      test("Can get ordinal on $deity") {
         expectThat(deity).ordinal.isEqualTo(deity.ordinal)
       }
     }

@@ -3,6 +3,7 @@ package strikt
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.hasLength
 import strikt.assertions.isLowerCase
@@ -12,7 +13,7 @@ internal class Composition {
 
   @Test
   fun `composed assertions can be negated`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat("fnord").compose("matches a negated assertion") {
         not().isLowerCase().hasLength(5)
       } then {

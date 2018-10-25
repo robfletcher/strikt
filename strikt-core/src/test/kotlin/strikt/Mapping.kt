@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.api.catching
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
@@ -45,7 +46,7 @@ internal class Mapping {
   @Test
   fun `single() fails when the iterable has multiple entries`() {
     val subject = listOf("catflap", "rubberplant")
-    fails {
+    assertThrows<AssertionError> {
       expectThat(subject).single().isEqualTo("catflap")
     }.let { error ->
       expectThat(error).message.isEqualTo(
@@ -54,6 +55,7 @@ internal class Mapping {
       )
     }
   }
+
   @Test
   fun `last() maps to the last element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
@@ -89,16 +91,16 @@ internal class Mapping {
 
   @Test
   fun `message fails if the exception message is null`() {
-    fails {
+    assertThrows<AssertionError> {
       expectThat(catching { throw IllegalStateException() })
         .throws<IllegalStateException>()
         .message
     }.let { error ->
       expectThat(error).message.isEqualTo(
-        "▼ Expect that java.lang.IllegalStateException:\n" +
-          "  ✓ threw java.lang.IllegalStateException\n" +
-          "  ▼ value of property message:\n" +
-          "    ✗ is not null"
+        """▼ Expect that java.lang.IllegalStateException:
+          |  ✓ threw java.lang.IllegalStateException
+          |  ▼ value of property message:
+          |    ✗ is not null""".trimMargin()
       )
     }
   }
@@ -163,7 +165,7 @@ internal class Mapping {
 
     @Test
     fun `can be described`() {
-      val error = fails {
+      val error = assertThrows<AssertionError> {
         expectThat(subject) {
           get { name }.describedAs("name").isEqualTo("Ziggy")
           get { birthDate.year }.describedAs("birth year")
@@ -171,31 +173,31 @@ internal class Mapping {
         }
       }
       assertEquals(
-        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-          "  ▼ name:\n" +
-          "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
-          "  ▼ birth year:\n" +
-          "    ✗ is equal to 1971 : found 1947",
+        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ name:
+          |    ✗ is equal to "Ziggy" : found "David"
+          |  ▼ birth year:
+          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
         error.message
       )
     }
 
     @Test
     fun `descriptions are defaulted when using property references`() {
-      val error = fails {
+      val error = assertThrows<AssertionError> {
         expectThat(subject).get(Person::name).isEqualTo("Ziggy")
       }
       assertEquals(
-        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-          "  ▼ value of property name:\n" +
-          "    ✗ is equal to \"Ziggy\" : found \"David\"",
+        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ value of property name:
+          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin(),
         error.message
       )
     }
 
     @Test
     fun `descriptions also default for blocks`() {
-      val error = fails {
+      val error = assertThrows<AssertionError> {
         expectThat(subject) {
           get { name }.isEqualTo("Ziggy")
           get {
@@ -204,27 +206,27 @@ internal class Mapping {
         }
       }
       assertEquals(
-        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-          "  ▼ name:\n" +
-          "    ✗ is equal to \"Ziggy\" : found \"David\"\n" +
-          "  ▼ birthDate.year:\n" +
-          "    ✗ is equal to 1971 : found 1947",
+        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ name:
+          |    ✗ is equal to "Ziggy" : found "David"
+          |  ▼ birthDate.year:
+          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
         error.message
       )
     }
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
-      val error = fails {
+      val error = assertThrows<AssertionError> {
         expectThat(subject).get(Person::birthDate)
           .get(LocalDate::getYear)
           .isEqualTo(1971)
       }
       assertEquals(
-        "▼ Expect that Person(name=David, birthDate=1947-01-08):\n" +
-          "  ▼ value of property birthDate:\n" +
-          "    ▼ return value of getYear:\n" + // TODO: treat as property ref
-          "      ✗ is equal to 1971 : found 1947",
+        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ value of property birthDate:
+          |    ▼ return value of getYear:
+          |      ✗ is equal to 1971 : found 1947""".trimMargin(),
         error.message
       )
     }
