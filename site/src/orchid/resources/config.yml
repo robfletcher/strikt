@@ -24,7 +24,6 @@ theme:
     url: '/'
     icon: 'home'
   - type: 'wiki'
-    section: 'user-guide'
     icon: 'graduation-cap'
     asSubmenu: true
     submenuTitle: 'User Guide'
@@ -57,12 +56,6 @@ theme:
 allPages:
   components:
   - type: 'pageContent'
-
-wiki:
-  sections:
-  - key: 'user-guide'
-    title: 'User Guide'
-    includeIndexInPageTitle: false
 
 services:
   # Uncomment this block to temporarily disable Kotlin docs generation. Dokka
