@@ -63,4 +63,71 @@ internal object CollectionAssertions {
       }
     }
   }
+
+  @TestFactory
+  fun isSortedOnAny() = assertionTests<Collection<Any?>> {
+    context("an empty collection subject") {
+      fixture { expectThat(emptyList()) }
+
+      test("the assertion passes") {
+        isSorted(Comparator.comparingInt(Any::hashCode))
+      }
+    }
+  }
+
+  @TestFactory
+  fun isSortedOnString() = assertionTests<Collection<String?>> {
+    context("an non-empty simple value collection subject") {
+      fixture { expectThat(listOf("catflap", "marzipan", "rubber")) }
+
+      test("the assertion passes") {
+        isSorted(Comparator.naturalOrder<String>())
+      }
+
+      test("fails if the subject is not sorted according to the comparator") {
+        assertThrows<AssertionError> {
+          isSorted(Comparator.naturalOrder<String>().reversed())
+        }
+      }
+    }
+
+    context("an non-empty simple value collection subject containing null value") {
+      fixture { expectThat(listOf("catflap", "marzipan", null)) }
+
+      test("the assertion passes if the Null value is handled through the Comparator instance") {
+        isSorted(Comparator.nullsLast(Comparator.naturalOrder<String>()))
+      }
+
+      test("fails with NPE if the Null value isn't handled through the Comparator instances") {
+        assertThrows<NullPointerException> {
+          isSorted(Comparator.naturalOrder<String>())
+        }
+      }
+    }
+  }
+
+  @TestFactory
+  fun isSortedOnNonComparable() = assertionTests<Collection<Collection<String>?>> {
+    context("an non-empty non Comparable value collection subject") {
+      fixture {
+        expectThat(
+          listOf(
+            listOf("catflap"),
+            listOf("marzipan", "persipan"),
+            listOf("rubberplan", "rubber bush", "rubber tree")
+          )
+        )
+      }
+
+      test("the assertion passes") {
+        isSorted(Comparator.comparing(Collection<String>::size))
+      }
+
+      test("fails if the subject is not sorted according to the comparator") {
+        assertThrows<AssertionError> {
+          isSorted(Comparator.comparing(Collection<String>::size).reversed())
+        }
+      }
+    }
+  }
 }
