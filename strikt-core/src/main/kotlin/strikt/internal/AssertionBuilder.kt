@@ -33,9 +33,9 @@ internal class AssertionBuilder<T>(
     val assertion = strategy.appendAtomic(
       context,
       description,
-      expected
+      expected,
+      assert
     )
-    assertion.assert(context.subject)
     return this
   }
 

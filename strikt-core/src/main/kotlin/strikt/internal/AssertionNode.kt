@@ -76,6 +76,8 @@ internal abstract class AtomicAssertionNode<S>(
   override val root: AssertionNode<*>
     get() = parent.root
 
+  abstract val assertion: AtomicAssertion.(S) -> Unit
+
   init {
     parent.also { it.append(this) }
   }

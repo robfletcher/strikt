@@ -1,6 +1,7 @@
 package strikt.internal
 
 import org.opentest4j.AssertionFailedError
+import strikt.api.AtomicAssertion
 import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
@@ -8,19 +9,23 @@ import strikt.api.Status.Pending
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
+import java.lang.IllegalStateException
 
 internal sealed class AssertionStrategy {
 
   fun <T> appendAtomic(
     context: AssertionGroup<T>,
     description: String,
-    expected: Any?
+    expected: Any?,
+    assertion: AtomicAssertion.(T) -> Unit
   ): AtomicAssertionNode<T> =
     object : AtomicAssertionNode<T>(
       context,
       provideDescription(description),
       expected
     ) {
+      override val assertion: AtomicAssertion.(T) -> Unit
+        get() = assertion
 
       override var status: Status = Pending
         private set
@@ -79,9 +84,24 @@ internal sealed class AssertionStrategy {
         get() = children.all { it.status is Passed }
     }
 
-  open fun evaluate(tree: AssertionGroup<*>) {}
+  open fun evaluate(tree: AssertionGroup<*>) {
+    tree
+      .children
+      .forEach {
+        when (it) {
+          is AtomicAssertionNode<*> -> (it as AtomicAssertionNode<Any?>).apply {
+            it.assertion(it.subject)
+          }
+          is AssertionGroup<*> -> evaluate(it)
+          else -> throw IllegalStateException("Don't know how to evaluate a ${it.javaClass.name}")
+        }
+        Unit
+      }
+  }
 
-  open fun evaluate(trees: Collection<AssertionGroup<*>>) {}
+  open fun evaluate(trees: Collection<AssertionGroup<*>>) {
+    trees.forEach(this::evaluate)
+  }
 
   protected open fun provideDescription(default: String) = default
 
@@ -99,6 +119,7 @@ internal sealed class AssertionStrategy {
 
   object Throwing : AssertionStrategy() {
     override fun evaluate(tree: AssertionGroup<*>) {
+      super.evaluate(tree)
       if (tree.status is Failed) {
         throw CompoundAssertionFailure(
           tree.root.writeToString(),
@@ -116,6 +137,7 @@ internal sealed class AssertionStrategy {
     }
 
     override fun evaluate(trees: Collection<AssertionGroup<*>>) {
+      super.evaluate(trees)
       if (trees.any { it.status is Status.Failed }) {
         val failures = trees
           .filter { it.status is Failed }
