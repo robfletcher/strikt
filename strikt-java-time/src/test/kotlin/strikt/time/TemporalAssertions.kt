@@ -59,7 +59,8 @@ internal class TemporalAssertions {
         Pair(MonthDay.from(today), today.plusDays(1)),
         Pair(OffsetTime.from(local), local.plusSeconds(1)), // TODO: potential failure on day boundary
         Pair(Year.from(today), today.plusYears(1)),
-        Pair(YearMonth.from(today), today.plusMonths(1))
+        Pair(YearMonth.from(today), today.plusMonths(1)),
+        local to local.plusDays(1)
       ).map { (subject, expected) ->
         dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isBefore(expected)
@@ -93,7 +94,8 @@ internal class TemporalAssertions {
         Pair(Year.from(today), today),
         Pair(Year.from(today), today.minusYears(1)),
         Pair(YearMonth.from(today), today),
-        Pair(YearMonth.from(today), today.minusMonths(1))
+        Pair(YearMonth.from(today), today.minusMonths(1)),
+        local to local.minusDays(1)
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
@@ -137,7 +139,8 @@ internal class TemporalAssertions {
         Pair(MonthDay.from(today), today.minusDays(1)),
         Pair(OffsetTime.from(local), local.minusSeconds(1)), // TODO: potential failure on day boundary
         Pair(Year.from(today), today.minusYears(1)),
-        Pair(YearMonth.from(today), today.minusMonths(1))
+        Pair(YearMonth.from(today), today.minusMonths(1)),
+        local to local.minusDays(1)
       ).map { (subject, expected) ->
         dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isAfter(expected)
@@ -171,7 +174,8 @@ internal class TemporalAssertions {
         Pair(Year.from(today), today),
         Pair(Year.from(today), today.plusYears(1)),
         Pair(YearMonth.from(today), today),
-        Pair(YearMonth.from(today), today.plusMonths(1))
+        Pair(YearMonth.from(today), today.plusMonths(1)),
+        local to local.plusDays(1)
       ).map { (subject, expected) ->
         dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {

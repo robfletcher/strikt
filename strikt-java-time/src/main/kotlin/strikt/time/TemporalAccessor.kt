@@ -8,6 +8,7 @@ import java.time.MonthDay
 import java.time.OffsetTime
 import java.time.Year
 import java.time.YearMonth
+import java.time.ZonedDateTime
 import java.time.chrono.ChronoLocalDate
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalField
@@ -28,6 +29,7 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAcces
       is OffsetTime -> it.isBefore(OffsetTime.from(expected))
       is Year -> it.isBefore(Year.from(expected))
       is YearMonth -> it.isBefore(YearMonth.from(expected))
+      is ZonedDateTime -> it.isBefore(ZonedDateTime.from(expected))
       else -> throw UnsupportedOperationException("Strikt's isBefore does not (currently) support ${it.javaClass.simpleName}")
     }
   }
@@ -48,6 +50,7 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccess
       is OffsetTime -> it.isAfter(OffsetTime.from(expected))
       is Year -> it.isAfter(Year.from(expected))
       is YearMonth -> it.isAfter(YearMonth.from(expected))
+      is ZonedDateTime -> it.isAfter(ZonedDateTime.from(expected))
       else -> throw UnsupportedOperationException("Strikt's isAfter does not (currently) support ${it.javaClass.simpleName}")
     }
   }
