@@ -1,5 +1,7 @@
 package strikt
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -48,4 +50,35 @@ internal class Nested {
   ✗ is equal to "bar" : found "foo""""
     )
   }
+
+  @Test
+  fun `nested expectations accepts a suspending lambda`() {
+    expect {
+      that(delayedReturnValue(6)).isEqualTo(6)
+    }
+  }
+
+  @Test
+  fun `all assertions in a block are evaluated even if some fail async`() {
+    assertThrows<AssertionError> {
+      expect {
+        that(delayedReturnValue("fnord" as Any?)).isNull()
+        that(delayedReturnValue("FNORD")).isUpperCase()
+        that(delayedReturnValue("FNØRD")).isLowerCase()
+      }
+    }.let { error ->
+      val expected = "▼ Expect that \"fnord\":\n" +
+        "  ✗ is null\n" +
+        "▼ Expect that \"FNORD\":\n" +
+        "  ✓ is upper case\n" +
+        "▼ Expect that \"FNØRD\":\n" +
+        "  ✗ is lower case"
+      assertEquals(expected, error.message)
+    }
+  }
 }
+
+private suspend fun <T> delayedReturnValue(input: T): T =
+  GlobalScope.async {
+    input
+  }.await()
