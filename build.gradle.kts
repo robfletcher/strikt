@@ -3,7 +3,10 @@
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_6
 import org.gradle.api.JavaVersion.VERSION_1_8
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
@@ -30,6 +33,7 @@ subprojects {
 
   repositories {
     jcenter()
+    maven(url = "https://kotlin.bintray.com/kotlinx")
   }
 
   afterEvaluate {

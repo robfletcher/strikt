@@ -1,5 +1,6 @@
 package strikt.api
 
+import kotlinx.coroutines.runBlocking
 import strikt.api.Assertion.Builder
 import strikt.assertions.throws
 import strikt.internal.AssertionBuilder
@@ -11,7 +12,7 @@ import strikt.internal.AssertionSubject
  * earlier ones fail.
  * This is the entry-point for the assertion API.
  */
-fun expect(block: ExpectationBuilder.() -> Unit) {
+fun expect(block: suspend ExpectationBuilder.() -> Unit) {
   val subjects = mutableListOf<AssertionSubject<*>>()
   object : ExpectationBuilder {
     override fun <T> that(subject: T): DescribeableBuilder<T> =
@@ -24,7 +25,11 @@ fun expect(block: ExpectationBuilder.() -> Unit) {
       block: Builder<T>.() -> Unit
     ): DescribeableBuilder<T> = that(subject).apply(block)
   }
-    .apply(block)
+    .apply {
+      runBlocking {
+        block()
+      }
+    }
     .let {
       AssertionStrategy.Throwing.evaluate(subjects)
     }
@@ -72,6 +77,6 @@ fun <T> expectThat(
   replaceWith = ReplaceWith("expectThat(catching(action)).throws<E>()")
 )
 inline fun <reified E : Throwable> expectThrows(
-  noinline action: () -> Unit
+  noinline action: suspend () -> Unit
 ): Builder<E> =
   expectThat(catching(action)).throws()

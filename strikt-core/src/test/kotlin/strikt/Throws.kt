@@ -1,5 +1,7 @@
 package strikt
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -54,4 +56,16 @@ internal class Throws {
       .throws<IllegalStateException>()
       .isA<IllegalStateException>()
   }
+
+  @Test
+  fun `catching function accepts a suspending lambda`() {
+    expectThat(catching { delayedException(IllegalStateException()) })
+      .throws<IllegalStateException>()
+      .isA<IllegalStateException>()
+  }
 }
+
+private suspend fun <T : Throwable> delayedException(input: T): T? =
+  GlobalScope.async {
+    throw input
+  }.await()
