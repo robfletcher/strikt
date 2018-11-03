@@ -6,6 +6,7 @@ import org.opentest4j.AssertionFailedError
 import strikt.api.catching
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.all
 import strikt.assertions.hasLength
 import strikt.assertions.isA
@@ -172,6 +173,14 @@ internal class Assertions {
     expectThat(catching { identifyHotdog("hotdog") })
       .isNull()
     // END catching_exceptions_2
+  }
+
+  @Test fun `expect_throws 1`() {
+    // START expect_throws_1
+    expectThrows<NotHotdogException> {
+      identifyHotdog("hamburger")
+    }
+    // END expect_throws_1
   }
 
   private fun identifyHotdog(food: String) {

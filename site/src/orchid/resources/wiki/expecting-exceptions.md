@@ -8,6 +8,11 @@ For example:
 
 {% codesnippet key='catching_exceptions_1' testClass='Assertions' %}
 
+You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the same thing.
+For example:
+
+{% codesnippet key='expect_throws_1' testClass='Assertions' %}
+
 The `catching` function simply returns `Throwable?` with the value being whatever exception is thrown, or `null` if nothing is thrown.
 Combining it with the `throws<E>` assertion allows testing for specific exception types.
 The `throws<E>` assertion will fail if the exception is `null` or the wrong type.
