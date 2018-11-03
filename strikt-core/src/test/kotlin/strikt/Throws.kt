@@ -6,30 +6,25 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.catching
-import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isA
-import strikt.assertions.throws
 
 @DisplayName("throws assertion")
 internal class Throws {
   @Test
   fun `throws passes if the action throws the expected exception`() {
-    expectThat(catching { error("o noes") })
-      .throws<IllegalStateException>()
+    expectThrows<IllegalStateException> { error("o noes") }
   }
 
   @Test
   fun `throws passes if the action throws a sub-class of the expected exception`() {
-    expectThat(catching { error("o noes") })
-      .throws<RuntimeException>()
+    expectThrows<RuntimeException> { error("o noes") }
   }
 
   @Test
   fun `throws fails if the action does not throw any exception`() {
     assertThrows<AssertionError> {
-      expectThat(catching { })
-        .throws<IllegalStateException>()
+      expectThrows<IllegalStateException> { }
     }.let { e ->
       val expected = "▼ Expect that null:\n" +
         "  ✗ threw java.lang.IllegalStateException : nothing was thrown"
@@ -40,8 +35,7 @@ internal class Throws {
   @Test
   fun `throws fails if the action throws the wrong type of exception`() {
     assertThrows<AssertionError> {
-      expectThat(catching { error("o noes") })
-        .throws<NullPointerException>()
+      expectThrows<NullPointerException> { error("o noes") }
     }.let { e ->
       val expected = "▼ Expect that java.lang.IllegalStateException:\n" +
         "  ✗ threw java.lang.NullPointerException : java.lang.IllegalStateException was thrown"
@@ -52,15 +46,13 @@ internal class Throws {
 
   @Test
   fun `throws returns an assertion whose subject is the exception that was caught`() {
-    expectThat(catching { error("o noes") })
-      .throws<IllegalStateException>()
+    expectThrows<IllegalStateException> { error("o noes") }
       .isA<IllegalStateException>()
   }
 
   @Test
   fun `catching function accepts a suspending lambda`() {
-    expectThat(catching { delayedException(IllegalStateException()) })
-      .throws<IllegalStateException>()
+    expectThrows<IllegalStateException> { delayedException(IllegalStateException()) }
       .isA<IllegalStateException>()
   }
 }

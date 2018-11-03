@@ -72,10 +72,6 @@ fun <T> expectThat(
  * @return an assertion over the thrown exception, allowing further assertions
  * about messages, root causes, etc.
  */
-@Deprecated(
-  "Use the catching function with expectThat",
-  replaceWith = ReplaceWith("expectThat(catching(action)).throws<E>()")
-)
 inline fun <reified E : Throwable> expectThrows(
   noinline action: suspend () -> Unit
 ): Builder<E> =
