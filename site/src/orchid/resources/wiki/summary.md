@@ -2,7 +2,7 @@
 - [Getting Started](getting-started.md)
 - [Assertion Styles](assertion-styles.md)
 - [Collection Element Assertions](collection-elements.md)
-- [Expecing Assertions](expecting-exceptions.md)
+- [Expecting Exceptions](expecting-exceptions.md)
 - [Strongly Typed Assertions](flow-typing.md)
 - [Traversing Assertion Subjects](traversing-subjects.md)
 - [Grouping Assertions With and](grouping-with-and.md)
