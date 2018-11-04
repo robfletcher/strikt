@@ -9,7 +9,7 @@ It can be used with JUnit, Spek or any other runner that supports tests written 
 ## Installation
 
 Strikt is available from JCenter.
-Add the following to your `build.gradle`.
+Add the following to your `build.gradle` or `build.gradle.kts`.
 
 ```kotlin
 repositories {
