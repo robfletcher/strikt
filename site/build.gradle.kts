@@ -1,5 +1,6 @@
 @file:Suppress("KDocMissingDocumentation")
 
+import com.eden.orchid.gradle.OrchidPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -18,7 +19,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.10"
+  id("com.eden.orchidPlugin") version "0.12.17"
 }
 
 repositories {
@@ -39,15 +40,15 @@ configurations {
 }
 
 dependencies {
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:+")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog")
 }
 
 project.version = "${project.version}"
