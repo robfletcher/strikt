@@ -10,5 +10,5 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
   implementation("org.opentest4j:opentest4j:+")
 
-  testImplementation("com.oneeyedmen:minutest:0.17.0")
+  testImplementation("com.oneeyedmen:minutest:+")
 }
