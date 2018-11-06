@@ -23,8 +23,8 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isEmpty() = striktTests {
-    subjectContext<Collection<Any?>>("an empty collection subject") {
+  fun isEmpty() = assertionTests<Collection<Any?>> {
+    context("an empty collection subject") {
       fixture { expectThat(emptyList<Any>()) }
 
       test("the assertion passes") {
@@ -32,7 +32,7 @@ internal object CollectionAssertions {
       }
     }
 
-    subjectContext<Collection<Any?>>("an non-empty collection subject") {
+    context("an non-empty collection subject") {
       fixture { expectThat(listOf("catflap", "rubberplant", "marzipan")) }
 
       test("the assertion fails") {
@@ -44,8 +44,8 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isNotEmpty() = striktTests {
-    subjectContext<Collection<Any?>>("an empty collection subject") {
+  fun isNotEmpty() = assertionTests<Collection<Any?>> {
+    context("an empty collection subject") {
       fixture { expectThat(emptyList<Any>()) }
 
       test("the assertion fails") {
@@ -55,7 +55,7 @@ internal object CollectionAssertions {
       }
     }
 
-    subjectContext<Collection<Any?>>("an non-empty collection subject") {
+    context("an non-empty collection subject") {
       fixture { expectThat(listOf("catflap", "rubberplant", "marzipan")) }
 
       test("the assertion passes") {
@@ -65,8 +65,8 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isSortedOnAny() = striktTests {
-    subjectContext<Collection<Any?>>("an empty collection subject") {
+  fun isSortedOnAny() = assertionTests<Collection<Any?>> {
+    context("an empty collection subject") {
       fixture { expectThat(emptyList()) }
 
       test("the assertion passes") {
@@ -76,8 +76,8 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isSortedOnString() = striktTests {
-    subjectContext<Collection<String?>>("an non-empty simple value collection subject") {
+  fun isSortedOnString() = assertionTests<Collection<String?>> {
+    context("an non-empty simple value collection subject") {
       fixture { expectThat(listOf("catflap", "marzipan", "rubber")) }
 
       test("the assertion passes") {
@@ -91,7 +91,7 @@ internal object CollectionAssertions {
       }
     }
 
-    subjectContext<Collection<String?>>("an non-empty simple value collection subject containing null value") {
+    context("an non-empty simple value collection subject containing null value") {
       fixture { expectThat(listOf("catflap", "marzipan", null)) }
 
       test("the assertion passes if the Null value is handled through the Comparator instance") {
@@ -107,8 +107,8 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isSortedOnNonComparable() = striktTests {
-    subjectContext<Collection<Collection<String>?>>("an non-empty non Comparable value collection subject") {
+  fun isSortedOnNonComparable() = assertionTests<Collection<Collection<String>?>> {
+    context("an non-empty non Comparable value collection subject") {
       fixture {
         expectThat(
           listOf(

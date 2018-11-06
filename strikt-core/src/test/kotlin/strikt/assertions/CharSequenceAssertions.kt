@@ -169,9 +169,9 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNullOrEmpty() = striktTests {
+  fun isNullOrEmpty() = assertionTests<CharSequence?> {
     listOf("", null).forEach<CharSequence?> {
-      subjectContext<CharSequence?>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion passes") {
@@ -181,7 +181,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", " ", "\t", "a", "23", "[]").forEach<CharSequence?> {
-      subjectContext<CharSequence?>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -194,9 +194,9 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNullOrBlank() = striktTests {
+  fun isNullOrBlank() = assertionTests<CharSequence?> {
     listOf("", null, "\t", "     ", " \n \r\n\t\n").forEach<CharSequence?> {
-      subjectContext<CharSequence?>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
         test("the assertion passes") {
           isNullOrBlank()
@@ -205,7 +205,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", "a", "73", "[]").forEach<CharSequence?> {
-      subjectContext<CharSequence?>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -218,8 +218,8 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isEmpty() = striktTests {
-    subjectContext<CharSequence>("when the subject is ${"".quoted()}") {
+  fun isEmpty() = assertionTests<CharSequence> {
+    context("when the subject is ${"".quoted()}") {
       fixture { expectThat("") }
 
       test("the assertion passes") {
@@ -228,7 +228,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", " ", "\t", "a", "73", "[]").forEach {
-      subjectContext<CharSequence>("${"when the subject is ${it.quoted()}"} : ${it.quoted()}") {
+      context("${"when the subject is ${it.quoted()}"} : ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -241,9 +241,9 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isBlank() = striktTests {
+  fun isBlank() = assertionTests<CharSequence> {
     listOf("", "\t", "     ", " \n \r\n\t\n").forEach<CharSequence> {
-      subjectContext<CharSequence>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion passes") {
@@ -253,7 +253,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", "a", "23", "[]").forEach<CharSequence> {
-      subjectContext<CharSequence>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -266,8 +266,8 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNotEmpty() = striktTests {
-    subjectContext<CharSequence>("when the subject is ${"".quoted()}") {
+  fun isNotEmpty() = assertionTests<CharSequence> {
+    context("when the subject is ${"".quoted()}") {
       fixture { expectThat("") }
 
       test("the assertion fails") {
@@ -278,7 +278,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", " ", "\t", "a", "73", "[]").forEach<CharSequence> {
-      subjectContext<CharSequence>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion passes") {
@@ -289,9 +289,9 @@ internal object CharSequenceAssertions {
   }
 
   @TestFactory
-  fun isNotBlank() = striktTests {
+  fun isNotBlank() = assertionTests<CharSequence> {
     listOf("", "\t", "     ", " \n \r\n\t\n").forEach<CharSequence> {
-      subjectContext<CharSequence>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -303,7 +303,7 @@ internal object CharSequenceAssertions {
     }
 
     listOf("catflap", "a", "73", "[]").forEach {
-      subjectContext<CharSequence>("when the subject is ${it.quoted()}") {
+      context("when the subject is ${it.quoted()}") {
         fixture { expectThat(it) }
         test("the assertion passes") {
           isNotBlank()

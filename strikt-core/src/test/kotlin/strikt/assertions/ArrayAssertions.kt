@@ -15,10 +15,10 @@ import java.util.Random
 internal object ArrayAssertions {
 
   @TestFactory
-  fun `byte arrays`() = striktTests {
+  fun `byte arrays`() = assertionTests<ByteArray> {
     val subject = randomBytes()
 
-    subjectContext<ByteArray>("a byte array containing 0x${subject.toHex()}") {
+    context("a byte array containing 0x${subject.toHex()}") {
       fixture { expectThat(subject) }
 
       context("contentEquals assertion") {
@@ -81,10 +81,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `character arrays`() = striktTests {
+  fun `character arrays`() = assertionTests<CharArray> {
     val subject = "fnord".toCharArray()
 
-    subjectContext<CharArray>("a char array containing ${subject.toList().map { "'$it'" }}") {
+    context("a char array containing ${subject.toList().map { "'$it'" }}") {
       fixture { expectThat(subject) }
 
       context("contentEquals assertion") {
@@ -147,10 +147,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `boolean arrays`() = striktTests {
+  fun `boolean arrays`() = assertionTests<BooleanArray> {
     val subject = BooleanArray(8) { it % 2 == 0 }
 
-    subjectContext<BooleanArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -160,10 +160,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `short arrays`() = striktTests {
+  fun `short arrays`() = assertionTests<ShortArray> {
     val subject = shortArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    subjectContext<ShortArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -173,10 +173,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `int arrays`() = striktTests {
+  fun `int arrays`() = assertionTests<IntArray> {
     val subject = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    subjectContext<IntArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -186,10 +186,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `long arrays`() = striktTests {
+  fun `long arrays`() = assertionTests<LongArray> {
     val subject = longArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    subjectContext<LongArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -199,10 +199,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `float arrays`() = striktTests {
+  fun `float arrays`() = assertionTests<FloatArray> {
     val subject = floatArrayOf(4.2f, 128.3f, 64.5f, 32.9f)
 
-    subjectContext<FloatArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -212,10 +212,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `double arrays`() = striktTests {
+  fun `double arrays`() = assertionTests<DoubleArray> {
     val subject = doubleArrayOf(4.2, 128.3, 64.5, 32.9)
 
-    subjectContext<DoubleArray>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {
@@ -225,10 +225,10 @@ internal object ArrayAssertions {
   }
 
   @TestFactory
-  fun `object arrays`() = striktTests {
+  fun `object arrays`() = assertionTests<Array<String>> {
     val subject = arrayOf("catflap", "rubberplant", "marzipan")
 
-    subjectContext<Array<String>>("isEqualTo assertion") {
+    context("isEqualTo assertion") {
       fixture { expectThat(subject) }
 
       test("passes for a copy of itself") {

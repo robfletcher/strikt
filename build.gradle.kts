@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import info.solidsoft.gradle.pitest.PitestPluginExtension
-import org.gradle.api.JavaVersion.VERSION_1_6
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
@@ -39,27 +38,14 @@ subprojects {
   afterEvaluate {
     plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
-        sourceCompatibility = VERSION_1_6
+        sourceCompatibility = VERSION_1_8
       }
 
       tasks.withType<KotlinCompile> {
         kotlinOptions {
+          jvmTarget = VERSION_1_8.toString()
           languageVersion = "1.3"
           freeCompilerArgs += "-progressive"
-        }
-      }
-
-      // build library code for JDK 1.6
-      val compileKotlin by tasks.getting(KotlinCompile::class) {
-        kotlinOptions {
-          jvmTarget = VERSION_1_6.toString()
-        }
-      }
-
-      // build test code for JDK 1.8
-      val compileTestKotlin by tasks.getting(KotlinCompile::class) {
-        kotlinOptions {
-          jvmTarget = VERSION_1_8.toString()
         }
       }
 

@@ -13,8 +13,8 @@ import java.time.Instant
 internal object AnyAssertions {
 
   @TestFactory
-  fun isNull() = striktTests {
-    subjectContext<Any?>("the subject is null") {
+  fun isNull() = assertionTests<Any?> {
+    context("the subject is null") {
       fixture { expectThat(null) }
 
       test("the assertion passes") {
@@ -30,7 +30,7 @@ internal object AnyAssertions {
     }
 
     listOf("fnord", 1L, "null").forEach {
-      subjectContext<Any?>("a non-null subject : ${it.quoted()}") {
+      context("a non-null subject : ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion fails") {
@@ -43,8 +43,8 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isNotNull() = striktTests {
-    subjectContext<Any?>("when the subject is null") {
+  fun isNotNull() = assertionTests<Any?> {
+    context("when the subject is null") {
       fixture { expectThat(null) }
 
       test("the assertion fails") {
@@ -55,7 +55,7 @@ internal object AnyAssertions {
     }
 
     listOf("fnord", 1L, "null").forEach<Any?> {
-      subjectContext<Any?>("a non-null subject : ${it.quoted()}") {
+      context("a non-null subject : ${it.quoted()}") {
         fixture { expectThat(it) }
 
         test("the assertion passes") {
@@ -74,8 +74,6 @@ internal object AnyAssertions {
 
   @TestFactory
   fun isA() = assertionTests<Any?> {
-    fixture { expectThat(null) }
-
     context("when the subject is null") {
       fixture { expectThat(null) }
       test("the assertion fails") {
@@ -133,8 +131,8 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isEqualTo() = striktTests {
-    subjectContext<Any?>("a subject that is equal to the expectation") {
+  fun isEqualTo() = assertionTests<Any?> {
+    context("a subject that is equal to the expectation") {
       fixture { expectThat("fnord") }
 
       test("the assertion passes") {
@@ -149,7 +147,7 @@ internal object AnyAssertions {
       "fnord" to null
     )
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("when the subject is ${subject.quoted()}") {
+        context("when the subject is ${subject.quoted()}") {
           fixture { expectThat(subject) }
 
           test("the assertion fails") {
@@ -160,7 +158,7 @@ internal object AnyAssertions {
         }
       }
 
-    subjectContext<Any?>("subject is a different type but looks the same") {
+    context("subject is a different type but looks the same") {
       fixture { expectThat(5L) }
 
       test("the failure message specifies the types involved") {
@@ -177,8 +175,8 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isNotEqualTo() = striktTests {
-    subjectContext<Any?>("the subject matches the expectation") {
+  fun isNotEqualTo() = assertionTests<Any?> {
+    context("the subject matches the expectation") {
       fixture { expectThat("fnord") }
 
       test("the assertion fails") {
@@ -195,7 +193,7 @@ internal object AnyAssertions {
       "fnord" to null
     )
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("when the subject is ${subject.quoted()} and the expected value is ${expected.quoted()}") {
+        context("when the subject is ${subject.quoted()} and the expected value is ${expected.quoted()}") {
           fixture { expectThat(subject) }
 
           test("the assertion passes") {
@@ -206,7 +204,7 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isSameInstanceAs() = striktTests {
+  fun isSameInstanceAs() = assertionTests<Any?> {
     listOf(
       listOf("fnord") to listOf("fnord"),
       null to listOf("fnord"),
@@ -215,7 +213,7 @@ internal object AnyAssertions {
       Instant.now().let { it to Instant.ofEpochMilli(it.toEpochMilli()) }
     )
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("the subject and expected values are different instances") {
+        context("the subject and expected values are different instances") {
           fixture { expectThat(subject) }
 
           test("the assertion fails") {
@@ -229,7 +227,7 @@ internal object AnyAssertions {
     listOf("fnord", 1L, null, listOf("fnord"), Instant.now())
       .map { it to it }
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("the subject and expected values are the same instance") {
+        context("the subject and expected values are the same instance") {
           fixture { expectThat(subject) }
 
           test("the assertion passes") {
@@ -240,7 +238,7 @@ internal object AnyAssertions {
   }
 
   @TestFactory
-  fun isNotSameInstanceAs() = striktTests {
+  fun isNotSameInstanceAs() = assertionTests<Any?> {
     listOf(
       listOf("fnord") to listOf("fnord"),
       null to listOf("fnord"),
@@ -249,7 +247,7 @@ internal object AnyAssertions {
       Instant.now().let { it to Instant.ofEpochMilli(it.toEpochMilli()) }
     )
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("the subject and expected values are different instances") {
+        context("the subject and expected values are different instances") {
           fixture { expectThat(subject) }
 
           test("the assertion passes") {
@@ -261,7 +259,7 @@ internal object AnyAssertions {
     listOf("fnord", 1L, null, listOf("fnord"), Instant.ofEpochMilli(0))
       .map { it to it }
       .forEach { (subject, expected) ->
-        subjectContext<Any?>("the subject and expected values are the same instance") {
+        context("the subject and expected values are the same instance") {
           fixture { expectThat(subject) }
 
           test("the assertion fails") {
