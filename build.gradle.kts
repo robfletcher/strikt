@@ -9,9 +9,9 @@ import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "7.0.1"
+  id("nebula.release") version "9.0.0"
   id("nebula.kotlin") version "1.3.10" apply false
-  id("org.jmailen.kotlinter") version "1.17.0" apply false
+  id("org.jmailen.kotlinter") version "1.20.1" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
   id("release-tweet")
 }
