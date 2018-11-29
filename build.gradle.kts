@@ -96,3 +96,7 @@ subprojects {
   }
 }
 
+task("allDependencies") {
+  evaluationDependsOnChildren()
+  dependsOn(subprojects.map { it.tasks["dependencies"] })
+}
