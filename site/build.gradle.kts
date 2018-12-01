@@ -40,15 +40,15 @@ configurations {
 }
 
 dependencies {
-  orchidCompile("io.github.javaeden.orchid:OrchidCore")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.12.17")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.12.17")
 }
 
 project.version = "${project.version}"
