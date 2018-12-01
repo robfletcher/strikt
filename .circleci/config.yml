@@ -64,18 +64,18 @@ jobs:
       - checkout
       - run: ./gradlew :strikt-core:dependencies :strikt-java-time:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
 
-#  pitest:
-#    <<: *defaults
-#    steps:
-#      - checkout
-#      - run: ./gradlew pitest
-#      - run:
-#          name: Archive test results
-#          command: |
-#            find . -type d -regex ".*/build/reports/pitest" -exec cp -R {} /tmp/ \;
-#          when: always
-#      - store_artifacts:
-#          path: /tmp/pitest
+  pitest:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: ./gradlew pitest
+      - run:
+          name: Archive test results
+          command: |
+            find . -type d -regex ".*/build/reports/pitest" -exec cp -R {} /tmp/ \;
+          when: always
+      - store_artifacts:
+          path: /tmp/pitest
 
 workflows:
   version: 2
@@ -105,11 +105,11 @@ workflows:
               ignore: gh-pages
             tags:
               only: /.*/
-#      - pitest:
-#          requires:
-#            - build-java8
-#            - build-java9
-#            - build-java10
+      - pitest:
+          requires:
+            - build-java8
+            - build-java9
+            - build-java10
 #          filters:
 #            branches:
 #              only: master
