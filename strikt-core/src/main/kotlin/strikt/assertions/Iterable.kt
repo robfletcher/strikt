@@ -65,6 +65,14 @@ fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<L
   get { filter(predicate) }
 
 /**
+ * Maps this assertion to an assertion over a list of all elements of the subject that do not match `predicate`.
+ *
+ * @see Iterable.filter
+ */
+fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): Builder<List<E>> =
+  get { filterNot(predicate) }
+
+/**
  * Maps this assertion to an assertion over a list of all elements of the subject that are instances of `R`.
  *
  * @see Iterable.filterIsInstance

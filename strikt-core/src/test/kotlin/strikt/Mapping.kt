@@ -10,6 +10,7 @@ import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.filter
 import strikt.assertions.filterIsInstance
+import strikt.assertions.filterNot
 import strikt.assertions.first
 import strikt.assertions.flatMap
 import strikt.assertions.get
@@ -89,6 +90,14 @@ internal class Mapping {
     expectThat(subject)
       .filter { it >= 2 }
       .containsExactly(2, 3, 4)
+  }
+
+  @Test
+  fun `filterNot reduces a subject iterable`() {
+    val subject = listOf(1, 2, 3, 4)
+    expectThat(subject)
+      .filterNot { it > 2 }
+      .containsExactly(1, 2)
   }
 
   @Test
