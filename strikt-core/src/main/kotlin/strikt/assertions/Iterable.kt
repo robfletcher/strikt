@@ -57,6 +57,14 @@ fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): B
   get { flatMap(transform) }
 
 /**
+ * Maps this assertion to an assertion over a list of all elements of the subject that match `predicate`.
+ *
+ * @see Iterable.filter
+ */
+fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<List<E>> =
+  get { filter(predicate) }
+
+/**
  * Maps this assertion to an assertion over a list of all elements of the subject that are instances of `R`.
  *
  * @see Iterable.filterIsInstance
