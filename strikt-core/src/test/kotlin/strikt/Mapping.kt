@@ -8,6 +8,7 @@ import org.junit.jupiter.api.assertThrows
 import strikt.api.catching
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
+import strikt.assertions.filterIsInstance
 import strikt.assertions.first
 import strikt.assertions.flatMap
 import strikt.assertions.get
@@ -79,6 +80,14 @@ internal class Mapping {
     val subject = mapOf("foo" to "bar")
     expectThat(subject)["foo"].isNotNull().isEqualTo("bar")
     expectThat(subject)["bar"].isNull()
+  }
+
+  @Test
+  fun `filterIsInstance reduces a subject iterable`() {
+    val subject = listOf(1, 2L, 3.0, 4)
+    expectThat(subject)
+      .filterIsInstance<Int>()
+      .containsExactly(1, 4)
   }
 
   @Test

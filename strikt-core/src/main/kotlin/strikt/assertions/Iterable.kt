@@ -57,6 +57,14 @@ fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): B
   get { flatMap(transform) }
 
 /**
+ * Maps this assertion to an assertion over a list of all elements of the subject that are instances of `R`.
+ *
+ * @see Iterable.filterIsInstance
+ */
+inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List<R>> =
+  get { filterIsInstance(R::class.java) }
+
+/**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
 fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
