@@ -8,7 +8,7 @@ layout: 'homepage'
 <section class="columns is-centered">
   <div class="column is-half">
     <figure class="image">
-      <img src="{{site.baseUrl}}/assets/images/logo.png" alt="Strikt logo">
+      <img src="{{ 'assets/images/logo.png' | asset }}" alt="Strikt logo">
     </figure>
   </div>
 </section>

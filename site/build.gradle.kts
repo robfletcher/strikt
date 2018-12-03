@@ -19,7 +19,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.12.17"
+  id("com.eden.orchidPlugin") version "0.14.0"
 }
 
 repositories {
@@ -40,15 +40,15 @@ configurations {
 }
 
 dependencies {
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.12.17")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.12.17")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.14.0")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.14.0")
 }
 
 project.version = "${project.version}"

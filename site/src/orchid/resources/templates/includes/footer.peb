@@ -15,14 +15,14 @@
         <p class="has-text-right-tablet has-text-centered-mobile">
           <a href="https://bulma.io/">
             <img
-              src="{{ site.baseUrl }}/assets/images/made-with-bulma--semiblack.png"
+              src="{{ 'assets/images/made-with-bulma--semiblack.png' | asset }}"
               alt="Bulma"
               width="171"
               height="32">
           </a>
           <a href="https://orchid.netlify.com/">
             <img
-              src="{{ site.baseUrl }}/assets/images/orchid.png"
+              src="{{ 'assets/images/orchid.png' | asset }}"
               alt="Orchid {{ site.orchidVersion }}"
               width="64"
               height="32">
