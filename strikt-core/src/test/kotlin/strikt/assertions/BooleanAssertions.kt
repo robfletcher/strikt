@@ -1,6 +1,7 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.junit.junitTests
+import com.oneeyedmen.minutest.junit.testFactoryFor
+import com.oneeyedmen.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -10,7 +11,7 @@ import strikt.api.expectThat
 @Suppress("SimplifyBooleanWithConstants")
 internal object BooleanAssertions {
   @TestFactory
-  fun isTrue() = junitTests<Unit> {
+  fun isTrue() = testFactoryFor(rootContext<Unit> {
     test("passes when the subject is true") {
       expectThat("a" == "a").isTrue()
     }
@@ -26,10 +27,10 @@ internal object BooleanAssertions {
         expectThat(null).isTrue()
       }
     }
-  }
+  })
 
   @TestFactory
-  fun isFalse() = junitTests<Unit> {
+  fun isFalse() = testFactoryFor(rootContext<Unit> {
     test("passes when the subject is false") {
       expectThat("a" == "A").isFalse()
     }
@@ -45,5 +46,5 @@ internal object BooleanAssertions {
         expectThat(null).isFalse()
       }
     }
-  }
+  })
 }
