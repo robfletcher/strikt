@@ -7,7 +7,6 @@ plugins {
 repositories {
   jcenter()
   gradlePluginPortal()
-  maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
 dependencies {

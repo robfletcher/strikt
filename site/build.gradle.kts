@@ -24,7 +24,6 @@ plugins {
 
 repositories {
   jcenter()
-  maven(url = "https://kotlin.bintray.com/kotlinx")
   maven(url = "https://dl.bintray.com/javaeden/Orchid/")
   maven(url = "https://dl.bintray.com/javaeden/Eden/")
   maven(url = "https://jitpack.io")
