@@ -110,9 +110,9 @@ workflows:
             - build-java8
             - build-java9
             - build-java10
-#          filters:
-#            branches:
-#              only: master
+          filters:
+            branches:
+              only: master
       - release:
           requires:
             - build-java8
