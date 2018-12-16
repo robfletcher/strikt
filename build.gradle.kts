@@ -89,7 +89,8 @@ subprojects {
         targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
         targetTests = setOf("strikt.**.*")
         pitestVersion = "1.4.2"
-        threads = 4
+        threads = System.getenv("PITEST_THREADS")?.toInt() ?:
+          Runtime.getRuntime().availableProcessors()
         outputFormats = setOf("XML", "HTML")
       }
     }

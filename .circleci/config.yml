@@ -68,7 +68,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: ./gradlew pitest
+      - run: PITEST_THREADS=4 ./gradlew pitest
       - run:
           name: Archive test results
           command: |
