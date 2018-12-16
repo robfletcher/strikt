@@ -82,13 +82,14 @@ subprojects {
 
     plugins.withId("info.solidsoft.pitest") {
       configure<PitestPluginExtension> {
+        jvmArgs = listOf("-Xmx512m")
         testPlugin = "junit5"
         avoidCallsTo = setOf("kotlin.jvm.internal")
         mutators = setOf("NEW_DEFAULTS")
         targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
         targetTests = setOf("strikt.**.*")
         pitestVersion = "1.4.2"
-        threads = 2
+        threads = 4
         outputFormats = setOf("XML", "HTML")
       }
     }
