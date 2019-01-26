@@ -1,5 +1,7 @@
 package strikt.assertions
 
+import com.oneeyedmen.minutest.junit.toTestFactory
+import com.oneeyedmen.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -74,6 +76,26 @@ internal object CollectionAssertions {
       }
     }
   }
+
+  @TestFactory
+  fun isSortedOnInt() = rootContext<Unit> {
+    context("an un-ordered collection subject") {
+      context("fails in a block assertion") {
+        assertThrows<AssertionError> {
+          expectThat(listOf(1, 3, 2)) {
+            isSorted(Comparator.naturalOrder())
+          }
+        }
+      }
+
+      context("fails in a chained assertion") {
+        assertThrows<AssertionError> {
+          expectThat(listOf(1, 3, 2))
+            .isSorted(Comparator.naturalOrder())
+        }
+      }
+    }
+  }.toTestFactory()
 
   @TestFactory
   fun isSortedOnString() = assertionTests<Collection<String?>> {

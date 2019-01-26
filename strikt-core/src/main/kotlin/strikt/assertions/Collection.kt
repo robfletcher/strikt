@@ -30,11 +30,15 @@ fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
  */
 fun <T : Collection<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
   assert("is sorted") { actual ->
-    for (index in 0 until (actual.size - 1)) {
-      if (comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) > 0)
+    val failed = (0 until actual.size - 1).fold(false) { notSorted, index ->
+      if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {
+        notSorted
+      } else {
         fail(actual, "${actual.elementAt(index)} is greater than ${actual.elementAt(index + 1)}")
+        true
+      }
     }
-    pass()
+    if (failed.not()) pass()
   }
 
 /**
