@@ -58,12 +58,6 @@ jobs:
       - checkout
       - run: ./gradlew :site:orchidDeploy -Penv=prod -Prelease.useLastTag=true
 
-  upgradeLocks:
-    <<: *defaults
-    steps:
-      - checkout
-      - run: ./gradlew :strikt-core:dependencies :strikt-java-time:dependencies :strikt-protobuf:dependencies :site:dependencies --write-locks; if [ `git status --porcelain | wc -l` -ne 0 ]; then ./gradlew build && git commit -am "Upgraded dependencies" --author CircleCI && git push --repo=https://circleci:${GITHUB_OAUTH_TOKEN}@github.com/robfletcher/strikt.git; fi
-
   pitest:
     <<: *defaults
     steps:
@@ -132,14 +126,3 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-
-  nightly:
-    triggers:
-    - schedule:
-        cron: "0 0 * * *"
-        filters:
-          branches:
-            only:
-            - master
-    jobs:
-    - upgradeLocks
