@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+curl 'http://www.voidstate.com/name_generator/index.php?action=display_results' --data 'action=display_results&dd1%5B%5D=All_Adjective&dd1%5B%5D=All_Noun&numberToDisplay=10' 2>/dev/null | pup 'table td strong text{}'

@@ -23,11 +23,13 @@ internal class Block {
         isA<Number>()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✗ is null\n" +
-        "  ✓ is not null\n" +
-        "  ✓ is an instance of java.lang.String\n" +
-        "  ✗ is an instance of java.lang.Number : found java.lang.String"
+      val expected = """
+        |▼ Expect that "fnord":
+        |  ✗ is null
+        |  ✓ is not null
+        |  ✓ is an instance of java.lang.String
+        |  ✗ is an instance of java.lang.Number : found java.lang.String"""
+        .trimMargin()
       assertEquals(expected, error.message)
     }
   }
@@ -43,11 +45,13 @@ internal class Block {
         not().isA<Number>()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✓ is not null\n" +
-        "  ✗ is null\n" +
-        "  ✗ is not an instance of java.lang.String\n" +
-        "  ✓ is not an instance of java.lang.Number"
+      val expected = """
+        |▼ Expect that "fnord":
+        |  ✓ is not null
+        |  ✗ is null
+        |  ✗ is not an instance of java.lang.String
+        |  ✓ is not an instance of java.lang.Number"""
+        .trimMargin()
       assertEquals(expected, error.message)
     }
   }

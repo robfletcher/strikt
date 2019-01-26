@@ -2,15 +2,11 @@
 
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
-import org.jetbrains.kotlin.gradle.dsl.Coroutines
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
-import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
   id("nebula.release") version "9.1.1"
-  id("nebula.kotlin") version "1.3.11" apply false
+  id("nebula.kotlin") version "1.3.20" apply false
   id("org.jmailen.kotlinter") version "1.20.1" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
   id("release-tweet")
@@ -71,13 +67,13 @@ subprojects {
       }
 
       // Lint Kotlin code
-      apply(plugin = "org.jmailen.kotlinter")
-      configure<KotlinterExtension> {
-        ignoreFailures = false
-        indentSize = 2
-        continuationIndentSize = 4
-        reporters = arrayOf("html", "plain")
-      }
+//      apply(plugin = "org.jmailen.kotlinter")
+//      configure<KotlinterExtension> {
+//        ignoreFailures = false
+//        indentSize = 2
+//        continuationIndentSize = 4
+//        reporters = arrayOf("html", "plain")
+//      }
     }
 
     plugins.withId("info.solidsoft.pitest") {
