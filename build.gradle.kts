@@ -67,6 +67,7 @@ subprojects {
       }
 
       // Lint Kotlin code
+      // TODO: Fails with Kotlin 1.3.20, see https://github.com/jeremymailen/kotlinter-gradle/issues/80
 //      apply(plugin = "org.jmailen.kotlinter")
 //      configure<KotlinterExtension> {
 //        ignoreFailures = false
