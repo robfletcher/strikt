@@ -5,7 +5,7 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  id("nebula.release") version "9.1.1"
+  id("nebula.release") version "9.2.0"
   id("nebula.kotlin") version "1.3.20" apply false
   id("org.jmailen.kotlinter") version "1.20.1" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
