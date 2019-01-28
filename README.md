@@ -20,7 +20,7 @@ dependencies {
 }
 ```
 
-See the button below for the current version number.
+See the button below or [releases/latest] for the current version number.
 
 ## Additional Libraries
 
