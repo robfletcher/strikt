@@ -1,5 +1,4 @@
 import com.jfrog.bintray.gradle.BintrayExtension
-import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -22,7 +21,7 @@ val dokka by tasks.getting(DokkaTask::class) {
 val dokkaJar = task<Jar>("dokkaJar") {
   group = "build"
   description = "Assembles Javadoc jar from Dokka API docs"
-  classifier = "javadoc"
+  archiveClassifier.set("javadoc")
   from(tasks.named("dokka"))
 }
 

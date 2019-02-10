@@ -1,6 +1,5 @@
 @file:Suppress("KDocMissingDocumentation")
 
-import com.eden.orchid.gradle.OrchidPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -19,7 +18,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.14.0"
+  id("com.eden.orchidPlugin") version "0.15.4"
 }
 
 repositories {
@@ -27,27 +26,31 @@ repositories {
   maven(url = "https://dl.bintray.com/javaeden/Orchid/")
   maven(url = "https://dl.bintray.com/javaeden/Eden/")
   maven(url = "https://jitpack.io")
+  maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
-configurations {
-  sequenceOf("orchidCompile", "orchidRuntime")
-    .forEach { scope ->
-      getByName("${scope}Classpath") {
-        resolutionStrategy.activateDependencyLocking()
+open class OrchidAlignmentRule : ComponentMetadataRule {
+  override fun execute(ctx: ComponentMetadataContext) {
+    ctx.details.run {
+      if (id.group.startsWith("io.github.javaeden.orchid")) {
+        // declare that Jackson modules all belong to the Jackson virtual platform
+        belongsTo("io.github.javaeden.orchid:orchid-platform:${id.version}")
       }
     }
+  }
 }
 
 dependencies {
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.14.0")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.14.0")
+  components.all(OrchidAlignmentRule::class.java)
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:+")
 }
 
 project.version = "${project.version}"
