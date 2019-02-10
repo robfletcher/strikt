@@ -1,8 +1,8 @@
 @file:Suppress("KDocMissingDocumentation")
 
+import com.google.protobuf.gradle.ExecutableLocator
 import com.google.protobuf.gradle.ProtobufConfigurator
 import com.google.protobuf.gradle.ProtobufConfigurator.JavaGenerateProtoTaskCollection
-import com.google.protobuf.gradle.ExecutableLocator
 import org.jetbrains.dokka.DokkaConfiguration.ExternalDocumentationLink
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -18,7 +18,7 @@ plugins {
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:+")
+  api("com.google.protobuf:protobuf-java:3.6.1")
 }
 
 val dokka by tasks.getting(DokkaTask::class) {
@@ -31,7 +31,7 @@ val dokka by tasks.getting(DokkaTask::class) {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:+"
+      artifact = "com.google.protobuf:protoc:3.6.1"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")

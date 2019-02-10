@@ -44,20 +44,11 @@ subprojects {
         }
       }
 
-      // activate dependency locking for relevant configurations
-      configurations {
-        sequenceOf("compile", "runtime", "testCompile", "testRuntime")
-          .forEach { scope ->
-            getByName("${scope}Classpath") {
-              resolutionStrategy.activateDependencyLocking()
-            }
-          }
-      }
-
       // Test with JUnit 5
       dependencies {
-        "testImplementation"("org.junit.jupiter:junit-jupiter-api:+")
-        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine:+")
+        "testImplementation"(platform("org.junit:junit-bom:5.4.0"))
+        "testImplementation"("org.junit.jupiter:junit-jupiter-api")
+        "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
       tasks.withType<Test> {
         systemProperty("junit.jupiter.execution.parallel.enabled", "false")

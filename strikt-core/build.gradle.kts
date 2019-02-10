@@ -11,8 +11,8 @@ repositories {
 
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")
-  implementation("org.opentest4j:opentest4j:+")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1")
+  implementation("org.opentest4j:opentest4j:1.1.1")
 
-  testImplementation("com.oneeyedmen:minutest:+")
+  testImplementation("com.oneeyedmen:minutest:0.41.0")
 }
