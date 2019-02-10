@@ -5,6 +5,10 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
+repositories {
+  maven(url = "https://dl.bintray.com/dmcg/oneeyedmen-mvn")
+}
+
 dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:+")

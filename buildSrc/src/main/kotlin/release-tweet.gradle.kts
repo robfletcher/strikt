@@ -8,8 +8,7 @@ plugins {
   id("com.ferranpons.twitterplugin")
 }
 
-val tag = System.getenv("CIRCLE_TAG")
-if (tag != null) {
+System.getenv("CIRCLE_TAG")?.let { tag ->
   val ghToken = System.getenv("GITHUB_OAUTH_TOKEN")
   val ghReleaseUrl =
     URL("https://api.github.com/repos/robfletcher/strikt/releases/tags/$tag?access_token=$ghToken")
