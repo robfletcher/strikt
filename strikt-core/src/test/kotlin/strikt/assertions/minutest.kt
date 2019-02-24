@@ -1,13 +1,13 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.Context
-import com.oneeyedmen.minutest.junit.testFactoryFor
-import com.oneeyedmen.minutest.rootContext
+import dev.minutest.TestContextBuilder
+import dev.minutest.junit.testFactoryFor
+import dev.minutest.rootContext
 import org.junit.jupiter.api.DynamicNode
 import strikt.api.Assertion
 import java.util.stream.Stream
 
-fun <S : Any?> assertionTests(builder: Context<Unit, Assertion.Builder<S>>.() -> Unit): Stream<out DynamicNode> =
+fun <S : Any?> assertionTests(builder: TestContextBuilder<Unit, Assertion.Builder<S>>.() -> Unit): Stream<out DynamicNode> =
   testFactoryFor(
     rootContext(builder = builder)
   )

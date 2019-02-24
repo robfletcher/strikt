@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.junit.toTestFactory
-import com.oneeyedmen.minutest.rootContext
+import dev.minutest.junit.toTestFactory
+import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows

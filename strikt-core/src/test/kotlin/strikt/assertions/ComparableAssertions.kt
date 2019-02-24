@@ -1,6 +1,6 @@
 package strikt.assertions
 
-import com.oneeyedmen.minutest.TestContext
+import dev.minutest.TestContextBuilder
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -11,7 +11,7 @@ import java.time.Instant
 @DisplayName("assertions on Comparable")
 internal object ComparableAssertions {
 
-  fun <T : Comparable<T>> TestContext<Assertion.Builder<T>>.supportsComparisonAssertions(
+  fun <T : Comparable<T>> TestContextBuilder<*, Assertion.Builder<T>>.supportsComparisonAssertions(
     value: T,
     decrementor: T.() -> T,
     incrementor: T.() -> T
