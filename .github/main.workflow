@@ -3,14 +3,14 @@ workflow "Build workflow" {
   resolves = ["Build", "Site"]
 }
 
-action "not gh-pages" {
+action "Filter gh-pages" {
   uses = "actions/bin/filter@master"
   args = "not branch gh-pages"
 }
 
 action "Build" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["not gh-pages"]
+  needs = ["Filter gh-pages"]
   args = "build"
 }
 
@@ -21,6 +21,7 @@ action "Release" {
 
 action "Site" {
   uses = "MrRamych/gradle-actions@master"
-  args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
+  needs = ["Filter gh-pages"]
+  args = ":site:orchidBuild -Penv=prod"
 }
 
