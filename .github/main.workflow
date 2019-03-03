@@ -1,9 +1,9 @@
 workflow "New workflow" {
   on = "push"
-  resolves = ["new-action"]
+  resolves = ["Build"]
 }
 
-action "Test" {
+action "Build" {
   uses = "MrRamych/gradle-actions@master"
   args = "build"
 }
