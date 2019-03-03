@@ -1,6 +1,6 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Site"]
+  resolves = ["Build"]
 }
 
 workflow "Release workflow" {
