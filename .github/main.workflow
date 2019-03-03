@@ -5,7 +5,7 @@ workflow "Build workflow" {
 
 workflow "Release workflow" {
   on = "release"
-  resolves = ["Site"]
+  resolves = ["Deploy to GitHub Pages"]
 }
 
 action "Filter gh-pages" {
@@ -24,7 +24,16 @@ action "Release" {
   args = "-Prelease.useLastTag=true final"
 }
 
-action "Site" {
+action "Build site" {
   uses = "MrRamych/gradle-actions@master"
   args = ":site:orchidBuild -Penv=prod"
+}
+
+action "Deploy to GitHub Pages" {
+  uses = "maxheld83/ghpages@v0.2.1"
+  needs = ["Build site"]
+  env = {
+    BUILD_DIR = "site/build/docs/orchid/"
+  }
+  secrets = ["GH_PAT"]
 }
