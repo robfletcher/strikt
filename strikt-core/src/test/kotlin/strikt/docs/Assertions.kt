@@ -77,7 +77,6 @@ internal class Assertions {
     val s = """ // IGNORE
     ▼ Expect that 1:
       ✗ is less than 1
-      ✗ is an instance of java.lang.Integer : found java.lang.Long
       ✗ is greater than 1
     """ // IGNORE
     // END assertion_styles_6
