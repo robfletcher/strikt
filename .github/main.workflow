@@ -1,6 +1,6 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["build"]
+  resolves = ["Build", "Site"]
 }
 
 action "not gh-pages" {
@@ -8,9 +8,19 @@ action "not gh-pages" {
   args = "not branch gh-pages"
 }
 
-action "build" {
+action "Build" {
   uses = "MrRamych/gradle-actions@master"
   needs = ["not gh-pages"]
   args = "build"
+}
+
+action "Release" {
+  uses = "MrRamych/gradle-actions@master"
+  args = "-Prelease.useLastTag=true final"
+}
+
+action "Site" {
+  uses = "MrRamych/gradle-actions@master"
+  args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
 }
 
