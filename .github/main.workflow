@@ -1,6 +1,6 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Build", "Site"]
+  resolves = ["Site"]
 }
 
 action "Filter gh-pages" {
@@ -21,7 +21,7 @@ action "Release" {
 
 action "Site" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Filter gh-pages"]
+  needs = ["Build"]
   args = ":site:orchidBuild -Penv=prod"
 }
 
