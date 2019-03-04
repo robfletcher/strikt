@@ -16,6 +16,7 @@ action "Debug" {
 action "Debug gradle" {
   uses = "MrRamych/gradle-actions@master"
   args = "testSecret"
+  secrets = ["BINTRAY_USER"]
 }
 
 action "Filter branch" {
