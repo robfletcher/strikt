@@ -1,6 +1,6 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Build", "Debug gradle"]
+  resolves = ["Build", "Debug"]
 }
 
 workflow "Release workflow" {
@@ -26,7 +26,7 @@ action "Filter branch" {
 
 action "Build" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Filter branch"]
+  needs = ["Filter branch", "Debug gradle"]
   args = "build"
 }
 
