@@ -15,7 +15,6 @@ action "Debug" {
 
 action "Debug gradle" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Debug"]
   args = "testSecret"
 }
 
