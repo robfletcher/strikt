@@ -5,7 +5,7 @@ workflow "Build workflow" {
 
 workflow "Release workflow" {
   on = "release"
-  resolves = ["Deploy to GitHub Pages"]
+  resolves = ["Deploy to GitHub Pages", "Echo message", "Tweet message"]
 }
 
 action "Filter gh-pages" {
@@ -21,12 +21,14 @@ action "Build" {
 
 action "Release" {
   uses = "MrRamych/gradle-actions@master"
-  args = "-Prelease.useLastTag=true final"
+  args = "final -Prelease.useLastTag=true"
+  secrets = ["BINTRAY_USER", "BINTRAY_KEY"]
 }
 
 action "Build site" {
   uses = "MrRamych/gradle-actions@master"
-  args = ":site:orchidBuild -Penv=prod"
+  needs = ["Release"]
+  args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
 }
 
 action "Deploy to GitHub Pages" {
@@ -36,4 +38,17 @@ action "Deploy to GitHub Pages" {
     BUILD_DIR = "site/build/docs/orchid/"
   }
   secrets = ["GH_PAT"]
+}
+
+action "Tweet message" {
+  uses = "xorilog/twitter-action@master"
+  needs = ["Release"]
+  args = ["-message", "Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
+  secrets = ["TWITTER_CONSUMER_KEY", "TWITTER_CONSUMER_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"]
+}
+
+action "Echo message" {
+  uses = "actions/bin/sh@master"
+  needs = ["Release"]
+  args = ["echo \"Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF\""]
 }
