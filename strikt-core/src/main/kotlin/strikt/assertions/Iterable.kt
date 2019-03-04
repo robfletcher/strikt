@@ -118,6 +118,54 @@ fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Buil
   }
 
 /**
+ * Asserts that at least [count] elements of the subject pass the assertions in
+ * [predicate].
+ */
+fun <T : Iterable<E>, E> Builder<T>.atLeast(
+  count: Int,
+  predicate: Builder<E>.() -> Unit
+): Builder<T> =
+  compose("at least $count elements match:") { subject ->
+    subject.forEach { element ->
+      get("%s") { element }.apply(predicate)
+    }
+  } then {
+    if (passedCount >= count) pass() else fail()
+  }
+
+/**
+ * Asserts that at most [count] elements of the subject pass the assertions in
+ * [predicate].
+ */
+fun <T : Iterable<E>, E> Builder<T>.atMost(
+  count: Int,
+  predicate: Builder<E>.() -> Unit
+): Builder<T> =
+  compose("at most $count elements match:") { subject ->
+    subject.forEach { element ->
+      get("%s") { element }.apply(predicate)
+    }
+  } then {
+    if (passedCount <= count) pass() else fail()
+  }
+
+/**
+ * Asserts that exactly [count] elements of the subject pass the assertions in
+ * [predicate].
+ */
+fun <T : Iterable<E>, E> Builder<T>.exactly(
+  count: Int,
+  predicate: Builder<E>.() -> Unit
+): Builder<T> =
+  compose("exactly $count elements match:") { subject ->
+    subject.forEach { element ->
+      get("%s") { element }.apply(predicate)
+    }
+  } then {
+    if (passedCount == count) pass() else fail()
+  }
+
+/**
  * Asserts that all [elements] are present in the subject.
  * The elements may exist in any order any number of times and the subject may
  * contain further elements that were not specified.

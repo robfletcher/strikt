@@ -18,4 +18,6 @@ interface CompoundAssertion : Assertion {
   val allFailed: Boolean
   val anyPassed: Boolean
   val allPassed: Boolean
+  val passedCount: Int
+  val failedCount: Int
 }

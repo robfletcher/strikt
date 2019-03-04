@@ -160,6 +160,55 @@ internal class IterableAssertions {
   }
 
   @Nested
+  @DisplayName("at least assertion")
+  inner class AtLeast {
+    @TestFactory
+    fun `fails if not enough elements conform`() =
+      listOf("catflap", "rubberplant", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("fails if not enough elements of a ${subject.javaClass.simpleName} conform") {
+            assertThrows<AssertionError> {
+              expectThat(subject).atLeast(2) {
+                isUpperCase()
+              }
+            }
+          }
+        }
+
+    @TestFactory
+    fun `passes if exactly enough elements conform`() =
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("fails if not enough elements of a ${subject.javaClass.simpleName} conforms") {
+            expectThat(subject).atLeast(2) {
+              isUpperCase()
+            }
+          }
+        }
+
+    @TestFactory
+    fun `passes if all elements conform`() =
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
+        .map { subject ->
+          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
+            expectThat(subject).atLeast(2) {
+              isUpperCase()
+            }
+          }
+        }
+
+    @Test
+    fun `works with not`() {
+      val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+      assertThrows<AssertionError> {
+        expectThat(subject).not().atLeast(2) {
+          isUpperCase()
+        }
+      }
+    }
+  }
+
+  @Nested
   @DisplayName("contains assertion")
   inner class Contains {
     @TestFactory
@@ -167,7 +216,10 @@ internal class IterableAssertions {
       listOf(
         listOf("catflap") to arrayOf("catflap"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "marzipan")
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
+          "catflap",
+          "marzipan"
+        )
       )
         .permuteExpected()
         .map { (subject, expected) ->
@@ -265,7 +317,11 @@ internal class IterableAssertions {
     fun `passes if the subject contains none of the elements`() =
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("fnord"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf("xenocracy", "wye", "exercitation")
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
+          "xenocracy",
+          "wye",
+          "exercitation"
+        )
       )
         .permuteExpected()
         .map { (subject, elements) ->
@@ -279,8 +335,16 @@ internal class IterableAssertions {
     fun `passes if the subject contains any of the elements`() =
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "kakistocracy", "impeach"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf("owlbear", "marzipan", "illithid")
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
+          "catflap",
+          "kakistocracy",
+          "impeach"
+        ),
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
+          "owlbear",
+          "marzipan",
+          "illithid"
+        )
       )
         .permuteExpected()
         .map { (subject, elements) ->

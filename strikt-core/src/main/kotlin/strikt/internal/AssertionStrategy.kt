@@ -77,6 +77,10 @@ internal sealed class AssertionStrategy {
         get() = children.any { it.status is Passed }
       override val allPassed: Boolean
         get() = children.all { it.status is Passed }
+      override val passedCount: Int
+        get() = children.count { it.status is Passed }
+      override val failedCount: Int
+        get() = children.count { it.status is Failed }
     }
 
   open fun evaluate(tree: AssertionGroup<*>) {}
