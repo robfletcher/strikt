@@ -1,16 +1,22 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Build", "Echo secret"]
+  resolves = ["Build", "Debug gradle"]
 }
 
 workflow "Release workflow" {
   on = "release"
-  resolves = ["Deploy to GitHub Pages", "Tweet message"]
+  resolves = ["Deploy to GitHub Pages", "Tweet message", "Debug"]
 }
 
-action "Echo secret" {
+action "Debug" {
   uses = "actions/bin/debug@master"
   secrets = ["BINTRAY_USER"]
+}
+
+action "Debug gradle" {
+  uses = "MrRamych/gradle-actions@master"
+  needs = ["Debug"]
+  args = "testSecret"
 }
 
 action "Filter branch" {
@@ -48,7 +54,7 @@ action "Deploy to GitHub Pages" {
 action "Tweet message" {
   uses = "xorilog/twitter-action@master"
   needs = ["Echo message"]
-  args = ["-message", "Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
+  args = ["-message", "Strikt $GITHUB_REF `jq .name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
   secrets = ["TWITTER_CONSUMER_KEY", "TWITTER_CONSUMER_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"]
 }
 

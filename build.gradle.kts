@@ -22,6 +22,15 @@ allprojects {
   group = "io.strikt"
 }
 
+tasks.register("testSecret") {
+  doLast {
+    val secret = System.getenv("BINTRAY_USER")
+    println("BINTRAY_USER = $secret")
+    println("BINTRAY_USER is ${if (secret != null) "not " else ""}null")
+    println("BINTRAY_USER is ${if (secret != "") "not " else ""}empty")
+  }
+}
+
 subprojects {
   apply(plugin = "nebula.release")
 
