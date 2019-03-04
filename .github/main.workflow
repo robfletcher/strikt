@@ -5,22 +5,23 @@ workflow "Build workflow" {
 
 workflow "Release workflow" {
   on = "release"
-  resolves = ["Deploy to GitHub Pages", "Echo message", "Tweet message"]
+  resolves = ["Deploy to GitHub Pages", "Tweet message"]
 }
 
-action "Filter gh-pages" {
+action "Filter branch" {
   uses = "actions/bin/filter@master"
   args = "not branch gh-pages"
 }
 
 action "Build" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Filter gh-pages"]
+  needs = ["Filter branch"]
   args = "build"
 }
 
 action "Release" {
   uses = "MrRamych/gradle-actions@master"
+  needs = ["Build"]
   args = "final -Prelease.useLastTag=true"
   secrets = ["BINTRAY_USER", "BINTRAY_KEY"]
 }
@@ -42,7 +43,7 @@ action "Deploy to GitHub Pages" {
 
 action "Tweet message" {
   uses = "xorilog/twitter-action@master"
-  needs = ["Release"]
+  needs = ["Echo message"]
   args = ["-message", "Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
   secrets = ["TWITTER_CONSUMER_KEY", "TWITTER_CONSUMER_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"]
 }
