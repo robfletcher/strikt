@@ -1,11 +1,17 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Build"]
+  resolves = ["Build", "Echo secret"]
 }
 
 workflow "Release workflow" {
   on = "release"
   resolves = ["Deploy to GitHub Pages", "Tweet message"]
+}
+
+action "Echo secret" {
+  uses = "actions/bin/sh@master"
+  args = ["echo $BINTRAY_USER"]
+  secrets = ["BINTRAY_USER"]
 }
 
 action "Filter branch" {
