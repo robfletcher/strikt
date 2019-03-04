@@ -9,8 +9,7 @@ workflow "Release workflow" {
 }
 
 action "Echo secret" {
-  uses = "actions/bin/sh@master"
-  args = ["echo $BINTRAY_USER"]
+  uses = "actions/bin/debug@master"
   secrets = ["BINTRAY_USER"]
 }
 
