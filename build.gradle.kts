@@ -9,7 +9,6 @@ plugins {
   id("nebula.kotlin") version "1.3.21" apply false
   id("org.jmailen.kotlinter") version "1.20.1" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
-  id("release-tweet")
 }
 
 buildscript {

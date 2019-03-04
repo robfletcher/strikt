@@ -21,8 +21,7 @@ action "Build" {
 
 action "Release" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Build"]
-  args = "final -Prelease.useLastTag=true"
+  args = "build final -Prelease.useLastTag=true"
   secrets = ["BINTRAY_USER", "BINTRAY_KEY"]
 }
 
