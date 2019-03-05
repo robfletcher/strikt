@@ -1,65 +1,49 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["Build", "Debug"]
+  resolves = ["build"]
 }
 
 workflow "Release workflow" {
   on = "release"
-  resolves = ["Deploy to GitHub Pages", "Tweet message", "Debug"]
+  resolves = [
+    "site",
+    "tweet",
+  ]
 }
 
-action "Debug" {
-  uses = "actions/bin/debug@master"
-  secrets = ["BINTRAY_USER"]
-}
-
-action "Debug gradle" {
-  uses = "MrRamych/gradle-actions@master"
-  args = "testSecret"
-  secrets = ["BINTRAY_USER"]
-}
-
-action "Filter branch" {
+action "filter" {
   uses = "actions/bin/filter@master"
   args = "not branch gh-pages"
 }
 
-action "Build" {
+action "build" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Filter branch", "Debug gradle"]
   args = "build"
+  needs = ["filter"]
 }
 
-action "Release" {
+action "release" {
   uses = "MrRamych/gradle-actions@master"
   args = "build final -Prelease.useLastTag=true"
   secrets = ["BINTRAY_USER", "BINTRAY_KEY"]
 }
 
-action "Build site" {
+action "site" {
   uses = "MrRamych/gradle-actions@master"
-  needs = ["Release"]
-  args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
+  args = ":site:orchidDeploy -Penv=prod -Prelease.useLastTag=true"
+  secrets = ["GITHUB_TOKEN"]
+  needs = ["release"]
 }
 
-action "Deploy to GitHub Pages" {
-  uses = "maxheld83/ghpages@v0.2.1"
-  needs = ["Build site"]
-  env = {
-    BUILD_DIR = "site/build/docs/orchid/"
-  }
-  secrets = ["GH_PAT"]
-}
-
-action "Tweet message" {
+action "tweet" {
   uses = "xorilog/twitter-action@master"
-  needs = ["Echo message"]
   args = ["-message", "Strikt $GITHUB_REF `jq .name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
   secrets = ["TWITTER_CONSUMER_KEY", "TWITTER_CONSUMER_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"]
+  needs = ["message"]
 }
 
-action "Echo message" {
+action "message" {
   uses = "actions/bin/sh@master"
-  needs = ["Release"]
   args = ["echo \"Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF\""]
+  needs = ["release"]
 }
