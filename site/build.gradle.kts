@@ -66,11 +66,11 @@ orchid {
     environment = "debug"
   }
 
-  args = listOf(
-    "githubToken ${if (project.hasProperty("github_token")) project.property("github_token") else System.getenv(
-      "GITHUB_TOKEN"
-    )}"
-  )
+  githubToken = if (project.hasProperty("github_token")) {
+    project.property("github_token").toString()
+  } else {
+    System.getenv("GITHUB_TOKEN")
+  }
 }
 
 val compileOrchidKotlin by tasks.getting(KotlinCompile::class) {
