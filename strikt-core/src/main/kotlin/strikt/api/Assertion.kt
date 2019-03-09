@@ -284,6 +284,14 @@ interface Assertion {
     fun not(): Builder<T>
 
     /**
+     * Evaluates a block of assertions on the current subject by executing them in reverse.
+     *
+     * @param assertions the assertions to evaluate in reverse
+     * @see not
+     */
+    fun not(assertions: Builder<T>.() -> Unit): Builder<T>
+
+    /**
      * Evaluates a block of assertions on the current subject.
      *
      * The main use for this method is after [strikt.assertions.isNotNull] or
