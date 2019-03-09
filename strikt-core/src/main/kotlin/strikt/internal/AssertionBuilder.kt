@@ -25,6 +25,12 @@ internal class AssertionBuilder<T>(
     return this
   }
 
+  override fun not(assertions: Builder<T>.() -> Unit): Assertion.Builder<T> {
+    AssertionBuilder(context, AssertionStrategy.Negating(AssertionStrategy.Collecting)).apply(assertions)
+    strategy.evaluate(context)
+    return this
+  }
+
   override fun assert(
     description: String,
     expected: Any?,
