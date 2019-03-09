@@ -4,7 +4,8 @@ import kotlinx.coroutines.runBlocking
 import strikt.api.Assertion.Builder
 import strikt.assertions.throws
 import strikt.internal.AssertionBuilder
-import strikt.internal.AssertionStrategy
+import strikt.internal.AssertionStrategy.Collecting
+import strikt.internal.AssertionStrategy.Throwing
 import strikt.internal.AssertionSubject
 
 /**
@@ -18,7 +19,7 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
     override fun <T> that(subject: T): DescribeableBuilder<T> =
       AssertionSubject(subject)
         .also { subjects.add(it) }
-        .let { AssertionBuilder(it, AssertionStrategy.Collecting) }
+        .let { AssertionBuilder(it, Collecting) }
 
     override fun <T> that(
       subject: T,
@@ -31,7 +32,7 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
       }
     }
     .let {
-      AssertionStrategy.Throwing.evaluate(subjects)
+      Throwing.evaluate(subjects)
     }
 }
 
@@ -43,7 +44,7 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
  * @return an assertion for [subject].
  */
 fun <T> expectThat(subject: T): DescribeableBuilder<T> =
-  AssertionBuilder(AssertionSubject(subject), AssertionStrategy.Throwing)
+  AssertionBuilder(AssertionSubject(subject), Throwing)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -59,10 +60,10 @@ fun <T> expectThat(
   block: Builder<T>.() -> Unit
 ): DescribeableBuilder<T> =
   AssertionSubject(subject).let { context ->
-    AssertionBuilder(context, AssertionStrategy.Collecting)
+    AssertionBuilder(context, Collecting)
       .apply {
         block()
-        AssertionStrategy.Throwing.evaluate(context)
+        Throwing.evaluate(context)
       }
   }
 

@@ -29,13 +29,12 @@ class Exceptions {
     }.let { error ->
       expectThat(error)
         .isA<AssertionFailedError>()
-        .and {
-          message.isEqualTo(
+        .message
+        .isEqualTo(
             "▼ Expect that \"fnord\":\n" +
               "  ✓ has length 5\n" +
               "  ✗ is upper case"
           )
-        }
     }
   }
 

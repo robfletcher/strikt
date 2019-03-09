@@ -8,6 +8,7 @@ import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isGreaterThan
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 
@@ -50,6 +51,22 @@ internal class Block {
         |  ✓ is not null
         |  ✗ is an instance of java.lang.Number : found java.lang.String
         |  ✓ is equal to "fnord""""
+        .trimMargin()
+      assertEquals(expected, error.message)
+    }
+  }
+
+  @Test
+  fun `get chained after a failing assertion is not evaluated`() {
+    assertThrows<AssertionError> {
+      val subject: Any? = "fnord"
+      expectThat(subject) {
+        isA<Int>().get("multiplied by two") { this * 2 }.isGreaterThan(1)
+      }
+    }.let { error ->
+      val expected = """
+        |▼ Expect that "fnord":
+        |  ✗ is an instance of java.lang.Integer : found java.lang.String"""
         .trimMargin()
       assertEquals(expected, error.message)
     }
