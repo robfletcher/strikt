@@ -35,7 +35,7 @@ class Exceptions {
             |  ✓ has length 5
             |  ✗ is upper case"""
             .trimMargin()
-          )
+        )
     }
   }
 

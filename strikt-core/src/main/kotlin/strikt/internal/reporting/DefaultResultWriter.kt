@@ -35,7 +35,9 @@ internal open class DefaultResultWriter : ResultWriter {
 
   private fun <S> AssertionNode<S>.addAncestorsTo(tree: MutableList<AssertionNode<*>>) {
     parent?.also {
-      tree.add(0, it)
+      if (it !is AssertionChain) {
+        tree.add(0, it)
+      }
       it.addAncestorsTo(tree)
     }
   }

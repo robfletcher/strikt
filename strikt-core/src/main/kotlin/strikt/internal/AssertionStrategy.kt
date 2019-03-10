@@ -106,9 +106,7 @@ internal sealed class AssertionStrategy {
       if (tree.status is Failed) {
         throw CompoundAssertionFailure(
           tree.root.writeToString(),
-          tree
-            .children
-            .filter { it.status is Failed }
+          tree.findFailureNodes()
             .map {
               createAssertionFailedError(
                 it.writePartialToString(),
@@ -117,6 +115,21 @@ internal sealed class AssertionStrategy {
             }
         )
       }
+    }
+
+    /**
+     * Find the failing leaf nodes in an assertion result graph.
+     */
+    private fun AssertionGroup<*>.findFailureNodes(): List<AssertionNode<*>> {
+      return children
+        .filter { it.status is Failed }
+        .map { node ->
+          if (node is AssertionChain) {
+            node.children.first { it.status is Failed }
+          } else {
+            node
+          }
+        }
     }
 
     override fun evaluate(trees: Collection<AssertionGroup<*>>) {
