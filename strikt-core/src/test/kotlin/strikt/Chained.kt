@@ -85,12 +85,13 @@ internal class Chained {
         }
     }
     assertEquals(
-      "▼ Expect that \"fnord\":\n" +
-        "  ✓ is not null\n" +
-        "  ✓ is lower case\n" +
-        "  ✓ contains \"f\"\n" +
-        "  ✓ contains \"n\"\n" +
-        "  ✗ contains \"z\" : found \"fnord\"",
+      """▼ Expect that "fnord":
+        |  ✓ is not null
+        |  ✓ is lower case
+        |  ✓ contains "f"
+        |  ✓ contains "n"
+        |  ✗ contains "z" : found "fnord""""
+        .trimMargin(),
       error.message
     )
   }

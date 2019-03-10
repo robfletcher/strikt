@@ -3,11 +3,11 @@ package strikt.internal.reporting
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
-import strikt.internal.AssertionChain
 import strikt.internal.AssertionGroup
 import strikt.internal.AssertionNode
 import strikt.internal.AssertionResult
 import strikt.internal.AssertionSubject
+import strikt.internal.DescribedNode
 
 internal open class DefaultResultWriter : ResultWriter {
 
@@ -35,7 +35,7 @@ internal open class DefaultResultWriter : ResultWriter {
 
   private fun <S> AssertionNode<S>.addAncestorsTo(tree: MutableList<AssertionNode<*>>) {
     parent?.also {
-      if (it !is AssertionChain) {
+      if (it is DescribedNode<*>) {
         tree.add(0, it)
       }
       it.addAncestorsTo(tree)
@@ -54,7 +54,7 @@ internal open class DefaultResultWriter : ResultWriter {
         writeIndented(
           writer,
           it,
-          if (node is AssertionChain) indent else indent + 1
+          if (node is DescribedNode) indent + 1 else indent
         )
       }
     }
@@ -116,13 +116,13 @@ internal open class DefaultResultWriter : ResultWriter {
     node: AssertionNode<*>,
     indent: Int
   ) {
-    if (node !is AssertionChain) {
+    if (node is DescribedNode) {
       writer.append("".padStart(2 * indent))
     }
   }
 
   protected open fun writeLineEnd(writer: Appendable, node: AssertionNode<*>) {
-    if (node !is AssertionChain) {
+    if (node is DescribedNode) {
       writer.append(EOL)
     }
   }

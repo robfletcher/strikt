@@ -15,17 +15,23 @@ internal class AssertionBuilder<T>(
 ) : DescribeableBuilder<T> {
 
   override fun describedAs(description: String): Builder<T> {
-    context.description = description
+    if (context is DescribedNode<*>) {
+      context.description = description
+    }
     return this
   }
 
   override fun and(
     assertions: Assertion.Builder<T>.() -> Unit
-  ): Assertion.Builder<T> {
-    AssertionBuilder(context, Collecting).apply(assertions)
-    strategy.evaluate(context)
-    return this
-  }
+  ): Assertion.Builder<T> =
+    AssertionChainedGroup(context, context.subject)
+      .let { nestedContext ->
+        AssertionBuilder(nestedContext, Collecting)
+          .apply(assertions)
+          .also {
+            strategy.evaluate(nestedContext)
+          }
+      }
 
   override fun assert(
     description: String,
