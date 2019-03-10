@@ -12,6 +12,10 @@ package strikt.api
  * `false`.
  * @property anyFailed `true` if at least one composed assertion failed,
  * otherwise `false`.
+ * @property passedCount the number of composed assertions whose status is
+ * [strikt.api.Status.Passed].
+ * @property failedCount the number of composed assertions whose status is
+ * [strikt.api.Status.Failed].
  */
 interface CompoundAssertion : Assertion {
   val anyFailed: Boolean

@@ -17,6 +17,7 @@ import strikt.assertions.isLessThan
 import strikt.assertions.isNotEqualTo
 import strikt.assertions.isTrue
 import strikt.assertions.isUpperCase
+import strikt.assertions.length
 import strikt.assertions.message
 import strikt.assertions.startsWith
 import strikt.internal.opentest4j.CompoundAssertionFailure
@@ -75,7 +76,7 @@ class Exceptions {
   fun `chains involving "and" raise a single compound exception`() {
     assertThrows<AssertionError> {
       expectThat("fnord")
-        .get(String::length)
+        .length
         .isGreaterThan(0)
         .and {
           isEqualTo(1)
@@ -138,7 +139,7 @@ class Exceptions {
   fun `blocks involving "and" raise a single compound exception`() {
     assertThrows<AssertionError> {
       expectThat("fnord") {
-        get(String::length)
+        length
           .isGreaterThan(0)
           .and {
             isEqualTo(1)

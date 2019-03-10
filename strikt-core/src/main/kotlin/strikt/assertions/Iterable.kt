@@ -274,10 +274,10 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
     val original = subject.toList()
     val remaining = subject.toMutableList()
     elements.forEachIndexed { i, element ->
-      assert("contains %s", element) { _ ->
+      assert("contains %s", element) {
         if (remaining.remove(element)) {
           pass()
-          assert("…at index $i", element) { _ ->
+          assert("…at index $i", element) {
             if (original[i] == element) {
               pass()
             } else {
@@ -289,7 +289,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
         }
       }
     }
-    assert("contains no further elements", emptyList<E>()) { _ ->
+    assert("contains no further elements", emptyList<E>()) {
       if (remaining.isEmpty()) {
         pass()
       } else {
@@ -322,7 +322,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collecti
   ) { subject ->
     val remaining = subject.toMutableList()
     elements.forEach { element ->
-      assert("contains %s", element) { _ ->
+      assert("contains %s", element) {
         if (remaining.remove(element)) {
           pass()
         } else {
@@ -330,7 +330,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collecti
         }
       }
     }
-    assert("contains no further elements", emptyList<E>()) { _ ->
+    assert("contains no further elements", emptyList<E>()) {
       if (remaining.isEmpty()) {
         pass()
       } else {

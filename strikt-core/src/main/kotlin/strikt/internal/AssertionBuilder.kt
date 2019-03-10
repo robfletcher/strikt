@@ -72,17 +72,16 @@ internal class AssertionBuilder<T>(
   override fun <R> get(
     description: String,
     function: (T) -> R
-  ): DescribeableBuilder<R> {
+  ): DescribeableBuilder<R> =
     if (context.allowChain) {
       val mappedValue = function(context.subject)
-      return AssertionBuilder(
+      AssertionBuilder(
         AssertionSubject(context, mappedValue, description),
         strategy
       )
     } else {
-      return this as AssertionBuilder<R> // TODO: no, this is a lie
+      this as AssertionBuilder<R> // TODO: no, this is a lie
     }
-  }
 
   override fun not(): Builder<T> = AssertionBuilder(
     context,
