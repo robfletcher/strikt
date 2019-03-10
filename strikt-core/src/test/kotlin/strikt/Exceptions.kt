@@ -31,9 +31,10 @@ class Exceptions {
         .isA<AssertionFailedError>()
         .message
         .isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
-              "  ✓ has length 5\n" +
-              "  ✗ is upper case"
+          """▼ Expect that "fnord":
+            |  ✓ has length 5
+            |  ✗ is upper case"""
+            .trimMargin()
           )
     }
   }
@@ -51,18 +52,20 @@ class Exceptions {
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
-              "  ✓ has length 5\n" +
-              "  ✗ is upper case\n" +
-              "  ✓ starts with \"f\""
+            """▼ Expect that "fnord":
+              |  ✓ has length 5
+              |  ✗ is upper case
+              |  ✓ starts with "f""""
+              .trimMargin()
           )
           get { failures }
             .hasSize(1)
             .first()
             .isA<AssertionFailedError>()
             .message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
-              "  ✗ is upper case"
+            """▼ Expect that "fnord":
+              |  ✗ is upper case"""
+              .trimMargin()
           )
         }
     }
@@ -84,12 +87,13 @@ class Exceptions {
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
-              "  ▼ value of property length:\n" +
-              "    ✓ is greater than 0\n" +
-              "    ✗ is equal to 1 : found 5\n" +
-              "    ✗ is less than 2\n" +
-              "    ✗ is not equal to 5"
+            """▼ Expect that "fnord":
+              |  ▼ value of property length:
+              |    ✓ is greater than 0
+              |    ✗ is equal to 1 : found 5
+              |    ✗ is less than 2
+              |    ✗ is not equal to 5"""
+              .trimMargin()
           )
         }
         .get { failures }
@@ -99,9 +103,10 @@ class Exceptions {
             .isA<AssertionFailedError>()
             .message
             .isEqualTo(
-              "▼ Expect that \"fnord\":\n" +
-                "  ▼ value of property length:\n" +
-                "    ✗ is equal to 1 : found 5"
+              """▼ Expect that "fnord":
+                |  ▼ value of property length:
+                |    ✗ is equal to 1 : found 5"""
+                .trimMargin()
             )
         }
         .and {
@@ -109,9 +114,10 @@ class Exceptions {
             .isA<AssertionFailedError>()
             .message
             .isEqualTo(
-              "▼ Expect that \"fnord\":\n" +
-                "  ▼ value of property length:\n" +
-                "    ✗ is less than 2"
+              """▼ Expect that "fnord":
+                |  ▼ value of property length:
+                |    ✗ is less than 2"""
+                .trimMargin()
             )
         }
         .and {
@@ -119,9 +125,10 @@ class Exceptions {
             .isA<AssertionFailedError>()
             .message
             .isEqualTo(
-              "▼ Expect that \"fnord\":\n" +
-                "  ▼ value of property length:\n" +
-                "    ✗ is not equal to 5"
+              """▼ Expect that "fnord":
+                |  ▼ value of property length:
+                |    ✗ is not equal to 5"""
+                .trimMargin()
             )
         }
     }
@@ -144,12 +151,13 @@ class Exceptions {
         .isA<CompoundAssertionFailure>()
         .and {
           message.isEqualTo(
-            "▼ Expect that \"fnord\":\n" +
-              "  ▼ value of property length:\n" +
-              "    ✓ is greater than 0\n" +
-              "    ✗ is equal to 1 : found 5\n" +
-              "    ✗ is less than 2\n" +
-              "    ✗ is not equal to 5"
+            """▼ Expect that "fnord":
+              |  ▼ value of property length:
+              |    ✓ is greater than 0
+              |    ✗ is equal to 1 : found 5
+              |    ✗ is less than 2
+              |    ✗ is not equal to 5"""
+              .trimMargin()
           )
         }
         .get { failures }
@@ -158,12 +166,13 @@ class Exceptions {
         .isA<AssertionFailedError>()
         .message
         .isEqualTo(
-          "▼ Expect that \"fnord\":\n" +
-            "  ▼ value of property length:\n" +
-            "    ✓ is greater than 0\n" +
-            "    ✗ is equal to 1 : found 5\n" +
-            "    ✗ is less than 2\n" +
-            "    ✗ is not equal to 5"
+          """▼ Expect that "fnord":
+            |  ▼ value of property length:
+            |    ✓ is greater than 0
+            |    ✗ is equal to 1 : found 5
+            |    ✗ is less than 2
+            |    ✗ is not equal to 5"""
+            .trimMargin()
         )
     }
   }
@@ -179,13 +188,14 @@ class Exceptions {
           .isA<AssertionFailedError>()
           .message
           .isEqualTo(
-            "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-              "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
-              "    ✓ contains \"catflap\"\n" +
-              "    ✓ …at index 0\n" +
-              "    ✓ contains \"rubberplant\"\n" +
-              "    ✓ …at index 1\n" +
-              "    ✗ contains no further elements : found [\"marzipan\"]"
+            """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+              |  ✗ contains exactly the elements ["catflap", "rubberplant"]
+              |    ✓ contains "catflap"
+              |    ✓ …at index 0
+              |    ✓ contains "rubberplant"
+              |    ✓ …at index 1
+              |    ✗ contains no further elements : found ["marzipan"]"""
+              .trimMargin()
           )
       }
   }
@@ -208,20 +218,22 @@ class Exceptions {
               .isA<AssertionFailedError>()
               .message
               .isEqualTo(
-                "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-                  "  ✗ has size 2 : found 3"
+                """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+                  |  ✗ has size 2 : found 3"""
+                  .trimMargin()
               )
             get(1)
               .isA<AssertionFailedError>()
               .message
               .isEqualTo(
-                "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-                  "  ✗ contains exactly the elements [\"catflap\", \"rubberplant\"]\n" +
-                  "    ✓ contains \"catflap\"\n" +
-                  "    ✓ …at index 0\n" +
-                  "    ✓ contains \"rubberplant\"\n" +
-                  "    ✓ …at index 1\n" +
-                  "    ✗ contains no further elements : found [\"marzipan\"]"
+                """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+                  |  ✗ contains exactly the elements ["catflap", "rubberplant"]
+                  |    ✓ contains "catflap"
+                  |    ✓ …at index 0
+                  |    ✓ contains "rubberplant"
+                  |    ✓ …at index 1
+                  |    ✗ contains no further elements : found ["marzipan"]"""
+                  .trimMargin()
               )
           }
       }
