@@ -100,10 +100,8 @@ internal class Assertions {
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1 : found 5
-      ✗ is upper case
     ▼ Expect that 1:
       ✗ is less than 1
-      ✗ is an instance of java.lang.Integer : found java.lang.Long
       ✗ is greater than 1
     """ // IGNORE
     // END assertion_styles_8
