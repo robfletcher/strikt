@@ -149,7 +149,8 @@ internal abstract class AtomicAssertionNode<S>(
     get() = parent.root
 
   init {
-    parent.also { it.append(this) }
+    @Suppress("LeakingThis")
+    parent.append(this)
   }
 }
 
@@ -166,6 +167,7 @@ internal abstract class CompoundAssertionNode<S>(
     get() = parent.root
 
   init {
+    @Suppress("LeakingThis")
     parent.append(this)
   }
 
