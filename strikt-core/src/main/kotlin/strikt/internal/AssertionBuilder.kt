@@ -6,6 +6,8 @@ import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
 import strikt.api.CompoundAssertions
 import strikt.api.DescribeableBuilder
+import strikt.internal.AssertionStrategy.Collecting
+import strikt.internal.AssertionStrategy.Negating
 
 internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
@@ -20,7 +22,7 @@ internal class AssertionBuilder<T>(
   override fun and(
     assertions: Assertion.Builder<T>.() -> Unit
   ): Assertion.Builder<T> {
-    AssertionBuilder(context, AssertionStrategy.Collecting).apply(assertions)
+    AssertionBuilder(context, Collecting).apply(assertions)
     strategy.evaluate(context)
     return this
   }
@@ -30,13 +32,17 @@ internal class AssertionBuilder<T>(
     expected: Any?,
     assert: AtomicAssertion.(T) -> Unit
   ): AssertionBuilder<T> {
-    val assertion = strategy.appendAtomic(
-      context,
-      description,
-      expected
-    )
-    assertion.assert(context.subject)
-    return this
+    val chain = if (context is AssertionChain<T>) {
+      context
+    } else {
+      AssertionChain(context, context.subject)
+    }
+    if (chain.allowChain) {
+      val assertion = strategy
+        .appendAtomic(chain, description, expected)
+      assertion.assert(chain.subject)
+    }
+    return AssertionBuilder(chain, strategy)
   }
 
   override fun compose(
@@ -44,9 +50,9 @@ internal class AssertionBuilder<T>(
     expected: Any?,
     assertions: Builder<T>.(T) -> Unit
   ): CompoundAssertions<T> {
-    val composedContext =
-      strategy.appendCompound(context, description, expected)
-    AssertionBuilder(composedContext, AssertionStrategy.Collecting).apply {
+    val composedContext = strategy
+      .appendCompound(context, description, expected)
+    AssertionBuilder(composedContext, Collecting).apply {
       assertions(context.subject)
     }
     return object : CompoundAssertions<T> {
@@ -61,15 +67,19 @@ internal class AssertionBuilder<T>(
     description: String,
     function: (T) -> R
   ): DescribeableBuilder<R> {
-    val mappedValue = function(context.subject)
-    return AssertionBuilder(
-      AssertionSubject(context, mappedValue, description),
-      strategy
-    )
+    if (context.allowChain) {
+      val mappedValue = function(context.subject)
+      return AssertionBuilder(
+        AssertionSubject(context, mappedValue, description),
+        strategy
+      )
+    } else {
+      return this as AssertionBuilder<R> // TODO: no, this is a lie
+    }
   }
 
   override fun not(): Builder<T> = AssertionBuilder(
     context,
-    AssertionStrategy.Negating(strategy)
+    Negating(strategy)
   )
 }

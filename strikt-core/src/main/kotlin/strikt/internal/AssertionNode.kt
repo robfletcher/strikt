@@ -19,6 +19,8 @@ internal interface AssertionNode<S> {
   val status: Status
   val root: AssertionNode<*>
   val parent: AssertionGroup<*>?
+  val allowChain: Boolean
+    get() = true
 }
 
 internal interface AssertionGroup<S> : AssertionNode<S> {
@@ -44,7 +46,7 @@ internal class AssertionSubject<S>(
   val isRoot = root === this
 
   init {
-    parent?.also { it.append(this) }
+    parent?.append(this)
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()
@@ -62,6 +64,43 @@ internal class AssertionSubject<S>(
       children.any { it.status is Failed } -> Failed()
       else -> Passed
     }
+}
+
+internal class AssertionChain<S>(
+  override val parent: AssertionGroup<*>,
+  override val subject: S
+) : AssertionGroup<S> {
+  override val root: AssertionNode<*>
+    get() = parent.root
+
+  init {
+    parent.append(this)
+  }
+
+  private val _children = mutableListOf<AssertionNode<*>>()
+  override val children: List<AssertionNode<*>> =
+    _children
+
+  override fun append(node: AssertionNode<*>) {
+    _children.add(node)
+  }
+
+  override val status: Status
+    get() = when {
+      children.isEmpty() -> Pending
+      children.any { it.status is Pending } -> Pending
+      children.any { it.status is Failed } -> Failed()
+      else -> Passed
+    }
+
+  override var description: String
+    get() = TODO("not implemented")
+    set(value) {
+      TODO("not implemented")
+    }
+
+  override val allowChain: Boolean
+    get() = children.map { it.status }.all { it is Passed }
 }
 
 internal abstract class AtomicAssertionNode<S>(
@@ -94,7 +133,7 @@ internal abstract class CompoundAssertionNode<S>(
     get() = parent.root
 
   init {
-    parent.also { it.append(this) }
+    parent.append(this)
   }
 
   private val _children = mutableListOf<AssertionNode<*>>()

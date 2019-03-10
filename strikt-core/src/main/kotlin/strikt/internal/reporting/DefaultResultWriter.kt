@@ -3,6 +3,7 @@ package strikt.internal.reporting
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import strikt.internal.AssertionChain
 import strikt.internal.AssertionGroup
 import strikt.internal.AssertionNode
 import strikt.internal.AssertionResult
@@ -48,7 +49,11 @@ internal open class DefaultResultWriter : ResultWriter {
     if (node is AssertionGroup<*>) {
       node.children.forEach {
         writeLineEnd(writer, it)
-        writeIndented(writer, it, indent + 1)
+        writeIndented(
+          writer,
+          it,
+          if (node is AssertionChain) indent else indent + 1
+        )
       }
     }
   }
@@ -109,11 +114,15 @@ internal open class DefaultResultWriter : ResultWriter {
     node: AssertionNode<*>,
     indent: Int
   ) {
-    writer.append("".padStart(2 * indent))
+    if (node !is AssertionChain) {
+      writer.append("".padStart(2 * indent))
+    }
   }
 
   protected open fun writeLineEnd(writer: Appendable, node: AssertionNode<*>) {
-    writer.append(EOL)
+    if (node !is AssertionChain) {
+      writer.append(EOL)
+    }
   }
 
   protected open fun writeStatusIcon(

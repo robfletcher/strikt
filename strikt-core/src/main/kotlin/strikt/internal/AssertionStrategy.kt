@@ -123,7 +123,12 @@ internal sealed class AssertionStrategy {
       if (trees.any { it.status is Status.Failed }) {
         val failures = trees
           .filter { it.status is Failed }
-          .map { createAssertionFailedError(it.writeToString(), it.status as Failed) }
+          .map {
+            createAssertionFailedError(
+              it.writeToString(),
+              it.status as Failed
+            )
+          }
         throw CompoundAssertionFailure(trees.writeToString(), failures)
       }
     }
