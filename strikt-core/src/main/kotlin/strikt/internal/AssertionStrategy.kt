@@ -124,10 +124,10 @@ internal sealed class AssertionStrategy {
       return children
         .filter { it.status is Failed }
         .map { node ->
-          if (node is AssertionChain) {
-            node.children.first { it.status is Failed }
-          } else {
-            node
+          when (node) {
+            is AssertionChain -> node.children.first { it.status is Failed }
+            is AssertionChainedGroup -> node.children.first { it.status is Failed }
+            else -> node
           }
         }
     }
