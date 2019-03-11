@@ -25,7 +25,10 @@ action "build" {
 action "release" {
   uses = "MrRamych/gradle-actions@master"
   args = "build final -Prelease.useLastTag=true"
-  secrets = ["BINTRAY_USER", "BINTRAY_KEY"]
+  secrets = [
+    "BINTRAY_USER",
+    "BINTRAY_KEY"
+  ]
 }
 
 action "site" {
@@ -35,15 +38,27 @@ action "site" {
   needs = ["release"]
 }
 
-action "tweet" {
-  uses = "xorilog/twitter-action@master"
-  args = ["-message", "Strikt $GITHUB_REF `jq .name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF"]
-  secrets = ["TWITTER_CONSUMER_KEY", "TWITTER_CONSUMER_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"]
-  needs = ["message"]
-}
-
 action "message" {
   uses = "actions/bin/sh@master"
-  args = ["echo \"Strikt $GITHUB_REF `jq .release.name $GITHUB_EVENT_PATH --raw-output` is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$GITHUB_REF\""]
+  args = [
+    "apt-get update",
+    "apt-get install --no-install-recommends -y jq",
+    "RELEASE_TAG=`jq .release.tag_name $GITHUB_EVENT_PATH --raw-output` RELEASE_NAME=`jq .release.name $GITHUB_EVENT_PATH --raw-output` bash -c 'echo \"Strikt $RELEASE_TAG $RELEASE_NAME is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$RELEASE_TAG\" > tweet.txt'"
+  ]
   needs = ["release"]
+}
+
+action "tweet" {
+  uses = "./.github/actions/twitter-action"
+  args = [
+    "-file",
+    "./tweet.txt"
+  ]
+  secrets = [
+    "TWITTER_CONSUMER_KEY",
+    "TWITTER_CONSUMER_SECRET",
+    "TWITTER_ACCESS_TOKEN",
+    "TWITTER_ACCESS_SECRET"
+  ]
+  needs = ["message"]
 }
