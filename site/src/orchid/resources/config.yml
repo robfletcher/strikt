@@ -43,6 +43,9 @@ theme:
     - type: 'page'
       title: 'Java Time Module'
       itemId: 'strikt.time'
+    - type: 'page'
+      title: 'Jackson Module'
+      itemId: 'strikt.jackson'
   - type: 'submenu'
     title: 'Information'
     icon: 'info-circle'
@@ -71,8 +74,6 @@ services:
     #    - type: requireChangelogVersion
     - type: ghPages
       branch: gh-pages
-      latestDirName: latest
-      publishType: CleanBranch
       username: robfletcher
       repo: strikt
 
@@ -81,3 +82,4 @@ kotlindoc:
   - '../../../../strikt-core/src/main/kotlin/'
   - '../../../../strikt-protobuf/src/main/kotlin/'
   - '../../../../strikt-java-time/src/main/kotlin/'
+  - '../../../../strikt-jackson/src/main/kotlin/'

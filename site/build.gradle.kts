@@ -18,14 +18,11 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.15.4"
+  id("com.eden.orchidPlugin") version "0.16.4"
 }
 
 repositories {
   jcenter()
-  maven(url = "https://dl.bintray.com/javaeden/Orchid/")
-  maven(url = "https://dl.bintray.com/javaeden/Eden/")
-  maven(url = "https://jitpack.io")
   maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
@@ -43,26 +40,20 @@ open class OrchidAlignmentRule : ComponentMetadataRule {
 dependencies {
   components.all(OrchidAlignmentRule::class.java)
   orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:+")
+  orchidRuntime("io.github.javaeden.orchid:OrchidDocs:+")
   orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:+")
   orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:+")
 }
 
 project.version = "${project.version}"
 
 orchid {
   theme = "StriktTheme"
+  baseUrl = "https://strikt.io/"
 
   if (project.hasProperty("env") && project.property("env") == "prod") {
-    baseUrl = "https://strikt.io/"
     environment = "prod"
   } else {
-    baseUrl = "http://localhost:8080"
     environment = "debug"
   }
 
