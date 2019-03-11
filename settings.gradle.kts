@@ -2,9 +2,9 @@ rootProject.name = "strikt"
 
 include(
   "strikt-core",
-  "strikt-protobuf",
   "strikt-jackson",
   "strikt-java-time",
+  "strikt-protobuf",
   "site"
 )
 
