@@ -23,23 +23,14 @@ plugins {
 
 repositories {
   jcenter()
-  maven(url = "https://dl.bintray.com/javaeden/Orchid/")
-  maven(url = "https://dl.bintray.com/javaeden/Eden/")
-  maven(url = "https://jitpack.io")
   maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
 dependencies {
   orchidCompile("io.github.javaeden.orchid:OrchidCore:0.16.4")
-
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.16.4")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidDocs:0.16.4")
   orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.16.4")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.16.4")
   orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.16.4")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.16.4")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.16.4")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.16.4")
 }
 
 project.version = "${project.version}"
@@ -51,12 +42,11 @@ orchid {
   evaluationDependsOn(":strikt-protobuf")
 
   theme = "StriktTheme"
+  baseUrl = "https://strikt.io/"
 
   if (project.hasProperty("env") && project.property("env") == "prod") {
-    baseUrl = "https://strikt.io/"
     environment = "prod"
   } else {
-    baseUrl = "http://localhost:8080"
     environment = "debug"
   }
 

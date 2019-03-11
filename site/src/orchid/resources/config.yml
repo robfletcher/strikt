@@ -74,8 +74,6 @@ services:
     #    - type: requireChangelogVersion
     - type: ghPages
       branch: gh-pages
-      latestDirName: latest
-      publishType: CleanBranch
       username: robfletcher
       repo: strikt
 
