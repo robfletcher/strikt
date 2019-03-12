@@ -26,28 +26,22 @@ repositories {
   maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
-open class OrchidAlignmentRule : ComponentMetadataRule {
-  override fun execute(ctx: ComponentMetadataContext) {
-    ctx.details.run {
-      if (id.group.startsWith("io.github.javaeden.orchid")) {
-        // declare that Jackson modules all belong to the Jackson virtual platform
-        belongsTo("io.github.javaeden.orchid:orchid-platform:${id.version}")
-      }
-    }
-  }
-}
-
 dependencies {
-  components.all(OrchidAlignmentRule::class.java)
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidDocs:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.16.4")
+
+  orchidRuntime("io.github.javaeden.orchid:OrchidDocs:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.16.4")
 }
 
 project.version = "${project.version}"
 
 orchid {
+  evaluationDependsOn(":strikt-core")
+  evaluationDependsOn(":strikt-jackson")
+  evaluationDependsOn(":strikt-java-time")
+  evaluationDependsOn(":strikt-protobuf")
+
   theme = "StriktTheme"
   baseUrl = "https://strikt.io/"
 
@@ -56,6 +50,19 @@ orchid {
   } else {
     environment = "debug"
   }
+
+  args = listOf(
+    "--kotlindocClasspath",
+    listOf(
+      ":strikt-core",
+      ":strikt-jackson",
+      ":strikt-java-time",
+      ":strikt-protobuf"
+    )
+      .joinToString(File.pathSeparator) {
+        project(it).sourceSets["main"].compileClasspath.asPath
+      }
+  )
 
   githubToken = if (project.hasProperty("github_token")) {
     project.property("github_token").toString()

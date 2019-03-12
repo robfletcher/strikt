@@ -95,6 +95,28 @@ internal class Block {
   }
 
   @Test
+  fun `assertions in a block can be negated in a not block`() {
+    assertThrows<AssertionError> {
+      val subject: Any? = "fnord"
+      expectThat(subject).not {
+        isNull()
+        isNotNull()
+        isA<String>()
+        isA<Number>()
+      }
+    }.let { error ->
+      val expected = """
+        |▼ Expect that "fnord":
+        |  ✓ is not null
+        |  ✗ is null
+        |  ✗ is not an instance of java.lang.String
+        |  ✓ is not an instance of java.lang.Number"""
+        .trimMargin()
+      assertEquals(expected, error.message)
+    }
+  }
+
+  @Test
   fun `an and block can be negated`() {
     val subject: Any? = "fnord"
     expectThat(subject).not().and {
