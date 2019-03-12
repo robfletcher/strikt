@@ -18,7 +18,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.15.4"
+  id("com.eden.orchidPlugin") version "0.16.4"
 }
 
 repositories {
@@ -29,33 +29,27 @@ repositories {
   maven(url = "https://kotlin.bintray.com/kotlinx")
 }
 
-open class OrchidAlignmentRule : ComponentMetadataRule {
-  override fun execute(ctx: ComponentMetadataContext) {
-    ctx.details.run {
-      if (id.group.startsWith("io.github.javaeden.orchid")) {
-        // declare that Jackson modules all belong to the Jackson virtual platform
-        belongsTo("io.github.javaeden.orchid:orchid-platform:${id.version}")
-      }
-    }
-  }
-}
-
 dependencies {
-  components.all(OrchidAlignmentRule::class.java)
-  orchidCompile("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidCore:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPages:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:+")
-  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:+")
+  orchidCompile("io.github.javaeden.orchid:OrchidCore:0.16.4")
+
+  orchidRuntime("io.github.javaeden.orchid:OrchidCore:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPages:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidPluginDocs:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSearch:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidKotlindoc:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidSyntaxHighlighter:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidWiki:0.16.4")
+  orchidRuntime("io.github.javaeden.orchid:OrchidChangelog:0.16.4")
 }
 
 project.version = "${project.version}"
 
 orchid {
+  evaluationDependsOn(":strikt-core")
+  evaluationDependsOn(":strikt-jackson")
+  evaluationDependsOn(":strikt-java-time")
+  evaluationDependsOn(":strikt-protobuf")
+
   theme = "StriktTheme"
 
   if (project.hasProperty("env") && project.property("env") == "prod") {
@@ -65,6 +59,19 @@ orchid {
     baseUrl = "http://localhost:8080"
     environment = "debug"
   }
+
+  args = listOf(
+    "--kotlindocClasspath",
+    listOf(
+      ":strikt-core",
+      ":strikt-jackson",
+      ":strikt-java-time",
+      ":strikt-protobuf"
+    )
+      .joinToString(File.pathSeparator) {
+        project(it).sourceSets["main"].compileClasspath.asPath
+      }
+  )
 
   githubToken = if (project.hasProperty("github_token")) {
     project.property("github_token").toString()
