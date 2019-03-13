@@ -1,15 +1,17 @@
 package strikt.assertions
 
+import dev.minutest.junit.JUnit5Minutests
+import dev.minutest.rootContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
+import strikt.api.Assertion
 import strikt.api.expectThat
 
 @DisplayName("assertions on Map")
-internal object MapAssertions {
-  @TestFactory
-  fun mapAssertions() = assertionTests<Map<String, String>> {
+internal object MapAssertions : JUnit5Minutests {
+  fun mapAssertions() = rootContext<Assertion.Builder<Map<String, String>>> {
     context("an empty subject") {
       fixture { expectThat(emptyMap()) }
 
@@ -22,10 +24,22 @@ internal object MapAssertions {
           isNotEmpty()
         }
       }
+
+      test("get mapping returns a null subject") {
+        get("foo").isNull()
+      }
     }
 
     context("a non-empty map") {
-      fixture { expectThat(mapOf("foo" to "bar", "baz" to "fnord", "qux" to "fnord")) }
+      fixture {
+        expectThat(
+          mapOf(
+            "foo" to "bar",
+            "baz" to "fnord",
+            "qux" to "fnord"
+          )
+        )
+      }
 
       test("isEmpty assertion fails") {
         assertThrows<AssertionError> {
@@ -105,6 +119,36 @@ internal object MapAssertions {
               .trimMargin(),
             error.message
           )
+        }
+      }
+
+      context("get mapping") {
+        test("returns an assertion over the value for a valid key") {
+          get("foo").isEqualTo("bar")
+        }
+
+        test("returns a null subject for a non-existent key") {
+          get("bar").isNull()
+        }
+      }
+
+      context("getValue mapping") {
+        test("returns an assertion over the value for a valid key") {
+          getValue("foo").isEqualTo("bar")
+        }
+
+        test("fails for a non-existent key") {
+          assertThrows<AssertionFailedError> {
+            getValue("bar").isEqualTo("this will never get evaluated")
+          }.also {
+            expectThat(it.message)
+              .isEqualTo(
+                """
+                |▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+                |  ✗ has an entry with the key "bar"
+              """.trimMargin()
+              )
+          }
         }
       }
     }

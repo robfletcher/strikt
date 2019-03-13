@@ -37,6 +37,18 @@ operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
   get("entry [${formatValue(key)}]") { this[key] }
 
 /**
+ * Asserts that [key] exists in the subject map and then maps this assertion to
+ * an assertion on the associated value.
+ *
+ * @return An assertion on the value indexed by [key].
+ */
+fun <T : Map<K, V>, K, V> Builder<T>.getValue(key: K): Builder<V> =
+  containsKey(key)
+    .get("entry [${formatValue(key)}]") {
+      this.getValue(key)
+    }
+
+/**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on
  * the map implementation the value associated with [key] may be `null`. This
  * assertion just tests for the existence of the key.
