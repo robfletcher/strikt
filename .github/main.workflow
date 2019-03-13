@@ -1,28 +1,28 @@
 workflow "Build workflow" {
   on = "push"
-  resolves = ["build"]
+  resolves = ["Gradle Build"]
 }
 
 workflow "Release workflow" {
   on = "release"
   resolves = [
-    "publish",
-    "tweet",
+    "Publish Site",
+    "Tweet Release Message",
   ]
 }
 
-action "filter" {
+action "Filter gh-pages branch" {
   uses = "actions/bin/filter@master"
   args = "not branch gh-pages"
 }
 
-action "build" {
+action "Gradle Build" {
   uses = "MrRamych/gradle-actions@master"
   args = "build"
-  needs = ["filter"]
+  needs = ["Filter gh-pages branch"]
 }
 
-action "release" {
+action "Release to Bintray" {
   uses = "MrRamych/gradle-actions@master"
   args = "build final -Prelease.useLastTag=true"
   secrets = [
@@ -31,32 +31,32 @@ action "release" {
   ]
 }
 
-action "site" {
+action "Build Site" {
   uses = "MrRamych/gradle-actions@master"
   args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
-  needs = ["release"]
+  needs = ["Release to Bintray"]
 }
 
-action "publish" {
+action "Publish Site" {
   uses = "maxheld83/ghpages@v0.2.1"
   env = {
     BUILD_DIR = "site/build/docs/orchid/"
   }
   secrets = ["GH_PAT"]
-  needs = ["site"]
+  needs = ["Build Site"]
 }
 
-action "message" {
+action "Create Release Message" {
   uses = "actions/bin/sh@master"
   args = [
     "apt-get update",
     "apt-get install --no-install-recommends -y jq",
     "RELEASE_TAG=`jq .release.tag_name $GITHUB_EVENT_PATH --raw-output` RELEASE_NAME=`jq .release.name $GITHUB_EVENT_PATH --raw-output` bash -c 'echo \"Strikt $RELEASE_TAG $RELEASE_NAME is available. https://strikt.io\n\nRelease notes: https://github.com/$GITHUB_REPOSITORY/releases/$RELEASE_TAG\" > tweet.txt'",
   ]
-  needs = ["release"]
+  needs = ["Release to Bintray"]
 }
 
-action "tweet" {
+action "Tweet Release Message" {
   uses = "./.github/actions/twitter-action"
   args = [
     "-file",
@@ -68,5 +68,5 @@ action "tweet" {
     "TWITTER_ACCESS_TOKEN",
     "TWITTER_ACCESS_SECRET",
   ]
-  needs = ["message"]
+  needs = ["Create Release Message"]
 }
