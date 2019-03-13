@@ -33,9 +33,18 @@ action "release" {
 
 action "site" {
   uses = "MrRamych/gradle-actions@master"
-  args = ":site:orchidDeploy -Penv=prod -Prelease.useLastTag=true"
+  args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
   secrets = ["GITHUB_TOKEN"]
   needs = ["release"]
+}
+
+action "publish" {
+  uses = "maxheld83/ghpages@v0.2.1"
+  env = {
+    BUILD_DIR = "site/build/docs/orchid/"
+  }
+  secrets = ["GH_PAT"]
+  needs = ["site"]
 }
 
 action "message" {
