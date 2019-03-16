@@ -40,6 +40,7 @@ orchid {
   evaluationDependsOn(":strikt-jackson")
   evaluationDependsOn(":strikt-java-time")
   evaluationDependsOn(":strikt-protobuf")
+  evaluationDependsOn(":strikt-spring")
 
   theme = "StriktTheme"
   baseUrl = "https://strikt.io/"
@@ -56,7 +57,8 @@ orchid {
       ":strikt-core",
       ":strikt-jackson",
       ":strikt-java-time",
-      ":strikt-protobuf"
+      ":strikt-protobuf",
+      ":strikt-spring"
     )
       .joinToString(File.pathSeparator) {
         project(it).sourceSets["main"].compileClasspath.asPath

@@ -5,6 +5,7 @@ include(
   "strikt-jackson",
   "strikt-java-time",
   "strikt-protobuf",
+  "strikt-spring",
   "site"
 )
 
