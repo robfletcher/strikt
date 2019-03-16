@@ -154,3 +154,21 @@ fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
       else -> fail(actual = it.nodeType, description = "found a %s node")
     }
   }
+
+/**
+ * Asserts that a JSON array's size is equal to [expected].
+ *
+ * @see ArrayNode.size
+ */
+fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
+  assert("has $expected elements") { subject ->
+    if (subject.size() == expected) pass()
+    else fail(subject.size())
+  }
+
+/**
+ * Maps an assertion on a JSON array to an assertion on its size.
+ *
+ * @see ArrayNode.size
+ */
+fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> = get { size() }

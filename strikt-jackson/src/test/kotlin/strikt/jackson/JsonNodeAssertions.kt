@@ -168,6 +168,24 @@ internal object JsonNodeAssertions : JUnit5Minutests {
       }
     }
 
+    context("hasSize assertion") {
+      test("passes if the array size is as expected") {
+        expectThat(this)
+          .path("titles")
+          .isArray()
+          .hasSize(2)
+      }
+
+      test("fails if the array size is not as expected") {
+        assertThrows<AssertionFailedError> {
+          expectThat(this)
+            .path("titles")
+            .isArray()
+            .hasSize(1)
+        }
+      }
+    }
+
     context("textValue mapping") {
       test("maps a text node to its text value") {
         expectThat(this)
@@ -214,6 +232,16 @@ internal object JsonNodeAssertions : JUnit5Minutests {
           .path("name")
           .booleanValue()
           .isFalse()
+      }
+    }
+
+    context("size mapping") {
+      test("maps an array node to its size") {
+        expectThat(this)
+          .path("titles")
+          .isArray()
+          .size()
+          .isEqualTo(2)
       }
     }
   }
