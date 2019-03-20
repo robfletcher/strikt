@@ -17,13 +17,13 @@ action "Filter gh-pages branch" {
 }
 
 action "Gradle Build" {
-  uses = "MrRamych/gradle-actions@master"
+  uses = "MrRamych/gradle-actions/openjdk-11@2.0"
   args = "build"
   needs = ["Filter gh-pages branch"]
 }
 
 action "Release to Bintray" {
-  uses = "MrRamych/gradle-actions@master"
+  uses = "MrRamych/gradle-actions/openjdk-11@2.0"
   args = "build final -Prelease.useLastTag=true"
   secrets = [
     "BINTRAY_USER",
@@ -32,7 +32,7 @@ action "Release to Bintray" {
 }
 
 action "Build Site" {
-  uses = "MrRamych/gradle-actions@master"
+  uses = "MrRamych/gradle-actions/openjdk-11@2.0"
   args = ":site:orchidBuild -Penv=prod -Prelease.useLastTag=true"
   needs = ["Release to Bintray"]
 }
