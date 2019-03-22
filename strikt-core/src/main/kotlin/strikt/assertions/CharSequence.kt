@@ -58,7 +58,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T>
  * Asserts that the subject ends with the [expected] character.
  */
 fun <T : CharSequence> Builder<T>.endsWith(expected: Char): Builder<T> =
-  assert("starts with %s", expected) {
+  assert("ends with %s", expected) {
     if (it.endsWith(expected)) {
       pass()
     } else {
