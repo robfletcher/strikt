@@ -191,7 +191,7 @@ internal sealed class AssertionStrategy {
     message: String,
     failed: Failed?
   ): AssertionFailedError {
-    return if (failed?.comparison != null)
+    val error = if (failed?.comparison != null)
       AssertionFailedError(
         message,
         failed.comparison.expected,
@@ -203,5 +203,16 @@ internal sealed class AssertionStrategy {
         message,
         failed?.cause
       )
+
+    val stackTrace = error.stackTrace
+    val lastIndex = stackTrace
+      .indexOfLast { it.className.startsWith("strikt") }
+    val suppressedElements = stackTrace.copyOfRange(0, lastIndex)
+    val remainingElements = stackTrace.copyOfRange(lastIndex + 1, stackTrace.lastIndex)
+    error.stackTrace = remainingElements
+    val striktError = AssertionFailedError()
+    striktError.stackTrace = suppressedElements
+    error.addSuppressed(striktError)
+    return error
   }
 }
