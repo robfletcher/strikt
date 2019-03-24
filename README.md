@@ -51,7 +51,7 @@ Join the [**#strikt**](https://kotlinlang.slack.com/messages/CAR7KJ96J) channel 
 Follow [**@stri_kt**](https://twitter.com/stri_kt) on Twitter for updates and release notifications.
  
 [![Bintray](https://img.shields.io/badge/dynamic/json.svg?label=latest%20release&url=https%3A%2F%2Fapi.bintray.com%2F%2Fpackages%2Frobfletcher%2Fmaven%2Fstrikt-core%2Fversions%2F_latest&query=name&colorB=0094cd&style=for-the-badge)](https://bintray.com/robfletcher/maven/strikt-core)
-[![GitHub Release Date](https://img.shields.io/github/release-date/robfletcher/strikt.svg?style=for-the-badge)](https://github.com/robfletcher/strikt/
+[![GitHub Release Date](https://img.shields.io/github/release-date/robfletcher/strikt.svg?style=for-the-badge)](https://github.com/robfletcher/strikt/)
 [![license](https://img.shields.io/github/license/robfletcher/strikt.svg?style=for-the-badge)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![GitHub issues](https://img.shields.io/github/issues/robfletcher/strikt.svg?style=for-the-badge)](https://github.com/robfletcher/strikt/issues)
 ![GitHub top language](https://img.shields.io/github/languages/top/robfletcher/strikt.svg?style=for-the-badge)
