@@ -45,7 +45,7 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "testImplementation"(platform("org.junit:junit-bom:5.4.0"))
+        "testImplementation"(platform("org.junit:junit-bom:5.4.1"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
@@ -82,9 +82,4 @@ subprojects {
       }
     }
   }
-}
-
-task("allDependencies") {
-  evaluationDependsOnChildren()
-  dependsOn(subprojects.map { it.tasks["dependencies"] })
 }
