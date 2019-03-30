@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import dev.minutest.TestDescriptor
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
@@ -12,8 +13,10 @@ import java.nio.file.Paths
 import java.nio.file.attribute.PosixFilePermission
 import java.nio.file.attribute.PosixFilePermissions
 
-// TODO: improve how fixture Path's are generated since we are leverage @TempDir, which only gets created once for the entire minutest test context
+// TODO: improve how fixture Path's are generated since we leveraging @TempDir, which only gets created once for the entire minutest test context
 internal object PathAssertions {
+
+  private fun TestDescriptor.joinFullName() = fullName().joinToString(separator = "_")
 
   @TestFactory
   internal fun endsWith() = assertionTests<Path> {
@@ -162,8 +165,8 @@ internal object PathAssertions {
         fixture {
           expectThat(
             Files.createSymbolicLink(
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-              Files.createFile(directory.resolve("${it.fullName().joinToString(separator = "_")}_target"))
+              directory.resolve("${it.joinFullName()}_symlink"),
+              Files.createFile(directory.resolve("${it.joinFullName()}_target"))
             )
           )
         }
@@ -180,8 +183,8 @@ internal object PathAssertions {
       context("when Path points to a symlink that resolves to a nonexistent file") {
         fixture {
           val symlink = Files.createSymbolicLink(
-            directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-            directory.resolve("${it.fullName().joinToString(separator = "_")}_nonexistent-target")
+            directory.resolve("${it.joinFullName()}_symlink"),
+            directory.resolve("${it.joinFullName()}_nonexistent-target")
           )
           expectThat(symlink)
         }
@@ -194,13 +197,13 @@ internal object PathAssertions {
 
     context("assertion fails") {
       context("when Path points to a nonexistent file") {
-        fixture { expectThat(directory.resolve(it.fullName().joinToString(separator = "_"))) }
+        fixture { expectThat(directory.resolve(it.joinFullName())) }
       }
       context("when Path points to a symlink that resolves to an existing file") {
         fixture {
           val symlink = Files.createSymbolicLink(
-            directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-            Files.createFile(directory.resolve("${it.fullName().joinToString(separator = "_")}_target"))
+            directory.resolve("${it.joinFullName()}_symlink"),
+            Files.createFile(directory.resolve("${it.joinFullName()}_target"))
           )
           expectThat(symlink)
         }
@@ -217,8 +220,8 @@ internal object PathAssertions {
       context("when Path points to a symlink that resolves to a nonexistent file") {
         fixture {
           val symlink = Files.createSymbolicLink(
-            directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-            directory.resolve("${it.fullName().joinToString(separator = "_")}_nonexistent-target")
+            directory.resolve("${it.joinFullName()}_symlink"),
+            directory.resolve("${it.joinFullName()}_nonexistent-target")
           )
           expectThat(symlink)
         }
@@ -235,7 +238,7 @@ internal object PathAssertions {
   @TestFactory
   internal fun isDirectory(@TempDir directory: Path) = assertionTests<Path> {
     context("when subject Path is a regular file") {
-      fixture { expectThat(Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_")))) }
+      fixture { expectThat(Files.createFile(directory.resolve(it.joinFullName()))) }
       test("assertion fails") {
         assertThrows<AssertionError> {
           isDirectory()
@@ -244,7 +247,7 @@ internal object PathAssertions {
     }
 
     context("when subject Path is a directory") {
-      fixture { expectThat(Files.createDirectory(directory.resolve(it.fullName().joinToString(separator = "_")))) }
+      fixture { expectThat(Files.createDirectory(directory.resolve(it.joinFullName()))) }
       test("assertion passes") {
         isDirectory()
       }
@@ -255,8 +258,8 @@ internal object PathAssertions {
         fixture {
           expectThat(
             Files.createSymbolicLink(
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_link"),
-              Files.createFile(directory.resolve("${it.fullName().joinToString(separator = "_")}_target"))
+              directory.resolve("${it.joinFullName()}_link"),
+              Files.createFile(directory.resolve("${it.joinFullName()}_target"))
             )
           )
         }
@@ -271,8 +274,8 @@ internal object PathAssertions {
         fixture {
           expectThat(
             Files.createSymbolicLink(
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_link"),
-              Files.createDirectory(directory.resolve(it.fullName().joinToString(separator = "_")))
+              directory.resolve("${it.joinFullName()}_link"),
+              Files.createDirectory(directory.resolve(it.joinFullName()))
             )
           )
         }
@@ -294,7 +297,7 @@ internal object PathAssertions {
       fixture {
         expectThat(
           Files.createFile(
-            directory.resolve(it.fullName().joinToString(separator = "_")),
+            directory.resolve(it.joinFullName()),
             PosixFilePermissions.asFileAttribute(setOf(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE))
           )
         )
@@ -308,7 +311,7 @@ internal object PathAssertions {
       fixture {
         expectThat(
           Files.createFile(
-            directory.resolve(it.fullName().joinToString(separator = "_")),
+            directory.resolve(it.joinFullName()),
             PosixFilePermissions.asFileAttribute(setOf(PosixFilePermission.OWNER_READ))
           )
         )
@@ -334,7 +337,7 @@ internal object PathAssertions {
   @TestFactory
   internal fun isRegularFile(@TempDir directory: Path) = assertionTests<Path> {
     context("when subject is a regular file") {
-      fixture { expectThat(Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_")))) }
+      fixture { expectThat(Files.createFile(directory.resolve(it.joinFullName()))) }
       test("then assertion passes when no link options are provided") {
         isRegularFile()
       }
@@ -345,7 +348,7 @@ internal object PathAssertions {
     }
 
     context("subject is a directory") {
-      fixture { expectThat(Files.createDirectory(directory.resolve(it.fullName().joinToString(separator = "_")))) }
+      fixture { expectThat(Files.createDirectory(directory.resolve(it.joinFullName()))) }
       test("then assertion fails") {
         assertThrows<AssertionError> {
           isRegularFile()
@@ -357,7 +360,7 @@ internal object PathAssertions {
   @TestFactory
   internal fun isSymbolicLink(@TempDir directory: Path) = assertionTests<Path> {
     context("subject does not exist") {
-      fixture { expectThat(directory.resolve(it.fullName().joinToString(separator = "_"))) }
+      fixture { expectThat(directory.resolve(it.joinFullName())) }
       test("then assertion fails") {
         assertThrows<AssertionError> {
           isSymbolicLink()
@@ -366,7 +369,7 @@ internal object PathAssertions {
     }
 
     context("subject is a regular file") {
-      fixture { expectThat(Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_")))) }
+      fixture { expectThat(Files.createFile(directory.resolve(it.joinFullName()))) }
       test("then assertion fails") {
         assertThrows<AssertionError> {
           isSymbolicLink()
@@ -379,8 +382,8 @@ internal object PathAssertions {
         fixture {
           expectThat(
             Files.createSymbolicLink(
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-              Files.createFile(directory.resolve("${it.fullName().joinToString(separator = "_")}_target"))
+              directory.resolve("${it.joinFullName()}_symlink"),
+              Files.createFile(directory.resolve("${it.joinFullName()}_target"))
             )
           )
         }
@@ -393,8 +396,8 @@ internal object PathAssertions {
         fixture {
           expectThat(
             Files.createSymbolicLink(
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_symlink"),
-              directory.resolve("${it.fullName().joinToString(separator = "_")}_target")
+              directory.resolve("${it.joinFullName()}_symlink"),
+              directory.resolve("${it.joinFullName()}_target")
             )
           )
         }
@@ -410,7 +413,7 @@ internal object PathAssertions {
   internal fun allLines(@TempDir directory: Path) = assertionTests<Path> {
     context("subject is an empty file") {
       fixture {
-        expectThat(Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_"))))
+        expectThat(Files.createFile(directory.resolve(it.joinFullName())))
       }
       test("then allLines() maps to an empty list") {
         allLines()
@@ -424,7 +427,7 @@ internal object PathAssertions {
 
     context("subject is a single line file") {
       fixture {
-        expectThat(Files.write(directory.resolve(it.fullName().joinToString(separator = "_")), listOf("first line")))
+        expectThat(Files.write(directory.resolve(it.joinFullName()), listOf("first line")))
       }
 
       test("then allLines() maps to a singleton list of the line") {
@@ -444,7 +447,7 @@ internal object PathAssertions {
     context("subject is an empty file") {
       fixture {
         expectThat(
-          Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_")))
+          Files.createFile(directory.resolve(it.joinFullName()))
         )
       }
       test("then size maps to a 0 ") {
@@ -456,7 +459,7 @@ internal object PathAssertions {
     context("subject is a 4-byte file") {
       fixture {
         expectThat(
-          Files.write(Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_"))), byteArrayOf(1, 2, 3, 4))
+          Files.write(Files.createFile(directory.resolve(it.joinFullName())), byteArrayOf(1, 2, 3, 4))
         )
       }
       test("then size maps to a 4") {
