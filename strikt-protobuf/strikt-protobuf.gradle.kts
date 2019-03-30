@@ -12,13 +12,13 @@ plugins {
   id("java-library")
   id("nebula.kotlin")
   id("published")
-  id("com.google.protobuf") version "0.8.6"
+  id("com.google.protobuf") version "0.8.8"
   id("info.solidsoft.pitest")
 }
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:3.6.1")
+  api("com.google.protobuf:protobuf-java:3.7.0")
 }
 
 val dokka by tasks.getting(DokkaTask::class) {
@@ -31,7 +31,7 @@ val dokka by tasks.getting(DokkaTask::class) {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:3.6.1"
+      artifact = "com.google.protobuf:protoc:3.7.1"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")

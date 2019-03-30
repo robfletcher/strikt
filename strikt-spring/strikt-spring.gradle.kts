@@ -19,7 +19,7 @@ dependencies {
   compileOnly("org.springframework:spring-web")
   compileOnly("javax.servlet:javax.servlet-api")
 
-  testImplementation("dev.minutest:minutest:1.4.1")
+  testImplementation("dev.minutest:minutest:1.5.0")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
 }
