@@ -37,3 +37,16 @@ Add the following to your dependencies:
 ```kotlin
 testImplementation("io.strikt:strikt-protobuf:{{ site.version }}")
 ``` 
+
+## Using the Bill of Materials (BOM)
+
+If you're using multiple Strikt modules (and Gradle >= 5.0) you can import Strikt's BOM and then omit versions for individual modules.
+For example:
+
+```kotlin
+dependencies {
+  testImplementation(platform("io.strikt:strikt-bom:{{ site.version }}"))
+  testImplementation("io.strikt:strikt-jackson")
+  testImplementation("io.strikt:strikt-java-time")
+}
+```
