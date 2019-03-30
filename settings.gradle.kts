@@ -1,6 +1,7 @@
 rootProject.name = "strikt"
 
 include(
+  "strikt-bom",
   "strikt-core",
   "strikt-jackson",
   "strikt-java-time",

@@ -8,27 +8,29 @@ plugins {
   id("nebula.nebula-bintray-publishing")
 }
 
-tasks.withType<Javadoc> {
-  enabled = false
-}
+plugins.withId("kotlin") {
+  tasks.withType<Javadoc> {
+    enabled = false
+  }
 
-val dokka by tasks.getting(DokkaTask::class) {
-  outputFormat = "html"
-  outputDirectory = "$buildDir/javadoc"
-  jdkVersion = 9
-}
+  val dokka by tasks.getting(DokkaTask::class) {
+    outputFormat = "html"
+    outputDirectory = "$buildDir/javadoc"
+    jdkVersion = 9
+  }
 
-val dokkaJar = task<Jar>("dokkaJar") {
-  group = "build"
-  description = "Assembles Javadoc jar from Dokka API docs"
-  archiveClassifier.set("javadoc")
-  from(tasks.named("dokka"))
-}
+  val dokkaJar = task<Jar>("dokkaJar") {
+    group = "build"
+    description = "Assembles Javadoc jar from Dokka API docs"
+    archiveClassifier.set("javadoc")
+    from(tasks.named("dokka"))
+  }
 
-configure<PublishingExtension>() {
-  publications {
-    getByName<MavenPublication>("nebula") {
-      artifact(dokkaJar)
+  publishing {
+    publications {
+      getByName<MavenPublication>("nebula") {
+        artifact(dokkaJar)
+      }
     }
   }
 }
