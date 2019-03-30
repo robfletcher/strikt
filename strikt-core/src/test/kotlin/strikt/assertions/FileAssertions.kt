@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import dev.minutest.TestDescriptor
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.io.TempDir
@@ -8,9 +9,11 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
-// TODO: improve how fixture Path's are generated since we are leverage @TempDir, which only gets created once for the entire minutest test context
+// TODO: improve how fixture Path's are generated since we leveraging @TempDir, which only gets created once for the entire minutest test context
 @DisplayName("assertions on java.io.File")
 internal object FileAssertions {
+
+  private fun TestDescriptor.joinFullName() = fullName().joinToString(separator = "_")
 
   @TestFactory
   internal fun name() = assertionTests<File> {
@@ -102,7 +105,7 @@ internal object FileAssertions {
     context("subject is an empty file") {
       fixture {
         expectThat(
-          Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_"))).toFile()
+          Files.createFile(directory.resolve(it.joinFullName())).toFile()
         )
       }
       test("then lines() maps to an empty list") {
@@ -118,7 +121,7 @@ internal object FileAssertions {
     context("subject is a single line file") {
       fixture {
         expectThat(
-          Files.write(directory.resolve(it.fullName().joinToString(separator = "_")), listOf("first line")).toFile()
+          Files.write(directory.resolve(it.joinFullName()), listOf("first line")).toFile()
         )
       }
 
@@ -138,7 +141,7 @@ internal object FileAssertions {
     context("subject is an empty file") {
       fixture {
         expectThat(
-          Files.createFile(directory.resolve(it.fullName().joinToString(separator = "_"))).toFile()
+          Files.createFile(directory.resolve(it.joinFullName())).toFile()
         )
       }
       test("then text() maps to an empty list") {
@@ -154,7 +157,7 @@ internal object FileAssertions {
     context("subject is a single line file") {
       fixture {
         expectThat(
-          Files.write(directory.resolve(it.fullName().joinToString(separator = "_")), "first line".toByteArray()).toFile()
+          Files.write(directory.resolve(it.joinFullName()), "first line".toByteArray()).toFile()
         )
       }
 
