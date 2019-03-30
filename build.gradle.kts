@@ -3,11 +3,12 @@
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
   id("nebula.release") version "9.2.0"
   id("nebula.kotlin") version "1.3.21" apply false
-  id("org.jmailen.kotlinter") version "1.20.1" apply false
+  id("org.jmailen.kotlinter") version "1.22.0" apply false
   id("info.solidsoft.pitest") version "1.3.0" apply false
 }
 
@@ -57,14 +58,13 @@ subprojects {
       }
 
       // Lint Kotlin code
-      // TODO: Fails with Kotlin 1.3.20, see https://github.com/jeremymailen/kotlinter-gradle/issues/80
-//      apply(plugin = "org.jmailen.kotlinter")
-//      configure<KotlinterExtension> {
-//        ignoreFailures = false
-//        indentSize = 2
-//        continuationIndentSize = 4
-//        reporters = arrayOf("html", "plain")
-//      }
+      apply(plugin = "org.jmailen.kotlinter")
+      configure<KotlinterExtension> {
+        ignoreFailures = true
+        indentSize = 2
+        continuationIndentSize = 4
+        reporters = arrayOf("html", "plain")
+      }
     }
 
     plugins.withId("info.solidsoft.pitest") {
@@ -76,8 +76,8 @@ subprojects {
         targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
         targetTests = setOf("strikt.**.*")
         pitestVersion = "1.4.2"
-        threads = System.getenv("PITEST_THREADS")?.toInt() ?:
-          Runtime.getRuntime().availableProcessors()
+        threads = System.getenv("PITEST_THREADS")?.toInt()
+          ?: Runtime.getRuntime().availableProcessors()
         outputFormats = setOf("XML", "HTML")
       }
     }

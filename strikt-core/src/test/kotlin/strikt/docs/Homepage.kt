@@ -105,9 +105,9 @@ internal class Homepage {
   fun `homepage eight`() {
     // START homepage_eight
     val subject: Any? = "The Enlightened take things Lightly"
-    expectThat(subject)            // type: Assertion<Any?>
-      .isNotNull()                 // type: Assertion<Any>
-      .isA<String>()               // type: Assertion<String>
+    expectThat(subject) // type: Assertion<Any?>
+      .isNotNull()      // type: Assertion<Any>
+      .isA<String>()    // type: Assertion<String>
       .matches(Regex("[\\w\\s]+"))
     // only available on Assertion<CharSequence>
     // END homepage_eight
@@ -119,7 +119,7 @@ internal class Homepage {
     val subject = Pantheon.NORSE
     expectThat(subject)
       .get(Pantheon::ruler) // reference to a property
-      .get { toString() } // return type of a method call
+      .get { toString() }   // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
   }
