@@ -35,6 +35,35 @@ plugins.withId("kotlin") {
   }
 }
 
+publishing {
+  publications {
+    getByName<MavenPublication>("nebula") {
+      pom {
+        url.set("https://strikt.io/")
+        licenses {
+          license {
+            name.set("The Apache License, Version 2.0")
+            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+          }
+        }
+        developers {
+          developer {
+            id.set("robfletcher")
+            name.set("Rob Fletcher")
+            email.set("rob at freeside.co")
+          }
+        }
+        scm {
+          connection.set("scm:git:git://github.com/robfletcher/strikt.git")
+          developerConnection
+            .set("scm:git:ssh://github.com/robfletcher/strikt.git")
+          url.set("http://github.com/robfletcher/strikt/")
+        }
+      }
+    }
+  }
+}
+
 configure<BintrayExtension> {
   user = System.getenv("BINTRAY_USER")
   key = System.getenv("BINTRAY_KEY")

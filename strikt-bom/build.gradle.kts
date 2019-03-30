@@ -1,17 +1,10 @@
-import org.jetbrains.dokka.gradle.DokkaTask
-
 plugins {
   `java-platform`
   id("published")
 }
 
-tasks.withType<DokkaTask> {
-  enabled = false
-}
-
-tasks.withType<Jar> {
-  enabled = false
-}
+description =
+  "Bill of materials to make sure a consistent set of versions is used for Strikt."
 
 publishing {
   publications {
