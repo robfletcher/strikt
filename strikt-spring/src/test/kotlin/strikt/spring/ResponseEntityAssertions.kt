@@ -4,7 +4,10 @@ import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatus.CONTINUE
+import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
+import org.springframework.http.HttpStatus.MOVED_PERMANENTLY
+import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import strikt.api.Assertion
 import strikt.api.expectThat
@@ -18,7 +21,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
     context("statusCodeIs1xxInformational assertion") {
       context("passes") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.CONTINUE).body(album))
+          expectThat(ResponseEntity.status(CONTINUE).body(album))
         }
 
         test("if status code is 1xx") {
@@ -50,7 +53,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
       }
       context("fails") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(album))
+          expectThat(ResponseEntity.status(INTERNAL_SERVER_ERROR).body(album))
         }
 
         test("if status code is not 2xx") {
@@ -64,7 +67,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
     context("statusCodeIs3xxRedirect assertion") {
       context("passes") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).body(album))
+          expectThat(ResponseEntity.status(MOVED_PERMANENTLY).body(album))
         }
 
         test("if status code is 3xx") {
@@ -73,7 +76,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
       }
       context("fails") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(album))
+          expectThat(ResponseEntity.status(INTERNAL_SERVER_ERROR).body(album))
         }
 
         test("if status code is not 3xx") {
@@ -96,7 +99,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
       }
       context("fails") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(album))
+          expectThat(ResponseEntity.status(INTERNAL_SERVER_ERROR).body(album))
         }
 
         test("if status code is not 4xx") {
@@ -110,7 +113,7 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
     context("statusCodeIs5xxServerError assertion") {
       context("passes") {
         fixture {
-          expectThat(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(album))
+          expectThat(ResponseEntity.status(INTERNAL_SERVER_ERROR).body(album))
         }
 
         test("if status code is 5xx") {
@@ -146,6 +149,20 @@ internal class ResponseEntityAssertions : JUnit5Minutests {
       }
     }
 
-  }
+    context("statusCodeIs assertion") {
+      fixture {
+        expectThat(ResponseEntity.ok(album))
+      }
 
+      test("passes if the status code is 200") {
+        statusCodeIs(OK)
+      }
+
+      test("fails if the status code is not 200") {
+        assertThrows<AssertionFailedError> {
+          statusCodeIs(INTERNAL_SERVER_ERROR)
+        }
+      }
+    }
+  }
 }
