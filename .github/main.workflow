@@ -57,7 +57,7 @@ action "Create Release Message" {
 }
 
 action "Tweet Release Message" {
-  uses = "./.github/actions/twitter-action"
+  uses = "xorilog/twitter-action@0.2"
   args = [
     "-file",
     "./tweet.txt",
