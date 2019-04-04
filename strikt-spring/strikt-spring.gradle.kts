@@ -1,5 +1,3 @@
-import org.jetbrains.dokka.DokkaConfiguration.ExternalDocumentationLink
-import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
 plugins {
@@ -24,9 +22,8 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-web")
 }
 
-val dokka by tasks.getting(DokkaTask::class) {
-  externalDocumentationLink(delegateClosureOf<ExternalDocumentationLink.Builder> {
-    url =
-      URL("https://docs.spring.io/spring-framework/docs/current/javadoc-api/")
-  })
+tasks.dokka {
+  externalDocumentationLink {
+    url = URL("https://docs.spring.io/spring-framework/docs/current/javadoc-api/")
+  }
 }

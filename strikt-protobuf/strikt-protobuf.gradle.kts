@@ -3,8 +3,6 @@
 import com.google.protobuf.gradle.ExecutableLocator
 import com.google.protobuf.gradle.ProtobufConfigurator
 import com.google.protobuf.gradle.ProtobufConfigurator.JavaGenerateProtoTaskCollection
-import org.jetbrains.dokka.DokkaConfiguration.ExternalDocumentationLink
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.net.URL
 
@@ -21,11 +19,10 @@ dependencies {
   api("com.google.protobuf:protobuf-java:3.7.0")
 }
 
-val dokka by tasks.getting(DokkaTask::class) {
-  externalDocumentationLink(delegateClosureOf<ExternalDocumentationLink.Builder> {
-    url =
-      URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
-  })
+tasks.dokka {
+  externalDocumentationLink {
+    url = URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
+  }
 }
 
 protobuf {
