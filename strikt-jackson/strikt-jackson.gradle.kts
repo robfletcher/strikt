@@ -1,5 +1,3 @@
-import org.jetbrains.dokka.DokkaConfiguration.ExternalDocumentationLink
-import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
 plugins {
@@ -18,8 +16,8 @@ dependencies {
   testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
 }
 
-val dokka by tasks.getting(DokkaTask::class) {
-  externalDocumentationLink(delegateClosureOf<ExternalDocumentationLink.Builder> {
+tasks.dokka {
+  externalDocumentationLink {
     url = URL("https://fasterxml.github.io/jackson-databind/javadoc/2.9/")
-  })
+  }
 }
