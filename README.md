@@ -26,6 +26,7 @@ See the button below or [releases/latest] for the current version number.
 
 Strikt has the following additional libraries:
 
+* `strikt-gradle` -- supports the Gradle build tool
 * `strikt-java-time` -- supports the JSR-310 `java.time` package.
 * `strikt-protobuf` -- supports Protobuf / gRPC.
 
