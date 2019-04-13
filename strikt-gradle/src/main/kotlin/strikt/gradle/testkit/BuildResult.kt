@@ -20,10 +20,11 @@ fun <T : BuildResult> Assertion.Builder<T>.taskPaths(outcome: TaskOutcome): Asse
   get("task paths with outcome $outcome") { taskPaths(outcome) }
 
 /**
- * Maps this assertion to an assertion on all of the tasks from the build.
+ * Maps this assertion to an assertion on all tasks that were part of the build.
  * @see BuildResult.getTasks
  */
-fun <T : BuildResult> Assertion.Builder<T>.tasks(): Assertion.Builder<List<BuildTask>> = get("all tasks", BuildResult::getTasks)
+val <T : BuildResult> Assertion.Builder<T>.tasks: Assertion.Builder<List<BuildTask>>
+  get() = get("all tasks", BuildResult::getTasks)
 
 /**
  * Maps this assertion to the tasks of the build with the provided [outcome].

@@ -64,8 +64,8 @@ internal object BuildResultAssertions {
       }
     }
 
-    test("tasks() maps this assertion to an assertion on the tasks") {
-      assertion.tasks()
+    test("tasks maps this assertion to an assertion on the tasks") {
+      assertion.tasks
         .containsExactly(mockTask)
       verify { mockBuildResult.tasks }
     }
