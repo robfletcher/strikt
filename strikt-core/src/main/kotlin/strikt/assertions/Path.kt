@@ -51,8 +51,8 @@ val <T : Path> Builder<T>.fileName: Builder<Path>
  *
  * @see Path.isAbsolute
  */
-fun <T : Path> Builder<T>.isAbsolute(): Builder<T>
-  = assertThat("is absolute", Path::isAbsolute)
+fun <T : Path> Builder<T>.isAbsolute(): Builder<T> =
+  assertThat("is absolute", Path::isAbsolute)
 
 /**
  * Maps this assertion to an assertion on the parent path or `null` if the subject does not have a parent.
@@ -155,16 +155,16 @@ fun <T : Path> Builder<T>.isRegularFile(vararg options: LinkOption = emptyArray(
  *
  * @see Files.isSymbolicLink
  */
-fun <T : Path> Builder<T>.isSymbolicLink(): Builder<T>
-  = assertThat("is symbolic lnk") { Files.isSymbolicLink(it) }
+fun <T : Path> Builder<T>.isSymbolicLink(): Builder<T> =
+  assertThat("is symbolic lnk") { Files.isSymbolicLink(it) }
 
 /**
  * Maps this assertion to an assertion over all lines of this subject path decoded using the `UTF-8` charset.
  *
  * @see Files.readAllLines
  */
-fun <T : Path> Builder<T>.allLines(): Builder<List<String>>
-  = get("all lines (UTF-8 encoding)", Files::readAllLines)
+fun <T : Path> Builder<T>.allLines(): Builder<List<String>> =
+  get("all lines (UTF-8 encoding)", Files::readAllLines)
 
 /**
  * Maps this assertion to an assertion over all lines of this subject path decoded using the provided [charset].
