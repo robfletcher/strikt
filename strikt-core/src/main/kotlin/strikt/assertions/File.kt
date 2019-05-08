@@ -2,7 +2,6 @@ package strikt.assertions
 
 import strikt.api.Assertion.Builder
 import java.io.File
-import java.net.URI
 import java.nio.charset.Charset
 import java.nio.file.Path
 
