@@ -159,6 +159,14 @@ fun <T : Path> Builder<T>.isSymbolicLink(): Builder<T> =
   assertThat("is symbolic lnk") { Files.isSymbolicLink(it) }
 
 /**
+ * Maps this assertion to an assertion over all bytes of this subject path .
+ *
+ * @see Files.readAllBytes
+ */
+fun <T : Path> Builder<T>.allBytes(): Builder<ByteArray> =
+  get("all bytes", Files::readAllBytes)
+
+/**
  * Maps this assertion to an assertion over all lines of this subject path decoded using the `UTF-8` charset.
  *
  * @see Files.readAllLines
