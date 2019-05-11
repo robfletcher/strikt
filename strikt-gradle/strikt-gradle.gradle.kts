@@ -16,7 +16,7 @@ dependencies {
 
   testImplementation(gradleTestKit())
   testImplementation("io.mockk:mockk:1.9.3")
-  testImplementation("dev.minutest:minutest:1.5.0")
+  testImplementation("dev.minutest:minutest:1.7.0")
 }
 
 tasks.dokka {

@@ -71,4 +71,3 @@ fun <T : BuildTask> Assertion.Builder<T>.isNoSource() =
  */
 val <T : BuildTask> Assertion.Builder<T>.path: Assertion.Builder<String>
   get() = get("task path", BuildTask::getPath)
-

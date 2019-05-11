@@ -12,7 +12,7 @@ dependencies {
 
   compileOnly("com.fasterxml.jackson.core:jackson-databind:2.9.8")
 
-  testImplementation("dev.minutest:minutest:1.5.0")
+  testImplementation("dev.minutest:minutest:1.7.0")
   testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
 }
 
