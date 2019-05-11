@@ -248,10 +248,13 @@ internal class IterableAssertions {
         }
 
     @Test
-    fun `rejects an empty array of expected elements`() {
-      assertThrows<IllegalArgumentException> {
-        expectThat(listOf("catflap", "rubberplant", "marzipan")).contains()
-      }
+    fun `any collection contains an empty list`() {
+      expectThat(listOf("catflap", "rubberplant", "marzipan")).contains()
+    }
+
+    @Test
+    fun `an empty collection contains an empty list`() {
+      expectThat(emptyList<Any>()).contains()
     }
 
     @Test
