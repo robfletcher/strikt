@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import strikt.api.Assertion
 
-
 /**
  * Asserts that the status code is a 1xx Information response.
  */
@@ -28,7 +27,6 @@ fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs2xxSuccess(): Assertion
       fail("status code is ${it.statusCode.value()}")
     }
   }
-
 
 /**
  * Asserts that the status code is a 3xx Redirect response.

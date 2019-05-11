@@ -14,7 +14,6 @@ import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
-import strikt.assertions.isNull
 
 internal object BuildResultAssertions {
 
