@@ -476,6 +476,17 @@ internal class IterableAssertions {
         )
       }
 
+      /**
+       * @see https://github.com/robfletcher/strikt/issues/159
+       */
+      @Test
+      fun `fails if there are fewer elements than expected but the outlier is in the actual list`() {
+        assertThrows<AssertionError> {
+          expectThat(subject)
+            .containsExactly("fnord", "catflap", "rubberplant", "marzipan")
+        }
+      }
+
       @Test
       fun `fails if the order is different`() {
         val error = assertThrows<AssertionError> {

@@ -281,10 +281,10 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
         if (remaining.remove(element)) {
           pass()
           assert("…at index $i", element) {
-            if (original[i] == element) {
-              pass()
-            } else {
-              fail(actual = original[i])
+            when {
+              i !in original.indices -> fail("index $i is out of range")
+              original[i] == element -> pass()
+              else -> fail(actual = original[i])
             }
           }
         } else {
