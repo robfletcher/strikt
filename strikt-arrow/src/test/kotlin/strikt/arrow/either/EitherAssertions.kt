@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isGreaterThan
+import strikt.assertions.isNotBlank
+import strikt.assertions.isNotNull
 
 @DisplayName("assertions on Either")
 object EitherAssertions {
@@ -33,6 +36,14 @@ object EitherAssertions {
         .get { a }
         .isEqualTo("left")
     }
+
+    test("can have nested assertions on unwrapped type") {
+      expectThat(Either.left(MyTuple("myName", 1, "uuid"))).expectLeft {
+        get { name }.isEqualTo("myName")
+        get { id }.isNotNull().isGreaterThan(0L)
+        get { uuid }.isNotNull().isNotBlank()
+      }
+    }
   })
 
   @TestFactory
@@ -57,5 +68,14 @@ object EitherAssertions {
         .get { b }
         .isEqualTo("right")
     }
+
+    test("can have nested assertions on unwrapped type") {
+      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).expectRight {
+        get { name }.isEqualTo("myName")
+        get { id }.isNotNull().isGreaterThan(0L)
+        get { uuid }.isNotNull().isNotBlank()
+      }
+    }
   })
 }
+

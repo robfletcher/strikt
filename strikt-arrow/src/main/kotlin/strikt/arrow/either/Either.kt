@@ -3,6 +3,7 @@ package strikt.arrow.either
 import arrow.core.Either
 import arrow.core.Predicate
 import strikt.api.Assertion
+import strikt.api.expectThat
 
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
@@ -41,6 +42,17 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isRightWhere(predicate: Predicate<R>)
         }
     } as Assertion.Builder<Either.Right<R>>
 
+
+@Suppress("UNCHECKED_CAST")
+fun <L, R> Assertion.Builder<Either<L, R>>.expectRight( expect: Assertion.Builder<R>.() -> Unit) =
+  assert("should be right") {
+    when(it) {
+      is Either.Left -> fail()
+      is Either.Right -> expectThat(it.b).expect()
+    }
+  } as Assertion.Builder<Either.Right<R>>
+
+
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isLeft() =
     assert("should be Left") {
@@ -78,3 +90,12 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isLeftWhere(predicate: Predicate<L>) 
             else -> fail()
         }
     } as Assertion.Builder<Either.Left<L>>
+
+@Suppress("UNCHECKED_CAST")
+fun <L, R> Assertion.Builder<Either<L, R>>.expectLeft( expect: Assertion.Builder<L>.() -> Unit) =
+  assert("should be Left") {
+    when(it) {
+      is Either.Right -> fail()
+      is Either.Left -> expectThat(it.a).expect()
+    }
+  } as Assertion.Builder<Either.Left<L>>
