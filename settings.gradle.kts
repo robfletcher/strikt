@@ -8,6 +8,7 @@ include(
   "strikt-java-time",
   "strikt-protobuf",
   "strikt-spring",
+  "strikt-arrow",
   "site"
 )
 
