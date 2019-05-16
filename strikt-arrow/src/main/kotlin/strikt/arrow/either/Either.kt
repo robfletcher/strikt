@@ -1,9 +1,7 @@
 package strikt.arrow.either
 
 import arrow.core.Either
-import arrow.core.Predicate
 import strikt.api.Assertion
-import strikt.api.expectThat
 
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
@@ -28,28 +26,9 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
     }
   } as Assertion.Builder<Either.Right<R>>
 
-@Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.isRightWhere(predicate: Predicate<R>) =
-  assert("should be Right") {
-    when (it) {
-      is Either.Right -> if (predicate(it.b)) {
-        pass()
-      } else {
-        fail()
-      }
-
-      else -> fail()
-    }
-  } as Assertion.Builder<Either.Right<R>>
-
-@Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.expectRight(expect: Assertion.Builder<R>.() -> Unit) =
-  assert("should be right") {
-    when (it) {
-      is Either.Left -> fail()
-      is Either.Right -> expectThat(it.b).expect()
-    }
-  } as Assertion.Builder<Either.Right<R>>
+val <R> Assertion.Builder<Either.Right<R>>.b: Assertion.Builder<R>
+  @JvmName("eitherB")
+  get() = get("right value") { b }
 
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isLeft() =
@@ -75,25 +54,6 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
     }
   } as Assertion.Builder<Either.Left<L>>
 
-@Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.isLeftWhere(predicate: Predicate<L>) =
-  assert("should be Left") {
-    when (it) {
-      is Either.Left -> if (predicate(it.a)) {
-        pass()
-      } else {
-        fail()
-      }
-
-      else -> fail()
-    }
-  } as Assertion.Builder<Either.Left<L>>
-
-@Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.expectLeft(expect: Assertion.Builder<L>.() -> Unit) =
-  assert("should be Left") {
-    when (it) {
-      is Either.Right -> fail()
-      is Either.Left -> expectThat(it.a).expect()
-    }
-  } as Assertion.Builder<Either.Left<L>>
+val <L> Assertion.Builder<Either.Left<L>>.a: Assertion.Builder<L>
+  @JvmName("eitherA")
+  get() = get("left value") { a }

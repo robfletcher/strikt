@@ -6,7 +6,10 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
+import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isSameInstanceAs
+import strikt.assertions.message
 
 @DisplayName("assertions on Try")
 object TryAssertions {
@@ -27,15 +30,8 @@ object TryAssertions {
       expectThat(aTry).isSuccess("success")
     }
 
-    test("can assert on type and with custom predicate") {
-      expectThat(aTry).isSuccessWhere { it == "success" }
-    }
-
-    test("can chain assertion on narrowed type") {
-      expectThat(aTry)
-        .isSuccess()
-        .get { value }
-        .isEqualTo("success")
+    test("can assert on type and traverse value") {
+      expectThat(aTry).isSuccess().value.isEqualTo("success")
     }
   })
 
@@ -51,22 +47,8 @@ object TryAssertions {
       expectThat(aTry).not().isSuccess()
     }
 
-    test("can assert on type and with custom predicate") {
-      expectThat(aTry).isFailureWhere { it.message == "testFailure" }
+    test("can assert on type and traverse exception") {
+      expectThat(aTry).isFailure().exception.message.isEqualTo("testFailure")
     }
-
-    test("can chain assertion on narrowed type") {
-      expectThat(aTry)
-        .isFailure()
-        .get { exception.message }
-        .isEqualTo("testFailure")
-    }
-
-    /*
-        it("can chain on narrowed type") {
-            expectThat(aTry)
-                .isFailureOfType<IllegalArgumentException>()
-        }
-         */
   })
 }
