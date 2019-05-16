@@ -27,18 +27,12 @@ object EitherAssertions {
       expectThat(anEither).isLeft("left")
     }
 
-    test("can assert on type with own predicate") {
-      expectThat(anEither).isLeftWhere { it == "left" }
+    test("can assert on type and traverse unwrapped value") {
+      expectThat(anEither).isLeft().a.isEqualTo("left")
     }
 
-    test("can chain assertion on narrowed type") {
-      expectThat(anEither).isLeft()
-        .get { a }
-        .isEqualTo("left")
-    }
-
-    test("can have nested assertions on unwrapped type") {
-      expectThat(Either.left(MyTuple("myName", 1, "uuid"))).expectLeft {
+    test("can have nested assertions on unwrapped value") {
+      expectThat(Either.left(MyTuple("myName", 1, "uuid"))).isLeft().a.and {
         get { name }.isEqualTo("myName")
         get { id }.isNotNull().isGreaterThan(0L)
         get { uuid }.isNotNull().isNotBlank()
@@ -59,18 +53,12 @@ object EitherAssertions {
       expectThat(anEither).isRight("right")
     }
 
-    test("can assert on type with own predicate") {
-      expectThat(anEither).isRightWhere { it == "right" }
+    test("can assert on type and traverse unwrapped value") {
+      expectThat(anEither).isRight().b.isEqualTo("right")
     }
 
-    test("can chain assertion on narrowed type") {
-      expectThat(anEither).isRight()
-        .get { b }
-        .isEqualTo("right")
-    }
-
-    test("can have nested assertions on unwrapped type") {
-      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).expectRight {
+    test("can have nested assertions on unwrapped value") {
+      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).isRight().b.and {
         get { name }.isEqualTo("myName")
         get { id }.isNotNull().isGreaterThan(0L)
         get { uuid }.isNotNull().isNotBlank()

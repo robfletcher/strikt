@@ -27,15 +27,8 @@ object OptionAssertions {
       expectThat(option).isSome("aValue")
     }
 
-    test("can assert on type and with custom predicate") {
-      expectThat(option).isSomeWhere { it == "aValue" }
-    }
-
-    test("can chain assertion on narrowed type") {
-      expectThat(option)
-        .isSome()
-        .get { t }
-        .isEqualTo("aValue")
+    test("can assert on type and traverse wrapped value") {
+      expectThat(option).isSome().t.isEqualTo("aValue")
     }
   })
 
