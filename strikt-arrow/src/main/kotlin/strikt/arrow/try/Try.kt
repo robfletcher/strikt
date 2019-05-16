@@ -54,7 +54,6 @@ fun <T> Assertion.Builder<Try<T>>.isFailure() =
         }
     } as Assertion.Builder<Failure>
 
-
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Try<T>>.isFailure(e: Exception) =
     assert("should be Failure") {
@@ -83,7 +82,6 @@ fun <T> Assertion.Builder<Try<T>>.isFailureWhere(check: Predicate<Throwable>) =
             else -> fail()
         }
     } as Assertion.Builder<Failure>
-
 
 inline fun <reified E : Throwable> Assertion.Builder<Try<*>>.isFailureOfType() =
     isFailureWhere {
