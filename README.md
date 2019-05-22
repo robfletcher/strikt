@@ -1,6 +1,6 @@
 # Strikt
 
-Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/) or [Spek](http://spekframework.org/).
+Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/), [Spek](http://spekframework.org/), or [KotlinTest](https://github.com/kotlintest/kotlintest)
 
 Strikt is under development, but 100% usable.
 The API may change until a [version 1.0](https://github.com/robfletcher/strikt/milestone/1) is released.
