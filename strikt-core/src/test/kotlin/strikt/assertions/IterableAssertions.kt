@@ -2,20 +2,17 @@ package strikt.assertions
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 
 @DisplayName("assertions on Iterable")
-internal class IterableAssertions {
+internal object IterableAssertions {
 
   /**
    * Turns a list subject into various iterable types with the same content.
    */
-  fun <E : Comparable<E>> List<E>.permute(): List<Iterable<E>> =
+  private fun <E : Comparable<E>> List<E>.permute(): List<Iterable<E>> =
     listOf(
       this,
       toSet(),
@@ -26,7 +23,7 @@ internal class IterableAssertions {
    * Turns a list subject with expected values into various iterable types with
    * the same content and the same expected value.
    */
-  fun <E : Comparable<E>, EX> List<Pair<List<E>, EX>>.permuteExpected(): List<Pair<Iterable<E>, EX>> =
+  private fun <E : Comparable<E>, EX> List<Pair<List<E>, EX>>.permuteExpected(): List<Pair<Iterable<E>, EX>> =
     flatMap {
       listOf(
         it.first to it.second,
@@ -35,25 +32,26 @@ internal class IterableAssertions {
       )
     }
 
-  @Nested
+  @TestFactory
   @DisplayName("all assertion")
-  inner class All {
-    @TestFactory
-    fun `passes if all elements conform`() =
-      listOf("catflap", "rubberplant", "marzipan").permute()
-        .map { subject ->
-          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
+  fun all() = testFactory<Unit> {
+    context("passes if all elements") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).all {
               isLowerCase()
             }
           }
         }
+    }
 
-    @TestFactory
-    fun `fails if any element does not conform`() =
-      listOf("catflap", "rubberplant", "marzipan").permute()
-        .map { subject ->
-          dynamicTest("fails if any element of a ${subject.javaClass.simpleName} conform") {
+    context("fails if any element") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("of a ${subject.javaClass.simpleName} does not conform") {
             assertThrows<AssertionError> {
               expectThat(subject).all {
                 startsWith('c')
@@ -61,38 +59,38 @@ internal class IterableAssertions {
             }
           }
         }
+    }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("any assertion")
-  inner class Any {
-    @TestFactory
-    fun `passes if all elements conform`() =
-      listOf("catflap", "rubberplant", "marzipan").permute()
-        .map { subject ->
-          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
+  fun any() = testFactory<Unit> {
+    context("passes if") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("all elements of a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).any {
               isLowerCase()
             }
           }
         }
-
-    @TestFactory
-    fun `passes if any one element conforms`() =
-      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("passes if any one element of a ${subject.javaClass.simpleName} conforms") {
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("one element of a ${subject.javaClass.simpleName} conforms") {
             expectThat(subject).any {
               isLowerCase()
             }
           }
         }
+    }
 
-    @TestFactory
-    fun `fails if no elements conform`() =
-      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("fails if no elements of a ${subject.javaClass.simpleName} conform") {
+    context("fails if") {
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("no elements of a ${subject.javaClass.simpleName} conform") {
             assertThrows<AssertionError> {
               expectThat(subject).any {
                 isLowerCase()
@@ -100,9 +98,9 @@ internal class IterableAssertions {
             }
           }
         }
+    }
 
-    @Test
-    fun `works with not`() {
+    test("works with not") {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject).not().any {
         isUpperCase()
@@ -110,25 +108,26 @@ internal class IterableAssertions {
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("none assertion")
-  inner class None {
-    @TestFactory
-    fun `passes if no elements conform`() =
-      listOf("catflap", "rubberplant", "marzipan").permute()
-        .map { subject ->
-          dynamicTest("passes if no elements of a ${subject.javaClass.simpleName} conform") {
+  fun none() = testFactory<Unit> {
+    context("passes if") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("no elements of a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).none {
               isUpperCase()
             }
           }
         }
+    }
 
-    @TestFactory
-    fun `fails if some elements conforms`() =
-      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("fails if some elements of a ${subject.javaClass.simpleName} conforms") {
+    context("fails if") {
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("some elements of a ${subject.javaClass.simpleName} conforms") {
             assertThrows<AssertionError> {
               expectThat(subject).none {
                 isUpperCase()
@@ -136,12 +135,10 @@ internal class IterableAssertions {
             }
           }
         }
-
-    @TestFactory
-    fun `fails if all elements conform`() =
-      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("fails if all elements of a ${subject.javaClass.simpleName} conform") {
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("all elements of a ${subject.javaClass.simpleName} conform") {
             assertThrows<AssertionError> {
               expectThat(subject).none {
                 isUpperCase()
@@ -149,24 +146,23 @@ internal class IterableAssertions {
             }
           }
         }
-
-    @Test
-    fun `works with not`() {
-      val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
-      expectThat(subject).not().none {
-        isUpperCase()
+      test("works with not") {
+        val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        expectThat(subject).not().none {
+          isUpperCase()
+        }
       }
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("at least assertion")
-  inner class AtLeast {
-    @TestFactory
-    fun `fails if not enough elements conform`() =
-      listOf("catflap", "rubberplant", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("fails if not enough elements of a ${subject.javaClass.simpleName} conform") {
+  fun atLeast() = testFactory<Unit> {
+    context("fails if") {
+      listOf("catflap", "rubberplant", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("not enough elements of a ${subject.javaClass.simpleName} conform") {
             assertThrows<AssertionError> {
               expectThat(subject).atLeast(2) {
                 isUpperCase()
@@ -174,31 +170,30 @@ internal class IterableAssertions {
             }
           }
         }
+    }
 
-    @TestFactory
-    fun `passes if exactly enough elements conform`() =
-      listOf("catflap", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("fails if not enough elements of a ${subject.javaClass.simpleName} conforms") {
+    context("passes if") {
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("exactly minimum amount of elements of a ${subject.javaClass.simpleName} conforms") {
             expectThat(subject).atLeast(2) {
               isUpperCase()
             }
           }
         }
 
-    @TestFactory
-    fun `passes if all elements conform`() =
-      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN").permute()
-        .map { subject ->
-          dynamicTest("passes if all elements of a ${subject.javaClass.simpleName} conform") {
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("all elements of a ${subject.javaClass.simpleName} conform") {
             expectThat(subject).atLeast(2) {
               isUpperCase()
             }
           }
         }
-
-    @Test
-    fun `works with not`() {
+    }
+    test("works with not") {
       val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
       assertThrows<AssertionError> {
         expectThat(subject).not().atLeast(2) {
@@ -208,57 +203,46 @@ internal class IterableAssertions {
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("contains assertion")
-  inner class Contains {
-    @TestFactory
-    fun `passes subject contains expected`() =
+  fun contains() = testFactory<Unit> {
+    context("passes if") {
       listOf(
         listOf("catflap") to arrayOf("catflap"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
-          "catflap",
-          "marzipan"
-        )
-      )
-        .permuteExpected()
-        .map { (subject, expected) ->
-          dynamicTest("passes if $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "marzipan")
+      ).permuteExpected()
+        .forEach { (subject, expected) ->
+          test("$subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
             expectThat(subject).contains(*expected)
           }
         }
+    }
 
-    @TestFactory
-    fun `fails subject contains expected`() =
+    context("fails if") {
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("fnord"),
-        listOf("catflap", "rubberplant", "marzipan") to arrayOf(
-          "catflap",
-          "fnord"
-        ),
+        listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap", "fnord"),
         emptyList<String>() to arrayOf("catflap")
-      )
-        .permuteExpected()
-        .map { (subject, expected) ->
-          dynamicTest("fails $subject (${subject.javaClass.simpleName}) contains ${expected.toList()}") {
+      ).permuteExpected()
+        .forEach { (subject, expected) ->
+          test("$subject (${subject.javaClass.simpleName}) does not contain ${expected.toList()}") {
             assertThrows<AssertionError> {
               expectThat(subject).contains(*expected)
             }
           }
         }
+    }
 
-    @Test
-    fun `any collection contains an empty list`() {
+    test("any collection contains an empty list") {
       expectThat(listOf("catflap", "rubberplant", "marzipan")).contains()
     }
 
-    @Test
-    fun `an empty collection contains an empty list`() {
+    test("an empty collection contains an empty list") {
       expectThat(emptyList<Any>()).contains()
     }
 
-    @Test
-    fun `has a nested failure for each missing element when there are multiple`() {
+    test("has a nested failure for each missing element when there are multiple") {
       val error = assertThrows<AssertionError> {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord", "marzipan", "bojack")
@@ -273,8 +257,7 @@ internal class IterableAssertions {
       )
     }
 
-    @Test
-    fun `does not nest failures when there is only one element`() {
+    test("does not nest failures when there is only one element") {
       val error = assertThrows<AssertionError> {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord")
@@ -287,37 +270,19 @@ internal class IterableAssertions {
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("doesNotContain assertion")
-  inner class DoesNotContain {
-    @TestFactory
-    fun `always passes for an empty subject`() =
+  fun doesNotContain() = testFactory<Unit> {
+    context("passes if") {
       emptyList<String>()
         .permute()
-        .map { subject ->
-          dynamicTest("always passes for an empty ${subject.javaClass.simpleName}") {
+        .forEach { subject ->
+          test("subject is empty ${subject.javaClass.simpleName}") {
             expectThat(subject)
               .doesNotContain("catflap", "rubberplant", "marzipan")
           }
         }
 
-    @TestFactory
-    fun `fails if no elements are specified`() =
-      listOf(
-        emptyList(),
-        listOf("catflap", "rubberplant", "marzipan")
-      )
-        .flatMap { it.permute() }
-        .map { subject ->
-          dynamicTest("fails for $subject is if no elements are specified") {
-            assertThrows<IllegalArgumentException> {
-              expectThat(subject).doesNotContain()
-            }
-          }
-        }
-
-    @TestFactory
-    fun `passes if the subject contains none of the elements`() =
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("fnord"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf(
@@ -325,17 +290,28 @@ internal class IterableAssertions {
           "wye",
           "exercitation"
         )
-      )
-        .permuteExpected()
-        .map { (subject, elements) ->
-          dynamicTest("passes if a ${subject.javaClass.simpleName} contains none of the elements ${elements.toList()}") {
+      ).permuteExpected()
+        .forEach { (subject, elements) ->
+          test("a ${subject.javaClass.simpleName} contains none of the elements ${elements.toList()}") {
             expectThat(subject)
               .doesNotContain(*elements)
           }
         }
+    }
 
-    @TestFactory
-    fun `passes if the subject contains any of the elements`() =
+    context("fails if") {
+      listOf(
+        emptyList(),
+        listOf("catflap", "rubberplant", "marzipan")
+      ).flatMap { it.permute() }
+        .forEach { subject ->
+          test("no elements are specified for subject $subject") {
+            assertThrows<IllegalArgumentException> {
+              expectThat(subject).doesNotContain()
+            }
+          }
+        }
+
       listOf(
         listOf("catflap", "rubberplant", "marzipan") to arrayOf("catflap"),
         listOf("catflap", "rubberplant", "marzipan") to arrayOf(
@@ -350,17 +326,17 @@ internal class IterableAssertions {
         )
       )
         .permuteExpected()
-        .map { (subject, elements) ->
-          dynamicTest("passes if a ${subject.javaClass.simpleName} contains any of the elements ${elements.toList()}") {
+        .forEach { (subject, elements) ->
+          test("a ${subject.javaClass.simpleName} contains any of the elements ${elements.toList()}") {
             assertThrows<AssertionError> {
               expectThat(subject)
                 .doesNotContain(*elements)
             }
           }
         }
+    }
 
-    @Test
-    fun `formats its failure message correctly when there are multiple elements`() {
+    test("formats its failure message correctly when there are multiple elements") {
       val error = assertThrows<AssertionError> {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap", "wye", "marzipan")
@@ -375,8 +351,7 @@ internal class IterableAssertions {
       )
     }
 
-    @Test
-    fun `formats its failure message correctly when there is a single element`() {
+    test("formats its failure message correctly when there is a single element") {
       val error = assertThrows<AssertionError> {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap")
@@ -389,59 +364,48 @@ internal class IterableAssertions {
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("containsExactly assertion")
-  inner class ContainsExactly {
-    @Nested
-    @DisplayName("a Set subject")
-    inner class Set {
-      val subject = setOf("catflap", "rubberplant", "marzipan")
-
-      @Test
-      fun `passes if the elements are identical`() {
-        expectThat(subject)
+  fun containsExactly() = testFactory<Unit> {
+    derivedContext<Set<String>>("for ${Set::class}") {
+      fixture { setOf("catflap", "rubberplant", "marzipan") }
+      test("passes if the elements are identical") {
+        expectThat(fixture)
           .containsExactly("catflap", "rubberplant", "marzipan")
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject).containsExactly("rubberplant", "catflap")
+          expectThat(fixture).containsExactly("rubberplant", "catflap")
         }
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
       }
 
-      @Test
-      fun `fails if the order is different (even though this is a Set)`() {
+      test("fails if the order is different (even though this is a Set)") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("rubberplant", "catflap", "marzipan")
         }
       }
     }
 
-    @Nested
-    @DisplayName("a List subject")
-    inner class List {
-      val subject = listOf("catflap", "rubberplant", "marzipan")
+    derivedContext<List<String>>("for ${List::class}") {
+      fixture { listOf("catflap", "rubberplant", "marzipan") }
 
-      @Test
-      fun `passes if all the elements exist in the same order`() {
-        expectThat(subject)
+      test("passes if all the elements exist in the same order") {
+        expectThat(fixture)
           .containsExactly("catflap", "rubberplant", "marzipan")
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject).containsExactly("catflap", "rubberplant")
+          expectThat(fixture).containsExactly("catflap", "rubberplant")
         }
         assertEquals(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
@@ -455,10 +419,9 @@ internal class IterableAssertions {
         )
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
         assertEquals(
@@ -479,18 +442,16 @@ internal class IterableAssertions {
       /**
        * @see https://github.com/robfletcher/strikt/issues/159
        */
-      @Test
-      fun `fails if there are fewer elements than expected but the outlier is in the actual list`() {
+      test("fails if there are fewer elements than expected but the outlier is in the actual list") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("fnord", "catflap", "rubberplant", "marzipan")
         }
       }
 
-      @Test
-      fun `fails if the order is different`() {
+      test("fails if the order is different") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("rubberplant", "catflap", "marzipan")
         }
         assertEquals(
@@ -507,10 +468,9 @@ internal class IterableAssertions {
         )
       }
 
-      @Test
-      fun `fails if the cardinality of an element is lower than expected`() {
+      test("fails if the cardinality of an element is lower than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
         }
         assertEquals(
@@ -529,68 +489,60 @@ internal class IterableAssertions {
       }
     }
 
-    @Nested
-    @DisplayName("a non-Collection Iterable subject")
-    inner class NonCollection {
-      val subject = object : Iterable<String> {
-        override fun iterator() =
-          arrayOf("catflap", "rubberplant", "marzipan").iterator()
+    derivedContext<Iterable<String>>("a non-Collection Iterable subject") {
+      fixture {
+        object : Iterable<String> {
+          override fun iterator() = arrayOf("catflap", "rubberplant", "marzipan").iterator()
+        }
       }
 
-      @Test
-      fun `passes if the elements are indentical`() {
-        expectThat(subject)
+      test("passes if the elements are indentical") {
+        expectThat(fixture)
           .describedAs("a non-Collection iterable %s")
           .containsExactly("catflap", "rubberplant", "marzipan")
       }
 
-      @Test
-      fun `fails if the elements are ordered differently`() {
+      test("fails if the elements are ordered differently") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .describedAs("a non-Collection iterable %s")
             .containsExactly("marzipan", "rubberplant", "catflap")
         }
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .describedAs("a non-Collection iterable %s")
             .containsExactly("catflap", "rubberplant")
         }
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .describedAs("a non-Collection iterable %s")
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
       }
 
-      @Test
-      fun `fails if the cardinality of an element is lower than expected`() {
+      test("fails if the cardinality of an element is lower than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .describedAs("a non-Collection iterable %s")
             .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
         }
       }
 
-      @Test
-      fun `fails if it's supposed to be empty and isn't`() {
+      test("fails if it's supposed to be empty and isn't") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .describedAs("a non-Collection iterable %s")
             .containsExactly()
         }
       }
 
-      @Test
-      fun `passes if it's supposed to be empty and is`() {
+      test("passes if it's supposed to be empty and is") {
         val emptySubject = object : Iterable<String> {
           override fun iterator() = emptySequence<String>().iterator()
         }
@@ -599,32 +551,26 @@ internal class IterableAssertions {
     }
   }
 
-  @Nested
+  @TestFactory
   @DisplayName("containsExactlyInAnyOrder assertion")
-  inner class ContainsExactlyInAnyOrder {
-    @Nested
-    @DisplayName("a Set subject")
-    inner class Set {
-      val subject = setOf("catflap", "rubberplant", "marzipan")
-
-      @Test
-      fun `passes if the elements are identical`() {
-        expectThat(subject)
+  fun containsExactlyInAnyOrder() = testFactory<Unit> {
+    derivedContext<Set<String>>("a ${Set::class}") {
+      fixture { setOf("catflap", "rubberplant", "marzipan") }
+      test("passes if the elements are identical") {
+        expectThat(fixture)
           .containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder("rubberplant", "catflap")
         }
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder(
               "catflap",
               "rubberplant",
@@ -635,21 +581,17 @@ internal class IterableAssertions {
       }
     }
 
-    @Nested
-    @DisplayName("a List subject")
-    inner class List {
-      val subject = listOf("catflap", "rubberplant", "marzipan")
+    derivedContext<List<String>>("a ${List::class}") {
+      fixture { listOf("catflap", "rubberplant", "marzipan") }
 
-      @Test
-      fun `passes if all the elements exist in the same order`() {
-        expectThat(subject)
+      test("passes if all the elements exist in the same order") {
+        expectThat(fixture)
           .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder("catflap", "rubberplant")
         }
         assertEquals(
@@ -662,10 +604,9 @@ internal class IterableAssertions {
         )
       }
 
-      @Test
-      fun `fails if the cardinality of an element is lower than expected`() {
+      test("fails if the cardinality of an element is lower than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder(
               "catflap",
               "rubberplant",
@@ -685,10 +626,9 @@ internal class IterableAssertions {
         )
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         val error = assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder(
               "catflap",
               "rubberplant",
@@ -708,45 +648,39 @@ internal class IterableAssertions {
         )
       }
 
-      @Test
-      fun `passes if the order is different`() {
-        expectThat(subject)
+      test("passes if the order is different") {
+        expectThat(fixture)
           .containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
       }
     }
 
-    @Nested
-    @DisplayName("a non-Collection Iterable subject")
-    inner class NonCollection {
-      val subject = object : Iterable<String> {
-        override fun iterator() =
-          arrayOf("catflap", "rubberplant", "marzipan").iterator()
+    derivedContext<Iterable<String>>("a non-Collection Iterable subject") {
+      fixture {
+        object : Iterable<String> {
+          override fun iterator() = arrayOf("catflap", "rubberplant", "marzipan").iterator()
+        }
       }
 
-      @Test
-      fun `passes if the elements are identical`() {
-        expectThat(subject)
+      test("passes if the elements are identical") {
+        expectThat(fixture)
           .containsExactlyInAnyOrder("catflap", "rubberplant", "marzipan")
       }
 
-      @Test
-      fun `passes if the elements are ordered differently`() {
-        expectThat(subject)
+      test("passes if the elements are ordered differently") {
+        expectThat(fixture)
           .containsExactlyInAnyOrder("marzipan", "rubberplant", "catflap")
       }
 
-      @Test
-      fun `fails if there are more elements than expected`() {
+      test("fails if there are more elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder("catflap", "rubberplant")
         }
       }
 
-      @Test
-      fun `fails if there are fewer elements than expected`() {
+      test("fails if there are fewer elements than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder(
               "catflap",
               "rubberplant",
@@ -756,10 +690,9 @@ internal class IterableAssertions {
         }
       }
 
-      @Test
-      fun `fails if the cardinality of an element is lower than expected`() {
+      test("fails if the cardinality of an element is lower than expected") {
         assertThrows<AssertionError> {
-          expectThat(subject)
+          expectThat(fixture)
             .containsExactlyInAnyOrder(
               "catflap",
               "rubberplant",
@@ -769,15 +702,13 @@ internal class IterableAssertions {
         }
       }
 
-      @Test
-      fun `fails if it's supposed to be empty and isn't`() {
+      test("fails if it's supposed to be empty and isn't") {
         assertThrows<AssertionError> {
-          expectThat(subject).containsExactlyInAnyOrder()
+          expectThat(fixture).containsExactlyInAnyOrder()
         }
       }
 
-      @Test
-      fun `passes if it's supposed to be empty and is`() {
+      test("passes if it's supposed to be empty and is") {
         val emptySubject = object : Iterable<String> {
           override fun iterator() = emptySequence<String>().iterator()
         }
