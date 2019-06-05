@@ -148,7 +148,7 @@ fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolea
 fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
   nodeType: JsonNodeType
 ): Assertion.Builder<T> =
-  assert("is a $nodeType node") {
+  assert("is a $nodeType node", nodeType) {
     when (it.nodeType) {
       nodeType -> pass()
       else -> fail(actual = it.nodeType, description = "found a %s node")
@@ -161,7 +161,7 @@ fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
  * @see ArrayNode.size
  */
 fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
-  assert("has $expected elements") { subject ->
+  assert("has $expected elements", expected) { subject ->
     if (subject.size() == expected) pass()
     else fail(subject.size())
   }

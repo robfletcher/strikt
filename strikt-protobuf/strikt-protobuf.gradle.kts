@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:3.7.0")
+  api("com.google.protobuf:protobuf-java:3.7.1")
 }
 
 tasks.dokka {

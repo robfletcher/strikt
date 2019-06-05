@@ -410,6 +410,30 @@ internal object PathAssertions {
   }
 
   @TestFactory
+  internal fun allBytes(@TempDir directory: Path) = assertionTests<Path> {
+    context("subject is an empty file") {
+      fixture {
+        expectThat(Files.createFile(directory.resolve(it.joinFullName())))
+      }
+      test("then allBytes() maps to an empty byte array") {
+        allBytes()
+          .isEqualTo(byteArrayOf())
+      }
+    }
+
+    context("subject is a single line file") {
+      fixture {
+        expectThat(Files.write(directory.resolve(it.joinFullName()), byteArrayOf(1, 2, 3, 4)))
+      }
+
+      test("then allLines() maps to a singleton list of the line") {
+        allBytes()
+          .isEqualTo(byteArrayOf(1, 2, 3, 4))
+      }
+    }
+  }
+
+  @TestFactory
   internal fun allLines(@TempDir directory: Path) = assertionTests<Path> {
     context("subject is an empty file") {
       fixture {

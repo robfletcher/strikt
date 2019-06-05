@@ -182,7 +182,10 @@ fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
  */
 fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> =
   when {
-    elements.isEmpty() -> throw IllegalArgumentException("You must supply some expected elements.")
+    elements.isEmpty() ->
+      assert("contains the elements %s", elements) {
+        pass()
+      }
     elements.size == 1 ->
       assert("contains %s", elements.first()) { subject ->
         if (subject.contains(elements.first())) {
@@ -278,10 +281,10 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Bu
         if (remaining.remove(element)) {
           pass()
           assert("…at index $i", element) {
-            if (original[i] == element) {
-              pass()
-            } else {
-              fail(actual = original[i])
+            when {
+              i !in original.indices -> fail("index $i is out of range")
+              original[i] == element -> pass()
+              else -> fail(actual = original[i])
             }
           }
         } else {

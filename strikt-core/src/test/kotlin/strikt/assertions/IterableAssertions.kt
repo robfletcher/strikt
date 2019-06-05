@@ -234,10 +234,12 @@ internal object IterableAssertions {
         }
     }
 
-    test("rejects an empty array of expected elements") {
-      assertThrows<IllegalArgumentException> {
-        expectThat(listOf("catflap", "rubberplant", "marzipan")).contains()
-      }
+    test("any collection contains an empty list") {
+      expectThat(listOf("catflap", "rubberplant", "marzipan")).contains()
+    }
+
+    test("an empty collection contains an empty list") {
+      expectThat(emptyList<Any>()).contains()
     }
 
     test("has a nested failure for each missing element when there are multiple") {
@@ -435,6 +437,16 @@ internal object IterableAssertions {
             |    ✓ contains no further elements""".trimMargin(),
           error.message
         )
+      }
+
+      /**
+       * @see https://github.com/robfletcher/strikt/issues/159
+       */
+      test("fails if there are fewer elements than expected but the outlier is in the actual list") {
+        assertThrows<AssertionError> {
+          expectThat(subject)
+            .containsExactly("fnord", "catflap", "rubberplant", "marzipan")
+        }
       }
 
       test("fails if the order is different") {
