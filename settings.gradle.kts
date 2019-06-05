@@ -6,6 +6,7 @@ include(
   "strikt-gradle",
   "strikt-jackson",
   "strikt-java-time",
+  "strikt-okhttp",
   "strikt-protobuf",
   "strikt-spring",
   "site"

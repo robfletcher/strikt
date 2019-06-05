@@ -83,7 +83,9 @@ services:
 kotlindoc:
   sourceDirs:
   - '../../../../strikt-core/src/main/kotlin/'
+  - '../../../../strikt-gradle/src/main/kotlin/'
   - '../../../../strikt-jackson/src/main/kotlin/'
   - '../../../../strikt-java-time/src/main/kotlin/'
+  - '../../../../strikt-okhttp/src/main/kotlin/'
   - '../../../../strikt-protobuf/src/main/kotlin/'
   - '../../../../strikt-spring/src/main/kotlin/'

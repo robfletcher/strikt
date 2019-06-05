@@ -7,4 +7,5 @@ plugins {
 
 dependencies {
   api(project(":strikt-core"))
+  implementation("com.squareup.okhttp3:mockwebserver:3.14.2")
 }

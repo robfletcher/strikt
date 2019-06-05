@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.net.URL
 
 plugins {
-  id("java-library")
+  `java-library`
   id("nebula.kotlin")
   id("published")
   id("com.google.protobuf") version "0.8.8"

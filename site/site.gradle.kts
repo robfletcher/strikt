@@ -37,8 +37,10 @@ project.version = "${project.version}"
 
 orchid {
   evaluationDependsOn(":strikt-core")
+  evaluationDependsOn(":strikt-gradle")
   evaluationDependsOn(":strikt-jackson")
   evaluationDependsOn(":strikt-java-time")
+  evaluationDependsOn(":strikt-okhttp")
   evaluationDependsOn(":strikt-protobuf")
   evaluationDependsOn(":strikt-spring")
 
