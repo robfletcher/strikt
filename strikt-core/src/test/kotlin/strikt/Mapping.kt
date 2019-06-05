@@ -193,14 +193,16 @@ internal class Mapping {
     @Test
     fun `can be described`() {
       val error = assertThrows<AssertionError> {
-        expectThat(subject) {
-          get { name }.describedAs("name").isEqualTo("Ziggy")
-          get { birthDate.year }.describedAs("birth year")
-            .isEqualTo(1971)
-        }
+        expectThat(subject)
+          .describedAs { "a person named $name" }
+          .and {
+            get { name }.describedAs("name").isEqualTo("Ziggy")
+            get { birthDate.year }.describedAs("birth year")
+              .isEqualTo(1971)
+          }
       }
       assertEquals(
-        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+        """▼ Expect that a person named David:
           |  ▼ name:
           |    ✗ is equal to "Ziggy" : found "David"
           |  ▼ birth year:

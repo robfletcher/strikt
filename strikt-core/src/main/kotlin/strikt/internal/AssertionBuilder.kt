@@ -1,6 +1,5 @@
 package strikt.internal
 
-import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import strikt.api.AtomicAssertion
 import strikt.api.CompoundAssertion
@@ -21,9 +20,16 @@ internal class AssertionBuilder<T>(
     return this
   }
 
+  override fun describedAs(descriptor: T.() -> String): Builder<T> {
+    if (context is DescribedNode<*>) {
+      context.description = context.subject.descriptor()
+    }
+    return this
+  }
+
   override fun and(
-    assertions: Assertion.Builder<T>.() -> Unit
-  ): Assertion.Builder<T> =
+    assertions: Builder<T>.() -> Unit
+  ): Builder<T> =
     AssertionChainedGroup(context, context.subject)
       .let { nestedContext ->
         AssertionBuilder(nestedContext, Collecting)
@@ -33,8 +39,8 @@ internal class AssertionBuilder<T>(
           }
       }
 
-  override fun not(assertions: Builder<T>.() -> Unit): Assertion.Builder<T> {
-    AssertionBuilder(context, AssertionStrategy.Negating(AssertionStrategy.Collecting)).apply(assertions)
+  override fun not(assertions: Builder<T>.() -> Unit): Builder<T> {
+    AssertionBuilder(context, Negating(Collecting)).apply(assertions)
     strategy.evaluate(context)
     return this
   }
