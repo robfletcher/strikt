@@ -1,7 +1,7 @@
 import java.net.URL
 
 plugins {
-  id("java-library")
+  `java-library`
   id("nebula.kotlin")
   id("published")
   id("info.solidsoft.pitest")

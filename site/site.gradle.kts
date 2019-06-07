@@ -36,37 +36,37 @@ dependencies {
 project.version = "${project.version}"
 
 orchid {
-  evaluationDependsOn(":strikt-core")
-  evaluationDependsOn(":strikt-jackson")
-  evaluationDependsOn(":strikt-java-time")
-  evaluationDependsOn(":strikt-protobuf")
-  evaluationDependsOn(":strikt-spring")
+  val documentedModules = listOf(
+    ":strikt-core",
+    ":strikt-gradle",
+    ":strikt-jackson",
+    ":strikt-java-time",
+    ":strikt-protobuf",
+    ":strikt-spring"
+  ).map { project(it) }
+
+  documentedModules.forEach {
+    evaluationDependsOn(it.path)
+  }
 
   theme = "StriktTheme"
   baseUrl = "https://strikt.io/"
 
-  if (project.hasProperty("env") && project.property("env") == "prod") {
-    environment = "prod"
+  environment = if (findProperty("env") == "prod") {
+    "prod"
   } else {
-    environment = "debug"
+    "debug"
   }
 
   args = listOf(
     "--kotlindocClasspath",
-    listOf(
-      ":strikt-core",
-      ":strikt-jackson",
-      ":strikt-java-time",
-      ":strikt-protobuf",
-      ":strikt-spring"
-    )
-      .joinToString(File.pathSeparator) {
-        project(it).sourceSets["main"].compileClasspath.asPath
+    documentedModules.joinToString(File.pathSeparator) {
+      it.sourceSets["main"].compileClasspath.asPath
       }
   )
 
-  githubToken = if (project.hasProperty("github_token")) {
-    project.property("github_token").toString()
+  githubToken = if (hasProperty("github_token")) {
+    property("github_token").toString()
   } else {
     System.getenv("GITHUB_TOKEN")
   }

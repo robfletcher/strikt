@@ -38,6 +38,9 @@ theme:
       title: 'Core Standard Library'
       itemId: 'strikt.assertions'
     - type: 'page'
+      title: 'Gradle Module'
+      itemId: 'strikt.gradle.testkit'
+    - type: 'page'
       title: 'Jackson Module'
       itemId: 'strikt.jackson'
     - type: 'page'
@@ -83,6 +86,7 @@ services:
 kotlindoc:
   sourceDirs:
   - '../../../../strikt-core/src/main/kotlin/'
+  - '../../../../strikt-gradle/src/main/kotlin/'
   - '../../../../strikt-jackson/src/main/kotlin/'
   - '../../../../strikt-java-time/src/main/kotlin/'
   - '../../../../strikt-protobuf/src/main/kotlin/'
