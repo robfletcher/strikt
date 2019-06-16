@@ -3,8 +3,8 @@ package strikt.docs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
-import strikt.api.Assertion
 import strikt.api.expect
+import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.all
@@ -17,8 +17,8 @@ import strikt.assertions.isLessThan
 import strikt.assertions.isLowerCase
 import strikt.assertions.isSuccess
 import strikt.assertions.isUpperCase
+import strikt.assertions.message
 import strikt.assertions.startsWith
-import strikt.assertions.throws
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("Snippets used in Orchid docs")
@@ -36,7 +36,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_2
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       // START assertion_styles_1
       val subject = "fnord"
       expectThat(subject)
@@ -44,9 +44,8 @@ internal class Assertions {
         .hasLength(1)
         .isUpperCase()
       // END assertion_styles_1
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -60,7 +59,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_4
 
-    (expectThat(runCatching {
+    expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_3
       val subject = "fnord"
       expectThat(subject) {
@@ -69,9 +68,8 @@ internal class Assertions {
         isUpperCase()
       }
       // END assertion_styles_3
-    }) as Assertion.Builder<Result<*>>)
-      .throws<CompoundAssertionFailure>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -84,7 +82,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_6
 
-    (expectThat(runCatching {
+    expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_5
       val subject = 1L
       expectThat(subject) {
@@ -92,9 +90,8 @@ internal class Assertions {
         isGreaterThan(1L)
       }
       // END assertion_styles_5
-    }) as Assertion.Builder<Result<*>>)
-      .throws<CompoundAssertionFailure>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -110,7 +107,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_8
 
-    (expectThat(runCatching {
+    expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_7
       expect {
         that("fnord")
@@ -123,9 +120,8 @@ internal class Assertions {
         }
       }
       // END assertion_styles_7
-    }) as Assertion.Builder<Result<*>>)
-      .throws<CompoundAssertionFailure>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -149,7 +145,7 @@ internal class Assertions {
     """ // IGNORE
     // END collections_1
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       // START collections_2
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject).all {
@@ -157,9 +153,8 @@ internal class Assertions {
         startsWith('c')
       }
       // END collections_2
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -168,13 +163,13 @@ internal class Assertions {
 
   @Test fun `catching exceptions 1, 2`() {
     // START catching_exceptions_1
-    expectThat(runCatching { identifyHotdog("hamburger") })
+    expectCatching { identifyHotdog("hamburger") }
       .isFailure()
       .isA<NotHotdogException>()
     // END catching_exceptions_1
 
     // START catching_exceptions_2
-    expectThat(runCatching { identifyHotdog("hotdog") })
+    expectCatching { identifyHotdog("hotdog") }
       .isSuccess()
     // END catching_exceptions_2
   }

@@ -2,7 +2,8 @@ package strikt.api
 
 import kotlinx.coroutines.runBlocking
 import strikt.api.Assertion.Builder
-import strikt.assertions.throws
+import strikt.assertions.isA
+import strikt.assertions.isFailure
 import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Throwing
@@ -76,5 +77,16 @@ fun <T> expectThat(
 inline fun <reified E : Throwable> expectThrows(
   noinline action: suspend () -> Any?
 ): Builder<E> =
-  runCatching { runBlocking { action() } }
-    .let { expectThat(it).throws() }
+  expectCatching(action)
+    .isFailure()
+    .isA()
+
+/**
+ * Start a chain of assertions over the result of [action] which may either be
+ * the value [action] returns or any exception it throws.
+ * This is the entry-point for the assertion API.
+ *
+ * @return an assertion for the successful or failed result of [action].
+ */
+fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Result<T>> =
+  expectThat(runCatching { runBlocking { action() } })

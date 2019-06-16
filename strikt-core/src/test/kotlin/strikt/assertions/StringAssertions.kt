@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("assertions on String")
@@ -39,9 +40,12 @@ internal object StringAssertions {
     }
 
     test("outputs real start when startsWith fails") {
-      expectThat(assertThrows<AssertionError> {
+      expectThrows<AssertionError> {
         expectThat("fnord").startsWith("fnrd")
-      }).message.contains("""starts with "fnrd" : found "fnor"""")
+      }
+        .message
+        .isNotNull()
+        .contains("""starts with "fnrd" : found "fnor"""")
     }
   }
 
@@ -54,9 +58,12 @@ internal object StringAssertions {
     }
 
     test("outputs real end when endsWith fails") {
-      expectThat(assertThrows<AssertionError> {
+      expectThrows<AssertionError> {
         expectThat("fnord").endsWith("nor")
-      }).message.contains("""ends with "nor" : found "ord"""")
+      }
+        .message
+        .isNotNull()
+        .contains("""ends with "nor" : found "ord"""")
     }
   }
 

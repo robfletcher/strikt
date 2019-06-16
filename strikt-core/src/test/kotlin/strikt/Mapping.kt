@@ -5,8 +5,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.filter
 import strikt.assertions.filterIsInstance
@@ -21,7 +21,6 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
-import strikt.assertions.throws
 import java.time.LocalDate
 
 @DisplayName("mapping assertions")
@@ -110,27 +109,11 @@ internal class Mapping {
 
   @Test
   fun `message maps to an exception message`() {
-    (expectThat(runCatching { error("o noes") }) as Assertion.Builder<Result<*>>)
-      .throws<IllegalStateException>()
+    expectThrows<IllegalStateException> {
+      check(false) { "o noes" }
+    }
       .message
       .isEqualTo("o noes")
-  }
-
-  @Test
-  fun `message fails if the exception message is null`() {
-    assertThrows<AssertionError> {
-      (expectThat(runCatching<Any> { throw IllegalStateException() }) as Assertion.Builder<Result<*>>)
-        .throws<IllegalStateException>()
-        .message
-    }.let { error ->
-      expectThat(error).message.isEqualTo(
-        """▼ Expect that Failure(java.lang.IllegalStateException):
-          |  ✓ threw java.lang.IllegalStateException
-          |  ▼ thrown exception:
-          |    ▼ value of property message:
-          |      ✗ is not null""".trimMargin()
-      )
-    }
   }
 
   @Test

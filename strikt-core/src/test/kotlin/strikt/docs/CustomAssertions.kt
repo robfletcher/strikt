@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
-import strikt.assertions.throws
+import strikt.assertions.message
 import java.time.LocalDate
 import java.time.MonthDay
 
@@ -35,11 +36,10 @@ internal class CustomAssertions {
     """ // IGNORE
     // END custom_assertions_2
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -64,11 +64,10 @@ internal class CustomAssertions {
     """ // IGNORE
     // END custom_assertions_4
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -85,11 +84,10 @@ internal class CustomAssertions {
       ✗ is St. Tib's Day
     """ // IGNORE
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
@@ -122,11 +120,10 @@ internal class CustomAssertions {
 
     val subject = listOf("catflap", null, "rubberplant", "marzipan")
 
-    (expectThat(runCatching {
+    expectThrows<AssertionFailedError> {
       expectThat(subject).containsNoNullElements()
-    }) as Assertion.Builder<Result<*>>)
-      .throws<AssertionFailedError>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 }

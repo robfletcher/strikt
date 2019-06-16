@@ -26,8 +26,10 @@ internal class Throws {
     assertThrows<AssertionError> {
       expectThrows<IllegalStateException> { }
     }.let { e ->
-      val expected = "▼ Expect that Success(kotlin.Unit):\n" +
-        "  ✗ threw java.lang.IllegalStateException : nothing was thrown"
+      val expected =
+        """▼ Expect that Success(kotlin.Unit):
+          |  ✗ failed with an exception"""
+          .trimMargin()
       assertEquals(expected, e.message)
     }
   }
@@ -38,10 +40,12 @@ internal class Throws {
       expectThrows<NullPointerException> { error("o noes") }
     }.let { e ->
       val expected =
-        "▼ Expect that Failure(java.lang.IllegalStateException: o noes):\n" +
-          "  ✗ threw java.lang.NullPointerException : threw java.lang.IllegalStateException"
+        """▼ Expect that Failure(java.lang.IllegalStateException: o noes):
+          |  ✓ failed with an exception
+          |  ▼ caught exception:
+          |    ✗ is an instance of java.lang.NullPointerException : found java.lang.IllegalStateException"""
+          .trimMargin()
       assertEquals(expected, e.message)
-      assertEquals(IllegalStateException::class.java, e.cause?.javaClass)
     }
   }
 

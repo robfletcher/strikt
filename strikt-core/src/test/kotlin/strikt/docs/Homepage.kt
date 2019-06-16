@@ -6,6 +6,7 @@ import strikt.Person
 import strikt.api.Assertion
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.Deity
 import strikt.assertions.Pantheon
 import strikt.assertions.any
@@ -17,8 +18,8 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEmpty
 import strikt.assertions.isNotNull
 import strikt.assertions.matches
+import strikt.assertions.message
 import strikt.assertions.startsWith
-import strikt.assertions.throws
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import java.time.LocalDate
 import java.time.MonthDay
@@ -74,7 +75,7 @@ internal class Homepage {
     """ // IGNORE
     // END homepage_six
 
-    (expectThat(runCatching {
+    expectThrows<CompoundAssertionFailure> {
       // START homepage_five
       val subject = "The Enlightened take things Lightly"
       expectThat(subject) {
@@ -83,9 +84,8 @@ internal class Homepage {
         startsWith("T")        // still evaluated and passes
       }
       // END homepage_five
-    }) as Assertion.Builder<Result<*>>)
-      .throws<CompoundAssertionFailure>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
