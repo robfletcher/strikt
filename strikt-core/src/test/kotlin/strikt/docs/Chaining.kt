@@ -7,6 +7,7 @@ import strikt.Person
 import strikt.api.Assertion
 import strikt.api.expect
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.assertions.containsExactly
 import strikt.assertions.first
 import strikt.assertions.hasSize
@@ -14,7 +15,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.last
 import strikt.assertions.map
-import strikt.assertions.throws
+import strikt.assertions.message
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import java.time.LocalDate
 
@@ -49,7 +50,7 @@ internal class Chaining {
     """ // IGNORE
     // END traversing_subjects_3
 
-    (expectThat(runCatching {
+    expectThrows<CompoundAssertionFailure> {
       // START traversing_subjects_2
       val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
       expectThat(subject) {
@@ -57,9 +58,8 @@ internal class Chaining {
         get { birthDate.year }.isEqualTo(1971)
       }
       // END traversing_subjects_2
-    }) as Assertion.Builder<Result<*>>)
-      .throws<CompoundAssertionFailure>()
-      .get { message }
+    }
+      .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
 
