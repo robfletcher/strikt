@@ -2,8 +2,7 @@ package strikt.api
 
 import kotlinx.coroutines.runBlocking
 import strikt.api.Assertion.Builder
-import strikt.assertions.isA
-import strikt.assertions.isFailure
+import strikt.assertions.failedWith
 import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Throwing
@@ -26,6 +25,11 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
       subject: T,
       block: Builder<T>.() -> Unit
     ): DescribeableBuilder<T> = that(subject).apply(block)
+
+    override fun <T> catching(
+      action: suspend () -> T
+    ): DescribeableBuilder<Result<T>> =
+      that(runCatching { runBlocking { action() } })
   }
     .apply {
       runBlocking {
@@ -78,8 +82,7 @@ inline fun <reified E : Throwable> expectThrows(
   noinline action: suspend () -> Any?
 ): Builder<E> =
   expectCatching(action)
-    .isFailure()
-    .isA()
+    .failedWith()
 
 /**
  * Start a chain of assertions over the result of [action] which may either be

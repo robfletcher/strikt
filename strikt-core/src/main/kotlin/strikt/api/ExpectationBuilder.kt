@@ -26,4 +26,13 @@ interface ExpectationBuilder {
     subject: T,
     block: Assertion.Builder<T>.() -> Unit
   ): DescribeableBuilder<T>
+
+  /**
+   * Start a chain of assertions over the result of [action].
+
+   * @param action an action that may result in a value being returned or an
+   * exception being thrown.
+   * @return an assertion for the result of [action].
+   */
+  fun <T> catching(action: suspend () -> T): DescribeableBuilder<Result<T>>
 }
