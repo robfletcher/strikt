@@ -1,28 +1,37 @@
 ---
 ---
 
-# Asserting exceptions are thrown
+# Expecting exceptions
 
-To assert that some code throws an exception you can use the `catching` function that accepts a lambda `() -> Unit` that performs the operation that should throw an exception and the `throws<E>` assertion function.
+To assert that some code does or does not throw an exception use the `expectCatching` function that accepts a lambda `() -> Any?` that performs the operation that may throw an exception and the `succeeded()` or `failed()` assertion functions.
 For example:
 
 {% codesnippet key='catching_exceptions_1' testClass='Assertions' %}
 
-The `catching` function returns `Throwable?` with the value being whatever exception is thrown by the lambda, or `null` if nothing is thrown.
-Combining it with the `throws<E>` assertion allows testing for specific exception types.
-The `throws<E>` assertion will fail if the exception is `null` or the wrong type.
+The `expectCatching` function returns `Assertion.Builder<Result<T>>` with the assertion's subject being a [kotlin.Result](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-result/index.html) containing whatever value the lambda returns or the exception it throws.
 
-The `throws<E>` function returns an `Assertion.Builder<E>` so you can chain assertions about the exception itself after it.
+## Asserting failure
 
-If you just need to test that _any_ exception was or was not thrown you can combine `catching` with `isNull` or `isNotNull`.
+The `failed()` assertion function returns an `Assertion.Builder<Throwable>` so you can chain assertions about the exception itself after it.
+For example, combining it with the `isA<T>()` assertion allows testing for specific exception types.
+
+The `failed()` assertion will fail if the lambda does not throw an exception.
+
+If you just need to test that _any_ exception was thrown you can just use the `failed()` assertion by itself.
 For example:
 
 {% codesnippet key='catching_exceptions_2' testClass='Assertions' %}
 
-## Shorthand form
+### Shorthand form
 
-You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the `expectThat` / `catching` / `throws` combination.
+You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the `expectCatching` / `failed` / `isA<E>` combination.
 For example:
 
 {% codesnippet key='expect_throws_1' testClass='Assertions' %}
 
+## Asserting success
+
+You can also assert that an exception is _not_ thrown by the `expectCatching` lambda using the `succeeded()` assertion function.
+
+The `succeeded()` function returns an `Assertion.Builder<T>` where the type of the chained assertion subject is inferred from the value the lambda returns.
+This allows you to chain further assertions about the returned value.
