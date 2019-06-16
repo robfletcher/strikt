@@ -56,7 +56,7 @@ internal class Throws {
   }
 
   @Test
-  fun `catching function accepts a suspending lambda`() {
+  fun `expectThrows accepts a suspending lambda`() {
     expectThrows<IllegalStateException> { delayedException(IllegalStateException()) }
       .isA<IllegalStateException>()
   }
