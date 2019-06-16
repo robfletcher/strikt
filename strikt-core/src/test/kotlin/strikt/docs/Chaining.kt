@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test
 import strikt.Album
 import strikt.Person
 import strikt.api.Assertion
-import strikt.api.catching
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
@@ -50,7 +49,7 @@ internal class Chaining {
     """ // IGNORE
     // END traversing_subjects_3
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START traversing_subjects_2
       val subject = Person(name = "David", birthDate = LocalDate.of(1947, 1, 8))
       expectThat(subject) {
@@ -58,7 +57,8 @@ internal class Chaining {
         get { birthDate.year }.isEqualTo(1971)
       }
       // END traversing_subjects_2
-    }).throws<CompoundAssertionFailure>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<CompoundAssertionFailure>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }

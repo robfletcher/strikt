@@ -1,7 +1,7 @@
 package strikt
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -26,7 +26,7 @@ internal class Throws {
     assertThrows<AssertionError> {
       expectThrows<IllegalStateException> { }
     }.let { e ->
-      val expected = "▼ Expect that null:\n" +
+      val expected = "▼ Expect that Success(kotlin.Unit):\n" +
         "  ✗ threw java.lang.IllegalStateException : nothing was thrown"
       assertEquals(expected, e.message)
     }
@@ -37,8 +37,9 @@ internal class Throws {
     assertThrows<AssertionError> {
       expectThrows<NullPointerException> { error("o noes") }
     }.let { e ->
-      val expected = "▼ Expect that java.lang.IllegalStateException:\n" +
-        "  ✗ threw java.lang.NullPointerException : java.lang.IllegalStateException was thrown"
+      val expected =
+        "▼ Expect that Failure(java.lang.IllegalStateException: o noes):\n" +
+          "  ✗ threw java.lang.NullPointerException : threw java.lang.IllegalStateException"
       assertEquals(expected, e.message)
       assertEquals(IllegalStateException::class.java, e.cause?.javaClass)
     }
@@ -58,6 +59,6 @@ internal class Throws {
 }
 
 private suspend fun <T : Throwable> delayedException(input: T): T? =
-  GlobalScope.async {
+  withContext(Dispatchers.Default) {
     throw input
-  }.await()
+  }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import strikt.api.catching
+import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.assertions.containsExactly
 import strikt.assertions.filter
@@ -110,7 +110,7 @@ internal class Mapping {
 
   @Test
   fun `message maps to an exception message`() {
-    expectThat(catching { error("o noes") })
+    (expectThat(runCatching { error("o noes") }) as Assertion.Builder<Result<*>>)
       .throws<IllegalStateException>()
       .message
       .isEqualTo("o noes")
@@ -119,15 +119,16 @@ internal class Mapping {
   @Test
   fun `message fails if the exception message is null`() {
     assertThrows<AssertionError> {
-      expectThat(catching { throw IllegalStateException() })
+      (expectThat(runCatching<Any> { throw IllegalStateException() }) as Assertion.Builder<Result<*>>)
         .throws<IllegalStateException>()
         .message
     }.let { error ->
       expectThat(error).message.isEqualTo(
-        """▼ Expect that java.lang.IllegalStateException:
+        """▼ Expect that Failure(java.lang.IllegalStateException):
           |  ✓ threw java.lang.IllegalStateException
-          |  ▼ value of property message:
-          |    ✗ is not null""".trimMargin()
+          |  ▼ thrown exception:
+          |    ▼ value of property message:
+          |      ✗ is not null""".trimMargin()
       )
     }
   }

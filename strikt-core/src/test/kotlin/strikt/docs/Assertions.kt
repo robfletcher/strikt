@@ -3,7 +3,7 @@ package strikt.docs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
-import strikt.api.catching
+import strikt.api.Assertion
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.api.expectThrows
@@ -11,10 +11,11 @@ import strikt.assertions.all
 import strikt.assertions.hasLength
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isLowerCase
-import strikt.assertions.isNull
+import strikt.assertions.isSuccess
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
 import strikt.assertions.throws
@@ -35,7 +36,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_2
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START assertion_styles_1
       val subject = "fnord"
       expectThat(subject)
@@ -43,7 +44,8 @@ internal class Assertions {
         .hasLength(1)
         .isUpperCase()
       // END assertion_styles_1
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -58,7 +60,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_4
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START assertion_styles_3
       val subject = "fnord"
       expectThat(subject) {
@@ -67,7 +69,8 @@ internal class Assertions {
         isUpperCase()
       }
       // END assertion_styles_3
-    }).throws<CompoundAssertionFailure>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<CompoundAssertionFailure>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -81,7 +84,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_6
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START assertion_styles_5
       val subject = 1L
       expectThat(subject) {
@@ -89,7 +92,8 @@ internal class Assertions {
         isGreaterThan(1L)
       }
       // END assertion_styles_5
-    }).throws<CompoundAssertionFailure>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<CompoundAssertionFailure>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -106,7 +110,7 @@ internal class Assertions {
     """ // IGNORE
     // END assertion_styles_8
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START assertion_styles_7
       expect {
         that("fnord")
@@ -119,7 +123,8 @@ internal class Assertions {
         }
       }
       // END assertion_styles_7
-    }).throws<CompoundAssertionFailure>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<CompoundAssertionFailure>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -144,7 +149,7 @@ internal class Assertions {
     """ // IGNORE
     // END collections_1
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START collections_2
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject).all {
@@ -152,7 +157,8 @@ internal class Assertions {
         startsWith('c')
       }
       // END collections_2
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -162,13 +168,14 @@ internal class Assertions {
 
   @Test fun `catching exceptions 1, 2`() {
     // START catching_exceptions_1
-    expectThat(catching { identifyHotdog("hamburger") })
-      .throws<NotHotdogException>()
+    expectThat(runCatching { identifyHotdog("hamburger") })
+      .isFailure()
+      .isA<NotHotdogException>()
     // END catching_exceptions_1
 
     // START catching_exceptions_2
-    expectThat(catching { identifyHotdog("hotdog") })
-      .isNull()
+    expectThat(runCatching { identifyHotdog("hotdog") })
+      .isSuccess()
     // END catching_exceptions_2
   }
 
@@ -180,8 +187,9 @@ internal class Assertions {
     // END expect_throws_1
   }
 
-  private fun identifyHotdog(food: String) {
+  private fun identifyHotdog(food: String): String {
     if (food != "hotdog") throw NotHotdogException()
+    return food
   }
 
   private class NotHotdogException : Exception()
