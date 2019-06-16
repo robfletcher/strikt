@@ -74,6 +74,7 @@ fun <T> expectThat(
  * about messages, root causes, etc.
  */
 inline fun <reified E : Throwable> expectThrows(
-  noinline action: suspend () -> Unit
+  noinline action: suspend () -> Any?
 ): Builder<E> =
-  expectThat(catching(action)).throws()
+  runCatching { runBlocking { action() } }
+    .let { expectThat(it).throws() }

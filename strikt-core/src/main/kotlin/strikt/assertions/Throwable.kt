@@ -20,17 +20,41 @@ val <T : Throwable> Builder<T>.cause: DescribeableBuilder<Throwable?>
   get() = get(Throwable::cause)
 
 /**
- * Asserts that an exception is an instance of the expected type.
- * The assertion fails if the subject is `null` or not an instance of [E].
- *
- * This assertion is designed for use with the [strikt.api.catching] function.
+ * Asserts that the result of an action threw an exception of the expected type.
+ * The assertion fails if the subject's [Result.isSuccess] returns `true` or the
+ * exception is not an instance of [E].
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified E : Throwable> Builder<Throwable?>.throws(): Builder<E> =
+inline fun <reified E : Throwable> Builder<Result<*>>.throws(): Builder<E> =
   assert("threw %s", E::class.java) {
-    when (it) {
-      null -> fail("nothing was thrown")
-      is E -> pass()
-      else -> fail(description = "%s was thrown", actual = it, cause = it)
+    val exception = it.exceptionOrNull()
+    when {
+      it.isSuccess -> fail("nothing was thrown")
+      exception is E -> pass()
+      else -> fail(
+        description = "threw %s",
+        actual = exception,
+        cause = exception
+      )
     }
-  } as Builder<E>
+  }
+    .get("thrown exception") { requireNotNull(exceptionOrNull() as E?) }
+
+/**
+ * Asserts that the result of an action did not throw any exception and maps to
+ * an assertion on the result value. The assertion fails if the subject's
+ * [Result.isFailure] returns `true`.
+ */
+@Suppress("UNCHECKED_CAST")
+fun <R : Any> Builder<Result<R>>.doesNotThrow(): Builder<R> =
+  assert("did not throw an exception") {
+    when {
+      it.isSuccess -> pass()
+      else -> fail(
+        description = "threw %s",
+        actual = it.exceptionOrNull(),
+        cause = it.exceptionOrNull()
+      )
+    }
+  }
+    .get { requireNotNull(getOrNull()) }

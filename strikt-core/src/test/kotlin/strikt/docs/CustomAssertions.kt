@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
-import strikt.api.catching
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
@@ -36,9 +35,10 @@ internal class CustomAssertions {
     """ // IGNORE
     // END custom_assertions_2
 
-    expectThat(catching {
+    (expectThat(runCatching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -64,9 +64,10 @@ internal class CustomAssertions {
     """ // IGNORE
     // END custom_assertions_4
 
-    expectThat(catching {
+    (expectThat(runCatching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -84,9 +85,10 @@ internal class CustomAssertions {
       ✗ is St. Tib's Day
     """ // IGNORE
 
-    expectThat(catching {
+    (expectThat(runCatching {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
@@ -120,9 +122,10 @@ internal class CustomAssertions {
 
     val subject = listOf("catflap", null, "rubberplant", "marzipan")
 
-    expectThat(catching {
+    (expectThat(runCatching {
       expectThat(subject).containsNoNullElements()
-    }).throws<AssertionFailedError>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<AssertionFailedError>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }

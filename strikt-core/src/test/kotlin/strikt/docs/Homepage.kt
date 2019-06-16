@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.Person
 import strikt.api.Assertion
-import strikt.api.catching
 import strikt.api.expect
 import strikt.api.expectThat
 import strikt.assertions.Deity
@@ -75,7 +74,7 @@ internal class Homepage {
     """ // IGNORE
     // END homepage_six
 
-    expectThat(catching {
+    (expectThat(runCatching {
       // START homepage_five
       val subject = "The Enlightened take things Lightly"
       expectThat(subject) {
@@ -84,7 +83,8 @@ internal class Homepage {
         startsWith("T")        // still evaluated and passes
       }
       // END homepage_five
-    }).throws<CompoundAssertionFailure>()
+    }) as Assertion.Builder<Result<*>>)
+      .throws<CompoundAssertionFailure>()
       .get { message }
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
   }
