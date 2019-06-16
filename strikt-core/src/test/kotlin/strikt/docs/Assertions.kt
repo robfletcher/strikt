@@ -8,17 +8,17 @@ import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.all
+import strikt.assertions.failed
 import strikt.assertions.hasLength
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
-import strikt.assertions.isFailure
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isLowerCase
-import strikt.assertions.isSuccess
 import strikt.assertions.isUpperCase
 import strikt.assertions.message
 import strikt.assertions.startsWith
+import strikt.assertions.succeeded
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("Snippets used in Orchid docs")
@@ -164,13 +164,13 @@ internal class Assertions {
   @Test fun `catching exceptions 1, 2`() {
     // START catching_exceptions_1
     expectCatching { identifyHotdog("hamburger") }
-      .isFailure()
+      .failed()
       .isA<NotHotdogException>()
     // END catching_exceptions_1
 
     // START catching_exceptions_2
     expectCatching { identifyHotdog("hotdog") }
-      .isSuccess()
+      .succeeded()
     // END catching_exceptions_2
   }
 

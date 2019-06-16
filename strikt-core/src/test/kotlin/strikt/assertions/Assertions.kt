@@ -17,7 +17,7 @@ internal object Assertions {
           isEqualTo(true)
         }
         expectThat(result)
-          .isFailure()
+          .failed()
           .get { stackTrace.toList() }
           .isNotEmpty()
           .map { it.className }
@@ -25,7 +25,7 @@ internal object Assertions {
             startsWith("strikt")
           }
         expectThat(result)
-          .isFailure()
+          .failed()
           .get { suppressed.toList() }
           .hasSize(1)
           .single()
