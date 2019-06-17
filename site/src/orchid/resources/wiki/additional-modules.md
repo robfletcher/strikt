@@ -5,6 +5,17 @@
 
 In addition to the core functionality provided by the `strikt-core` module, Strikt has the following optional modules:
 
+## Gradle
+
+Extensions for assertions and travels on [Gradle](https://github.com/gradle/gradle)'s test kit.
+See the {{ anchor('API docs', 'strikt.gradle.testkit') }}.
+
+Add the following to your dependencies:
+
+```kotlin
+testImplementation("io.strikt:strikt-gradle:{{ site.version }}")
+```
+
 ## Jackson
 
 Extensions for assertions and traversals on types [Jackson](https://github.com/FasterXML/jackson)'s `JsonNode` and sub-types.
