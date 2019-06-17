@@ -78,7 +78,7 @@ services:
     # uncomment the following line line to break the build and prevent deploys when
     # there is no changelog entry for the current version.
     #    - type: requireChangelogVersion
-    - type: ghPages
+    - type: githubPages
       branch: gh-pages
       username: robfletcher
       repo: strikt
