@@ -7,7 +7,7 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
   id("nebula.release") version "10.1.2"
-  id("nebula.kotlin") version "1.3.31" apply false
+  id("nebula.kotlin") version "1.3.40" apply false
   id("org.jmailen.kotlinter") version "1.26.0" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
   id("com.github.ben-manes.versions") version "0.21.0"
@@ -16,7 +16,7 @@ plugins {
 buildscript {
   configurations.maybeCreate("pitest")
   dependencies {
-    "pitest"("org.pitest:pitest-junit5-plugin:0.8")
+    "pitest"("org.pitest:pitest-junit5-plugin:0.9")
   }
 }
 
@@ -76,7 +76,7 @@ subprojects {
         mutators = setOf("NEW_DEFAULTS")
         targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
         targetTests = setOf("strikt.**.*")
-        pitestVersion = "1.4.8"
+        pitestVersion = "1.4.9"
         threads = System.getenv("PITEST_THREADS")?.toInt()
           ?: Runtime.getRuntime().availableProcessors()
         outputFormats = setOf("XML", "HTML")
