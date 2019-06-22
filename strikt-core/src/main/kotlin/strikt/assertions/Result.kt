@@ -1,6 +1,7 @@
 package strikt.assertions
 
 import strikt.api.Assertion
+import strikt.api.DescribeableBuilder
 
 /**
  * Asserts that the subject is a successful result and maps this assertion to
@@ -8,9 +9,13 @@ import strikt.api.Assertion
  *
  * @see [Result.isSuccess].
  */
-fun <T : Any?> Assertion.Builder<Result<T>>.succeeded() =
+fun <T : Any?> Assertion.Builder<Result<T>>.succeeded(): DescribeableBuilder<T> =
   assertThat("succeeded", Result<T>::isSuccess)
-    .get("result value") { getOrNull() }
+    .get("result value") {
+      getOrElse {
+        error("Result was successful but failed to return a value")
+      }
+    }
 
 /**
  * Asserts that the subject is a failed result and maps this assertion to an
@@ -18,7 +23,7 @@ fun <T : Any?> Assertion.Builder<Result<T>>.succeeded() =
  *
  * @see [Result.isFailure].
  */
-fun <T : Any?> Assertion.Builder<Result<T>>.failed() =
+fun <T : Any?> Assertion.Builder<Result<T>>.failed(): DescribeableBuilder<Throwable> =
   assertThat("failed with an exception", Result<T>::isFailure)
     .get("caught exception") {
       requireNotNull(exceptionOrNull())
