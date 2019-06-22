@@ -3,6 +3,7 @@ package strikt.assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
+import strikt.api.tryCatching
 
 @DisplayName("assertions")
 internal object Assertions {
@@ -13,11 +14,12 @@ internal object Assertions {
       fixture { expectThat(false) }
 
       test("exceptions are suppressed") {
-        val result = runCatching {
+        val result = tryCatching {
           isEqualTo(true)
         }
         expectThat(result)
           .failed()
+          .exception
           .get { stackTrace.toList() }
           .isNotEmpty()
           .map { it.className }
@@ -26,6 +28,7 @@ internal object Assertions {
           }
         expectThat(result)
           .failed()
+          .exception
           .get { suppressed.toList() }
           .hasSize(1)
           .single()

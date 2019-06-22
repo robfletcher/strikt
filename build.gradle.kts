@@ -41,7 +41,7 @@ subprojects {
         kotlinOptions {
           jvmTarget = VERSION_1_8.toString()
           languageVersion = "1.3"
-          freeCompilerArgs += "-progressive"
+          freeCompilerArgs = listOf("-progressive")
         }
       }
 

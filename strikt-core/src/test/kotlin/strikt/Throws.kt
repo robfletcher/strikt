@@ -55,11 +55,11 @@ internal class Throws {
       .isA<IllegalStateException>()
   }
 
-  @Test
-  fun `expectThrows accepts a suspending lambda`() {
-    expectThrows<IllegalStateException> { delayedException(IllegalStateException()) }
-      .isA<IllegalStateException>()
-  }
+//  @Test
+//  fun `expectThrows accepts a suspending lambda`() {
+//    expectThrows<IllegalStateException> { delayedException(IllegalStateException()) }
+//      .isA<IllegalStateException>()
+//  }
 }
 
 private suspend fun <T : Throwable> delayedException(input: T): T? =

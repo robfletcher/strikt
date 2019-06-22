@@ -91,5 +91,5 @@ inline fun <reified E : Throwable> expectThrows(
  *
  * @return an assertion for the successful or failed result of [action].
  */
-fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Result<T>> =
-  expectThat(runCatching { runBlocking { action() } })
+fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Try<T>> =
+  expectThat(tryCatching { runBlocking { action() } })
