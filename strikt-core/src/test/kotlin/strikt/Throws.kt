@@ -62,7 +62,7 @@ internal class Throws {
   }
 }
 
-private suspend fun <T : Throwable> delayedException(input: T): T? =
+private suspend fun <T : Throwable> delayedException(input: T): Nothing =
   withContext(Dispatchers.Default) {
     throw input
   }

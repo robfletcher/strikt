@@ -1,38 +1,26 @@
 package strikt.api
 
 /**
- * Represents the result of an action that may return a value of type [T] or
+ * Represents the outcome of an action that may return a value of type [T] or
  * throw an exception.
+
+ * In the case of a successful outcome [T] is the declared (or inferred) return
+ * type of the action. If [T] is [Unit] the action returned no value, but
+ * completed successfully. [T] may be a nullable type if `null` is a legitimate
+ * return value for the action.
+ *
+ * In the case of a failed outcome [T] is [Nothing] as the action did not return
+ * normally.
  */
 sealed class Try<out T : Any?>
 
-/**
- * Represents the outcome of an action that completed normally and returned a
- * value of type [T].
- *
- * If [T] is [Unit] this represents the successful execution of an action
- * that returned no value.
- */
-data class Success<out T : Any?>
-internal constructor(
-  /**
-   * The value returned by the action. May be `null` for actions that
-   * legitimately return `null` or [Unit] in the case of actions that return no
-   * value at all.
-   */
+internal data class Success<out T : Any?>(
   val value: T
 ) : Try<T>() {
   override fun toString() = "Success($value)"
 }
 
-/**
- * Represents the failed outcome of an action that threw an exception.
- */
-data class Failure
-internal constructor(
-  /**
-   * The exception thrown by a failed action.
-   */
+internal class Failure(
   val exception: Throwable
 ) : Try<Nothing>() {
   override fun toString() =

@@ -8,13 +8,11 @@ import strikt.api.Assertion
 import strikt.api.Try
 import strikt.api.expectCatching
 import strikt.api.expectThat
-import strikt.assertions.exception
 import strikt.assertions.failed
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.message
 import strikt.assertions.succeeded
-import strikt.assertions.value
 
 internal class Catching : JUnit5Minutests {
   fun tests() = rootContext<Assertion.Builder<Try<String>>> {
@@ -25,7 +23,6 @@ internal class Catching : JUnit5Minutests {
 
       test("maps to the action's returned value") {
         succeeded()
-          .value
           .isA<String>()
           .isEqualTo("kthxbye")
       }
@@ -39,7 +36,7 @@ internal class Catching : JUnit5Minutests {
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
           and {
-            failed().exception.isA<NullPointerException>()
+            failed().isA<NullPointerException>()
           }
         }.also { exception ->
           expectThat(exception.message).isEqualTo(
@@ -59,7 +56,6 @@ internal class Catching : JUnit5Minutests {
 
       test("maps to the exception thrown by the action") {
         failed()
-          .exception
           .isA<IllegalStateException>()
           .message
           .isEqualTo("o noes")
@@ -74,7 +70,7 @@ internal class Catching : JUnit5Minutests {
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
           and {
-            succeeded().value.isA<String>()
+            succeeded().isA<String>()
           }
         }.also { exception ->
           expectThat(exception.message).isEqualTo(
