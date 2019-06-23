@@ -8,7 +8,7 @@ For example:
 
 {% codesnippet key='catching_exceptions_1' testClass='Assertions' %}
 
-The `expectCatching` function returns `Assertion.Builder<Result<T>>` with the assertion's subject being a [kotlin.Result](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-result/index.html) containing whatever value the lambda returns or the exception it throws.
+The `expectCatching` function returns `Assertion.Builder<Try<T>>` with the assertion's subject being a wrapper for either the value the lambda returns or the exception it throws.
 
 ## Asserting failure
 
