@@ -12,14 +12,18 @@ import strikt.api.Try
  *
  * @see [Result.isSuccess].
  */
-inline fun <reified T : Any?> Assertion.Builder<Try<T>>.succeeded(): DescribeableBuilder<Success<T>> {
-  assert("succeeded") { subject ->
+inline fun <reified T : Any?> Assertion.Builder<Try<T>>.succeeded(): Assertion.Builder<Success<T>> {
+  @Suppress("UNCHECKED_CAST")
+  return assert("succeeded") { subject ->
     when (subject) {
       is Success -> pass()
-      is Failure -> fail(cause = subject.exception)
+      is Failure -> fail(
+        description = "threw %s",
+        actual = subject.exception,
+        cause = subject.exception
+      )
     }
-  }
-  return this as DescribeableBuilder<Success<T>>
+  } as Assertion.Builder<Success<T>>
 }
 
 /**
@@ -28,21 +32,32 @@ inline fun <reified T : Any?> Assertion.Builder<Try<T>>.succeeded(): Describeabl
  *
  * @see [Result.isFailure].
  */
-fun <T : Any?> Assertion.Builder<Try<T>>.failed(): DescribeableBuilder<Failure> {
-  assert("failed") { subject ->
+fun <T : Any?> Assertion.Builder<Try<T>>.failed(): Assertion.Builder<Failure> {
+  @Suppress("UNCHECKED_CAST")
+  return assert("failed with an exception") { subject ->
     when (subject) {
-      is Success -> fail(actual = subject.value)
+      is Success -> fail(
+        description = if (subject.value is Unit) "ran successfully" else "returned %s",
+        actual = subject.value
+      )
       is Failure -> pass()
     }
-  }
-  return this as DescribeableBuilder<Failure>
+  } as Assertion.Builder<Failure>
 }
 
+/**
+ * Maps this assertion to an assertion on the value returned by the successful
+ * action whose result is the current subject.
+ */
 val <T : Any?> Assertion.Builder<Success<T>>.value: DescribeableBuilder<T>
-  get() = get { value }
+  get() = get("returned value") { value }
 
+/**
+ * Maps this assertion to an assertion on the exception thrown by the failed
+ * action whose result is the current subject.
+ */
 val Assertion.Builder<Failure>.exception: DescribeableBuilder<Throwable>
-  get() = get { exception }
+  get() = get("caught exception") { exception }
 
 /**
  * Asserts that the subject is a isFailure result that threw an exception
@@ -52,4 +67,4 @@ val Assertion.Builder<Failure>.exception: DescribeableBuilder<Throwable>
  * @see [Result.isFailure].
  */
 inline fun <reified E : Throwable> Assertion.Builder<Try<*>>.failedWith() =
-  failed().isA<E>()
+  failed().exception.isA<E>()

@@ -7,6 +7,7 @@ import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.Try
 import strikt.api.expectCatching
+import strikt.api.expectThat
 import strikt.assertions.exception
 import strikt.assertions.failed
 import strikt.assertions.isA
@@ -36,10 +37,17 @@ internal class Catching : JUnit5Minutests {
       }
 
       test("chains correctly in a block") {
-        assertThrows<AssertionFailedError> {
+        assertThrows<AssertionError> {
           and {
             failed().exception.isA<NullPointerException>()
           }
+        }.also { exception ->
+          expectThat(exception.message).isEqualTo(
+            """
+            |▼ Expect that Success(kthxbye):
+            |  ✗ failed with an exception : returned "kthxbye"
+          """.trimMargin()
+          )
         }
       }
     }
@@ -64,10 +72,17 @@ internal class Catching : JUnit5Minutests {
       }
 
       test("chains correctly in a block") {
-        assertThrows<AssertionFailedError> {
+        assertThrows<AssertionError> {
           and {
             succeeded().value.isA<String>()
           }
+        }.also { exception ->
+          expectThat(exception.message).isEqualTo(
+            """
+            |▼ Expect that Failure(IllegalStateException: o noes):
+            |  ✗ succeeded : threw java.lang.IllegalStateException
+          """.trimMargin()
+          )
         }
       }
     }

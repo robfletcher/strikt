@@ -8,6 +8,7 @@ import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.all
+import strikt.assertions.exception
 import strikt.assertions.failed
 import strikt.assertions.hasLength
 import strikt.assertions.isA
@@ -165,6 +166,7 @@ internal class Assertions {
     // START catching_exceptions_1
     expectCatching { identifyHotdog("hamburger") }
       .failed()
+      .exception
       .isA<NotHotdogException>()
     // END catching_exceptions_1
 
