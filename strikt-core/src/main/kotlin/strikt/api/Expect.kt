@@ -28,8 +28,14 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
 
     override fun <T> catching(
       action: suspend () -> T
-    ): DescribeableBuilder<Result<T>> =
-      that(runCatching { runBlocking { action() } })
+    ): DescribeableBuilder<Try<T>> =
+      that(
+        try {
+          runBlocking { action() }.let(::Success)
+        } catch (e: Throwable) {
+          Failure(e)
+        }
+      )
   }
     .apply {
       runBlocking {

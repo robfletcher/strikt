@@ -22,6 +22,13 @@ For example:
 
 {% codesnippet key='catching_exceptions_2' testClass='Assertions' %}
 
+## With block assertions
+
+`catching` is also supported inside of block assertions.
+The `catching` function returns a `Assertion.Builder<Try<T>>` mentioned above.
+
+{% codesnippet key='catching_exceptions_3' testClass='Assertions' %}
+
 ### Shorthand form
 
 You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the `expectCatching` / `failed` / `isA<E>` combination.
