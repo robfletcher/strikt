@@ -34,5 +34,5 @@ interface ExpectationBuilder {
    * exception being thrown.
    * @return an assertion for the result of [action].
    */
-  fun <T> catching(action: suspend () -> T): DescribeableBuilder<Result<T>>
+  fun <T> catching(action: suspend () -> T): DescribeableBuilder<Try<T>>
 }

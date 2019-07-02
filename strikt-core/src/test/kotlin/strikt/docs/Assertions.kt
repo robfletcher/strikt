@@ -161,7 +161,7 @@ internal class Assertions {
 // expecting-exceptions.md
 // -----------------------------------------------------------------------------
 
-  @Test fun `catching exceptions 1, 2`() {
+  @Test fun `catching exceptions 1, 2, 3`() {
     // START catching_exceptions_1
     expectCatching { identifyHotdog("hamburger") }
       .failed()
@@ -172,6 +172,19 @@ internal class Assertions {
     expectCatching { identifyHotdog("hotdog") }
       .succeeded()
     // END catching_exceptions_2
+
+    // START catching_exceptions_3
+    expect {
+      catching { identifyHotdog("hamburger") }
+        .failed()
+        .isA<NotHotdogException>()
+
+      catching { identifyHotdog("hotdog") }
+        .succeeded()
+    }
+    expectCatching { identifyHotdog("hotdog") }
+      .succeeded()
+    // END catching_exceptions_3
   }
 
   @Test fun `expect_throws 1`() {
