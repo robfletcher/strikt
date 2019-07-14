@@ -27,8 +27,10 @@ See the button below or [releases/latest] for the current version number.
 Strikt has the following additional libraries:
 
 * `strikt-gradle` -- supports the Gradle build tool
+* `strikt-jackson` -- supports the Jackson JSON library.
 * `strikt-java-time` -- supports the JSR-310 `java.time` package.
 * `strikt-protobuf` -- supports Protobuf / gRPC.
+* `strikt-spring` -- supports the Spring Framework.
 
 Versions are synchronized with the core Strikt library.
 
@@ -38,6 +40,22 @@ For example:
 ```kotlin
 dependencies {
   testImplementation("io.strikt:strikt-java-time:<version>")
+}
+```
+
+## Bill of Materials
+
+Strikt supplies a BOM that is useful for aligning versions when using more than one Strikt module.
+
+```kotlin
+dependencies {
+  // BOM dependency
+  testImplementation(platform("io.strikt:strikt-bom:<version>"))
+  
+  // Versions can be omitted as they are supplied by the BOM
+  testImplementation("io.strikt:strikt-jackson")
+  testImplementation("io.strikt:strikt-java-time")
+  testImplementation("io.strikt:strikt-spring")
 }
 ```
 
