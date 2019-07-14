@@ -11,8 +11,6 @@ include(
   "site"
 )
 
-enableFeaturePreview("STABLE_PUBLISHING")
-
 rootProject.children.forEach {
   it.buildFileName = "${it.name}.gradle.kts"
 }
