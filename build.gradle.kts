@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "10.1.2"
-  id("nebula.kotlin") version "1.3.40" apply false
+  id("nebula.release") version "11.0.0"
+  id("nebula.kotlin") version "1.3.41" apply false
   id("org.jmailen.kotlinter") version "1.26.0" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
   id("com.github.ben-manes.versions") version "0.21.0"
@@ -47,7 +47,7 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "testImplementation"(platform("org.junit:junit-bom:5.4.2"))
+        "testImplementation"(platform("org.junit:junit-bom:5.5.0"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
