@@ -11,6 +11,16 @@ workflow "Release workflow" {
   ]
 }
 
+workflow "Daily workflow" {
+  on = "schedule(0 0 * * *)"
+  resolves = ["Update Gradle Wrapper"]
+}
+
+action "Update Gradle Wrapper" {
+  uses = "rahulsom/gradle-up@master"
+  secrets = ["GITHUB_TOKEN"]
+}
+
 action "Filter gh-pages branch" {
   uses = "actions/bin/filter@master"
   args = "not branch gh-pages"
