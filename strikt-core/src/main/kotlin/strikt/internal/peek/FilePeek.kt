@@ -8,7 +8,7 @@ internal data class FileInfo(
   val line: String
 )
 
-internal object FilePeek {
+internal class FilePeek {
   private val STRIKT_PACKAGES = listOf("strikt.internal", "strikt.api")
 
   fun getCallerFileInfo(
