@@ -1,10 +1,10 @@
 package strikt.internal.peek
 
-internal class ParsedMapInstruction(line: String) {
+internal class ParsedMethodCall(line: String, methodName: String) {
   val body: String
 
   init {
-    val firstPossibleBracket = line.indexOf("get") + 3
+    val firstPossibleBracket = line.indexOf(methodName) + methodName.length
     val firstBracket = line.indexOf('{', firstPossibleBracket) + 1
     val subjectEnd = findMatchingClosingBracket(line, firstBracket)
     body = line.substring(firstBracket, subjectEnd).trim()
