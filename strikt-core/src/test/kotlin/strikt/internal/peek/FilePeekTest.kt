@@ -8,34 +8,35 @@ import strikt.assertions.isEqualTo
 class FilePeekTest {
   private val fileName = "src/test/kotlin/strikt/internal/peek/FilePeekTest.kt"
 
+  private val filePeek = FilePeek()
   @Test
   fun `can get FileInfo`() {
-    val fileInfo = FilePeek.getCallerFileInfo(filterMethod("can get"))
+    val fileInfo = filePeek.getCallerFileInfo(filterMethod("can get"))
 
     expectThat(fileInfo) {
       get(FileInfo::sourceFileName)
         .endsWith(fileName)
       get(FileInfo::line)
-        .isEqualTo("""val fileInfo = FilePeek.getCallerFileInfo(filterMethod("can get"))""")
+        .isEqualTo("""val fileInfo = filePeek.getCallerFileInfo(filterMethod("can get"))""")
     }
   }
 
   @Test
   fun `can get FileInfo for a block`() {
-    val fileInfo = { FilePeek.getCallerFileInfo(filterMethod("can get")) }()
+    val fileInfo = { filePeek.getCallerFileInfo(filterMethod("can get")) }()
 
     expectThat(fileInfo) {
       get(FileInfo::sourceFileName)
         .endsWith(fileName)
       get(FileInfo::line)
-        .isEqualTo("""val fileInfo = { FilePeek.getCallerFileInfo(filterMethod("can get")) }()""")
+        .isEqualTo("""val fileInfo = { filePeek.getCallerFileInfo(filterMethod("can get")) }()""")
     }
   }
 
   @Test
   fun `can get block body even when it contains multiple `() {
     fun mapMethod(@Suppress("UNUSED_PARAMETER") block: () -> Unit) =
-      FilePeek.getCallerFileInfo(filterMethod("can get"))
+      filePeek.getCallerFileInfo(filterMethod("can get"))
 
     val fileInfo = mapMethod {
       /* LOL! I'm a block body*/
@@ -53,8 +54,8 @@ fun filterMethod(methodName: String): (StackTraceElement) -> Boolean =
 class FilePeekTestWithDifferentNameThanItsFile {
   @Test
   fun `finds classes that have a different name than the file they are in`() {
-    expectThat(FilePeek.getCallerFileInfo(filterMethod("finds")))
+    expectThat(FilePeek().getCallerFileInfo(filterMethod("finds")))
       .get { line }
-      .isEqualTo("expectThat(FilePeek.getCallerFileInfo(filterMethod(\"finds\")))")
+      .isEqualTo("expectThat(FilePeek().getCallerFileInfo(filterMethod(\"finds\")))")
   }
 }
