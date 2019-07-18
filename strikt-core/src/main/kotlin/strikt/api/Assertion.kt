@@ -1,7 +1,7 @@
 package strikt.api
 
-import filepeek.FilePeek
 import filepeek.ParsedMethodCall
+import strikt.internal.FilePeek
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
@@ -225,13 +225,7 @@ interface Assertion {
         )
         else -> {
           val fieldName = try {
-            val line = FilePeek(
-              listOf(
-                "strikt.internal",
-                "strikt.api",
-                "filepeek"
-              )
-            ).getCallerFileInfo().line
+            val line = FilePeek.filePeek.getCallerFileInfo().line
             ParsedMethodCall(line, "get").body.trim()
           } catch (e: Exception) {
             "%s"
