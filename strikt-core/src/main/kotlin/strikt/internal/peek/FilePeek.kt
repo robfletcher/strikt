@@ -8,12 +8,13 @@ internal data class FileInfo(
   val line: String
 )
 
-internal class FilePeek {
-  private val STRIKT_PACKAGES = listOf("strikt.internal", "strikt.api")
+internal class FilePeek(
+  private val ignoredPackages: List<String> = emptyList()
+) {
 
   fun getCallerFileInfo(
     filter: (StackTraceElement) -> Boolean = { el ->
-      STRIKT_PACKAGES
+      ignoredPackages
         .none { el.className.startsWith(it) }
     }
   ): FileInfo {
