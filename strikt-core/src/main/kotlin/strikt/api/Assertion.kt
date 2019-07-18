@@ -225,7 +225,12 @@ interface Assertion {
         )
         else -> {
           val fieldName = try {
-            val line = FilePeek().getCallerFileInfo().line
+            val line = FilePeek(
+              listOf(
+                "strikt.internal",
+                "strikt.api"
+              )
+            ).getCallerFileInfo().line
             ParsedMethodCall(line, "get").body.trim()
           } catch (e: Exception) {
             "%s"
