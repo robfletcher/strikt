@@ -8,6 +8,7 @@ import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.containsExactly
+import strikt.assertions.hasLength
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isLowerCase
@@ -94,5 +95,64 @@ internal class Chained {
         .trimMargin(),
       error.message
     )
+  }
+
+  @Test
+  fun `and { } and { }`() {
+    assertThrows<AssertionError> {
+      expectThat("one")
+        .and {
+          isEqualTo("one")
+        }
+        .and {
+          isEqualTo("two")
+        }
+    }
+  }
+
+  @Test
+  fun `and { } assert()`() {
+    assertThrows<AssertionError> {
+      expectThat("one")
+        .and {
+          isEqualTo("one")
+        }
+        .isEqualTo("two")
+    }
+  }
+
+  @Test
+  fun `assert() and { }`() {
+    assertThrows<AssertionError> {
+      expectThat("one")
+        .isEqualTo("one")
+        .and {
+          isEqualTo("two")
+        }
+    }
+  }
+
+  @Test
+  fun `assert() assert()`() {
+    assertThrows<AssertionError> {
+      expectThat("one")
+        .isEqualTo("one")
+        .isEqualTo("two")
+    }
+  }
+
+  @Test
+  fun `many nested 'and { }'`() {
+    assertThrows<AssertionError> {
+      expectThat("one")
+        .and {
+          isEqualTo("one")
+          and { hasLength(3) }
+        }
+        .and {
+          isEqualTo("two")
+          and { hasLength(4) }
+        }
+    }
   }
 }
