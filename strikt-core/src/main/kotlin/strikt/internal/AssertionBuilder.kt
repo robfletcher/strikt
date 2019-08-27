@@ -32,11 +32,14 @@ internal class AssertionBuilder<T>(
   ): Builder<T> =
     AssertionChainedGroup(context, context.subject)
       .let { nestedContext ->
+        // collect assertions from a child block
         AssertionBuilder(nestedContext, Collecting)
           .apply(assertions)
           .also {
             strategy.evaluate(nestedContext)
           }
+        // return the original context and AssertionStrategy for chaining
+        AssertionBuilder(context, strategy)
       }
 
   override fun not(assertions: Builder<T>.() -> Unit): Builder<T> {
