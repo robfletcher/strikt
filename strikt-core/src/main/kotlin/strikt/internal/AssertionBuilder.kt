@@ -38,8 +38,8 @@ internal class AssertionBuilder<T>(
           .also {
             strategy.evaluate(nestedContext)
           }
-        // return the original context and AssertionStrategy for chaining
-        AssertionBuilder(context, strategy)
+        // return the original builder for chaining
+        this
       }
 
   override fun not(assertions: Builder<T>.() -> Unit): Builder<T> {
