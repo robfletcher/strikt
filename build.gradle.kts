@@ -6,11 +6,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "11.0.0"
-  id("nebula.kotlin") version "1.3.41" apply false
-  id("org.jmailen.kotlinter") version "1.26.0" apply false
+  id("nebula.release") version "12.0.0"
+  id("nebula.kotlin") version "1.3.50" apply false
+  id("org.jmailen.kotlinter") version "2.1.1" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
-  id("com.github.ben-manes.versions") version "0.21.0"
+  id("com.github.ben-manes.versions") version "0.25.0"
 }
 
 buildscript {
@@ -47,7 +47,9 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "testImplementation"(platform("org.junit:junit-bom:5.5.0"))
+        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.3.50"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.1"))
+        "testImplementation"(platform("org.junit:junit-bom:5.5.2"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
@@ -76,7 +78,7 @@ subprojects {
         mutators = setOf("NEW_DEFAULTS")
         targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
         targetTests = setOf("strikt.**.*")
-        pitestVersion = "1.4.9"
+        pitestVersion = "1.4.10"
         threads = System.getenv("PITEST_THREADS")?.toInt()
           ?: Runtime.getRuntime().availableProcessors()
         outputFormats = setOf("XML", "HTML")
