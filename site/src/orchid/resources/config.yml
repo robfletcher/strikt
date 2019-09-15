@@ -41,6 +41,9 @@ theme:
       title: 'Gradle Module'
       itemId: 'strikt.gradle.testkit'
     - type: 'page'
+      title: 'Arrow Module'
+      itemId: 'strikt.arrow'
+    - type: 'page'
       title: 'Jackson Module'
       itemId: 'strikt.jackson'
     - type: 'page'
@@ -86,6 +89,7 @@ services:
 kotlindoc:
   sourceDirs:
   - '../../../../strikt-core/src/main/kotlin/'
+  - '../../../../strikt-arrow/src/main/kotlin/'
   - '../../../../strikt-gradle/src/main/kotlin/'
   - '../../../../strikt-jackson/src/main/kotlin/'
   - '../../../../strikt-java-time/src/main/kotlin/'

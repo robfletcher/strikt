@@ -5,9 +5,20 @@
 
 In addition to the core functionality provided by the `strikt-core` module, Strikt has the following optional modules:
 
+## Arrow
+
+Extensions for assertions and traversals on types from the [Arrow](https://arrow-kt.io/)'s functional programming library.
+See the {{ anchor('API docs', 'strikt.arrow') }}.
+
+Add the following to your dependencies:
+
+```kotlin
+testImplementation("io.strikt:strikt-arrow:{{ site.version }}")
+```
+
 ## Gradle
 
-Extensions for assertions and travels on [Gradle](https://github.com/gradle/gradle)'s test kit.
+Extensions for assertions and traversals on [Gradle](https://github.com/gradle/gradle)'s test kit.
 See the {{ anchor('API docs', 'strikt.gradle.testkit') }}.
 
 Add the following to your dependencies:
@@ -68,6 +79,7 @@ For example:
 ```kotlin
 dependencies {
   testImplementation(platform("io.strikt:strikt-bom:{{ site.version }}"))
+  testImplementation("io.strikt:strikt-arrow")
   testImplementation("io.strikt:strikt-jackson")
   testImplementation("io.strikt:strikt-java-time")
 }
