@@ -40,9 +40,8 @@ jobs:
     steps:
       - name: Tweet message
         uses: xorilog/twitter-action@0.2
-        args:
-          - -message
-          - "Strikt ${{ github.event.release.tag_name }} ${{ github.event.release.name }} is available. https://strikt.io\n\nRelease notes: https://github.com/${{ github.repository }}/releases/${{ github.event.release.tag_name }}"
+        with:
+          args: "-message \"Strikt ${{ github.event.release.tag_name }} ${{ github.event.release.name }} is available. https://strikt.io\n\nRelease notes: https://github.com/${{ github.repository }}/releases/${{ github.event.release.tag_name }}\""
         env:
           TWITTER_CONSUMER_KEY: ${{ secrets.TWITTER_CONSUMER_KEY }}
           TWITTER_CONSUMER_SECRET: ${{ secrets.TWITTER_CONSUMER_SECRET }}
