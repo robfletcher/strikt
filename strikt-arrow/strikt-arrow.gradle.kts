@@ -18,6 +18,6 @@ dependencies {
 
 tasks.dokka {
   externalDocumentationLink {
-    url = URL("https://arrow-kt.io/docs/quickstart/libraries/#arrow-core")
+    url = URL("https://arrow-kt.io/docs/apidocs/arrow-core-data/")
   }
 }
