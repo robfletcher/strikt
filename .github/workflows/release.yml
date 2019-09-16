@@ -20,6 +20,7 @@ jobs:
 
   site:
     needs: release
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -37,6 +38,7 @@ jobs:
 
   announce:
     needs: release
+    runs-on: ubuntu-latest
     steps:
       - name: Tweet message
         uses: xorilog/twitter-action@0.2
