@@ -10,8 +10,8 @@ plugins {
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.arrow-kt:arrow-core-data:0.9.0")
-  testImplementation("io.arrow-kt:arrow-core-data:0.9.0")
+  compileOnly("io.arrow-kt:arrow-core:0.10.0")
+  testImplementation("io.arrow-kt:arrow-core:0.10.0")
 
   testImplementation("dev.minutest:minutest:1.7.0")
 }
