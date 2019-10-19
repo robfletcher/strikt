@@ -1,4 +1,4 @@
-package strikt.arrow.`try`
+package strikt.arrow
 
 import arrow.core.Try
 import dev.minutest.junit.testFactoryFor
@@ -6,9 +6,7 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
-import strikt.assertions.isA
 import strikt.assertions.isEqualTo
-import strikt.assertions.isSameInstanceAs
 import strikt.assertions.message
 
 @DisplayName("assertions on Try")

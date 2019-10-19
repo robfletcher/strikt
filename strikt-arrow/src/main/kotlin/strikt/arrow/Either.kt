@@ -1,4 +1,4 @@
-package strikt.arrow.either
+package strikt.arrow
 
 import arrow.core.Either
 import strikt.api.Assertion

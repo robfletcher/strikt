@@ -1,4 +1,4 @@
-package strikt.arrow.validated
+package strikt.arrow
 
 import arrow.core.Validated
 import strikt.api.Assertion

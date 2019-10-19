@@ -1,4 +1,4 @@
-package strikt.arrow.`try`
+package strikt.arrow
 
 import arrow.core.Failure
 import arrow.core.Success
