@@ -5,6 +5,11 @@ import arrow.core.Option
 import arrow.core.Some
 import strikt.api.Assertion
 
+/**
+ * Asserts that the [Option] is [None]
+ * @return Assertion builder over the same subject that is now known to be
+ * a [None].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Option<T>>.isNone() =
   assert("should be None") {
@@ -14,6 +19,11 @@ fun <T> Assertion.Builder<Option<T>>.isNone() =
     }
   } as Assertion.Builder<None>
 
+/**
+ * Asserts that the [Option] is [Some]
+ * @return Assertion builder over the same subject that is now known to be
+ * a [Some].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Option<T>>.isSome() =
   assert("should be Some") {
@@ -23,6 +33,12 @@ fun <T> Assertion.Builder<Option<T>>.isSome() =
     }
   } as Assertion.Builder<Some<T>>
 
+/**
+ * Asserts that the [Option] is [Some] and that it contains the exact value
+ * @param value Value to compare to the [Option]'s wrapped value
+ * @return Assertion builder over the same subject that is now known to be
+ * a [Some].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
   assert("should be Some($value)") {
@@ -38,5 +54,9 @@ fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
     }
   } as Assertion.Builder<Some<T>>
 
+/**
+ * Unwraps the containing value of the [Some]
+ * @return Assertion builder over the unwrapped subject
+ */
 val <T> Assertion.Builder<Some<T>>.t: Assertion.Builder<T>
   get() = get("some value") { t }

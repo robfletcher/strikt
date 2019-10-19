@@ -5,6 +5,11 @@ import arrow.core.Success
 import arrow.core.Try
 import strikt.api.Assertion
 
+/**
+ * Asserts that the [Try] is [Success]
+ * @return Assertion builder over the same subject that is now known to be
+ * a [Success].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Try<T>>.isSuccess() =
   assert("should be Success") {
@@ -14,6 +19,12 @@ fun <T> Assertion.Builder<Try<T>>.isSuccess() =
     }
   } as Assertion.Builder<Success<T>>
 
+/**
+ * Asserts that the [Try] is [Success] and that it contains the exact value
+ * @param value Value to compare to the [Try]'s wrapped value
+ * @return Assertion builder over the same subject that is now known to be
+ * a [Success].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
   assert("should be Success($value)") {
@@ -29,9 +40,18 @@ fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
     }
   } as Assertion.Builder<Success<T>>
 
+/**
+ * Unwraps the containing value of the [Success]
+ * @return Assertion builder over the unwrapped subject
+ */
 val <T> Assertion.Builder<Success<T>>.value: Assertion.Builder<T>
   get() = get("success value") { value }
 
+/**
+ * Asserts that the [Try] is [Failure]
+ * @return Assertion builder over the same subject that is now known to be
+ * a [Failure].
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T> Assertion.Builder<Try<T>>.isFailure() =
   assert("should be Failure") {
@@ -41,5 +61,9 @@ fun <T> Assertion.Builder<Try<T>>.isFailure() =
     }
   } as Assertion.Builder<Failure>
 
+/**
+ * Unwraps the containing [Throwable] value of the [Failure]
+ * @return Assertion builder over the unwrapped [Throwable]
+ */
 val Assertion.Builder<Failure>.exception: Assertion.Builder<Throwable>
   get() = get("failure exception") { exception }
