@@ -43,7 +43,8 @@ orchid {
     ":strikt-jackson",
     ":strikt-java-time",
     ":strikt-protobuf",
-    ":strikt-spring"
+    ":strikt-spring",
+    ":strikt-arrow"
   ).map { project(it) }
 
   documentedModules.forEach {

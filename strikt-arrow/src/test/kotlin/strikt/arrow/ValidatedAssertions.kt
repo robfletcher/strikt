@@ -1,4 +1,4 @@
-package strikt.arrow.validated
+package strikt.arrow
 
 import arrow.core.invalid
 import arrow.core.valid
@@ -7,7 +7,6 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
-import strikt.arrow.MyTuple
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isNotBlank
@@ -41,7 +40,8 @@ object ValidatedAssertions {
     }
 
   })
- @TestFactory
+
+  @TestFactory
   fun validValidated() = testFactoryFor(rootContext<Unit> {
     val aValidated = "valid".valid()
 

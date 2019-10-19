@@ -1,4 +1,4 @@
-package strikt.arrow.option
+package strikt.arrow
 
 import arrow.core.Option
 import dev.minutest.junit.testFactoryFor
