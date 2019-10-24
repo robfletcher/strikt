@@ -167,20 +167,12 @@ fun <T : Path> Builder<T>.allBytes(): Builder<ByteArray> =
   get("all bytes", Files::readAllBytes)
 
 /**
- * Maps this assertion to an assertion over all lines of this subject path decoded using the `UTF-8` charset.
- *
- * @see Files.readAllLines
- */
-fun <T : Path> Builder<T>.allLines(): Builder<List<String>> =
-  get("all lines (UTF-8 encoding)", Files::readAllLines)
-
-/**
  * Maps this assertion to an assertion over all lines of this subject path decoded using the provided [charset].
  *
  * @param charset the charset to use in decoding
  * @see Files.readAllLines
  */
-fun <T : Path> Builder<T>.allLines(charset: Charset): Builder<List<String>> =
+fun <T : Path> Builder<T>.allLines(charset: Charset = Charsets.UTF_8): Builder<List<String>> =
   get("all lines ($charset encoding)") { Files.readAllLines(this, charset) }
 
 /**
