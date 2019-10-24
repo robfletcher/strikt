@@ -19,7 +19,7 @@ val <T : ClosedRange<E>, E> Builder<T>.endInclusive: Builder<E>
 /**
  * Asserts that the subject range contains the provided [element].
  */
-fun <T : ClosedRange<E>, E> Builder<T>.contains(element: E): Builder<T> =
+infix fun <T : ClosedRange<E>, E> Builder<T>.contains(element: E): Builder<T> =
   assert("contains %s", element) {
     when (element) {
       in it -> pass()

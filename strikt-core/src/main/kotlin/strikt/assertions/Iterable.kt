@@ -6,7 +6,7 @@ import strikt.api.Assertion.Builder
  * Applies [Iterable.map] with [function] to the subject and returns an
  * assertion builder wrapping the result.
  */
-fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
+infix fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
   get { map(function) }
 
 /**
@@ -35,7 +35,7 @@ fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> {
  *
  * @see Iterable.first
  */
-fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Builder<E> =
+infix fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Builder<E> =
   get("first matching element %s") { first(predicate) }
 
 /**
@@ -53,7 +53,7 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
  *
  * @see Iterable.flatMap
  */
-fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> =
+infix fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> =
   get { flatMap(transform) }
 
 /**
@@ -61,7 +61,7 @@ fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): B
  *
  * @see Iterable.filter
  */
-fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<List<E>> =
+infix fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<List<E>> =
   get { filter(predicate) }
 
 /**
@@ -69,7 +69,7 @@ fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<L
  *
  * @see Iterable.filter
  */
-fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): Builder<List<E>> =
+infix fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): Builder<List<E>> =
   get { filterNot(predicate) }
 
 /**
@@ -83,7 +83,7 @@ inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("all elements match:") { subject ->
     subject.forEach { element ->
       get("%s") { element }.apply(predicate)
@@ -96,7 +96,7 @@ fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit): Build
  * Asserts that _at least one_ element of the subject pass the assertions in
  * [predicate].
  */
-fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("at least one element matches:") { subject ->
     subject.forEach { element ->
       get("%s") { element }.apply(predicate)
@@ -108,7 +108,7 @@ fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit): Build
 /**
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
-fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEach { element ->
       get("%s") { element }.apply(predicate)
@@ -180,7 +180,7 @@ fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Builder<T> =
   when {
     elements.isEmpty() ->
       assert("contains the elements %s", elements) {
@@ -225,7 +225,7 @@ fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> =
   when {
     elements.isEmpty() ->
       throw IllegalArgumentException("You must supply some expected elements.")
@@ -272,7 +272,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder
  * assertion is probably not appropriate and you should use
  * [containsExactlyInAnyOrder] instead.
  */
-fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E>): Builder<T> =
   compose("contains exactly the elements %s", elements.toList()) { subject ->
     val original = subject.toList()
     val remaining = subject.toMutableList()
@@ -318,7 +318,7 @@ fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E
  * contains all the same elements with the same cardinality as [elements]
  * regardless of what order they appear in.
  */
-fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collection<E>): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Collection<E>): Builder<T> =
   compose(
     "contains exactly the elements %s in any order",
     elements.toList()
