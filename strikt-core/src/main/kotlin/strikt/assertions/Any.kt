@@ -50,7 +50,7 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
+infix fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
   assert("is equal to %s", expected) {
     when (it) {
       expected -> pass()
@@ -73,7 +73,7 @@ fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
  *
  * @param expected the expected value.
  */
-fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
+infix fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
   assert("is not equal to %s", expected) {
     when (it) {
       expected -> fail()
@@ -87,7 +87,7 @@ fun <T> Builder<T>.isNotEqualTo(expected: T?): Builder<T> =
  *
  * @param expected the expected instance.
  */
-fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
+infix fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
   assert("is the same instance as %s", expected) {
     when {
       it === expected -> pass()
@@ -101,7 +101,7 @@ fun <T> Builder<T>.isSameInstanceAs(expected: Any?): Builder<T> =
  *
  * @param expected the expected instance.
  */
-fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
+infix fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
   assert("is not the same instance as %s", expected) {
     when {
       it === expected -> fail()
@@ -116,7 +116,7 @@ fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
  *
  * Properties are identified using Java beans conventions.
  */
-fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
+infix fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
   compose("is equal field-by-field to %s", other) { subject ->
     Introspector.getBeanInfo(subject.javaClass).let { beanInfo ->
       beanInfo

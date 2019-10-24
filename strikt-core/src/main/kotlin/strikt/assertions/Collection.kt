@@ -5,7 +5,7 @@ import strikt.api.Assertion.Builder
 /**
  * Asserts that the subject has a [Collection.size] of exactly [expected].
  */
-fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
+infix fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
   assert("has size %d", expected) {
     when (it.size) {
       expected -> pass()
@@ -28,7 +28,7 @@ fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
 /**
  * Asserts that the subject collection is sorted according to the Comparator. Empty collections are considered sorted.
  */
-fun <T : Collection<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
+infix fun <T : Collection<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
   assert("is sorted") { actual ->
     val failed = (0 until actual.size - 1).fold(false) { notSorted, index ->
       if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {

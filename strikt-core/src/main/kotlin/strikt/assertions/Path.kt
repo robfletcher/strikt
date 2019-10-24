@@ -14,7 +14,7 @@ import java.nio.file.Path
  * @param other the given path
  * @see Path.endsWith
  */
-fun <T : Path> Builder<T>.endsWith(other: Path): Builder<T> =
+infix fun <T : Path> Builder<T>.endsWith(other: Path): Builder<T> =
   assert("ends with %s", other) {
     if (it.endsWith(other)) {
       pass()
@@ -29,7 +29,7 @@ fun <T : Path> Builder<T>.endsWith(other: Path): Builder<T> =
  * @param other the given path string
  * @see Path.endsWith
  */
-fun <T : Path> Builder<T>.endsWith(other: String): Builder<T> =
+infix fun <T : Path> Builder<T>.endsWith(other: String): Builder<T> =
   assert("ends with %s", other) {
     if (it.endsWith(other)) {
       pass()
@@ -68,7 +68,7 @@ val <T : Path> Builder<T>.parent: Builder<Path?>
  * @param other the path to resolve against this subject's path
  * @see Path.resolve
  */
-fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> =
+infix fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> =
   get("resolved against $other") { resolve(other) }
 
 /**
@@ -77,7 +77,7 @@ fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> =
  * @param other the path string to resolve against this subject's path
  * @see Path.resolve
  */
-fun <T : Path> Builder<T>.resolve(other: String): Builder<Path> =
+infix fun <T : Path> Builder<T>.resolve(other: String): Builder<Path> =
   get("resolved against $other") { resolve(other) }
 
 /**
@@ -86,7 +86,7 @@ fun <T : Path> Builder<T>.resolve(other: String): Builder<Path> =
  * @param other the given path
  * @see Path.startsWith
  */
-fun <T : Path> Builder<T>.startsWith(other: Path): Builder<T> =
+infix fun <T : Path> Builder<T>.startsWith(other: Path): Builder<T> =
   assertThat("starts with %s", expected = other) { it.startsWith(other) }
 
 /**
@@ -95,7 +95,7 @@ fun <T : Path> Builder<T>.startsWith(other: Path): Builder<T> =
  * @param other the given path string
  * @see Path.startsWith
  */
-fun <T : Path> Builder<T>.startsWith(other: String): Builder<T> =
+infix fun <T : Path> Builder<T>.startsWith(other: String): Builder<T> =
   assertThat("starts with %s", expected = other) { it.startsWith(other) }
 
 /**

@@ -6,7 +6,7 @@ import kotlin.text.RegexOption.IGNORE_CASE
 /**
  * Asserts that the subject has a [CharSequence.length] of exactly [expected].
  */
-fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.hasLength(expected: Int): Builder<T> =
   assert("has length %d", expected) {
     when (it.length) {
       expected -> pass()
@@ -33,7 +33,7 @@ fun <T : CharSequence> Builder<T>.isUpperCase(): Builder<T> =
 /**
  * Asserts that the subject starts with the [expected] character.
  */
-fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
   assert("starts with %s", expected) {
     if (it.startsWith(expected)) {
       pass()
@@ -45,7 +45,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: Char): Builder<T> =
 /**
  * Asserts that the subject starts with the [expected] string.
  */
-fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T> =
   assert("starts with %s", expected) {
     if (it.startsWith(expected)) {
       pass()
@@ -57,7 +57,7 @@ fun <T : CharSequence> Builder<T>.startsWith(expected: CharSequence): Builder<T>
 /**
  * Asserts that the subject ends with the [expected] character.
  */
-fun <T : CharSequence> Builder<T>.endsWith(expected: Char): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.endsWith(expected: Char): Builder<T> =
   assert("ends with %s", expected) {
     if (it.endsWith(expected)) {
       pass()
@@ -69,7 +69,7 @@ fun <T : CharSequence> Builder<T>.endsWith(expected: Char): Builder<T> =
 /**
  * Asserts that the subject ends with the [expected] string.
  */
-fun <T : CharSequence> Builder<T>.endsWith(expected: CharSequence): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.endsWith(expected: CharSequence): Builder<T> =
   assert("ends with %s", expected) {
     if (it.endsWith(expected)) {
       pass()
@@ -82,7 +82,7 @@ fun <T : CharSequence> Builder<T>.endsWith(expected: CharSequence): Builder<T> =
  * Asserts that the subject is a full match for the [expected] regular
  * expression.
  */
-fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
   assert("matches the regular expression %s", expected) {
     if (it.matches(expected)) {
       pass()
@@ -95,7 +95,7 @@ fun <T : CharSequence> Builder<T>.matches(expected: Regex): Builder<T> =
  * Asserts that the subject is a full match for the [expected] regular
  * expression regardless of case.
  */
-fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<T> =
   assert(
     "matches the regular expression %s (ignoring case)",
     expected
@@ -114,7 +114,7 @@ fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Builder<
  * Asserts that the subject contains a match for the [expected] regular
  * expression.
  */
-fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
   assert("contains a match for the regular expression %s", expected) {
     if (it.contains(expected)) {
       pass()
@@ -127,7 +127,7 @@ fun <T : CharSequence> Builder<T>.contains(expected: Regex): Builder<T> =
  * Asserts that the subject contains a match for the [expected] regular
  * expression regardless of case.
  */
-fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder<T> =
   assert(
     "contains a match for the regular expression %s (ignoring case)",
     expected
@@ -145,7 +145,7 @@ fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): Builder
 /**
  * Asserts that the subject contains the [expected] substring.
  */
-fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
   assert("contains %s", expected) {
     if (it.contains(expected)) {
       pass()
@@ -158,7 +158,7 @@ fun <T : CharSequence> Builder<T>.contains(expected: CharSequence): Builder<T> =
  * Asserts that the subject contains the [expected] substring regardless of
  * case.
  */
-fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): Builder<T> =
+infix fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSequence): Builder<T> =
   assert("contains %s (ignoring case)", expected) {
     if (it.contains(expected, ignoreCase = true)) {
       pass()
