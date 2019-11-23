@@ -16,7 +16,7 @@ plugins {
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:3.9.1")
+  api("com.google.protobuf:protobuf-java:3.9.2")
 }
 
 tasks.dokka {
@@ -28,7 +28,7 @@ tasks.dokka {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:3.9.1"
+      artifact = "com.google.protobuf:protoc:3.9.2"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")

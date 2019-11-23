@@ -6,9 +6,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "12.0.0"
-  id("nebula.kotlin") version "1.3.50" apply false
-  id("org.jmailen.kotlinter") version "2.1.1" apply false
+  id("nebula.release") version "13.1.1"
+  id("nebula.kotlin") version "1.3.60" apply false
+  id("org.jmailen.kotlinter") version "2.1.3" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
   id("com.github.ben-manes.versions") version "0.25.0"
 }
@@ -16,7 +16,7 @@ plugins {
 buildscript {
   configurations.maybeCreate("pitest")
   dependencies {
-    "pitest"("org.pitest:pitest-junit5-plugin:0.9")
+    "pitest"("org.pitest:pitest-junit5-plugin:0.10")
   }
 }
 
@@ -47,7 +47,7 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.3.50"))
+        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.3.60"))
         "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.1"))
         "testImplementation"(platform("org.junit:junit-bom:5.5.2"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
