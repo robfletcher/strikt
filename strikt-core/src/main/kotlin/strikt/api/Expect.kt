@@ -69,7 +69,7 @@ fun <T> expectThat(subject: T): DescribeableBuilder<T> =
 fun <T> expectThat(
   subject: T,
   block: Builder<T>.() -> Unit
-): DescribeableBuilder<T> =
+) {
   AssertionSubject(subject).let { context ->
     AssertionBuilder(context, Collecting)
       .apply {
@@ -77,6 +77,7 @@ fun <T> expectThat(
         Throwing.evaluate(context)
       }
   }
+}
 
 /**
  * Asserts that [action]throws an exception of type [E] when executed.
