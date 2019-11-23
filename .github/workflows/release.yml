@@ -30,13 +30,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build site
-        run: ./gradlew :site:orchidBuild -Prelease.useLastTag=true -Penv=prod
       - name: Publish site
-        uses: maxheld83/ghpages@v0.2.1
+        run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:
-          BUILD_DIR: site/build/docs/orchid/
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   announce:
     name: Announce release
