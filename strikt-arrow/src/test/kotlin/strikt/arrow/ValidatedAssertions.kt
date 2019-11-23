@@ -38,7 +38,6 @@ object ValidatedAssertions {
         get { uuid }.isNotNull().isNotBlank()
       }
     }
-
   })
 
   @TestFactory
@@ -64,6 +63,5 @@ object ValidatedAssertions {
         get { uuid }.isNotNull().isNotBlank()
       }
     }
-
   })
 }

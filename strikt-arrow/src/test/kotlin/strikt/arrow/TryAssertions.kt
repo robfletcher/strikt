@@ -10,6 +10,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.message
 
 @DisplayName("assertions on Try")
+@Suppress("DEPRECATION")
 object TryAssertions {
 
   @TestFactory

@@ -10,7 +10,7 @@ import strikt.api.Assertion
  * @return Assertion builder over the same subject that is now known to be
  * a [Success].
  */
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 fun <T> Assertion.Builder<Try<T>>.isSuccess() =
   assert("should be Success") {
     when (it) {
@@ -25,7 +25,7 @@ fun <T> Assertion.Builder<Try<T>>.isSuccess() =
  * @return Assertion builder over the same subject that is now known to be
  * a [Success].
  */
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
   assert("should be Success($value)") {
     when (it) {
@@ -44,6 +44,7 @@ fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
  * Unwraps the containing value of the [Success]
  * @return Assertion builder over the unwrapped subject
  */
+@Suppress("DEPRECATION")
 val <T> Assertion.Builder<Success<T>>.value: Assertion.Builder<T>
   get() = get("success value") { value }
 
@@ -52,7 +53,7 @@ val <T> Assertion.Builder<Success<T>>.value: Assertion.Builder<T>
  * @return Assertion builder over the same subject that is now known to be
  * a [Failure].
  */
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 fun <T> Assertion.Builder<Try<T>>.isFailure() =
   assert("should be Failure") {
     when (it) {
@@ -65,5 +66,6 @@ fun <T> Assertion.Builder<Try<T>>.isFailure() =
  * Unwraps the containing [Throwable] value of the [Failure]
  * @return Assertion builder over the unwrapped [Throwable]
  */
+@Suppress("DEPRECATION")
 val Assertion.Builder<Failure>.exception: Assertion.Builder<Throwable>
   get() = get("failure exception") { exception }
