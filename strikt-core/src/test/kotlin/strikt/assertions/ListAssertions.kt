@@ -9,7 +9,6 @@ import strikt.api.expectThat
 @DisplayName("assertions on List")
 internal object ListAssertions {
 
-
   @TestFactory
   @DisplayName("containsSequence assertion")
   fun containsSequence() = assertionTests<List<Any?>> {

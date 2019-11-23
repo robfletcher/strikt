@@ -24,7 +24,7 @@ internal object BuildTaskAssertions {
   fun hasOutcome() = testFactoryFor(rootContext<Fixture> {
     fixture {
       Fixture().apply {
-        every { mockBuildTask.outcome } returns(TaskOutcome.SUCCESS)
+        every { mockBuildTask.outcome } returns TaskOutcome.SUCCESS
       }
     }
     test("when provided outcome is equal then the assertion passes") {
@@ -42,7 +42,7 @@ internal object BuildTaskAssertions {
   fun outcome() = testFactoryFor(rootContext<Fixture> {
     fixture {
       Fixture().apply {
-        every { mockBuildTask.outcome } returns(TaskOutcome.SUCCESS)
+        every { mockBuildTask.outcome } returns TaskOutcome.SUCCESS
       }
     }
     test("outcome maps to an assertion on the task outcome") {
@@ -199,7 +199,7 @@ internal object BuildTaskAssertions {
   fun path() = testFactoryFor(rootContext<Fixture> {
     fixture {
       Fixture().apply {
-        every { mockBuildTask.path } returns(":taskPath")
+        every { mockBuildTask.path } returns ":taskPath"
       }
     }
     test("path maps to an assertion on the task path") {

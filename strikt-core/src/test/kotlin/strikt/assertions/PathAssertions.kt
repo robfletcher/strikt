@@ -16,7 +16,8 @@ import java.nio.file.attribute.PosixFilePermissions
 // TODO: improve how fixture Path's are generated since we leveraging @TempDir, which only gets created once for the entire minutest test context
 internal object PathAssertions {
 
-  private fun TestDescriptor.joinFullName() = fullName().joinToString(separator = "_")
+  private fun TestDescriptor.joinFullName() =
+    fullName().joinToString(separator = "_")
 
   @TestFactory
   internal fun endsWith() = assertionTests<Path> {
@@ -298,7 +299,12 @@ internal object PathAssertions {
         expectThat(
           Files.createFile(
             directory.resolve(it.joinFullName()),
-            PosixFilePermissions.asFileAttribute(setOf(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_EXECUTE))
+            PosixFilePermissions.asFileAttribute(
+              setOf(
+                PosixFilePermission.OWNER_READ,
+                PosixFilePermission.OWNER_EXECUTE
+              )
+            )
           )
         )
       }
@@ -423,7 +429,12 @@ internal object PathAssertions {
 
     context("subject is a single line file") {
       fixture {
-        expectThat(Files.write(directory.resolve(it.joinFullName()), byteArrayOf(1, 2, 3, 4)))
+        expectThat(
+          Files.write(
+            directory.resolve(it.joinFullName()),
+            byteArrayOf(1, 2, 3, 4)
+          )
+        )
       }
 
       test("then allLines() maps to a singleton list of the line") {
@@ -451,7 +462,12 @@ internal object PathAssertions {
 
     context("subject is a single line file") {
       fixture {
-        expectThat(Files.write(directory.resolve(it.joinFullName()), listOf("first line")))
+        expectThat(
+          Files.write(
+            directory.resolve(it.joinFullName()),
+            listOf("first line")
+          )
+        )
       }
 
       test("then allLines() maps to a singleton list of the line") {
@@ -483,7 +499,10 @@ internal object PathAssertions {
     context("subject is a 4-byte file") {
       fixture {
         expectThat(
-          Files.write(Files.createFile(directory.resolve(it.joinFullName())), byteArrayOf(1, 2, 3, 4))
+          Files.write(
+            Files.createFile(directory.resolve(it.joinFullName())),
+            byteArrayOf(1, 2, 3, 4)
+          )
         )
       }
       test("then size maps to a 4") {

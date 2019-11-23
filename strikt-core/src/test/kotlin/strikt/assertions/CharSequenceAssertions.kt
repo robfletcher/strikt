@@ -185,13 +185,13 @@ internal object CharSequenceAssertions {
         context("when the subject is ${subject.quoted()}") {
           fixture { expectThat(subject) }
 
-        test("the assertion fails") {
-          assertThrows<AssertionFailedError> {
-            isNullOrEmpty()
+          test("the assertion fails") {
+            assertThrows<AssertionFailedError> {
+              isNullOrEmpty()
+            }
           }
         }
       }
-    }
   }
 
   @TestFactory
@@ -200,11 +200,11 @@ internal object CharSequenceAssertions {
       .forEach<CharSequence?> { subject ->
         context("when the subject is ${subject.quoted()}") {
           fixture { expectThat(subject) }
-        test("the assertion passes") {
-          isNullOrBlank()
+          test("the assertion passes") {
+            isNullOrBlank()
+          }
         }
       }
-    }
 
     listOf("catflap", "a", "73", "[]").forEach<CharSequence?> { subject ->
       context("when the subject is ${subject.quoted()}") {
@@ -284,11 +284,11 @@ internal object CharSequenceAssertions {
         context("when the subject is ${subject.quoted()}") {
           fixture { expectThat(subject) }
 
-        test("the assertion passes") {
-          isNotEmpty()
+          test("the assertion passes") {
+            isNotEmpty()
+          }
         }
       }
-    }
   }
 
   @TestFactory

@@ -43,7 +43,10 @@ internal object BuildResultAssertions {
   fun taskPaths() = testFactoryFor(rootContext<Fixture> {
     fixture {
       Fixture().apply {
-        every { mockBuildResult.taskPaths(TaskOutcome.UP_TO_DATE) } returns listOf(":upToDatePath")
+        every {
+          mockBuildResult
+            .taskPaths(TaskOutcome.UP_TO_DATE)
+        } returns listOf(":upToDatePath")
       }
     }
 

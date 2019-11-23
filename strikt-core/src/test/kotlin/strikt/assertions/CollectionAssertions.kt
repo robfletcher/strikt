@@ -129,27 +129,28 @@ internal object CollectionAssertions {
   }
 
   @TestFactory
-  fun isSortedOnNonComparable() = assertionTests<Collection<Collection<String>?>> {
-    context("an non-empty non Comparable value collection subject") {
-      fixture {
-        expectThat(
-          listOf(
-            listOf("catflap"),
-            listOf("marzipan", "persipan"),
-            listOf("rubberplan", "rubber bush", "rubber tree")
+  fun isSortedOnNonComparable() =
+    assertionTests<Collection<Collection<String>?>> {
+      context("an non-empty non Comparable value collection subject") {
+        fixture {
+          expectThat(
+            listOf(
+              listOf("catflap"),
+              listOf("marzipan", "persipan"),
+              listOf("rubberplan", "rubber bush", "rubber tree")
+            )
           )
-        )
-      }
+        }
 
-      test("the assertion passes") {
-        isSorted(Comparator.comparing(Collection<String>::size))
-      }
+        test("the assertion passes") {
+          isSorted(Comparator.comparing(Collection<String>::size))
+        }
 
-      test("fails if the subject is not sorted according to the comparator") {
-        assertThrows<AssertionError> {
-          isSorted(Comparator.comparing(Collection<String>::size).reversed())
+        test("fails if the subject is not sorted according to the comparator") {
+          assertThrows<AssertionError> {
+            isSorted(Comparator.comparing(Collection<String>::size).reversed())
+          }
         }
       }
     }
-  }
 }

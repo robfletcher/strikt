@@ -97,7 +97,10 @@ internal object ComparableAssertions {
   @TestFactory
   fun comparableAssertions_Instant() = assertionTests<Instant> {
     context("an Instant subject") {
-      supportsComparisonAssertions(Instant.now(), { minusMillis(1) }, { plusMillis(1) })
+      supportsComparisonAssertions(
+        Instant.now(),
+        { minusMillis(1) },
+        { plusMillis(1) })
     }
   }
 

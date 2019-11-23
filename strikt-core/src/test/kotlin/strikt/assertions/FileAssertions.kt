@@ -13,7 +13,8 @@ import java.nio.file.Path
 @DisplayName("assertions on java.io.File")
 internal object FileAssertions {
 
-  private fun TestDescriptor.joinFullName() = fullName().joinToString(separator = "_")
+  private fun TestDescriptor.joinFullName() =
+    fullName().joinToString(separator = "_")
 
   @TestFactory
   internal fun name() = assertionTests<File> {
@@ -121,7 +122,10 @@ internal object FileAssertions {
     context("subject is a single line file") {
       fixture {
         expectThat(
-          Files.write(directory.resolve(it.joinFullName()), listOf("first line")).toFile()
+          Files.write(
+            directory.resolve(it.joinFullName()),
+            listOf("first line")
+          ).toFile()
         )
       }
 
@@ -157,7 +161,10 @@ internal object FileAssertions {
     context("subject is a single line file") {
       fixture {
         expectThat(
-          Files.write(directory.resolve(it.joinFullName()), "first line".toByteArray()).toFile()
+          Files.write(
+            directory.resolve(it.joinFullName()),
+            "first line".toByteArray()
+          ).toFile()
         )
       }
 

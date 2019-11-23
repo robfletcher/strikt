@@ -492,7 +492,8 @@ internal object IterableAssertions {
     derivedContext<Iterable<String>>("a non-Collection Iterable subject") {
       fixture {
         object : Iterable<String> {
-          override fun iterator() = arrayOf("catflap", "rubberplant", "marzipan").iterator()
+          override fun iterator() =
+            arrayOf("catflap", "rubberplant", "marzipan").iterator()
         }
       }
 
