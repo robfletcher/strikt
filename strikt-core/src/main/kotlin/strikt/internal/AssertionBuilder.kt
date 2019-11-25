@@ -35,9 +35,7 @@ internal class AssertionBuilder<T>(
         // collect assertions from a child block
         AssertionBuilder(nestedContext, Collecting)
           .apply(assertions)
-          .also {
             strategy.evaluate(nestedContext)
-          }
         // return the original builder for chaining
         this
       }
@@ -97,6 +95,20 @@ internal class AssertionBuilder<T>(
     } else {
       this as AssertionBuilder<R> // TODO: no, this is a lie
     }
+
+  override fun <R> with(
+    description: String,
+    function: T.() -> R,
+    block: Builder<R>.() -> Unit
+  ): Builder<T> {
+    val mappedValue = function(context.subject)
+    AssertionSubject(context, mappedValue, description)
+      .also { nestedContext ->
+        AssertionBuilder(nestedContext, Collecting).apply(block)
+        strategy.evaluate(nestedContext)
+      }
+    return this
+  }
 
   override fun not(): Builder<T> = AssertionBuilder(
     context,

@@ -71,11 +71,8 @@ fun <T> expectThat(
   block: Builder<T>.() -> Unit
 ) {
   AssertionSubject(subject).let { context ->
-    AssertionBuilder(context, Collecting)
-      .apply {
-        block()
-        Throwing.evaluate(context)
-      }
+    AssertionBuilder(context, Collecting).apply(block)
+    Throwing.evaluate(context)
   }
 }
 
@@ -88,8 +85,7 @@ fun <T> expectThat(
 inline fun <reified E : Throwable> expectThrows(
   noinline action: suspend () -> Any?
 ): Builder<E> =
-  expectCatching(action)
-    .failedWith()
+  expectCatching(action).failedWith()
 
 /**
  * Start a chain of assertions over the result of [action] which may either be

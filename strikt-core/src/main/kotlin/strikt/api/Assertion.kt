@@ -29,6 +29,8 @@ interface Assertion {
   /**
    * Used to construct assertions.
    *
+   * @param T the subject type.
+   *
    * @see expectThat
    * @see Assertion
    */
@@ -214,25 +216,55 @@ interface Assertion {
      * [function].
      */
     fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
-      when (function) {
+      get(describe(function), function)
+
+    /**
+     * Runs a group of assertions on the subject returned by [function].
+     *
+     * @param description a description of the mapped result.
+     * @param function a lambda whose receiver is the current assertion subject.
+     * @param block a closure that can perform multiple assertions that will all
+     * be evaluated regardless of whether preceding ones pass or fail.
+     * @param R the mapped subject type.
+     * @return this builder, to facilitate chaining.
+     */
+    fun <R> with(
+      description: String,
+      function: T.() -> R,
+      block: Builder<R>.() -> Unit
+    ): Builder<T>
+
+    /**
+     * Runs a group of assertions on the subject returned by [function].
+     *
+     * @param function a lambda whose receiver is the current assertion subject.
+     * @param block a closure that can perform multiple assertions that will all
+     * be evaluated regardless of whether preceding ones pass or fail.
+     * @param R the mapped subject type.
+     * @return this builder, to facilitate chaining.
+     */
+    fun <R> with(
+      function: T.() -> R,
+      block: Builder<R>.() -> Unit
+    ) = with(describe(function), function, block)
+
+    private fun <R> describe(function: T.() -> R): String {
+      return when (function) {
         is KProperty<*> ->
-          get("value of property ${function.name}", function)
+          "value of property ${function.name}"
         is KFunction<*> ->
-          get("return value of ${function.name}", function)
-        is CallableReference -> get(
-          "value of ${function.propertyName}",
-          function
-        )
+          "return value of ${function.name}"
+        is CallableReference -> "value of ${function.propertyName}"
         else -> {
-          val fieldName = try {
+          try {
             val line = FilePeek.filePeek.getCallerFileInfo().line
             LambdaBody("get", line).body.trim()
           } catch (e: Exception) {
             "%s"
           }
-          get(fieldName, function)
         }
       }
+    }
 
     /**
      * Maps the assertion subject to the result of [function].
@@ -250,9 +282,9 @@ interface Assertion {
     ): DescribeableBuilder<R>
 
     /**
-     * Deprecated form of [get]`((T) -> R)`.
+     * Deprecated form of [with]`((T) -> R)`.
      *
-     * @see get((T) -> R)
+     * @see with((T) -> R)
      */
     @Deprecated(
       "Use get instead",
@@ -262,9 +294,9 @@ interface Assertion {
       get(function)
 
     /**
-     * Deprecated form of [get]`(String, (T) -> R)`.
+     * Deprecated form of [with]`(String, (T) -> R)`.
      *
-     * @see get(String (T) -> R)
+     * @see with(String (T) -> R)
      */
     @Deprecated(
       "Use get instead",
