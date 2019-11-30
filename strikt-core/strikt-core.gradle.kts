@@ -12,5 +12,5 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
   implementation("com.christophsturm:filepeek:0.1.1")
 
-  testImplementation("dev.minutest:minutest:1.9.0")
+  testImplementation("dev.minutest:minutest:1.10.0")
 }
