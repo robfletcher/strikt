@@ -6,7 +6,6 @@ import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.internal.reporting.toHex
 import java.time.LocalDate
-import java.util.Base64
 import java.util.UUID
 
 internal object BeanPropertyAssertions {
@@ -142,6 +141,3 @@ internal object BeanPropertyAssertions {
     }
   }
 }
-
-private fun ByteArray.base64() =
-  Base64.getEncoder().encodeToString(this)
