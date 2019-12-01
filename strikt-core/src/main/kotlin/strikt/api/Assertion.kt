@@ -248,6 +248,9 @@ interface Assertion {
       block: Builder<R>.() -> Unit
     ) = with(describe(function), function, block)
 
+    private val reflectionEnabled: Boolean
+      get() = System.getProperty("strikt.disableReflection", "false") == "false"
+
     private fun <R> describe(function: T.() -> R): String {
       return when (function) {
         is KProperty<*> ->
@@ -256,10 +259,13 @@ interface Assertion {
           "return value of ${function.name}"
         is CallableReference -> "value of ${function.propertyName}"
         else -> {
-          try {
-            val line = FilePeek.filePeek.getCallerFileInfo().line
-            LambdaBody("get", line).body.trim()
-          } catch (e: Exception) {
+          if (reflectionEnabled) {
+            runCatching {
+              val line = FilePeek.filePeek.getCallerFileInfo().line
+              LambdaBody("get", line).body.trim()
+            }
+              .getOrDefault("%s")
+          } else {
             "%s"
           }
         }

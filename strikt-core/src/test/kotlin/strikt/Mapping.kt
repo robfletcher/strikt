@@ -196,7 +196,7 @@ internal class Mapping {
     }
 
     @Test
-    fun `descriptions are defaulted when using property references`() {
+    fun `descriptions are derived from property name when using Kotlin property references`() {
       val error = assertThrows<AssertionError> {
         expectThat(subject).get(Person::name).isEqualTo("Ziggy")
       }
@@ -209,13 +209,43 @@ internal class Mapping {
     }
 
     @Test
-    fun `descriptions also default for blocks`() {
+    fun `descriptions are derived via reflection when using a lambda`() {
+      val error = assertThrows<AssertionError> {
+        expectThat(subject).get { name } isEqualTo "Ziggy"
+      }
+      assertEquals(
+        """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ name:
+          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin(),
+        error.message
+      )
+    }
+
+    @Test
+    fun `reflection-based descriptions can be disabled for performance reasons`() {
+      try {
+        System.setProperty("strikt.disableReflection", "true")
+
+        val error = assertThrows<AssertionError> {
+          expectThat(subject).get { name } isEqualTo "Ziggy"
+        }
+        assertEquals(
+          """▼ Expect that Person(name=David, birthDate=1947-01-08):
+            |  ▼ "David":
+            |    ✗ is equal to "Ziggy" : found "David"""".trimMargin(),
+          error.message
+        )
+      } finally {
+        System.clearProperty("strikt.disableReflection")
+      }
+    }
+
+    @Test
+    fun `descriptions in blocks can be derived by reflection`() {
       val error = assertThrows<AssertionError> {
         expectThat(subject) {
-          get { name }.isEqualTo("Ziggy")
-          get {
-            birthDate.year
-          }.isEqualTo(1971)
+          get { name } isEqualTo "Ziggy"
+          get { birthDate.year } isEqualTo 1971
         }
       }
       assertEquals(

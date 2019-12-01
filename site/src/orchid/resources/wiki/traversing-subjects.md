@@ -10,7 +10,7 @@ Although you can obviously write assertions for the properties of an object with
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion.Builder<T>.get` method.  
+Strikt allows for this using the `Assertion.Builder<T>.get` method.
 
 ## Using _get_ with lambdas
 
@@ -25,11 +25,21 @@ This example produces output that looks like this:
 
 {% codesnippet key='traversing_subjects_3' testClass='Chaining' language='text' %}
 
+### Performance considerations
+
+Reading the test source can be costly performance-wise.
+If you are running large-scale parallel tests, property-based testing, or something similar, it probably makes sense to disable this behavior.
+If you set the system property `strikt.disableReflection` to `"true"` Strikt will _not_ use this technique to derive variable names.
+
+When using property or method references instead of lambdas, or providing an explicit description via the overridden form of `get` that accepts a description parameter, Strikt will not inspect the source code.
+
 ## Using _get_ with property or method references
 
-It's also possible to use a property or method reference in place of a lambda. 
+It's also possible to use a property or method reference in place of a lambda.
 
 {% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
+
+In this case Strikt will be able to access the property or method name to describe the derived subject with no performance penalty.
 
 ## Mapping elements of collections
 
