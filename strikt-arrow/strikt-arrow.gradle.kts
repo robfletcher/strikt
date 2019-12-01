@@ -17,7 +17,9 @@ dependencies {
 }
 
 tasks.dokka {
-  externalDocumentationLink {
-    url = URL("https://arrow-kt.io/docs/apidocs/arrow-core-data/")
+  configuration {
+    externalDocumentationLink {
+      url = URL("https://arrow-kt.io/docs/apidocs/arrow-core-data/")
+    }
   }
 }

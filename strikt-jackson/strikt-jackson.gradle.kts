@@ -17,7 +17,9 @@ dependencies {
 }
 
 tasks.dokka {
-  externalDocumentationLink {
-    url = URL("https://fasterxml.github.io/jackson-databind/javadoc/2.10/")
+  configuration {
+    externalDocumentationLink {
+      url = URL("https://fasterxml.github.io/jackson-databind/javadoc/2.10/")
+    }
   }
 }

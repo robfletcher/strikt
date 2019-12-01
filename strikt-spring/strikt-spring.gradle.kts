@@ -23,7 +23,10 @@ dependencies {
 }
 
 tasks.dokka {
-  externalDocumentationLink {
-    url = URL("https://docs.spring.io/spring-framework/docs/current/javadoc-api/")
+  configuration {
+    externalDocumentationLink {
+      url =
+        URL("https://docs.spring.io/spring-framework/docs/current/javadoc-api/")
+    }
   }
 }

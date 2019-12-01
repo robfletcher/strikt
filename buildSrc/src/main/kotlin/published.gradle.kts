@@ -12,10 +12,12 @@ plugins.withId("kotlin") {
     enabled = false
   }
 
-  tasks.dokka  {
+  tasks.dokka {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
-    jdkVersion = 9
+    configuration {
+      jdkVersion = 13
+    }
   }
 
   val dokkaJar = task<Jar>("dokkaJar") {
