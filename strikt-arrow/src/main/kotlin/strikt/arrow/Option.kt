@@ -40,7 +40,7 @@ fun <T> Assertion.Builder<Option<T>>.isSome() =
  * a [Some].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
+infix fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
   assert("should be Some($value)") {
     when (it) {
       is Some -> {

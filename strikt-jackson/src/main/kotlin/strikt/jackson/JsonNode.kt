@@ -19,7 +19,7 @@ import strikt.api.Assertion
 /**
  * Asserts that the subject node has a field named [fieldName].
  */
-fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.Builder<T> =
+infix fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.Builder<T> =
   assert("has a field named '$fieldName'") { subject ->
     if (subject.has(fieldName)) {
       pass()
@@ -36,7 +36,7 @@ fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.Builde
  * invalid the subject of the returned assertion builder will be a
  * [com.fasterxml.jackson.databind.node.MissingNode].
  */
-fun <T : JsonNode> Assertion.Builder<T>.path(fieldName: String): Assertion.Builder<JsonNode> =
+infix fun <T : JsonNode> Assertion.Builder<T>.path(fieldName: String): Assertion.Builder<JsonNode> =
   get { path(fieldName) }
 
 /**
@@ -145,7 +145,7 @@ fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolea
  * @see isNumber
  * @see isBoolean
  */
-fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
+infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
   nodeType: JsonNodeType
 ): Assertion.Builder<T> =
   assert("is a $nodeType node", nodeType) {
@@ -160,7 +160,7 @@ fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
  *
  * @see ArrayNode.size
  */
-fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
+infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
   assert("has $expected elements", expected) { subject ->
     if (subject.size() == expected) pass()
     else fail(subject.size())

@@ -11,7 +11,7 @@ import strikt.api.Assertion
  * `application/x-yaml`.
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : MediaType?> Assertion.Builder<T>.isCompatibleWith(expected: MediaType): Assertion.Builder<MediaType> =
+infix fun <T : MediaType?> Assertion.Builder<T>.isCompatibleWith(expected: MediaType): Assertion.Builder<MediaType> =
   assertThat("is compatible with $expected") {
     it?.isCompatibleWith(expected) ?: false
   } as Assertion.Builder<MediaType>

@@ -9,14 +9,14 @@ import strikt.api.Assertion
  * Maps this assertion to the task at the provided [taskPath].
  * @see BuildResult.task
  */
-fun <T : BuildResult> Assertion.Builder<T>.task(taskPath: String): Assertion.Builder<BuildTask?> =
+infix fun <T : BuildResult> Assertion.Builder<T>.task(taskPath: String): Assertion.Builder<BuildTask?> =
   get("task path") { task(taskPath) }
 
 /**
  * Maps this assertion to the task paths of the build with the provided [outcome].
  * @see BuildResult.taskPaths
  */
-fun <T : BuildResult> Assertion.Builder<T>.taskPaths(outcome: TaskOutcome): Assertion.Builder<List<String>> =
+infix fun <T : BuildResult> Assertion.Builder<T>.taskPaths(outcome: TaskOutcome): Assertion.Builder<List<String>> =
   get("task paths with outcome $outcome") { taskPaths(outcome) }
 
 /**
@@ -31,7 +31,7 @@ val <T : BuildResult> Assertion.Builder<T>.tasks: Assertion.Builder<List<BuildTa
  * @see BuildResult
  * @see TaskOutcome
  */
-fun <T : BuildResult> Assertion.Builder<T>.tasks(outcome: TaskOutcome): Assertion.Builder<List<BuildTask>> =
+infix fun <T : BuildResult> Assertion.Builder<T>.tasks(outcome: TaskOutcome): Assertion.Builder<List<BuildTask>> =
   get("tasks with outcome $outcome") { tasks(outcome) }
 
 /**

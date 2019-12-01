@@ -33,8 +33,8 @@ object EitherAssertions {
 
     test("can have nested assertions on unwrapped value") {
       expectThat(Either.left(MyTuple("myName", 1, "uuid"))).isLeft().a.and {
-        get { name }.isEqualTo("myName")
-        get { id }.isNotNull().isGreaterThan(0L)
+        get { name } isEqualTo "myName"
+        get { id }.isNotNull() isGreaterThan 0L
         get { uuid }.isNotNull().isNotBlank()
       }
     }
@@ -58,9 +58,9 @@ object EitherAssertions {
     }
 
     test("can have nested assertions on unwrapped value") {
-      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).isRight().b.and {
-        get { name }.isEqualTo("myName")
-        get { id }.isNotNull().isGreaterThan(0L)
+      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).isRight().b and {
+        get { name } isEqualTo "myName"
+        get { id }.isNotNull() isGreaterThan 0L
         get { uuid }.isNotNull().isNotBlank()
       }
     }

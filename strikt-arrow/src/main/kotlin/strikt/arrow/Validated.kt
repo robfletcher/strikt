@@ -21,7 +21,7 @@ fun <E, A> Assertion.Builder<Validated<E, A>>.isValid() =
  * a [Validated.Valid].
  */
 @Suppress("UNCHECKED_CAST")
-fun <E, A> Assertion.Builder<Validated<E, A>>.isValid(value: A) =
+infix fun <E, A> Assertion.Builder<Validated<E, A>>.isValid(value: A) =
   assert("should be Valid") {
     it.fold({ fail() }, { if (it == value) pass() else fail() })
   } as Assertion.Builder<Validated.Valid<A>>
@@ -52,7 +52,7 @@ fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid() =
  * a [Validated.Invalid].
  */
 @Suppress("UNCHECKED_CAST")
-fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid(value: E) =
+infix fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid(value: E) =
   assert("should be Valid") {
     it.fold({ if (it == value) pass() else fail() }, { fail() })
   } as Assertion.Builder<Validated.Invalid<E>>

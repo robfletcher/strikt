@@ -321,7 +321,7 @@ interface Assertion {
      * @param assertions the assertions to evaluate in reverse
      * @see not
      */
-    fun not(assertions: Builder<T>.() -> Unit): Builder<T>
+    infix fun not(assertions: Builder<T>.() -> Unit): Builder<T>
 
     /**
      * Evaluates a block of assertions on the current subject.

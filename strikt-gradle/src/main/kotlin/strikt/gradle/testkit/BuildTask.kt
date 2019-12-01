@@ -8,7 +8,7 @@ import strikt.api.Assertion
  * Asserts that the outcome is equal to [outcome].
  * @see BuildTask.getOutcome
  */
-fun <T : BuildTask> Assertion.Builder<T>.hasOutcome(outcome: TaskOutcome) =
+infix fun <T : BuildTask> Assertion.Builder<T>.hasOutcome(outcome: TaskOutcome) =
   assert("outcome is %s", outcome) {
     if (it.outcome == outcome) {
       pass()

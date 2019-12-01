@@ -67,7 +67,7 @@ fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs5xxServerError(): Asser
 /**
  * Asserts that the status code is equal to [expected].
  */
-fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs(expected: Int): Assertion.Builder<ResponseEntity<T>> =
+infix fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs(expected: Int): Assertion.Builder<ResponseEntity<T>> =
   assert("Status code is $expected") {
     if (it.statusCode.value() == expected) {
       pass()
@@ -79,7 +79,7 @@ fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs(expected: Int): Assert
 /**
  * Asserts that the status code is equal to [expected].
  */
-fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs(expected: HttpStatus): Assertion.Builder<ResponseEntity<T>> =
+infix fun <T> Assertion.Builder<ResponseEntity<T>>.statusCodeIs(expected: HttpStatus): Assertion.Builder<ResponseEntity<T>> =
   assert("Status code is $expected") {
     if (it.statusCode == expected) {
       pass()

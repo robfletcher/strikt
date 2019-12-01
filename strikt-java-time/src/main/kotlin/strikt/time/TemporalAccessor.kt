@@ -19,7 +19,7 @@ import java.time.temporal.TemporalField
  * @throws java.time.DateTimeException if [expected] is not a compatible
  * temporal type.
  */
-fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAccessor): Assertion.Builder<T> =
+infix fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAccessor): Assertion.Builder<T> =
   assertThat("is before %s", expected) {
     when (it) {
       is Instant -> it.isBefore(Instant.from(expected))
@@ -40,7 +40,7 @@ fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: TemporalAcces
  * @throws java.time.DateTimeException if [expected] is not a compatible
  * temporal type.
  */
-fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccessor): Assertion.Builder<T> =
+infix fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccessor): Assertion.Builder<T> =
   assertThat("is before %s", expected) {
     when (it) {
       is Instant -> it.isAfter(Instant.from(expected))

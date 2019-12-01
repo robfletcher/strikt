@@ -24,7 +24,7 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
  * a [Either.Right].
  */
 @Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
+infix fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
   assert("should be Right($value)") {
     when (it) {
       is Either.Right -> if (it.b == value) {
@@ -66,7 +66,7 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isLeft() =
  * a [Either.Left].
  */
 @Suppress("UNCHECKED_CAST")
-fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
+infix fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
   assert("should be Left($value)") {
     when (it) {
       is Either.Left -> {

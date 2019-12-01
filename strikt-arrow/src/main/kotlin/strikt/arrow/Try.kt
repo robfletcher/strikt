@@ -26,7 +26,7 @@ fun <T> Assertion.Builder<Try<T>>.isSuccess() =
  * a [Success].
  */
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
-fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
+infix fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
   assert("should be Success($value)") {
     when (it) {
       is Success -> {
