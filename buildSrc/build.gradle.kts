@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
   compile("org.jetbrains.dokka:dokka-gradle-plugin:0.10.0")
-  compile("com.netflix.nebula:nebula-publishing-plugin:9.4.6")
-  compile("com.netflix.nebula:nebula-bintray-plugin:5.0.0")
-  compile("com.ferranpons:twitter-gradle-plugin:1.1.0")
+  compile("com.netflix.nebula:nebula-publishing-plugin:14.1.1")
+  compile("com.netflix.nebula:nebula-bintray-plugin:6.0.6")
 }
