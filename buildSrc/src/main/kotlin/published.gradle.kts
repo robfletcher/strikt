@@ -16,7 +16,7 @@ plugins.withId("kotlin") {
     outputFormat = "html"
     outputDirectory = "$buildDir/javadoc"
     configuration {
-      jdkVersion = 13
+      jdkVersion = 9
     }
   }
 

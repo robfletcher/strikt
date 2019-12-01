@@ -13,8 +13,8 @@ import strikt.api.expectThat
 
 internal object MediaTypeAssertions : JUnit5Minutests {
 
+  @Suppress("DEPRECATION")
   fun tests() = rootContext<Assertion.Builder<MediaType?>> {
-
     context("a non-null media type subject") {
       fixture {
         expectThat(APPLICATION_JSON_UTF8)
