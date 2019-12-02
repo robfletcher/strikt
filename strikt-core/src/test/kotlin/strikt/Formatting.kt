@@ -140,19 +140,27 @@ internal class Formatting {
   }
 
   @Test
-  fun `newlines are stripped from string values in failure messages`() {
+  fun `multi-line string values in failure messages are formatted with margins`() {
     val subject = """a string
-      |with
-      |line breaks
-    """.trimMargin()
+                           |with
+                           |line breaks""".trimMargin()
 
     val e = assertThrows<AssertionError> {
-      expectThat(subject).isNullOrEmpty()
+      expectThat(subject) isEqualTo """a different string
+                                      |with
+                                      |line breaks""".trimMargin()
     }
 
     expectThat(e.message).isEqualTo(
-      """▼ Expect that "a string with line breaks":
-        |  ✗ is null or empty""".trimMargin()
+      """▼ Expect that "a string
+        |              |with
+        |              |line breaks":
+        |  ✗ is equal to "a different string
+        |                |with
+        |                |line breaks"
+        |          found "a string
+        |                |with
+        |                |line breaks"""".trimMargin()
     )
   }
 }
