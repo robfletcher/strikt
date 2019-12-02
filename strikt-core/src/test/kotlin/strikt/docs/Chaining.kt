@@ -44,9 +44,11 @@ internal class Chaining {
     val s = """ // IGNORE
     ▼ Expect that Person(name=David, birthDate=1947-01-08):
       ▼ name:
-        ✗ is equal to "Ziggy" : found "David"
+        ✗ is equal to "Ziggy"
+                found "David"
       ▼ birthDate.year:
-        ✗ is equal to 1971 : found 1947
+        ✗ is equal to 1971
+                found 1947
     """ // IGNORE
     // END traversing_subjects_3
 

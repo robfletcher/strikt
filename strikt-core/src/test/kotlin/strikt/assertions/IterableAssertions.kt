@@ -414,7 +414,8 @@ internal object IterableAssertions {
             |    ✓ …at index 0
             |    ✓ contains "rubberplant"
             |    ✓ …at index 1
-            |    ✗ contains no further elements : found ["marzipan"]""".trimMargin(),
+            |    ✗ contains no further elements
+            |      found ["marzipan"]""".trimMargin(),
           error.message
         )
       }
@@ -458,9 +459,11 @@ internal object IterableAssertions {
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["rubberplant", "catflap", "marzipan"]
             |    ✓ contains "rubberplant"
-            |    ✗ …at index 0 : found "catflap"
+            |    ✗ …at index 0
+            |      found "catflap"
             |    ✓ contains "catflap"
-            |    ✗ …at index 1 : found "rubberplant"
+            |    ✗ …at index 1
+            |      found "rubberplant"
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
             |    ✓ contains no further elements""".trimMargin(),
@@ -600,7 +603,8 @@ internal object IterableAssertions {
             |  ✗ contains exactly the elements ["catflap", "rubberplant"] in any order
             |    ✓ contains "catflap"
             |    ✓ contains "rubberplant"
-            |    ✗ contains no further elements : found ["marzipan"]""".trimMargin(),
+            |    ✗ contains no further elements
+            |      found ["marzipan"]""".trimMargin(),
           error.message
         )
       }

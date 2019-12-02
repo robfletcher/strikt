@@ -167,7 +167,8 @@ internal object AnyAssertions {
         }
         assertEquals(
           """▼ Expect that 5:
-            |  ✗ is equal to 5 (Int) : found 5 (Long)""".trimMargin(),
+            |  ✗ is equal to 5 (Int)
+            |          found 5 (Long)""".trimMargin(),
           error.message
         )
       }

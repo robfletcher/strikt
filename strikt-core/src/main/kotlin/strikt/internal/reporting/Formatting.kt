@@ -22,7 +22,7 @@ private fun Any.withTypeSuffix(typeOf: Any?) =
 internal fun formatValue(value: Any?): Any =
   when (value) {
     null -> "null"
-    is CharSequence -> "\"${value.normalize()}\""
+    is CharSequence -> "\"$value\""
     is Char -> "'$value'"
     is Iterable<*> -> if (value.javaClass.preferToString()) value.toString() else value.map(::formatValue)
     is Byte -> "0x${value.toString(16)}"
@@ -41,7 +41,7 @@ internal fun formatValue(value: Any?): Any =
     is Pair<*, *> -> "{${formatValue(value.first)}: ${formatValue(value.second)}}"
     is Map<*, *> -> value.map { (k, v) -> formatValue(k) to formatValue(v) }.toMap()
     is Number -> value
-    else -> value.toString().normalize()
+    else -> value.toString()
   }
 
 private fun Class<*>.preferToString(): Boolean =
@@ -59,9 +59,6 @@ internal fun ByteArray.toHex(): String {
 }
 
 internal const val FORMATTED_VALUE_MAX_LENGTH = 40
-
-private fun CharSequence.normalize() =
-  replace("\\n".toRegex(), " ")
 
 private fun CharSequence.truncate(maxLength: Int = FORMATTED_VALUE_MAX_LENGTH) =
   when (length) {

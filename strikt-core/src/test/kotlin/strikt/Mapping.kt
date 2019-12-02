@@ -188,9 +188,11 @@ internal class Mapping {
       assertEquals(
         """▼ Expect that a person named David:
           |  ▼ name:
-          |    ✗ is equal to "Ziggy" : found "David"
+          |    ✗ is equal to "Ziggy"
+          |            found "David"
           |  ▼ birth year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
+          |    ✗ is equal to 1971
+          |            found 1947""".trimMargin(),
         error.message
       )
     }
@@ -203,7 +205,8 @@ internal class Mapping {
       assertEquals(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property name:
-          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin(),
+          |    ✗ is equal to "Ziggy"
+          |            found "David"""".trimMargin(),
         error.message
       )
     }
@@ -221,9 +224,11 @@ internal class Mapping {
       assertEquals(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ name:
-          |    ✗ is equal to "Ziggy" : found "David"
+          |    ✗ is equal to "Ziggy"
+          |            found "David"
           |  ▼ birthDate.year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
+          |    ✗ is equal to 1971
+          |            found 1947""".trimMargin(),
         error.message
       )
     }
@@ -239,7 +244,8 @@ internal class Mapping {
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
-          |      ✗ is equal to 1971 : found 1947""".trimMargin(),
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin(),
         error.message
       )
     }

@@ -65,7 +65,8 @@ internal object ArrayAssertions {
           }
           assertEquals(
             """▼ Expect that 0x${subject.toHex()}:
-                |  ✗ is equal to 0x${expected.toHex()} : found 0x${subject.toHex()}"""
+                |  ✗ is equal to 0x${expected.toHex()}
+                |          found 0x${subject.toHex()}"""
               .trimMargin(),
             error.message
           )
@@ -149,7 +150,8 @@ internal object ArrayAssertions {
           }
           assertEquals(
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
-                |  ✗ is equal to ${expected.toList().map { "'$it'" }} : found ${subject.toList().map { "'$it'" }}"""
+                |  ✗ is equal to ${expected.toList().map { "'$it'" }}
+                |          found ${subject.toList().map { "'$it'" }}"""
               .trimMargin(),
             error.message
           )

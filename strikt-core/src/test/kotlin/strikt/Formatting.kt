@@ -11,7 +11,6 @@ import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 import strikt.assertions.isNotNull
-import strikt.assertions.isNullOrEmpty
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
 
@@ -57,17 +56,20 @@ internal class Formatting {
 
     val expected =
       """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
-        |  ✗ has size 0 : found 3
+        |  ✗ has size 0
+        |       found 3
         |  ✗ all elements match:
         |    ▼ "catflap":
         |      ✗ is upper case
         |      ✓ starts with 'c'
         |    ▼ "rubberplant":
         |      ✗ is upper case
-        |      ✗ starts with 'c' : found 'r'
+        |      ✗ starts with 'c'
+        |              found 'r'
         |    ▼ "marzipan":
         |      ✗ is upper case
-        |      ✗ starts with 'c' : found 'm'""".trimMargin()
+        |      ✗ starts with 'c'
+        |              found 'm'""".trimMargin()
     assertEquals(expected, e.message)
   }
 
@@ -90,9 +92,11 @@ internal class Formatting {
         |    ▼ "catflap":
         |      ✓ starts with 'c'
         |    ▼ "rubberplant":
-        |      ✗ starts with 'c' : found 'r'
+        |      ✗ starts with 'c'
+        |              found 'r'
         |    ▼ "marzipan":
-        |      ✗ starts with 'c' : found 'm'""".trimMargin()
+        |      ✗ starts with 'c'
+        |              found 'm'""".trimMargin()
 
     assertEquals(expected, e.message)
   }

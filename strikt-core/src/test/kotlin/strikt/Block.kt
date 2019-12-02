@@ -35,7 +35,8 @@ internal class Block {
         |  ✗ is null
         |  ✓ is not null
         |  ✓ is an instance of java.lang.String
-        |  ✗ is an instance of java.lang.Number : found java.lang.String"""
+        |  ✗ is an instance of java.lang.Number
+        |                found java.lang.String"""
         .trimMargin()
       assertEquals(expected, error.message)
     }
@@ -54,7 +55,8 @@ internal class Block {
       val expected = """
         |▼ Expect that "fnord":
         |  ✓ is not null
-        |  ✗ is an instance of java.lang.Number : found java.lang.String
+        |  ✗ is an instance of java.lang.Number
+        |                found java.lang.String
         |  ✓ is equal to "fnord""""
         .trimMargin()
       assertEquals(expected, error.message)
@@ -71,7 +73,8 @@ internal class Block {
     }.let { error ->
       val expected = """
         |▼ Expect that "fnord":
-        |  ✗ is an instance of java.lang.Integer : found java.lang.String"""
+        |  ✗ is an instance of java.lang.Integer
+        |                found java.lang.String"""
         .trimMargin()
       assertEquals(expected, error.message)
     }
@@ -148,8 +151,10 @@ internal class Block {
       val expected = """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ name:
-        |    ✗ starts with "Z" : found "D"
-        |    ✗ ends with "y" : found "d"
+        |    ✗ starts with "Z"
+        |            found "D"
+        |    ✗ ends with "y"
+        |          found "d"
         |    ✓ has length 5"""
         .trimMargin()
       expectThat(error.message).isEqualTo(expected)
@@ -170,8 +175,10 @@ internal class Block {
       val expected = """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ value of property name:
-        |    ✗ starts with "Z" : found "D"
-        |    ✗ ends with "y" : found "d"
+        |    ✗ starts with "Z"
+        |            found "D"
+        |    ✗ ends with "y"
+        |          found "d"
         |    ✓ has length 5"""
         .trimMargin()
       expectThat(error.message).isEqualTo(expected)
@@ -197,8 +204,10 @@ internal class Block {
         |  ▼ value of property birthDate:
         |    ✓ is less than 2019-11-30
         |  ▼ value of property name:
-        |    ✗ starts with "Z" : found "D"
-        |    ✗ ends with "y" : found "d"
+        |    ✗ starts with "Z"
+        |            found "D"
+        |    ✗ ends with "y"
+        |          found "d"
         |    ✓ has length 5"""
         .trimMargin()
       expectThat(error.message).isEqualTo(expected)
@@ -222,8 +231,10 @@ internal class Block {
       val expected = """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ value of property name:
-        |    ✗ starts with "Z" : found "D"
-        |    ✗ ends with "y" : found "d"
+        |    ✗ starts with "Z"
+        |            found "D"
+        |    ✗ ends with "y"
+        |          found "d"
         |    ✓ has length 5"""
         .trimMargin()
       expectThat(error.message).isEqualTo(expected)

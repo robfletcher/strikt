@@ -60,7 +60,8 @@ internal class CustomAssertions {
     // START custom_assertions_4
     val s = """ // IGNORE
     ▼ Expect that 2018-05-01:
-      ✗ is St. Tib's Day : in fact it is 2018-05-01
+      ✗ is St. Tib's Day
+        in fact it is 2018-05-01
     """ // IGNORE
     // END custom_assertions_4
 

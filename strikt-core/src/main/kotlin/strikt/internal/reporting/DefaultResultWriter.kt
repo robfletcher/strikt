@@ -95,13 +95,33 @@ internal open class DefaultResultWriter : ResultWriter {
     when {
       failed?.comparison != null -> {
         val formattedComparison = failed.comparison.formatValues()
+        val failedDescription = failed.description ?: "found %s"
+        val descriptionIndent = description.indexOf("%")
+        // the amount to further indent the "found %s" line so the values line up
+        val alignIndent =
+          (descriptionIndent - failedDescription.indexOf("%") + 2)
+            .coerceAtLeast(2)
         writer
-          .append(description.format(formattedComparison.expected))
-          .append(" : ")
-          .append(
-            (failed.description
-              ?: "found %s").format(formattedComparison.actual)
-          )
+          .append(description.format(formattedComparison.expected).let {
+            val lines = it.lines()
+            if (lines.size > 1) {
+              lines.joinToString("\n${"".padStart(descriptionIndent)}|")
+            } else {
+              it
+            }
+          })
+          .append("\n")
+        writeLineStart(writer, this, indent)
+        writer
+          .append("".padEnd(alignIndent))
+          .append(failedDescription.format(formattedComparison.actual).let {
+            val lines = it.lines()
+            if (lines.size > 1) {
+              lines.joinToString("\n${"".padStart(alignIndent)}|")
+            } else {
+              it
+            }
+          })
       }
       failed?.description != null -> writer
         .append(description.format(formatValue(expected)))
