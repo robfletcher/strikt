@@ -10,26 +10,38 @@ Although you can obviously write assertions for the properties of an object with
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
 
-Strikt allows for this using the `Assertion.Builder<T>.get` method.  
+Strikt allows for this using the `Assertion.Builder<T>.get` method.
 
-## Using _get_ with lambdas
+## Using _get_ with property or method references
 
-The method takes a lambda whose receiver is the current subject and returns an `Assertion.Builder<R>` where `R` (the new subject) is the type of whatever the lambda returns.
+The first override of `get` takes a property or (zero argument) method reference as a parameter.
+The `get` method returns an `Assertion.Builder<R>` where the new subject (whose type is `R`) is the value returned by invoking that property or method on the current subject.
 
 This is useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
+{% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
+
+## Using _get_ with lambdas
+
+An alternate version of the `get` method takes a lambda whose receiver is the current subject.
+
 {% codesnippet key='traversing_subjects_2' testClass='Chaining' %}
 
-Strikt will read the test source to find out the name of the variables.
+Strikt will attempt to read the test source to find out the name of the variables.
 This example produces output that looks like this:
 
 {% codesnippet key='traversing_subjects_3' testClass='Chaining' language='text' %}
 
-## Using _get_ with property or method references
+### Performance considerations
 
-It's also possible to use a property or method reference in place of a lambda. 
+Reading the test source can be costly performance-wise.
+If you are running large-scale parallel tests, property-based testing, or something similar, it probably makes sense to avoid this penalty.
+You can do so by:
 
-{% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
+* providing an explicit description parameter to `get` in addition to the lambda.
+* using `get` with a property/method reference rather than a lambda.
+
+In either of those cases Strikt will _not_ derive a description by attempting to read the source.
 
 ## Mapping elements of collections
 
