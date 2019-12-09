@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "13.1.1"
+  id("nebula.release") version "13.2.1"
   id("nebula.kotlin") version "1.3.61" apply false
   id("org.jmailen.kotlinter") version "2.1.3" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
