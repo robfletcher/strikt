@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import java.time.Instant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion.Builder
 import strikt.api.expectThat
-import java.time.Instant
 
 @DisplayName("assertions on Any")
 internal object AnyAssertions {

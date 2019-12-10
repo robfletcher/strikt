@@ -1,5 +1,7 @@
 package strikt.docs
 
+import java.time.LocalDate
+import java.time.MonthDay
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
@@ -9,8 +11,6 @@ import strikt.api.expectThrows
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import strikt.assertions.message
-import java.time.LocalDate
-import java.time.MonthDay
 
 @DisplayName("Snippets used in Orchid docs")
 internal class CustomAssertions {

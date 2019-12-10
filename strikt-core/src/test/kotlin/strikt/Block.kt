@@ -1,5 +1,6 @@
 package strikt
 
+import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -15,7 +16,6 @@ import strikt.assertions.isLessThan
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.startsWith
-import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
 internal class Block {

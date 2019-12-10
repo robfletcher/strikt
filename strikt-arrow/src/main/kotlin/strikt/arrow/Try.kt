@@ -2,9 +2,9 @@
 
 package strikt.arrow
 
+import arrow.core.Try
 import arrow.core.Try.Failure
 import arrow.core.Try.Success
-import arrow.core.Try
 import strikt.api.Assertion
 
 /**

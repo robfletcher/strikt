@@ -1,5 +1,7 @@
 package strikt.assertions
 
+import java.lang.System.nanoTime
+import java.util.Random
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -8,8 +10,6 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.internal.reporting.toHex
-import java.lang.System.nanoTime
-import java.util.Random
 
 @DisplayName("assertions on array types")
 internal object ArrayAssertions {

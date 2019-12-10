@@ -1,13 +1,13 @@
 package strikt.assertions
 
 import dev.minutest.TestDescriptor
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.io.TempDir
 import strikt.api.expectThat
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
 
 // TODO: improve how fixture Path's are generated since we leveraging @TempDir, which only gets created once for the entire minutest test context
 @DisplayName("assertions on java.io.File")

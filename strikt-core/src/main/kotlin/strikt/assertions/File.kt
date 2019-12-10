@@ -1,9 +1,9 @@
 package strikt.assertions
 
-import strikt.api.Assertion.Builder
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Path
+import strikt.api.Assertion.Builder
 
 // java.io.File
 /**

@@ -8,7 +8,7 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 plugins {
   id("nebula.release") version "13.2.1"
   id("nebula.kotlin") version "1.3.61" apply false
-  id("org.jmailen.kotlinter") version "2.1.3" apply false
+  id("org.jmailen.kotlinter") version "2.2.0" apply false
   id("info.solidsoft.pitest") version "1.4.0" apply false
   id("com.github.ben-manes.versions") version "0.27.0"
 }

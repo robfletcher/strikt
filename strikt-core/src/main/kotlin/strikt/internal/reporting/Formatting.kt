@@ -1,7 +1,7 @@
 package strikt.internal.reporting
 
-import strikt.internal.ComparedValues
 import kotlin.jvm.internal.CallableReference
+import strikt.internal.ComparedValues
 
 internal fun ComparedValues.formatValues(): ComparedValues {
   val e = formatValue(expected)

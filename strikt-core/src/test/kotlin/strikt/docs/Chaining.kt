@@ -1,5 +1,6 @@
 package strikt.docs
 
+import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.Album
@@ -17,7 +18,6 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.internal.opentest4j.CompoundAssertionFailure
-import java.time.LocalDate
 
 @DisplayName("Snippets used in Orchid docs")
 internal class Chaining {

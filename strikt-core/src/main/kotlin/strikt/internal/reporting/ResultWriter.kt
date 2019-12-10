@@ -1,7 +1,7 @@
 package strikt.internal.reporting
 
-import strikt.internal.AssertionNode
 import java.io.StringWriter
+import strikt.internal.AssertionNode
 
 internal interface ResultWriter {
   fun writeTo(writer: Appendable, node: AssertionNode<*>)

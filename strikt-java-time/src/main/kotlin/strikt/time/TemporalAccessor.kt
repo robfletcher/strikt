@@ -1,6 +1,5 @@
 package strikt.time
 
-import strikt.api.Assertion
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -12,6 +11,7 @@ import java.time.ZonedDateTime
 import java.time.chrono.ChronoLocalDate
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalField
+import strikt.api.Assertion
 
 /**
  * Asserts that the subject is before [expected].

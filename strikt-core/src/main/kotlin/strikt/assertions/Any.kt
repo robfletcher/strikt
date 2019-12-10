@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import strikt.api.Assertion.Builder
 import java.beans.Introspector
+import strikt.api.Assertion.Builder
 
 /**
  * Asserts that the subject is `null`.
