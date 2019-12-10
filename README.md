@@ -11,8 +11,8 @@ Any suggestions, [issue reports](https://github.com/robfletcher/strikt/issues), 
 Strikt is available from JCenter.
 
 ```kotlin
-repositories { 
-  jcenter() 
+repositories {
+  jcenter()
 }
 
 dependencies {
@@ -20,7 +20,7 @@ dependencies {
 }
 ```
 
-See the button below or [releases/latest] for the current version number.
+See the button below or [releases/latest](https://github.com/robfletcher/strikt/releases/latest) for the current version number.
 
 ## Additional Libraries
 
@@ -52,7 +52,7 @@ Strikt supplies a BOM that is useful for aligning versions when using more than 
 dependencies {
   // BOM dependency
   testImplementation(platform("io.strikt:strikt-bom:<version>"))
-  
+
   // Versions can be omitted as they are supplied by the BOM
   testImplementation("io.strikt:strikt-jackson")
   testImplementation("io.strikt:strikt-java-time")
@@ -69,7 +69,7 @@ Please see the [project documentation](https://strikt.io/) and [API docs](https:
 Join the [**#strikt**](https://kotlinlang.slack.com/messages/CAR7KJ96J) channel on the Kotlin Slack.
 
 Follow [**@stri_kt**](https://twitter.com/stri_kt) on Twitter for updates and release notifications.
- 
+
 [![Bintray](https://img.shields.io/badge/dynamic/json.svg?label=latest%20release&url=https%3A%2F%2Fapi.bintray.com%2F%2Fpackages%2Frobfletcher%2Fmaven%2Fstrikt-core%2Fversions%2F_latest&query=name&colorB=0094cd&style=for-the-badge)](https://bintray.com/robfletcher/maven/strikt-core)
 [![GitHub Release Date](https://img.shields.io/github/release-date/robfletcher/strikt.svg?style=for-the-badge)](https://github.com/robfletcher/strikt/)
 [![license](https://img.shields.io/github/license/robfletcher/strikt.svg?style=for-the-badge&logo=Apache)](https://www.apache.org/licenses/LICENSE-2.0.html)
