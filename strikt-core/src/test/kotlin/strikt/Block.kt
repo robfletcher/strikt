@@ -1,6 +1,5 @@
 package strikt
 
-import java.time.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -16,6 +15,7 @@ import strikt.assertions.isLessThan
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.startsWith
+import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
 internal class Block {
@@ -58,6 +58,22 @@ internal class Block {
         |  ✗ is an instance of java.lang.Number
         |                found java.lang.String
         |  ✓ is equal to "fnord""""
+        .trimMargin()
+      assertEquals(expected, error.message)
+    }
+  }
+
+  @Test
+  fun `isNotNull inside a block breaks chain if it fails`() {
+    assertThrows<AssertionError> {
+      val subject: Any? = null
+      expectThat(subject) {
+        isNotNull().isEqualTo("fnord")
+      }
+    }.let { error ->
+      val expected = """
+        |▼ Expect that null:
+        |  ✗ is not null"""
         .trimMargin()
       assertEquals(expected, error.message)
     }
