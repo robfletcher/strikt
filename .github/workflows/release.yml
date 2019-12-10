@@ -18,28 +18,10 @@ jobs:
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-
-  site:
-    name: Publish site
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Set up Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - name: Publish site
         run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
-  announce:
-    name: Announce release
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
       - name: Tweet release announcement
         uses: xorilog/twitter-action@0.2
         with:

@@ -21,9 +21,11 @@ dependencies {
 
 tasks.dokka {
   configuration {
-    externalDocumentationLink {
-      url =
-        URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
+    "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
+      externalDocumentationLink {
+        url = URL(it)
+        packageListUrl = URL(it + "package-list")
+      }
     }
   }
 }
