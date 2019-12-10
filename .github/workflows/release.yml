@@ -1,6 +1,8 @@
 name: Release
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -23,7 +25,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
       - name: Tweet release announcement
-        uses: xorilog/twitter-action@0.2
+        uses: xorilog/twitter-action@0.1
         with:
           args: "-message \"Strikt ${{ github.event.release.tag_name }} ${{ github.event.release.name }} is available. https://strikt.io\n\nRelease notes: https://github.com/${{ github.repository }}/releases/${{ github.event.release.tag_name }}\""
         env:
