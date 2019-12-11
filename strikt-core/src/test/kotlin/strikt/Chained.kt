@@ -157,4 +157,17 @@ internal class Chained {
         }
     }
   }
+
+  /**
+   * [#194](https://github.com/robfletcher/strikt/issues/194)
+   */
+  @Test
+  fun `compound following failing isNotNull`() {
+    assertThrows<AssertionError> {
+      val subject: List<String>? = null
+      expectThat(subject) {
+        isNotNull().contains("foo", "bar")
+      }
+    }
+  }
 }
