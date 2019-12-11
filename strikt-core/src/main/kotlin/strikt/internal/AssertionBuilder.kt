@@ -35,7 +35,7 @@ internal class AssertionBuilder<T>(
         // collect assertions from a child block
         AssertionBuilder(nestedContext, Collecting)
           .apply(assertions)
-            strategy.evaluate(nestedContext)
+        strategy.evaluate(nestedContext)
         // return the original builder for chaining
         this
       }
@@ -68,19 +68,29 @@ internal class AssertionBuilder<T>(
     description: String,
     expected: Any?,
     assertions: Builder<T>.(T) -> Unit
-  ): CompoundAssertions<T> {
-    val composedContext = strategy
-      .appendCompound(context, description, expected)
-    AssertionBuilder(composedContext, Collecting).apply {
-      assertions(context.subject)
-    }
-    return object : CompoundAssertions<T> {
-      override fun then(block: CompoundAssertion.() -> Unit): Builder<T> {
-        composedContext.block()
-        return this@AssertionBuilder
+  ): CompoundAssertions<T> =
+    if (context.allowChain) {
+      val composedContext = strategy
+        .appendCompound(context, description, expected)
+      AssertionBuilder(composedContext, Collecting).apply {
+        assertions(context.subject)
+      }
+      object : CompoundAssertions<T> {
+        override fun then(block: CompoundAssertion.() -> Unit): Builder<T> {
+          composedContext.block()
+          return this@AssertionBuilder
+        }
+      }
+    } else {
+      // return a no-op implementation, this will never get invoked. If
+      // `allowChain` is `false` we may have an inappropriate subject to pass to
+      // `assertions` that will raise an unexpected `IllegalArgumentException`.
+      object : CompoundAssertions<T> {
+        override fun then(block: CompoundAssertion.() -> Unit): Builder<T> {
+          return this@AssertionBuilder
+        }
       }
     }
-  }
 
   override fun <R> get(
     description: String,
@@ -93,6 +103,9 @@ internal class AssertionBuilder<T>(
         strategy
       )
     } else {
+      // fake return a builder that will never get invoked. If `allowChain` is
+      // `false` we may have an inappropriate subject to pass to `function` that
+      // will raise an unexpected `IllegalArgumentException`.
       this as AssertionBuilder<R> // TODO: no, this is a lie
     }
 
