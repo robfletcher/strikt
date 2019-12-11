@@ -24,6 +24,12 @@ jobs:
         run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+  announce:
+    name: Announce release
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
       - name: Tweet release announcement
         uses: xorilog/twitter-action@0.1
         with:
