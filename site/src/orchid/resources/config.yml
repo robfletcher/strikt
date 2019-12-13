@@ -31,30 +31,16 @@ theme:
     title: 'API'
     icon: 'book'
     menu:
-    - type: 'page'
-      title: 'Core API'
-      itemId: 'strikt.api'
-    - type: 'page'
-      title: 'Core Standard Library'
-      itemId: 'strikt.assertions'
-    - type: 'page'
-      title: 'Gradle Module'
-      itemId: 'strikt.gradle.testkit'
-    - type: 'page'
-      title: 'Arrow Module'
-      itemId: 'strikt.arrow'
-    - type: 'page'
-      title: 'Jackson Module'
-      itemId: 'strikt.jackson'
-    - type: 'page'
-      title: 'Java Time Module'
-      itemId: 'strikt.time'
-    - type: 'page'
-      title: 'Protobuf Module'
-      itemId: 'strikt.protobuf'
-    - type: 'page'
-      title: 'Spring Module'
-      itemId: 'strikt.spring'
+    - type: 'sourcedocModules'
+      moduleType:  'kotlindoc'
+      moduleGroup: 'core'
+    - type: 'sourcedocModules'
+      moduleType:  'kotlindoc'
+      moduleGroup: 'bom'
+    - type: 'separator'
+    - type: 'sourcedocModules'
+      moduleType:  'kotlindoc'
+      moduleGroup: 'module'
   - type: 'submenu'
     title: 'Information'
     icon: 'info-circle'
@@ -64,34 +50,38 @@ theme:
       itemId: 'About Strikt'
     - type: 'page'
       itemId: 'Changelog'
-
-allPages:
-  components:
-  - type: 'pageContent'
+  metaComponents:
+    - type: 'orchidSearch'
+      extraCss:
+        - 'assets/css/orchidSearch.scss'
+    - type: 'prism'
+      theme: 'tomorrow'
+      languages:
+        - 'clike'
+        - 'kotlin'
 
 services:
-  # Uncomment this block to temporarily disable Kotlin docs generation. Dokka
-  #   takes a few seconds to start up, which makes rapid iteration a bit painful,
-  #   so it may be helpful to disable it when making changes to the site.
-  #  generators:
-  #    disabled:
-  #      - 'kotlindoc'
   publications:
     stages:
-    # uncomment the following line line to break the build and prevent deploys when
-    # there is no changelog entry for the current version.
-    #    - type: requireChangelogVersion
     - type: githubPages
       branch: gh-pages
       username: robfletcher
       repo: strikt
 
 kotlindoc:
-  sourceDirs:
-  - '../../../../strikt-core/src/main/kotlin/'
-  - '../../../../strikt-arrow/src/main/kotlin/'
-  - '../../../../strikt-gradle/src/main/kotlin/'
-  - '../../../../strikt-jackson/src/main/kotlin/'
-  - '../../../../strikt-java-time/src/main/kotlin/'
-  - '../../../../strikt-protobuf/src/main/kotlin/'
-  - '../../../../strikt-spring/src/main/kotlin/'
+  # Uncomment `homePageOnly` line to temporarily disable Kotlin docs generation and only
+  #   generate module homepages. Dokka takes a few seconds to start up, which
+  #   makes rapid iteration a bit painful, so it may be helpful to disable it
+  #   when making changes to the site.
+#  homePageOnly: true
+  homePagePermalink:   'modules/:module'
+  sourcePagePermalink: ':moduleType/:module/:sourceDocPath'
+  modules:
+    - { name: 'Core API',          slug: 'core',     sourceDirs: '../../../../strikt-core/src/main/kotlin/',      moduleGroup: 'core'   }
+    - { name: 'Bill of Materials', slug: 'bom',      sourceDirs: '../../../../strikt-bom/src/main/kotlin/',       moduleGroup: 'bom'    }
+    - { name: 'Arrow Module',      slug: 'arrow',    sourceDirs: '../../../../strikt-arrow/src/main/kotlin/',     moduleGroup: 'module' }
+    - { name: 'Gradle Module',     slug: 'gradle',   sourceDirs: '../../../../strikt-gradle/src/main/kotlin/',    moduleGroup: 'module' }
+    - { name: 'Jackson Module',    slug: 'jackson',  sourceDirs: '../../../../strikt-jackson/src/main/kotlin/',   moduleGroup: 'module' }
+    - { name: 'Java Module',       slug: 'java',     sourceDirs: '../../../../strikt-java-time/src/main/kotlin/', moduleGroup: 'module' }
+    - { name: 'Protobuf Module',   slug: 'protobuf', sourceDirs: '../../../../strikt-protobuf/src/main/kotlin/',  moduleGroup: 'module' }
+    - { name: 'Spring Module',     slug: 'spring',   sourceDirs: '../../../../strikt-spring/src/main/kotlin/',    moduleGroup: 'module' }

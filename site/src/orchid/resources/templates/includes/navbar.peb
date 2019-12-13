@@ -25,7 +25,11 @@
           </a>
           <div class="navbar-dropdown is-right">
           {% for childLink in menuItem.children %}
-            <a class="navbar-item" href="{{ childLink.link }}">{{ childLink.title }}</a>
+            {% if childLink.isSeparator() %}
+              <hr class="navbar-divider">
+            {% else %}
+              <a class="navbar-item" href="{{ childLink.link }}">{{ childLink.title }}</a>
+            {% endif %}
           {% endfor %}
           </div>
         </div>
