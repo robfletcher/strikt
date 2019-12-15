@@ -37,7 +37,7 @@ infix fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.
  * [com.fasterxml.jackson.databind.node.MissingNode].
  */
 infix fun <T : JsonNode> Assertion.Builder<T>.path(fieldName: String): Assertion.Builder<JsonNode> =
-  get { path(fieldName) }
+  get("nodes at $fieldName") { path(fieldName) }
 
 /**
  * Asserts that the subject node is a JSON object.
@@ -108,7 +108,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isMissing(): Assertion.Builder<MissingNo
  * @see isTextual
  */
 fun <T : JsonNode> Assertion.Builder<T>.textValue(): Assertion.Builder<String?> =
-  get { textValue() }
+  get("text value", JsonNode::textValue)
 
 /**
  * Maps the assertion to an assertion on the subject node's number value.
@@ -119,7 +119,7 @@ fun <T : JsonNode> Assertion.Builder<T>.textValue(): Assertion.Builder<String?> 
  * @see isNumber
  */
 fun <T : JsonNode> Assertion.Builder<T>.numberValue(): Assertion.Builder<Number?> =
-  get { numberValue() }
+  get("number value", JsonNode::numberValue)
 
 /**
  * Maps the assertion to an assertion on the subject node's boolean value.
@@ -130,7 +130,7 @@ fun <T : JsonNode> Assertion.Builder<T>.numberValue(): Assertion.Builder<Number?
  * @see isBoolean
  */
 fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolean> =
-  get { booleanValue() }
+  get("boolean value", JsonNode::booleanValue)
 
 /**
  * Asserts that the subject node's [JsonNode.getNodeType] method returns
@@ -171,4 +171,5 @@ infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder
  *
  * @see ArrayNode.size
  */
-fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> = get { size() }
+fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> =
+  get("size", ArrayNode::size)
