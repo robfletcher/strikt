@@ -1,5 +1,6 @@
 package strikt.jackson
 
+import com.fasterxml.jackson.core.JsonPointer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.BooleanNode
@@ -38,6 +39,26 @@ infix fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.
  */
 infix fun <T : JsonNode> Assertion.Builder<T>.path(fieldName: String): Assertion.Builder<JsonNode> =
   get("nodes at $fieldName") { path(fieldName) }
+
+/**
+ * Maps the subject node of the assertion builder to the node accessed by [pointer].
+ *
+ * @return an assertion builder whose subject is the node at [pointer]. If [pointer] is invalid the
+ * subject of the returned assertion builder will be a
+ * [com.fasterxml.jackson.databind.node.MissingNode].
+ */
+infix fun <T : JsonNode> Assertion.Builder<T>.at(pointer: String): Assertion.Builder<JsonNode> =
+  get("nodes at $pointer") { at(pointer) }
+
+/**
+ * Maps the subject node of the assertion builder to the node accessed by [pointer].
+ *
+ * @return an assertion builder whose subject is the node at [pointer]. If [pointer] is invalid the
+ * subject of the returned assertion builder will be a
+ * [com.fasterxml.jackson.databind.node.MissingNode].
+ */
+infix fun <T : JsonNode> Assertion.Builder<T>.at(pointer: JsonPointer): Assertion.Builder<JsonNode> =
+  get("nodes at $pointer") { at(pointer) }
 
 /**
  * Asserts that the subject node is a JSON object.

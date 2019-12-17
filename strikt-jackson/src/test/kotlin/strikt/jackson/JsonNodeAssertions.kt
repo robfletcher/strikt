@@ -1,7 +1,6 @@
 package strikt.jackson
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeType.MISSING
 import com.fasterxml.jackson.databind.node.JsonNodeType.NULL
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.minutest.junit.JUnit5Minutests
@@ -51,15 +50,30 @@ internal object JsonNodeAssertions : JUnit5Minutests {
       test("maps the assertion to the specified field") {
         expectThat(this)
           .path("name")
-          .get { textValue() }
+          .textValue()
           .isEqualTo("Joshua Abraham Norton")
       }
 
       test("mapping to a field that does not exist results in a missing node") {
         expectThat(this)
           .path("date-of-birth")
-          .get { nodeType }
-          .isEqualTo(MISSING)
+          .isMissing()
+      }
+    }
+
+    context("at mapping") {
+      test("maps the assertion to the specified field") {
+        expectThat(this)
+          .at("/titles/0")
+          .isTextual()
+          .textValue()
+          .isEqualTo("Emperor of the United States")
+      }
+
+      test("mapping to a field that does not exist results in a missing node") {
+        expectThat(this)
+          .at("/titles/2")
+          .isMissing()
       }
     }
 
