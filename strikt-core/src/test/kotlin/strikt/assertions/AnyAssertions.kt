@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -165,10 +164,9 @@ internal object AnyAssertions {
         val error = assertThrows<AssertionFailedError> {
           isEqualTo(5)
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that 5:
-            |  ✗ is equal to 5 (Int) : found 5 (Long)""".trimMargin(),
-          error.message
+            |  ✗ is equal to 5 (Int) : found 5 (Long)""".trimMargin()
         )
       }
     }

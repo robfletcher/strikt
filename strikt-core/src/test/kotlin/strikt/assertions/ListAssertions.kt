@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -32,10 +31,9 @@ internal object ListAssertions {
             expectThat(fixture)
               .containsSequence(1, 4)
           }
-          assertEquals(
+          expectThat(exception.message).isEqualTo(
             """▼ Expect that [1, 2, 3, 4]:
-            |  ✗ contains the sequence: [1, 4] in exactly the same order""".trimMargin(),
-            exception.message
+            |  ✗ contains the sequence: [1, 4] in exactly the same order""".trimMargin()
           )
         }
 
@@ -44,10 +42,9 @@ internal object ListAssertions {
             expectThat(fixture)
               .containsSequence(1, 2, 3, 4, 5)
           }
-          assertEquals(
+          expectThat(exception.message).isEqualTo(
             """▼ Expect that [1, 2, 3, 4]:
-            |  ✗ contains the sequence: [1, 2, 3, 4, 5] in exactly the same order : expected sequence cannot be longer than subject""".trimMargin(),
-            exception.message
+              |  ✗ contains the sequence: [1, 2, 3, 4, 5] in exactly the same order : expected sequence cannot be longer than subject""".trimMargin()
           )
         }
 
@@ -56,10 +53,9 @@ internal object ListAssertions {
             expectThat(fixture)
               .containsSequence()
           }
-          assertEquals(
+          expectThat(exception.message).isEqualTo(
             """▼ Expect that [1, 2, 3, 4]:
-            |  ✗ contains the sequence: [] in exactly the same order : expected sequence cannot empty""".trimMargin(),
-            exception.message
+            |  ✗ contains the sequence: [] in exactly the same order : expected sequence cannot empty""".trimMargin()
           )
         }
       }

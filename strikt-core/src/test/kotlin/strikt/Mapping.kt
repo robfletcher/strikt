@@ -1,6 +1,5 @@
 package strikt
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -185,13 +184,12 @@ internal class Mapping {
               .isEqualTo(1971)
           }
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that a person named David:
           |  ▼ name:
           |    ✗ is equal to "Ziggy" : found "David"
           |  ▼ birth year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
-        error.message
+          |    ✗ is equal to 1971 : found 1947""".trimMargin()
       )
     }
 
@@ -200,11 +198,10 @@ internal class Mapping {
       val error = assertThrows<AssertionError> {
         expectThat(subject).get(Person::name).isEqualTo("Ziggy")
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property name:
-          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin(),
-        error.message
+          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin()
       )
     }
 
@@ -218,13 +215,12 @@ internal class Mapping {
           }.isEqualTo(1971)
         }
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ name:
           |    ✗ is equal to "Ziggy" : found "David"
           |  ▼ birthDate.year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin(),
-        error.message
+          |    ✗ is equal to 1971 : found 1947""".trimMargin()
       )
     }
 
@@ -235,12 +231,11 @@ internal class Mapping {
           .get(LocalDate::getYear)
           .isEqualTo(1971)
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
-          |      ✗ is equal to 1971 : found 1947""".trimMargin(),
-        error.message
+          |      ✗ is equal to 1971 : found 1947""".trimMargin()
       )
     }
   }

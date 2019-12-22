@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -77,7 +76,7 @@ internal object StringAssertions {
         startsWith("T")
       }
     }
-    assertEquals(2, error.failures.size)
+    expectThat(error.failures.size).isEqualTo(2)
   }
 
   @Test

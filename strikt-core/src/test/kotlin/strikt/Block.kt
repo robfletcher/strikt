@@ -1,6 +1,5 @@
 package strikt
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -37,7 +36,7 @@ internal class Block {
         |  ✓ is an instance of java.lang.String
         |  ✗ is an instance of java.lang.Number : found java.lang.String"""
         .trimMargin()
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
@@ -57,7 +56,7 @@ internal class Block {
         |  ✗ is an instance of java.lang.Number : found java.lang.String
         |  ✓ is equal to "fnord""""
         .trimMargin()
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
@@ -73,7 +72,7 @@ internal class Block {
         |▼ Expect that "fnord":
         |  ✗ is an instance of java.lang.Integer : found java.lang.String"""
         .trimMargin()
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
@@ -95,7 +94,7 @@ internal class Block {
         |  ✗ is not an instance of java.lang.String
         |  ✓ is not an instance of java.lang.Number"""
         .trimMargin()
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
@@ -117,7 +116,7 @@ internal class Block {
         |  ✗ is not an instance of java.lang.String
         |  ✓ is not an instance of java.lang.Number"""
         .trimMargin()
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
