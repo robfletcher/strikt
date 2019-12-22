@@ -42,7 +42,8 @@ internal class Catching : JUnit5Minutests {
           expectThat(exception.message).isEqualTo(
             """
             |▼ Expect that Success(kthxbye):
-            |  ✗ failed with an exception : returned "kthxbye"
+            |  ✗ failed with an exception
+            |    returned "kthxbye"
           """.trimMargin()
           )
         }
@@ -76,7 +77,8 @@ internal class Catching : JUnit5Minutests {
           expectThat(exception.message).isEqualTo(
             """
             |▼ Expect that Failure(IllegalStateException: o noes):
-            |  ✗ succeeded : threw java.lang.IllegalStateException
+            |  ✗ succeeded
+            |    threw java.lang.IllegalStateException
           """.trimMargin()
           )
         }

@@ -1,12 +1,12 @@
 package strikt.assertions
 
+import java.time.LocalDate
+import java.util.UUID
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.internal.reporting.toHex
-import java.time.LocalDate
-import java.util.UUID
 
 internal object BeanPropertyAssertions {
 
@@ -49,13 +49,15 @@ internal object BeanPropertyAssertions {
         """▼ Expect that Person(David):
           |  ✗ is equal field-by-field to Person(Ziggy)
           |    ▼ value of property dateOfBirth:
-          |      ✗ is equal to 1972-02-10 : found 1947-01-08
+          |      ✗ is equal to 1972-02-10
+          |              found 1947-01-08
           |    ▼ value of property id:
           |      ✓ is equal to ${subject.id}
           |    ▼ value of property image:
           |      ✓ array content equals 0x${subject.image.toHex()}
           |    ▼ value of property name:
-          |      ✗ is equal to "Ziggy" : found "David"""".trimMargin()
+          |      ✗ is equal to "Ziggy"
+          |              found "David"""".trimMargin()
       )
     }
   }
@@ -93,13 +95,15 @@ internal object BeanPropertyAssertions {
         """▼ Expect that Person(David):
           |  ✗ is equal field-by-field to Person(Ziggy)
           |    ▼ value of property dateOfBirth:
-          |      ✗ is equal to 1972-02-10 : found 1947-01-08
+          |      ✗ is equal to 1972-02-10
+          |              found 1947-01-08
           |    ▼ value of property id:
           |      ✓ is equal to ${subject.id}
           |    ▼ value of property image:
           |      ✓ array content equals 0x${subject.image.toHex()}
           |    ▼ value of property name:
-          |      ✗ is equal to "Ziggy" : found "David"""".trimMargin()
+          |      ✗ is equal to "Ziggy"
+          |              found "David"""".trimMargin()
       )
     }
   }
@@ -130,13 +134,16 @@ internal object BeanPropertyAssertions {
           """▼ Expect that Cat(Oreo):
             |  ✗ is equal field-by-field to Cat(Rocky)
             |    ▼ value of property breed:
-            |      ✗ is equal to "Russian Blue" : found "Tuxedo"
+            |      ✗ is equal to "Russian Blue"
+            |              found "Tuxedo"
             |    ▼ value of property legs:
             |      ✓ is equal to 4
             |    ▼ value of property name:
-            |      ✗ is equal to "Rocky" : found "Oreo"
+            |      ✗ is equal to "Rocky"
+            |              found "Oreo"
             |    ▼ value of property tails:
-            |      ✗ is equal to 1 : found 0""".trimMargin()
+            |      ✗ is equal to 1
+            |              found 0""".trimMargin()
         )
     }
   }

@@ -1,7 +1,7 @@
 package strikt.assertions
 
+import java.util.Collections
 import strikt.api.Assertion.Builder
-import java.util.*
 
 /**
  * Maps this assertion to an assertion on the element at index [i] in the
@@ -41,4 +41,3 @@ fun <T : List<E>, E> Builder<T>.containsSequence(elements: List<E>) =
       else -> fail()
     }
   }
-

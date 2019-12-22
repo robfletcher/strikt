@@ -1,6 +1,8 @@
 name: Release
 
-on: [release]
+on:
+  release:
+    types: [published]
 
 jobs:
   release:
@@ -8,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v1
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
@@ -18,18 +20,6 @@ jobs:
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
-
-  site:
-    name: Publish site
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Set up Java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
       - name: Publish site
         run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:
@@ -41,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Tweet release announcement
-        uses: xorilog/twitter-action@0.2
+        uses: xorilog/twitter-action@0.1
         with:
           args: "-message \"Strikt ${{ github.event.release.tag_name }} ${{ github.event.release.name }} is available. https://strikt.io\n\nRelease notes: https://github.com/${{ github.repository }}/releases/${{ github.event.release.tag_name }}\""
         env:

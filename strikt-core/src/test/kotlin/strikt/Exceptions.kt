@@ -91,7 +91,8 @@ class Exceptions {
             """▼ Expect that "fnord":
               |  ▼ value of property length:
               |    ✓ is greater than 0
-              |    ✗ is equal to 1 : found 5
+              |    ✗ is equal to 1
+              |            found 5
               |    ✗ is less than 2
               |    ✗ is not equal to 5"""
               .trimMargin()
@@ -106,7 +107,8 @@ class Exceptions {
             .isEqualTo(
               """▼ Expect that "fnord":
                 |  ▼ value of property length:
-                |    ✗ is equal to 1 : found 5"""
+                |    ✗ is equal to 1
+                |            found 5"""
                 .trimMargin()
             )
         }
@@ -155,7 +157,8 @@ class Exceptions {
             """▼ Expect that "fnord":
               |  ▼ value of property length:
               |    ✓ is greater than 0
-              |    ✗ is equal to 1 : found 5
+              |    ✗ is equal to 1
+              |            found 5
               |    ✗ is less than 2
               |    ✗ is not equal to 5"""
               .trimMargin()
@@ -170,7 +173,8 @@ class Exceptions {
           """▼ Expect that "fnord":
             |  ▼ value of property length:
             |    ✓ is greater than 0
-            |    ✗ is equal to 1 : found 5
+            |    ✗ is equal to 1
+            |            found 5
             |    ✗ is less than 2
             |    ✗ is not equal to 5"""
             .trimMargin()
@@ -195,7 +199,8 @@ class Exceptions {
               |    ✓ …at index 0
               |    ✓ contains "rubberplant"
               |    ✓ …at index 1
-              |    ✗ contains no further elements : found ["marzipan"]"""
+              |    ✗ contains no further elements
+              |      found ["marzipan"]"""
               .trimMargin()
           )
       }
@@ -220,7 +225,8 @@ class Exceptions {
               .message
               .isEqualTo(
                 """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
-                  |  ✗ has size 2 : found 3"""
+                  |  ✗ has size 2
+                  |       found 3"""
                   .trimMargin()
               )
             get(1)
@@ -233,7 +239,8 @@ class Exceptions {
                   |    ✓ …at index 0
                   |    ✓ contains "rubberplant"
                   |    ✓ …at index 1
-                  |    ✗ contains no further elements : found ["marzipan"]"""
+                  |    ✗ contains no further elements
+                  |      found ["marzipan"]"""
                   .trimMargin()
               )
           }

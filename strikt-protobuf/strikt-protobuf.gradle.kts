@@ -16,14 +16,16 @@ plugins {
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:3.11.0")
+  api("com.google.protobuf:protobuf-java:3.11.1")
 }
 
 tasks.dokka {
   configuration {
-    externalDocumentationLink {
-      url =
-        URL("https://developers.google.com/protocol-buffers/docs/reference/java/")
+    "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
+      externalDocumentationLink {
+        url = URL(it)
+        packageListUrl = URL(it + "package-list")
+      }
     }
   }
 }
@@ -31,7 +33,7 @@ tasks.dokka {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:3.11.0"
+      artifact = "com.google.protobuf:protoc:3.11.2"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")

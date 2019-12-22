@@ -111,7 +111,8 @@ internal object MapAssertions : JUnit5Minutests {
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✓ has an entry with the key "foo"
               |  ▼ entry ["foo"]:
-              |    ✗ is equal to "baz" : found "bar""""
+              |    ✗ is equal to "baz"
+              |            found "bar""""
               .trimMargin()
           )
         }

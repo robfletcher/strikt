@@ -82,8 +82,18 @@ internal open class DefaultResultWriter : ResultWriter {
     if (isRoot) {
       writer.append("Expect that ")
     }
+    // if the value spans > 1 line, this is how much to indent following lines
+    val valueIndent =
+      (description.indexOf("%")).coerceAtLeast(0) + 14 + (indent * 2)
+    val formattedValue = formatValue(subject)
     writer
-      .append(description.format(formatValue(subject)))
+      .append(
+        description.format(formattedValue).lines().joinToString(
+          "\n${"".padStart(
+            valueIndent
+          )}|"
+        )
+      )
       .append(":")
   }
 
@@ -95,13 +105,37 @@ internal open class DefaultResultWriter : ResultWriter {
     when {
       failed?.comparison != null -> {
         val formattedComparison = failed.comparison.formatValues()
+        val failedDescription = failed.description ?: "found %s"
+        val descriptionIndent = description.indexOf("%")
+        val descriptionIndentFollowing = descriptionIndent + (indent * 2) + 2
+        // the amount to further indent the "found %s" line so the values line up
+        val alignIndent =
+          (descriptionIndent - failedDescription.indexOf("%") + 2)
+            .coerceAtLeast(2)
+        val alignIndentFollowing =
+          alignIndent + failedDescription.indexOf("%") + (indent * 2)
         writer
-          .append(description.format(formattedComparison.expected))
-          .append(" : ")
-          .append(
-            (failed.description
-              ?: "found %s").format(formattedComparison.actual)
-          )
+          .append(description.format(formattedComparison.expected).let {
+            val lines = it.lines()
+            if (lines.size > 1) {
+              lines
+                .joinToString("\n${"".padStart(descriptionIndentFollowing)}|")
+            } else {
+              it
+            }
+          })
+          .append("\n")
+        writeLineStart(writer, this, indent)
+        writer
+          .append("".padEnd(alignIndent))
+          .append(failedDescription.format(formattedComparison.actual).let {
+            val lines = it.lines()
+            if (lines.size > 1) {
+              lines.joinToString("\n${"".padStart(alignIndentFollowing)}|")
+            } else {
+              it
+            }
+          })
       }
       failed?.description != null -> writer
         .append(description.format(formatValue(expected)))

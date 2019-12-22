@@ -20,9 +20,9 @@
               width="171"
               height="32">
           </a>
-          <a href="https://orchid.netlify.com/">
+          <a href="https://orchid.run/">
             <img
-              src="{{ 'assets/images/orchid.png' | asset }}"
+              src="{{ 'assets/svg/orchid/logo_top_light.svg' | asset }}"
               alt="Orchid {{ site.orchidVersion }}"
               width="64"
               height="32">

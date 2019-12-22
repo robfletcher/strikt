@@ -32,7 +32,8 @@ internal class Assertions {
     val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
-      ✗ has length 1 : found 5
+      ✗ has length 1
+             found 5
     """ // IGNORE
     // END assertion_styles_2
 
@@ -54,7 +55,8 @@ internal class Assertions {
     val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
-      ✗ has length 1 : found 5
+      ✗ has length 1
+             found 5
       ✗ is upper case
     """ // IGNORE
     // END assertion_styles_4
@@ -100,7 +102,8 @@ internal class Assertions {
     val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
-      ✗ has length 1 : found 5
+      ✗ has length 1
+             found 5
     ▼ Expect that 1:
       ✗ is less than 1
       ✗ is greater than 1
@@ -138,10 +141,12 @@ internal class Assertions {
           ✓ starts with 'c'
         ▼ "rubberplant":
           ✓ is lower case
-          ✗ starts with 'c' : found 'r'
+          ✗ starts with 'c'
+                  found 'r'
         ▼ "marzipan":
           ✓ is lower case
-          ✗ starts with 'c' : found 'm'
+          ✗ starts with 'c'
+                  found 'm'
     """ // IGNORE
     // END collections_1
 

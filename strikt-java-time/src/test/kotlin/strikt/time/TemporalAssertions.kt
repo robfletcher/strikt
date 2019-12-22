@@ -1,14 +1,5 @@
 package strikt.time
 
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.assertThrows
-import org.opentest4j.AssertionFailedError
-import strikt.api.expectThat
-import strikt.assertions.isEqualTo
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
@@ -26,6 +17,15 @@ import java.time.temporal.ChronoField.SECOND_OF_MINUTE
 import java.time.temporal.ChronoField.YEAR
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalField
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 @DisplayName("assertions on temporal types")
 internal class TemporalAssertions {

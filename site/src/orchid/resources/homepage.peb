@@ -14,6 +14,12 @@ layout: 'homepage'
 </section>
 
 <section class="columns is-centered">
+  <div class="column is-half">
+    <a class="is-block has-text-centered" href="{{ link('Changelog') }}">Version {{ site.version }}</a>
+  </div>
+</section>
+
+<section class="columns is-centered">
   <div class="column is-8">
     <div class="content is-medium">
       <p>

@@ -1,5 +1,6 @@
 package strikt
 
+import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -20,7 +21,6 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
-import java.time.LocalDate
 
 @DisplayName("mapping assertions")
 internal class Mapping {
@@ -187,9 +187,11 @@ internal class Mapping {
       expectThat(error.message).isEqualTo(
         """▼ Expect that a person named David:
           |  ▼ name:
-          |    ✗ is equal to "Ziggy" : found "David"
+          |    ✗ is equal to "Ziggy"
+          |            found "David"
           |  ▼ birth year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin()
+          |    ✗ is equal to 1971
+          |            found 1947""".trimMargin()
       )
     }
 
@@ -201,7 +203,8 @@ internal class Mapping {
       expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property name:
-          |    ✗ is equal to "Ziggy" : found "David"""".trimMargin()
+          |    ✗ is equal to "Ziggy"
+          |            found "David"""".trimMargin()
       )
     }
 
@@ -218,9 +221,11 @@ internal class Mapping {
       expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ name:
-          |    ✗ is equal to "Ziggy" : found "David"
+          |    ✗ is equal to "Ziggy"
+          |            found "David"
           |  ▼ birthDate.year:
-          |    ✗ is equal to 1971 : found 1947""".trimMargin()
+          |    ✗ is equal to 1971
+          |            found 1947""".trimMargin()
       )
     }
 
@@ -235,7 +240,8 @@ internal class Mapping {
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
-          |      ✗ is equal to 1971 : found 1947""".trimMargin()
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin()
       )
     }
   }

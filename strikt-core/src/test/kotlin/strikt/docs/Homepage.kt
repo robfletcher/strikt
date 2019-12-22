@@ -1,5 +1,7 @@
 package strikt.docs
 
+import java.time.LocalDate
+import java.time.MonthDay
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.Person
@@ -21,8 +23,6 @@ import strikt.assertions.matches
 import strikt.assertions.message
 import strikt.assertions.startsWith
 import strikt.internal.opentest4j.CompoundAssertionFailure
-import java.time.LocalDate
-import java.time.MonthDay
 
 // Wrap each code snippet in comments like "// START (snippet name)...// END (snippet name)"
 // Lines that end in "// IGNORE" will be excluded from the example
@@ -69,13 +69,16 @@ internal class Homepage {
     // START homepage_six
     val s = """ // IGNORE
     ▼ Expect that "The Enlightened take things Lightly":
-      ✗ has length 5 : found 35
-      ✗ matches the regular expression /\d+/ : found "The Enlightened take things Lightly"
+      ✗ has length 5
+             found 35
+      ✗ matches the regular expression /\d+/
+                                 found "The Enlightened take things Lightly"
       ✓ starts with "T"
     """ // IGNORE
     // END homepage_six
 
     expectThrows<CompoundAssertionFailure> {
+      /* ktlint-disable no-multi-spaces */
       // START homepage_five
       val subject = "The Enlightened take things Lightly"
       expectThat(subject) {
@@ -84,6 +87,7 @@ internal class Homepage {
         startsWith("T")        // still evaluated and passes
       }
       // END homepage_five
+      /* ktlint-enable no-multi-spaces */
     }
       .message
       .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
@@ -103,6 +107,7 @@ internal class Homepage {
 
   @Test
   fun `homepage eight`() {
+    /* ktlint-disable no-multi-spaces */
     // START homepage_eight
     val subject: Any? = "The Enlightened take things Lightly"
     expectThat(subject) // type: Assertion<Any?>
@@ -111,10 +116,12 @@ internal class Homepage {
       .matches(Regex("[\\w\\s]+"))
     // only available on Assertion<CharSequence>
     // END homepage_eight
+    /* ktlint-enable no-multi-spaces */
   }
 
   @Test
   fun `homepage nine`() {
+    /* ktlint-disable no-multi-spaces */
     // START homepage_nine
     val subject = Pantheon.NORSE
     expectThat(subject)
@@ -122,6 +129,7 @@ internal class Homepage {
       .get { toString() }   // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
+    /* ktlint-enable no-multi-spaces */
   }
 
   @Test

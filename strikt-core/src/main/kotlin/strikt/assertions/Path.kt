@@ -1,11 +1,11 @@
 package strikt.assertions
 
-import strikt.api.Assertion.Builder
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Path
+import strikt.api.Assertion.Builder
 
 // java.nio.file.Path
 /**

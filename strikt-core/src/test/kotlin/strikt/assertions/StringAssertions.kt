@@ -44,7 +44,11 @@ internal object StringAssertions {
       }
         .message
         .isNotNull()
-        .contains("""starts with "fnrd" : found "fnor"""")
+        .contains(
+          """▼ Expect that "fnord":
+                    |  ✗ starts with "fnrd"
+                    |          found "fnor"""".trimMargin()
+        )
     }
   }
 
@@ -62,7 +66,11 @@ internal object StringAssertions {
       }
         .message
         .isNotNull()
-        .contains("""ends with "nor" : found "ord"""")
+        .isEqualTo(
+          """▼ Expect that "fnord":
+                     |  ✗ ends with "nor"
+                     |        found "ord"""".trimMargin()
+        )
     }
   }
 

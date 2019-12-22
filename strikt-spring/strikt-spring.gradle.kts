@@ -12,7 +12,7 @@ dependencies {
 
   api(project(":strikt-core"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.2.1.RELEASE"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.2.2.RELEASE"))
   compileOnly("org.springframework:spring-test")
   compileOnly("org.springframework:spring-web")
   compileOnly("javax.servlet:javax.servlet-api")
@@ -24,9 +24,11 @@ dependencies {
 
 tasks.dokka {
   configuration {
-    externalDocumentationLink {
-      url =
-        URL("https://docs.spring.io/spring-framework/docs/current/javadoc-api/")
+    "https://docs.spring.io/spring-framework/docs/current/javadoc-api/".also {
+      externalDocumentationLink {
+        url = URL(it)
+        packageListUrl = URL(it + "package-list")
+      }
     }
   }
 }

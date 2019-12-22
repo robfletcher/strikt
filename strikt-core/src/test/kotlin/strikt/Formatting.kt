@@ -10,7 +10,6 @@ import strikt.assertions.hasSize
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotEqualTo
 import strikt.assertions.isNotNull
-import strikt.assertions.isNullOrEmpty
 import strikt.assertions.isUpperCase
 import strikt.assertions.startsWith
 
@@ -56,17 +55,20 @@ internal class Formatting {
 
     val expected =
       """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
-        |  ✗ has size 0 : found 3
+        |  ✗ has size 0
+        |       found 3
         |  ✗ all elements match:
         |    ▼ "catflap":
         |      ✗ is upper case
         |      ✓ starts with 'c'
         |    ▼ "rubberplant":
         |      ✗ is upper case
-        |      ✗ starts with 'c' : found 'r'
+        |      ✗ starts with 'c'
+        |              found 'r'
         |    ▼ "marzipan":
         |      ✗ is upper case
-        |      ✗ starts with 'c' : found 'm'""".trimMargin()
+        |      ✗ starts with 'c'
+        |              found 'm'""".trimMargin()
     expectThat(error.message).isEqualTo(expected)
   }
 
@@ -89,9 +91,11 @@ internal class Formatting {
         |    ▼ "catflap":
         |      ✓ starts with 'c'
         |    ▼ "rubberplant":
-        |      ✗ starts with 'c' : found 'r'
+        |      ✗ starts with 'c'
+        |              found 'r'
         |    ▼ "marzipan":
-        |      ✗ starts with 'c' : found 'm'""".trimMargin()
+        |      ✗ starts with 'c'
+        |              found 'm'""".trimMargin()
 
     expectThat(error.message).isEqualTo(expected)
   }
@@ -135,19 +139,27 @@ internal class Formatting {
   }
 
   @Test
-  fun `newlines are stripped from string values in failure messages`() {
+  fun `multi-line string values in failure messages are formatted with margins`() {
     val subject = """a string
-      |with
-      |line breaks
-    """.trimMargin()
+                           |with
+                           |line breaks""".trimMargin()
 
     val e = assertThrows<AssertionError> {
-      expectThat(subject).isNullOrEmpty()
+      expectThat(subject) isEqualTo """a different string
+                                      |with
+                                      |line breaks""".trimMargin()
     }
 
     expectThat(e.message).isEqualTo(
-      """▼ Expect that "a string with line breaks":
-        |  ✗ is null or empty""".trimMargin()
+      """▼ Expect that "a string
+        |              |with
+        |              |line breaks":
+        |  ✗ is equal to "a different string
+        |                |with
+        |                |line breaks"
+        |          found "a string
+        |                |with
+        |                |line breaks"""".trimMargin()
     )
   }
 }

@@ -2,11 +2,11 @@ package strikt.assertions
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import java.util.Optional
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
-import java.util.Optional
 
 internal object OptionalAssertions : JUnit5Minutests {
   fun isPresentTests() = rootContext<Assertion.Builder<Optional<String>>> {
