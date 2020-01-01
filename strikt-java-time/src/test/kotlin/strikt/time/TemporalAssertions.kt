@@ -1,5 +1,7 @@
 package strikt.time
 
+import dev.minutest.junit.JUnit5Minutests
+import dev.minutest.rootContext
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
@@ -17,218 +19,191 @@ import java.time.temporal.ChronoField.SECOND_OF_MINUTE
 import java.time.temporal.ChronoField.YEAR
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalField
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import java.time.LocalDateTime
 
-@DisplayName("assertions on temporal types")
-internal class TemporalAssertions {
+internal class TemporalAssertions : JUnit5Minutests {
 
   companion object {
-    val zone: ZoneId = ZoneId.systemDefault()
-    val now: Instant = Instant.now()
-    val local: ZonedDateTime = now.atZone(zone)
-    val today: LocalDate = local.toLocalDate()
-    val rightNow: LocalTime = local.toLocalTime()
+    val zone: ZoneId = ZoneId.of("America/Los_Angeles")
+    val instant: Instant = LocalDateTime.of(2019, 11, 29, 16, 43)
+      .atZone(zone)
+      .toInstant()
+    val local: ZonedDateTime = instant.atZone(zone)
+    val date: LocalDate = local.toLocalDate()
+    val time: LocalTime = local.toLocalTime()
   }
 
-  @Nested
-  @DisplayName("isBefore assertion")
-  inner class IsBefore {
-    @TestFactory
-    fun `passes if subject value is before the expected`() =
+  fun tests() = rootContext {
+    context("isBefore assertion") {
       listOf<Pair<TemporalAccessor, TemporalAccessor>>(
-        Pair(now, now.plusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.MIN).toInstant(), now.plusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.UTC).toInstant(), now.plusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.MAX).toInstant(), now.plusMillis(1)),
-        Pair(now, now.plusMillis(1).atOffset(ZoneOffset.MIN)),
-        Pair(now, now.plusMillis(1).atOffset(ZoneOffset.UTC)),
-        Pair(now, now.plusMillis(1).atOffset(ZoneOffset.MAX)),
-        Pair(today, today.plusDays(1)),
-        Pair(JapaneseDate.from(today), today.plusDays(1)),
-        Pair(rightNow, rightNow.plusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(rightNow, now.plusSeconds(1).atZone(zone)), // TODO: potential failure on day boundary
-        Pair(MonthDay.from(today), MonthDay.from(today.plusDays(1))),
-        Pair(MonthDay.from(today), today.plusDays(1)),
-        Pair(OffsetTime.from(local), local.plusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(Year.from(today), today.plusYears(1)),
-        Pair(YearMonth.from(today), today.plusMonths(1)),
+        Pair(instant, instant.plusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.MIN).toInstant(), instant.plusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.UTC).toInstant(), instant.plusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.MAX).toInstant(), instant.plusMillis(1)),
+        Pair(instant, instant.plusMillis(1).atOffset(ZoneOffset.MIN)),
+        Pair(instant, instant.plusMillis(1).atOffset(ZoneOffset.UTC)),
+        Pair(instant, instant.plusMillis(1).atOffset(ZoneOffset.MAX)),
+        Pair(date, date.plusDays(1)),
+        Pair(JapaneseDate.from(date), date.plusDays(1)),
+        Pair(time, time.plusSeconds(1)),
+        Pair(time, instant.plusSeconds(1).atZone(zone)),
+        Pair(MonthDay.from(date), MonthDay.from(date.plusDays(1))),
+        Pair(MonthDay.from(date), date.plusDays(1)),
+        Pair(OffsetTime.from(local), local.plusSeconds(1)),
+        Pair(Year.from(date), date.plusYears(1)),
+        Pair(YearMonth.from(date), date.plusMonths(1)),
         local to local.plusDays(1)
-      ).map { (subject, expected) ->
-        dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).forEach { (subject, expected) ->
+        test("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isBefore(expected)
         }
       }
 
-    @TestFactory
-    fun `fails if the subject value is the same or later than the expected`(): List<DynamicTest> {
-      return listOf<Pair<TemporalAccessor, TemporalAccessor>>(
-        Pair(now, now),
-        Pair(now.atOffset(ZoneOffset.MIN).toInstant(), now),
-        Pair(now.atOffset(ZoneOffset.UTC).toInstant(), now),
-        Pair(now.atOffset(ZoneOffset.MAX).toInstant(), now),
-        Pair(now, now.atOffset(ZoneOffset.MIN)),
-        Pair(now, now.atOffset(ZoneOffset.UTC)),
-        Pair(now, now.atOffset(ZoneOffset.MAX)),
-        Pair(now, now.minusMillis(1)),
-        Pair(today, today),
-        Pair(today, today.minusDays(1)),
-        Pair(JapaneseDate.from(today), today.minusDays(1)),
-        Pair(rightNow, rightNow),
-        Pair(rightNow, rightNow.minusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(rightNow, now.atZone(zone)),
-        Pair(rightNow, now.minusSeconds(1).atZone(zone)), // TODO: potential failure on day boundary
-        Pair(MonthDay.from(today), MonthDay.from(today)),
-        Pair(MonthDay.from(today), MonthDay.from(today.minusDays(1))),
-        Pair(MonthDay.from(today), today),
-        Pair(MonthDay.from(today), today.minusDays(1)),
+      listOf<Pair<TemporalAccessor, TemporalAccessor>>(
+        Pair(instant, instant),
+        Pair(instant.atOffset(ZoneOffset.MIN).toInstant(), instant),
+        Pair(instant.atOffset(ZoneOffset.UTC).toInstant(), instant),
+        Pair(instant.atOffset(ZoneOffset.MAX).toInstant(), instant),
+        Pair(instant, instant.atOffset(ZoneOffset.MIN)),
+        Pair(instant, instant.atOffset(ZoneOffset.UTC)),
+        Pair(instant, instant.atOffset(ZoneOffset.MAX)),
+        Pair(instant, instant.minusMillis(1)),
+        Pair(date, date),
+        Pair(date, date.minusDays(1)),
+        Pair(JapaneseDate.from(date), date.minusDays(1)),
+        Pair(time, time),
+        Pair(time, time.minusSeconds(1)),
+        Pair(time, instant.atZone(zone)),
+        Pair(time, instant.minusSeconds(1).atZone(zone)),
+        Pair(MonthDay.from(date), MonthDay.from(date)),
+        Pair(MonthDay.from(date), MonthDay.from(date.minusDays(1))),
+        Pair(MonthDay.from(date), date),
+        Pair(MonthDay.from(date), date.minusDays(1)),
         Pair(OffsetTime.from(local), local),
-        Pair(OffsetTime.from(local), local.minusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(Year.from(today), today),
-        Pair(Year.from(today), today.minusYears(1)),
-        Pair(YearMonth.from(today), today),
-        Pair(YearMonth.from(today), today.minusMonths(1)),
+        Pair(OffsetTime.from(local), local.minusSeconds(1)),
+        Pair(Year.from(date), date),
+        Pair(Year.from(date), date.minusYears(1)),
+        Pair(YearMonth.from(date), date),
+        Pair(YearMonth.from(date), date.minusMonths(1)),
         local to local.minusDays(1)
-      ).map { (subject, expected) ->
-        dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).forEach { (subject, expected) ->
+        test("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
+            expectThat(subject).isBefore(expected)
+          }
+        }
+      }
+
+      listOf<Pair<Instant, TemporalAccessor>>(
+        Pair(instant, LocalDate.of(2008, 10, 2))
+      ).forEach { (subject, expected) ->
+        test("fails asserting $subject is before $expected") {
+          assertThrows<DateTimeException> {
             expectThat(subject).isBefore(expected)
           }
         }
       }
     }
 
-    @TestFactory
-    fun `throws an exception if expected value can't be converted to the subject type`() =
-      listOf<Pair<Instant, TemporalAccessor>>(
-        Pair(now, LocalDate.of(2008, 10, 2))
-      ).map { (subject, expected) ->
-        dynamicTest("fails asserting $subject is before $expected") {
-          assertThrows<DateTimeException> {
-            expectThat(subject).isBefore(expected)
-          }
-        }
-      }
-  }
-
-  @Nested
-  @DisplayName("isAfter assertion")
-  inner class IsAfter {
-    @TestFactory
-    fun `passes if subject value is after the expected`() =
+    context("isAfter assertion") {
       listOf<Pair<TemporalAccessor, TemporalAccessor>>(
-        Pair(now, now.minusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.MIN).toInstant(), now.minusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.UTC).toInstant(), now.minusMillis(1)),
-        Pair(now.atOffset(ZoneOffset.MAX).toInstant(), now.minusMillis(1)),
-        Pair(now, now.minusMillis(1).atOffset(ZoneOffset.MIN)),
-        Pair(now, now.minusMillis(1).atOffset(ZoneOffset.UTC)),
-        Pair(now, now.minusMillis(1).atOffset(ZoneOffset.MAX)),
-        Pair(today, today.minusDays(1)),
-        Pair(JapaneseDate.from(today), today.minusDays(1)),
-        Pair(rightNow, rightNow.minusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(rightNow, now.minusSeconds(1).atZone(zone)), // TODO: potential failure on day boundary
-        Pair(MonthDay.from(today), MonthDay.from(today.minusDays(1))),
-        Pair(MonthDay.from(today), today.minusDays(1)),
-        Pair(OffsetTime.from(local), local.minusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(Year.from(today), today.minusYears(1)),
-        Pair(YearMonth.from(today), today.minusMonths(1)),
+        Pair(instant, instant.minusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.MIN).toInstant(), instant.minusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.UTC).toInstant(), instant.minusMillis(1)),
+        Pair(instant.atOffset(ZoneOffset.MAX).toInstant(), instant.minusMillis(1)),
+        Pair(instant, instant.minusMillis(1).atOffset(ZoneOffset.MIN)),
+        Pair(instant, instant.minusMillis(1).atOffset(ZoneOffset.UTC)),
+        Pair(instant, instant.minusMillis(1).atOffset(ZoneOffset.MAX)),
+        Pair(date, date.minusDays(1)),
+        Pair(JapaneseDate.from(date), date.minusDays(1)),
+        Pair(time, time.minusSeconds(1)),
+        Pair(time, instant.minusSeconds(1).atZone(zone)),
+        Pair(MonthDay.from(date), MonthDay.from(date.minusDays(1))),
+        Pair(MonthDay.from(date), date.minusDays(1)),
+        Pair(OffsetTime.from(local), local.minusSeconds(1)),
+        Pair(Year.from(date), date.minusYears(1)),
+        Pair(YearMonth.from(date), date.minusMonths(1)),
         local to local.minusDays(1)
-      ).map { (subject, expected) ->
-        dynamicTest("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).forEach { (subject, expected) ->
+        test("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isAfter(expected)
         }
       }
 
-    @TestFactory
-    fun `fails if the subject value is the same or earlier than the expected`(): List<DynamicTest> {
-      return listOf<Pair<TemporalAccessor, TemporalAccessor>>(
-        Pair(now, now),
-        Pair(now.atOffset(ZoneOffset.MIN).toInstant(), now),
-        Pair(now.atOffset(ZoneOffset.UTC).toInstant(), now),
-        Pair(now.atOffset(ZoneOffset.MAX).toInstant(), now),
-        Pair(now, now.atOffset(ZoneOffset.MIN)),
-        Pair(now, now.atOffset(ZoneOffset.UTC)),
-        Pair(now, now.atOffset(ZoneOffset.MAX)),
-        Pair(now, now.plusMillis(1)),
-        Pair(today, today),
-        Pair(today, today.plusDays(1)),
-        Pair(JapaneseDate.from(today), today.plusDays(1)),
-        Pair(rightNow, rightNow),
-        Pair(rightNow, rightNow.plusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(rightNow, now.atZone(zone)),
-        Pair(rightNow, now.plusSeconds(1).atZone(zone)), // TODO: potential failure on day boundary
-        Pair(MonthDay.from(today), MonthDay.from(today)),
-        Pair(MonthDay.from(today), MonthDay.from(today.plusDays(1))),
-        Pair(MonthDay.from(today), today),
-        Pair(MonthDay.from(today), today.plusDays(1)),
+      listOf<Pair<TemporalAccessor, TemporalAccessor>>(
+        Pair(instant, instant),
+        Pair(instant.atOffset(ZoneOffset.MIN).toInstant(), instant),
+        Pair(instant.atOffset(ZoneOffset.UTC).toInstant(), instant),
+        Pair(instant.atOffset(ZoneOffset.MAX).toInstant(), instant),
+        Pair(instant, instant.atOffset(ZoneOffset.MIN)),
+        Pair(instant, instant.atOffset(ZoneOffset.UTC)),
+        Pair(instant, instant.atOffset(ZoneOffset.MAX)),
+        Pair(instant, instant.plusMillis(1)),
+        Pair(date, date),
+        Pair(date, date.plusDays(1)),
+        Pair(JapaneseDate.from(date), date.plusDays(1)),
+        Pair(time, time),
+        Pair(time, time.plusSeconds(1)),
+        Pair(time, instant.atZone(zone)),
+        Pair(time, instant.plusSeconds(1).atZone(zone)),
+        Pair(MonthDay.from(date), MonthDay.from(date)),
+        Pair(MonthDay.from(date), MonthDay.from(date.plusDays(1))),
+        Pair(MonthDay.from(date), date),
+        Pair(MonthDay.from(date), date.plusDays(1)),
         Pair(OffsetTime.from(local), local),
-        Pair(OffsetTime.from(local), local.plusSeconds(1)), // TODO: potential failure on day boundary
-        Pair(Year.from(today), today),
-        Pair(Year.from(today), today.plusYears(1)),
-        Pair(YearMonth.from(today), today),
-        Pair(YearMonth.from(today), today.plusMonths(1)),
+        Pair(OffsetTime.from(local), local.plusSeconds(1)),
+        Pair(Year.from(date), date),
+        Pair(Year.from(date), date.plusYears(1)),
+        Pair(YearMonth.from(date), date),
+        Pair(YearMonth.from(date), date.plusMonths(1)),
         local to local.plusDays(1)
-      ).map { (subject, expected) ->
-        dynamicTest("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+      ).forEach { (subject, expected) ->
+        test("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
             expectThat(subject).isAfter(expected)
           }
         }
       }
-    }
 
-    @TestFactory
-    fun `throws an exception if expected value can't be converted to the subject type`() =
       listOf<Pair<Instant, TemporalAccessor>>(
-        Pair(now, LocalDate.of(2008, 10, 2))
-      ).map { (subject, expected) ->
-        dynamicTest("fails asserting $subject is before $expected") {
+        Pair(instant, LocalDate.of(2008, 10, 2))
+      ).forEach { (subject, expected) ->
+        test("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
             expectThat(subject).isBefore(expected)
           }
         }
       }
-  }
+    }
 
-  @Nested
-  @DisplayName("get(TemporalField) mapping")
-  inner class GetMapping {
-    @TestFactory
-    fun `maps to the int value of the specified field`() =
+    context("get(TemporalField) mapping") {
       listOf<Triple<TemporalAccessor, TemporalField, Int>>(
-        Triple(now, MILLI_OF_SECOND, now.get(MILLI_OF_SECOND)),
-        Triple(local, YEAR, Year.from(today).value),
+        Triple(instant, MILLI_OF_SECOND, instant.get(MILLI_OF_SECOND)),
+        Triple(local, YEAR, Year.from(date).value),
         Triple(local, SECOND_OF_MINUTE, local.second),
-        Triple(today, YEAR, Year.from(today).value)
-      ).map { (subject, field, expected) ->
-        dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Int)") {
+        Triple(date, YEAR, Year.from(date).value)
+      ).forEach { (subject, field, expected) ->
+        test("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Int)") {
           expectThat(subject).get(field).isEqualTo(expected)
         }
       }
-  }
+    }
 
-  @Nested
-  @DisplayName("getLong(TemporalField) mapping")
-  inner class GetLongMapping {
-    @TestFactory
-    fun `maps to the long value of the specified field`() =
+    context("getLong(TemporalField) mapping") {
       listOf<Triple<TemporalAccessor, TemporalField, Long>>(
-        Triple(now, MILLI_OF_SECOND, now.getLong(MILLI_OF_SECOND)),
-        Triple(local, YEAR, Year.from(today).value.toLong()),
+        Triple(instant, MILLI_OF_SECOND, instant.getLong(MILLI_OF_SECOND)),
+        Triple(local, YEAR, Year.from(date).value.toLong()),
         Triple(local, SECOND_OF_MINUTE, local.second.toLong()),
-        Triple(today, YEAR, Year.from(today).value.toLong())
-      ).map { (subject, field, expected) ->
-        dynamicTest("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Long)") {
+        Triple(date, YEAR, Year.from(date).value.toLong())
+      ).forEach { (subject, field, expected) ->
+        test("maps $subject (${subject.javaClass.simpleName}) $field to $expected (Long)") {
           expectThat(subject).getLong(field).isEqualTo(expected)
         }
       }
+    }
   }
 }
