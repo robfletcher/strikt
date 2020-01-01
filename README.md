@@ -74,5 +74,6 @@ Follow [**@stri_kt**](https://twitter.com/stri_kt) on Twitter for updates and re
 [![GitHub Release Date](https://img.shields.io/github/release-date/robfletcher/strikt.svg?style=for-the-badge)](https://github.com/robfletcher/strikt/)
 [![license](https://img.shields.io/github/license/robfletcher/strikt.svg?style=for-the-badge&logo=Apache)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![GitHub issues](https://img.shields.io/github/issues/robfletcher/strikt.svg?style=for-the-badge&logo=Github)](https://github.com/robfletcher/strikt/issues)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/robfletcher/strikt/CI/master?style=for-the-badge)
 ![GitHub top language](https://img.shields.io/github/languages/top/robfletcher/strikt.svg?style=for-the-badge&logo=Kotlin&logoColor=white)
 [![Twitter Follow](https://img.shields.io/twitter/follow/stri_kt.svg?style=for-the-badge&label=Twitter&logo=Twitter&logoColor=white)](https://twitter.com/stri_kt)
