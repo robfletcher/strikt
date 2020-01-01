@@ -6,17 +6,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "13.2.1"
+  id("nebula.release") version "14.0.0"
   id("nebula.kotlin") version "1.3.61" apply false
   id("org.jmailen.kotlinter") version "2.2.0" apply false
-  id("info.solidsoft.pitest") version "1.4.0" apply false
+  id("info.solidsoft.pitest") version "1.4.6" apply false
   id("com.github.ben-manes.versions") version "0.27.0"
 }
 
 buildscript {
   configurations.maybeCreate("pitest")
   dependencies {
-    "pitest"("org.pitest:pitest-junit5-plugin:0.10")
+    "pitest"("org.pitest:pitest-junit5-plugin:0.11")
   }
 }
 
@@ -72,16 +72,16 @@ subprojects {
 
     plugins.withId("info.solidsoft.pitest") {
       configure<PitestPluginExtension> {
-        jvmArgs = listOf("-Xmx512m")
-        testPlugin = "junit5"
-        avoidCallsTo = setOf("kotlin.jvm.internal")
-        mutators = setOf("NEW_DEFAULTS")
-        targetClasses = setOf("strikt.*")  //by default "${project.group}.*"
-        targetTests = setOf("strikt.**.*")
-        pitestVersion = "1.4.10"
-        threads = System.getenv("PITEST_THREADS")?.toInt()
-          ?: Runtime.getRuntime().availableProcessors()
-        outputFormats = setOf("XML", "HTML")
+        jvmArgs.set(listOf("-Xmx512m"))
+        testPlugin.set("junit5")
+        avoidCallsTo.set(setOf("kotlin.jvm.internal"))
+        mutators.set(setOf("NEW_DEFAULTS"))
+        targetClasses.set(setOf("strikt.*"))  //by default "${project.group}.*"
+        targetTests.set(setOf("strikt.**.*"))
+        pitestVersion.set("1.4.10")
+        threads.set(System.getenv("PITEST_THREADS")?.toInt()
+          ?: Runtime.getRuntime().availableProcessors())
+        outputFormats.set(setOf("XML", "HTML"))
       }
     }
   }
