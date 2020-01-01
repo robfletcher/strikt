@@ -2,7 +2,6 @@ package strikt
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -31,7 +30,7 @@ internal class Nested {
         "  ✓ is upper case\n" +
         "▼ Expect that \"FNØRD\":\n" +
         "  ✗ is lower case"
-      assertEquals(expected, error.message)
+      expectThat(expected).isEqualTo(error.message)
     }
   }
 
@@ -73,7 +72,7 @@ internal class Nested {
         "  ✓ is upper case\n" +
         "▼ Expect that \"FNØRD\":\n" +
         "  ✗ is lower case"
-      assertEquals(expected, error.message)
+      expectThat(expected).isEqualTo(error.message)
     }
   }
 }

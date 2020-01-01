@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -247,13 +246,12 @@ internal object IterableAssertions {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord", "marzipan", "bojack")
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
           |  ✗ contains the elements ["fnord", "marzipan", "bojack"]
           |    ✗ contains "fnord"
           |    ✓ contains "marzipan"
-          |    ✗ contains "bojack"""".trimMargin(),
-        error.message
+          |    ✗ contains "bojack"""".trimMargin()
       )
     }
 
@@ -262,10 +260,9 @@ internal object IterableAssertions {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .contains("fnord")
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-          "  ✗ contains \"fnord\"",
-        error.message
+          "  ✗ contains \"fnord\""
       )
     }
   }
@@ -341,13 +338,12 @@ internal object IterableAssertions {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap", "wye", "marzipan")
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
           |  ✗ does not contain any of the elements ["catflap", "wye", "marzipan"]
           |    ✗ does not contain "catflap"
           |    ✓ does not contain "wye"
-          |    ✗ does not contain "marzipan"""".trimMargin(),
-        error.message
+          |    ✗ does not contain "marzipan"""".trimMargin()
       )
     }
 
@@ -356,10 +352,9 @@ internal object IterableAssertions {
         expectThat(listOf("catflap", "rubberplant", "marzipan"))
           .doesNotContain("catflap")
       }
-      assertEquals(
+      expectThat(error.message).isEqualTo(
         "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-          "  ✗ does not contain \"catflap\"",
-        error.message
+          "  ✗ does not contain \"catflap\""
       )
     }
   }
@@ -407,7 +402,7 @@ internal object IterableAssertions {
         val error = assertThrows<AssertionError> {
           expectThat(fixture).containsExactly("catflap", "rubberplant")
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant"]
             |    ✓ contains "catflap"
@@ -415,8 +410,7 @@ internal object IterableAssertions {
             |    ✓ contains "rubberplant"
             |    ✓ …at index 1
             |    ✗ contains no further elements
-            |      found ["marzipan"]""".trimMargin(),
-          error.message
+            |      found ["marzipan"]""".trimMargin()
         )
       }
 
@@ -425,7 +419,7 @@ internal object IterableAssertions {
           expectThat(fixture)
             .containsExactly("catflap", "rubberplant", "marzipan", "fnord")
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant", "marzipan", "fnord"]
             |    ✓ contains "catflap"
@@ -435,8 +429,7 @@ internal object IterableAssertions {
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
             |    ✗ contains "fnord"
-            |    ✓ contains no further elements""".trimMargin(),
-          error.message
+            |    ✓ contains no further elements""".trimMargin()
         )
       }
 
@@ -455,7 +448,7 @@ internal object IterableAssertions {
           expectThat(fixture)
             .containsExactly("rubberplant", "catflap", "marzipan")
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["rubberplant", "catflap", "marzipan"]
             |    ✓ contains "rubberplant"
@@ -466,8 +459,7 @@ internal object IterableAssertions {
             |      found "rubberplant"
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
-            |    ✓ contains no further elements""".trimMargin(),
-          error.message
+            |    ✓ contains no further elements""".trimMargin()
         )
       }
 
@@ -476,7 +468,7 @@ internal object IterableAssertions {
           expectThat(fixture)
             .containsExactly("catflap", "rubberplant", "marzipan", "marzipan")
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant", "marzipan", "marzipan"]
             |    ✓ contains "catflap"
@@ -486,8 +478,7 @@ internal object IterableAssertions {
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
             |    ✗ contains "marzipan"
-            |    ✓ contains no further elements""".trimMargin(),
-          error.message
+            |    ✓ contains no further elements""".trimMargin()
         )
       }
     }
@@ -598,14 +589,13 @@ internal object IterableAssertions {
           expectThat(fixture)
             .containsExactlyInAnyOrder("catflap", "rubberplant")
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant"] in any order
             |    ✓ contains "catflap"
             |    ✓ contains "rubberplant"
             |    ✗ contains no further elements
-            |      found ["marzipan"]""".trimMargin(),
-          error.message
+            |      found ["marzipan"]""".trimMargin()
         )
       }
 
@@ -619,15 +609,14 @@ internal object IterableAssertions {
               "marzipan"
             )
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant", "marzipan", "marzipan"] in any order
             |    ✓ contains "catflap"
             |    ✓ contains "rubberplant"
             |    ✓ contains "marzipan"
             |    ✗ contains "marzipan"
-            |    ✓ contains no further elements""".trimMargin(),
-          error.message
+            |    ✓ contains no further elements""".trimMargin()
         )
       }
 
@@ -641,15 +630,14 @@ internal object IterableAssertions {
               "fnord"
             )
         }
-        assertEquals(
+        expectThat(error.message).isEqualTo(
           """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
             |  ✗ contains exactly the elements ["catflap", "rubberplant", "marzipan", "fnord"] in any order
             |    ✓ contains "catflap"
             |    ✓ contains "rubberplant"
             |    ✓ contains "marzipan"
             |    ✗ contains "fnord"
-            |    ✓ contains no further elements""".trimMargin(),
-          error.message
+            |    ✓ contains no further elements""".trimMargin()
         )
       }
 

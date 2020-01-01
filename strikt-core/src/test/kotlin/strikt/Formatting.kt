@@ -1,6 +1,5 @@
 package strikt
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,7 +18,7 @@ internal class Formatting {
 
   @Test
   fun `a failing chained assertion formats the message correctly`() {
-    val e = assertThrows<AssertionError> {
+    val error = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject)
         .describedAs("a couple of words")
@@ -38,12 +37,12 @@ internal class Formatting {
         |      ✗ is upper case
         |    ▼ "marzipan":
         |      ✗ is upper case""".trimMargin()
-    assertEquals(expected, e.message)
+    expectThat(error.message).isEqualTo(expected)
   }
 
   @Test
   fun `a failing block assertion formats the message correctly`() {
-    val e = assertThrows<AssertionError> {
+    val error = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject) {
         hasSize(0)
@@ -70,12 +69,12 @@ internal class Formatting {
         |      ✗ is upper case
         |      ✗ starts with 'c'
         |              found 'm'""".trimMargin()
-    assertEquals(expected, e.message)
+    expectThat(error.message).isEqualTo(expected)
   }
 
   @Test
   fun `passing assertions are included in the error message`() {
-    val e = assertThrows<AssertionError> {
+    val error = assertThrows<AssertionError> {
       val subject = setOf("catflap", "rubberplant", "marzipan")
       expectThat(subject) {
         hasSize(3)
@@ -98,7 +97,7 @@ internal class Formatting {
         |      ✗ starts with 'c'
         |              found 'm'""".trimMargin()
 
-    assertEquals(expected, e.message)
+    expectThat(error.message).isEqualTo(expected)
   }
 
   @Test

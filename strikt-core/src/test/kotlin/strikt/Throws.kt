@@ -2,12 +2,13 @@ package strikt
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.isA
+import strikt.assertions.isEqualTo
 
 @DisplayName("throws assertion")
 internal class Throws {
@@ -25,13 +26,13 @@ internal class Throws {
   fun `throws fails if the action does not throw any exception`() {
     assertThrows<AssertionError> {
       expectThrows<IllegalStateException> { }
-    }.let { e ->
+    }.let { error ->
       val expected =
         """▼ Expect that Success(kotlin.Unit):
           |  ✗ failed with an exception
           |    ran successfully"""
           .trimMargin()
-      assertEquals(expected, e.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 
@@ -39,7 +40,7 @@ internal class Throws {
   fun `throws fails if the action throws the wrong type of exception`() {
     assertThrows<AssertionError> {
       expectThrows<NullPointerException> { error("o noes") }
-    }.let { e ->
+    }.let { error ->
       val expected =
         """▼ Expect that Failure(IllegalStateException: o noes):
           |  ✓ failed with an exception
@@ -47,7 +48,7 @@ internal class Throws {
           |    ✗ is an instance of java.lang.NullPointerException
           |                  found java.lang.IllegalStateException"""
           .trimMargin()
-      assertEquals(expected, e.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 

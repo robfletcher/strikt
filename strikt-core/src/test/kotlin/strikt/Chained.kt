@@ -1,6 +1,5 @@
 package strikt
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -47,10 +46,9 @@ internal class Chained {
     val error = assertThrows<AssertionError> {
       expectThat(subject).not().isLowerCase()
     }
-    assertEquals(
+    expectThat(error.message).isEqualTo(
       "▼ Expect that \"fnord\":\n" +
-        "  ✗ is not lower case",
-      error.message
+        "  ✗ is not lower case"
     )
   }
 
@@ -86,7 +84,7 @@ internal class Chained {
           contains("z")
         }
     }
-    assertEquals(
+    expectThat(error.message).isEqualTo(
       """▼ Expect that "fnord":
         |  ✓ is not null
         |  ✓ is lower case
@@ -94,8 +92,7 @@ internal class Chained {
         |  ✓ contains "n"
         |  ✗ contains "z"
         |       found "fnord""""
-        .trimMargin(),
-      error.message
+        .trimMargin()
     )
   }
 

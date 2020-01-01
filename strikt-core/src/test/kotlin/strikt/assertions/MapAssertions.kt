@@ -2,7 +2,6 @@ package strikt.assertions
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
@@ -60,11 +59,10 @@ internal object MapAssertions : JUnit5Minutests {
           val error = assertThrows<AssertionError> {
             containsKey("bar")
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ has an entry with the key "bar""""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
       }
@@ -78,14 +76,13 @@ internal object MapAssertions : JUnit5Minutests {
           val error = assertThrows<AssertionError> {
             containsKeys("foo", "bar", "fnord")
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ has entries with the keys ["foo", "bar", "fnord"]
               |    ✓ has an entry with the key "foo"
               |    ✗ has an entry with the key "bar"
               |    ✗ has an entry with the key "fnord""""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
       }
@@ -99,11 +96,10 @@ internal object MapAssertions : JUnit5Minutests {
           val error = assertThrows<AssertionError> {
             hasEntry("bar", "foo")
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ has an entry with the key "bar""""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
 
@@ -111,14 +107,13 @@ internal object MapAssertions : JUnit5Minutests {
           val error = assertThrows<AssertionError> {
             hasEntry("foo", "baz")
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✓ has an entry with the key "foo"
               |  ▼ entry ["foo"]:
               |    ✗ is equal to "baz"
               |            found "bar""""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
       }

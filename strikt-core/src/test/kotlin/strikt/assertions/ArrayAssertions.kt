@@ -2,7 +2,6 @@ package strikt.assertions
 
 import java.lang.System.nanoTime
 import java.util.Random
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -31,11 +30,10 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionError> {
             contentEquals(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin(),
-            error.message
+            .trimMargin()
           )
         }
 
@@ -44,11 +42,10 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionError> {
             contentEquals(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
       }
@@ -63,12 +60,11 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionFailedError> {
             isEqualTo(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ is equal to 0x${expected.toHex()}
                 |          found 0x${subject.toHex()}"""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
 
@@ -116,11 +112,10 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionError> {
             contentEquals(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
                 |  ✗ array content equals ${expected.toList().map { "'$it'" }}"""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
 
@@ -129,11 +124,10 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionError> {
             contentEquals(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
               |  ✗ array content equals ${expected.toList().map { "'$it'" }}"""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
       }
@@ -148,12 +142,11 @@ internal object ArrayAssertions {
           val error = assertThrows<AssertionFailedError> {
             isEqualTo(expected)
           }
-          assertEquals(
+          expectThat(error.message).isEqualTo(
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
                 |  ✗ is equal to ${expected.toList().map { "'$it'" }}
                 |          found ${subject.toList().map { "'$it'" }}"""
-              .trimMargin(),
-            error.message
+              .trimMargin()
           )
         }
 

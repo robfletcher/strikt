@@ -1,11 +1,11 @@
 package strikt
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.hasLength
+import strikt.assertions.isEqualTo
 import strikt.assertions.isLowerCase
 
 @DisplayName("composed assertions")
@@ -24,7 +24,7 @@ internal class Composition {
         "  ✗ matches a negated assertion\n" +
         "    ✗ is not lower case\n" +
         "    ✗ does not have length 5"
-      assertEquals(expected, error.message)
+      expectThat(error.message).isEqualTo(expected)
     }
   }
 }
