@@ -16,17 +16,12 @@ publishing {
 
 dependencies {
   constraints {
-    rootProject
-      .subprojects
-      .filter { it.includeInBom }
-      .forEach {
-        api(project(it.path))
-      }
+    api(project(":strikt-arrow"))
+    api(project(":strikt-core"))
+    api(project(":strikt-gradle"))
+    api(project(":strikt-jackson"))
+    api(project(":strikt-java-time"))
+    api(project(":strikt-protobuf"))
+    api(project(":strikt-spring"))
   }
 }
-
-@Suppress("KDocMissingDocumentation")
-val Project.includeInBom: Boolean
-  get() = with(plugins) {
-    hasPlugin("published") && !hasPlugin("org.gradle.java-platform")
-  }
