@@ -16,7 +16,7 @@ plugins {
 buildscript {
   configurations.maybeCreate("pitest")
   dependencies {
-    "pitest"("org.pitest:pitest-junit5-plugin:0.11")
+    "pitest"("org.pitest:pitest-junit5-plugin:0.12")
   }
 }
 
