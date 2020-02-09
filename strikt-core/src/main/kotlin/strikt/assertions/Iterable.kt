@@ -24,10 +24,9 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  *
  * @see Iterable.single
  */
-fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> {
+fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> =
   assertThat("has only one element") { it.size == 1 }
-  return get("single element %s") { single() }
-}
+    .get("single element %s") { single() }
 
 /**
  * Maps this assertion to an assertion over the first element in the subject

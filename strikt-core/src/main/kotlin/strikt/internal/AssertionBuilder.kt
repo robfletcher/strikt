@@ -29,16 +29,19 @@ internal class AssertionBuilder<T>(
 
   override fun and(
     assertions: Builder<T>.() -> Unit
-  ): Builder<T> =
-    AssertionChainedGroup(context, context.subject)
-      .let { nestedContext ->
-        // collect assertions from a child block
-        AssertionBuilder(nestedContext, Collecting)
-          .apply(assertions)
-        strategy.evaluate(nestedContext)
-        // return the original builder for chaining
-        this
-      }
+  ): Builder<T> {
+    if (context.allowChain) {
+      AssertionChainedGroup(context, context.subject)
+        .let { nestedContext ->
+          // collect assertions from a child block
+          AssertionBuilder(nestedContext, Collecting)
+            .apply(assertions)
+          strategy.evaluate(nestedContext)
+        }
+    }
+    // return the original builder for chaining
+    return this
+  }
 
   override fun not(assertions: Builder<T>.() -> Unit): Builder<T> {
     AssertionBuilder(context, Negating(Collecting)).apply(assertions)

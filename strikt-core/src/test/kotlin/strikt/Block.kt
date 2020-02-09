@@ -1,12 +1,12 @@
 package strikt
 
-import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.endsWith
+import strikt.assertions.getValue
 import strikt.assertions.hasLength
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
@@ -14,7 +14,9 @@ import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
+import strikt.assertions.single
 import strikt.assertions.startsWith
+import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
 internal class Block {
@@ -253,6 +255,76 @@ internal class Block {
         |    ✓ has length 5"""
         .trimMargin()
       expectThat(error.message).isEqualTo(expected)
+    }
+  }
+
+  /**
+   * @see https://github.com/robfletcher/strikt/issues/203
+   */
+  @Test
+  fun `failing mappings inside an expectThat block throw correct exception type`() {
+    assertThrows<AssertionError> {
+      class Person(val firstName: String, val hobbies: List<String>)
+
+      // imagine that "p" is coming from some API call and needs to be nullable
+      val p = Person("John", listOf("a", "b"))
+
+      expectThat(p) {
+        get { firstName }.isEqualTo("John")
+        get { hobbies }.single().isA<String>().isEqualTo("a")
+      }
+    }
+  }
+
+  /**
+   * @see https://github.com/robfletcher/strikt/issues/203
+   */
+  @Test
+  fun `failing mappings inside an and block throw correct exception type`() {
+    assertThrows<AssertionError> {
+      class Person(val firstName: String, val hobbies: List<String>)
+
+      // imagine that "p" is coming from some API call and needs to be nullable
+      val p: Person? = Person("John", listOf("a", "b"))
+
+      expectThat(p).isNotNull().and {
+        get { firstName }.isEqualTo("John")
+        get { hobbies }.single().isA<String>().isEqualTo("a")
+      }
+    }
+  }
+
+  fun `failing nested isNotNull does not evaluate following assertion`() {
+    assertThrows<AssertionError> {
+      val subject = mapOf(
+        "word1" to "catflap",
+        "word2" to "rubberplant",
+        "word3" to null
+      )
+      expectThat(subject) {
+        getValue("word1").isNotNull().isEqualTo("catflap")
+        getValue("word2").isNotNull().isEqualTo("rubberplant")
+        getValue("word3").isNotNull().isEqualTo("marzipan")
+      }
+    }
+  }
+
+  /**
+   * @see https://github.com/robfletcher/strikt/issues/204
+   */
+  @Test
+  fun `nested and is not evaluated if preceding assertion failed`() {
+    assertThrows<AssertionError> {
+      class Person(val name: String, val friend: Person?)
+      // imagine we get this from an API which is nullable
+      val p: Person? = Person("John", null)
+
+      expectThat(p).isNotNull().and {
+        get { name }.isEqualTo("John")
+        get { friend }.isNotNull().and {
+          get { name }.isEqualTo("Jack")
+        }
+      }
     }
   }
 }

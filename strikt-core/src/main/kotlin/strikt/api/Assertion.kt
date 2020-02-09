@@ -1,10 +1,10 @@
 package strikt.api
 
 import filepeek.LambdaBody
+import strikt.internal.FilePeek
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
-import strikt.internal.FilePeek
 
 /**
  * Allows assertion implementations to determine a result.
@@ -146,13 +146,11 @@ interface Assertion {
      * evaluates.
      * @param assert a function that returns `true` (the assertion passes) or
      * `false` (the assertion fails).
-     * @return this assertion builder, in order to facilitate a fluent API.
+     * @return the chained assertion builder, in order to facilitate a fluent API.
      */
     fun assertThat(description: String, assert: (T) -> Boolean): Builder<T> =
-      apply {
-        assert(description) {
-          if (assert(it)) pass() else fail()
-        }
+      assert(description) {
+        if (assert(it)) pass() else fail()
       }
 
     /**
@@ -186,17 +184,15 @@ interface Assertion {
      * @param expected the expected value of a comparison.
      * @param assert a function that returns `true` (the assertion passes) or
      * `false` (the assertion fails).
-     * @return this assertion builder, in order to facilitate a fluent API.
+     * @return the chained assertion builder, in order to facilitate a fluent API.
      */
     fun assertThat(
       description: String,
       expected: Any?,
       assert: (T) -> Boolean
     ): Builder<T> =
-      apply {
-        assert(description, expected) {
-          if (assert(it)) pass() else fail()
-        }
+      assert(description, expected) {
+        if (assert(it)) pass() else fail()
       }
 
     /**
