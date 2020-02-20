@@ -154,6 +154,15 @@ fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolea
   get("boolean value", JsonNode::booleanValue)
 
 /**
+ * Maps the assertion to an assertion on the text values of [fieldName] in each
+ * child of the current node.
+ *
+ * @see JsonNode.findValuesAsText
+ */
+fun <T : JsonNode> Assertion.Builder<T>.findValuesAsText(fieldName: String): Assertion.Builder<List<String>> =
+  get("text values of $fieldName") { findValuesAsText(fieldName) }
+
+/**
  * Asserts that the subject node's [JsonNode.getNodeType] method returns
  * [nodeType].
  *

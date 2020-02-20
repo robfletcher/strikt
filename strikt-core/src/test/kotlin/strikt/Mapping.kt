@@ -1,6 +1,5 @@
 package strikt
 
-import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -8,6 +7,7 @@ import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.containsExactly
+import strikt.assertions.elementAt
 import strikt.assertions.filter
 import strikt.assertions.filterIsInstance
 import strikt.assertions.filterNot
@@ -21,6 +21,7 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
+import java.time.LocalDate
 
 @DisplayName("mapping assertions")
 internal class Mapping {
@@ -36,6 +37,12 @@ internal class Mapping {
   fun `first() maps to the first element of an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
     expectThat(subject).first().isEqualTo("catflap")
+  }
+
+  @Test
+  fun `elementAt maps an iterable to the indexed element`() {
+    val subject = listOf("catflap", "rubberplant", "marzipan")
+    expectThat(subject).elementAt(1).isEqualTo("rubberplant")
   }
 
   @Test

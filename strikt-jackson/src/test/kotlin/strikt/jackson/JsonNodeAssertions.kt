@@ -8,6 +8,7 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isFalse
@@ -256,6 +257,25 @@ internal object JsonNodeAssertions : JUnit5Minutests {
           .isArray()
           .size()
           .isEqualTo(2)
+      }
+    }
+
+    context("find") {
+      fixture {
+        jacksonObjectMapper().readTree(
+          """
+          |[
+          |  { "word": "catflap" },
+          |  { "word": "rubberplant" },
+          |  { "word": "marzipan" }
+          |]
+        """.trimMargin()
+        )
+      }
+      test("maps to an array of child nodes") {
+        expectThat(this)
+          .findValuesAsText("word")
+          .containsExactly("catflap", "rubberplant", "marzipan")
       }
     }
   }

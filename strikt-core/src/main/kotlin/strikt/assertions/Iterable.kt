@@ -19,6 +19,15 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
   get("first element %s") { first() }
 
 /**
+ * Maps this assertion to an assertion over the indexed element in the subject
+ * iterable.
+ *
+ * @see Iterable.elementAt
+ */
+fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
+  get("element at index $index %s") { elementAt(index) }
+
+/**
  * Maps this assertion to an assertion over the single element in the subject
  * iterable.
  *
