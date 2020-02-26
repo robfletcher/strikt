@@ -108,6 +108,16 @@ internal object JsonNodeAssertions : JUnit5Minutests {
       }
     }
 
+    context("textValues mapping") {
+      test("maps an array to the text values contained inside") {
+        expectThat(this)
+          .path("titles")
+          .isArray()
+          .textValues()
+          .containsExactly("Emperor of the United States", "Protector of Mexico")
+      }
+    }
+
     context("isTextual assertion") {
       test("passes if the node is a text node") {
         expectThat(this)

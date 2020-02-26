@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.NumericNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node.TextNode
 import strikt.api.Assertion
+import strikt.assertions.map
 
 /**
  * Asserts that the subject node has a field named [fieldName].
@@ -203,3 +204,9 @@ infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder
  */
 fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> =
   get("size", ArrayNode::size)
+
+/**
+ * Maps an assertion on a JSON array to an assertion on the text values of all nodes in the array.
+ */
+fun Assertion.Builder<ArrayNode>.textValues(): Assertion.Builder<Iterable<String>> =
+  map { it.textValue() }
