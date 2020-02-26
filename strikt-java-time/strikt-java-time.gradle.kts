@@ -8,5 +8,5 @@ plugins {
 dependencies {
   api(project(":strikt-core"))
 
-  testImplementation("dev.minutest:minutest:1.10.0")
+  testImplementation("dev.minutest:minutest:1.11.0")
 }

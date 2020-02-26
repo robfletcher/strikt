@@ -6,11 +6,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-  id("nebula.release") version "14.0.4"
+  id("nebula.release") version "14.1.0"
   id("nebula.kotlin") version "1.3.61" apply false
-  id("org.jmailen.kotlinter") version "2.3.0" apply false
+  id("org.jmailen.kotlinter") version "2.3.1" apply false
   id("info.solidsoft.pitest") version "1.4.6" apply false
-  id("com.github.ben-manes.versions") version "0.27.0"
+  id("com.github.ben-manes.versions") version "0.28.0"
 }
 
 buildscript {
@@ -78,7 +78,7 @@ subprojects {
         mutators.set(setOf("NEW_DEFAULTS"))
         targetClasses.set(setOf("strikt.*"))  //by default "${project.group}.*"
         targetTests.set(setOf("strikt.**.*"))
-        pitestVersion.set("1.4.11")
+        pitestVersion.set("1.5.0")
         threads.set(System.getenv("PITEST_THREADS")?.toInt()
           ?: Runtime.getRuntime().availableProcessors())
         outputFormats.set(setOf("XML", "HTML"))

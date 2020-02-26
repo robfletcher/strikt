@@ -13,7 +13,7 @@ dependencies {
   compileOnly("io.arrow-kt:arrow-core:0.10.4")
   testImplementation("io.arrow-kt:arrow-core:0.10.4")
 
-  testImplementation("dev.minutest:minutest:1.10.0")
+  testImplementation("dev.minutest:minutest:1.11.0")
 }
 
 tasks.dokka {

@@ -12,5 +12,5 @@ dependencies {
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-  testImplementation("dev.minutest:minutest:1.10.0")
+  testImplementation("dev.minutest:minutest:1.11.0")
 }
