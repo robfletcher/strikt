@@ -203,6 +203,102 @@ internal object IterableAssertions {
   }
 
   @TestFactory
+  @DisplayName("at most assertion")
+  fun atMost() = testFactory<Unit> {
+    context("passes if") {
+      listOf("catflap", "rubberplant", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("fewer elements of a ${subject.javaClass.simpleName} conform") {
+            expectThat(subject).atMost(2) {
+              isUpperCase()
+            }
+          }
+        }
+
+      listOf("catflap", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("exactly maximum amount of elements of a ${subject.javaClass.simpleName} conforms") {
+            expectThat(subject).atMost(2) {
+              isUpperCase()
+            }
+          }
+        }
+    }
+
+    context("fails if") {
+      listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("too many elements of a ${subject.javaClass.simpleName} conform") {
+            assertThrows<AssertionError> {
+              expectThat(subject).atMost(2) {
+                isUpperCase()
+              }
+            }
+          }
+        }
+    }
+
+    test("works with not") {
+      val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+      expectThat(subject).not().atMost(2) {
+        isUpperCase()
+      }
+    }
+  }
+
+  @TestFactory
+  @DisplayName("one assertion")
+  fun one() = testFactory<Unit> {
+    context("passes if") {
+      listOf("catflap", "rubberplant", "MARZIPAN")
+        .permute()
+        .forEach { subject ->
+          test("exactly one element of a ${subject.javaClass.simpleName} conforms") {
+            expectThat(subject).one {
+              isUpperCase()
+            }
+          }
+        }
+    }
+
+    context("fails if") {
+      listOf("CATFLAP", "RUBBERPLANT", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("too many elements of a ${subject.javaClass.simpleName} conform") {
+            assertThrows<AssertionError> {
+              expectThat(subject).one {
+                isUpperCase()
+              }
+            }
+          }
+        }
+
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("no elements of a ${subject.javaClass.simpleName} conform") {
+            assertThrows<AssertionError> {
+              expectThat(subject).one {
+                isUpperCase()
+              }
+            }
+          }
+        }
+    }
+
+    test("works with not") {
+      val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
+      expectThat(subject).not().one {
+        isUpperCase()
+      }
+    }
+  }
+
+  @TestFactory
   @DisplayName("contains assertion")
   fun contains() = testFactory<Unit> {
     context("passes if") {

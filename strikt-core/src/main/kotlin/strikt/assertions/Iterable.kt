@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 
 /**
@@ -124,6 +125,12 @@ infix fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit)
   } then {
     if (allFailed) pass() else fail()
   }
+
+/**
+ * Asserts that _exactly one_ element of the subject passes the assertions in [predicate].
+ */
+infix fun <T : Iterable<E>, E> Builder<T>.one(predicate: Builder<E>.() -> Unit): Builder<T> =
+  exactly(1, predicate)
 
 /**
  * Asserts that at least [count] elements of the subject pass the assertions in
