@@ -175,7 +175,7 @@ internal class Assertions {
 
     // START catching_exceptions_2
     expectCatching { identifyHotdog("hotdog") }
-      .succeeded()
+      .failed()
     // END catching_exceptions_2
 
     // START catching_exceptions_3
