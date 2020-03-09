@@ -1,5 +1,6 @@
 package strikt
 
+import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,7 +17,6 @@ import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.single
 import strikt.assertions.startsWith
-import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
 internal class Block {

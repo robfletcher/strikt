@@ -5,6 +5,7 @@ import dev.minutest.rootContext
 import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.MonthDay
 import java.time.OffsetTime
@@ -23,7 +24,6 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
-import java.time.LocalDateTime
 
 internal class TemporalAssertions : JUnit5Minutests {
 

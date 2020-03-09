@@ -1,5 +1,6 @@
 package strikt
 
+import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -21,7 +22,6 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
-import java.time.LocalDate
 
 @DisplayName("mapping assertions")
 internal class Mapping {
