@@ -48,7 +48,7 @@ subprojects {
       // Test with JUnit 5
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.3.70"))
-        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.3"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.5"))
         "testImplementation"(platform("org.junit:junit-bom:5.6.0"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
