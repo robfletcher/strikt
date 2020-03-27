@@ -83,5 +83,6 @@ kotlindoc:
     - { name: 'Gradle Module',     slug: 'gradle',   sourceDirs: '../../../../strikt-gradle/src/main/kotlin/',    moduleGroup: 'module' }
     - { name: 'Jackson Module',    slug: 'jackson',  sourceDirs: '../../../../strikt-jackson/src/main/kotlin/',   moduleGroup: 'module' }
     - { name: 'Java Module',       slug: 'java',     sourceDirs: '../../../../strikt-java-time/src/main/kotlin/', moduleGroup: 'module' }
+    - { name: 'MockK Module',      slug: 'java',     sourceDirs: '../../../../strikt-mockk/src/main/kotlin/',     moduleGroup: 'module' }
     - { name: 'Protobuf Module',   slug: 'protobuf', sourceDirs: '../../../../strikt-protobuf/src/main/kotlin/',  moduleGroup: 'module' }
     - { name: 'Spring Module',     slug: 'spring',   sourceDirs: '../../../../strikt-spring/src/main/kotlin/',    moduleGroup: 'module' }

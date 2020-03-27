@@ -30,6 +30,7 @@ Strikt has the following additional libraries:
 * `strikt-gradle` -- supports the Gradle build tool.
 * `strikt-jackson` -- supports the Jackson JSON library.
 * `strikt-java-time` -- supports the JSR-310 `java.time` package.
+* `strikt-mockk` -- supports types from the [MockK](https://mockk.io/) library.
 * `strikt-protobuf` -- supports Protobuf / gRPC.
 * `strikt-spring` -- supports the Spring Framework.
 
