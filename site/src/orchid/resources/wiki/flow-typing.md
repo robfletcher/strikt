@@ -8,7 +8,7 @@ Strikt's API is designed to work with Kotlin's strong type system.
 Strikt's assertion API uses the interface `Assertion.Builder<T>`, with the generic type `T` representing the (declared) type of the assertion subject.
 Assertion functions such as `isEqualTo` are implemented as extension functions on `Assertion.Builder` with an appropriate generic type.
 
-For example `isEqualTo` is an extension function on `Assertion.Builder<Any?>` as it's useful for many types of subject whereas `isEqualToIgnoringCase` is an extension function on `Assertion.Builder<CharSequence>` since it only makes sense to use it on string-like things. 
+For example `isEqualTo` is an extension function on `Assertion.Builder<Any?>` as it's useful for many types of subject whereas `isEqualToIgnoringCase` is an extension function on `Assertion.Builder<CharSequence>` since it only makes sense to use it on string-like things.
 
 Some assertion functions will return an `Assertion.Builder` with a _different_, more specific, generic type to the one they were called on.
 
@@ -24,7 +24,9 @@ Another example is making assertions about a subject's specific runtime type, or
 
 For example:
 
-{% codesnippet key='flow_typing_1' testClass='Assertions' %}
+```kotlin
+{% snippet 'flow_typing_1' %}
+```
 
 The return type of the subject map's `get()` method is `Any` but using the narrowing assertion `isA<T>()` we can both assert the type of the value and, because the compiler now knows it is dealing with an `Assertion.Builder<String>` or an `Assertion.Builder<Number>`, we can use more specialized assertion methods that are only available for those subject types.
 
@@ -33,12 +35,12 @@ Without the `isA<T>()` assertion the code would not compile:
 ```kotlin
 val subject: Map<String, Any> = mapOf("count" to 1, "name" to "Rob")
 expectThat(subject.get("count"))
-  .isGreaterThan(0) 
+  .isGreaterThan(0)
   // isGreaterThan does not exist on Assertion.Builder<Any>
-  
+
 expectThat(subject.get("name"))
-  .hasLength(3) 
+  .hasLength(3)
   // hasLength does not exist on Assertion.Builder<Any>
 ```
 
-This mechanism means that IDE code-completion is optimally helpful as only assertion methods that are appropriate to the subject type will be suggested. 
+This mechanism means that IDE code-completion is optimally helpful as only assertion methods that are appropriate to the subject type will be suggested.

@@ -5,7 +5,9 @@
 
 Although you can obviously write assertions for the properties of an object with code like this:
 
-{% codesnippet key='traversing_subjects_1' testClass='Chaining' %}
+```kotlin
+{% snippet 'traversing_subjects_1'%}
+```
 
 Sometimes it's useful to be able to transform an assertion on a subject to an assertion on a property of that subject, or the result of a method call.
 Particularly when using soft assertion blocks.
@@ -19,18 +21,24 @@ The `get` method returns an `Assertion.Builder<R>` where the new subject (whose 
 
 This is useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
-{% codesnippet key='traversing_subjects_4' testClass='Chaining' %}
+```kotlin
+{% snippet'traversing_subjects_4' %}
+```
 
 ## Using _get_ with lambdas
 
 An alternate version of the `get` method takes a lambda whose receiver is the current subject.
 
-{% codesnippet key='traversing_subjects_2' testClass='Chaining' %}
+```kotlin
+{% snippet 'traversing_subjects_2' %}
+```
 
 Strikt will attempt to read the test source to find out the name of the variables.
 This example produces output that looks like this:
 
-{% codesnippet key='traversing_subjects_3' testClass='Chaining' language='text' %}
+```kotlin
+{% snippet 'traversing_subjects_3' %}
+```
 
 ### Performance considerations
 
@@ -48,7 +56,9 @@ In either of those cases Strikt will _not_ derive a description by attempting to
 If the assertion subject is an `Iterable` Strikt provides a `map` function much like the one in the Kotlin standard library.
 It is effectively like using `get` on each element of the `Iterable` subject.
 
-{% codesnippet key='traversing_subjects_5' testClass='Chaining' %}
+```kotlin
+{% snippet 'traversing_subjects_5' %}
+```
 
 In this case the `map` function is transforming the `Assertion.Buidler<List<Person>>` into an `Assertion.Builder<List<String>>` by applying the `name` property to each element.
 
@@ -58,11 +68,15 @@ If you find yourself frequently using `get` for the same properties or methods, 
 
 For example:
 
-{% codesnippet key='traversing_subjects_6' testClass='Chaining' %}
+```kotlin
+{% snippet 'traversing_subjects_6' %}
+```
 
 You can then write the earlier example as:
 
-{% codesnippet key='traversing_subjects_7' testClass='Chaining' %}
+```kotlin
+{% snippet 'traversing_subjects_7' %}
+```
 
 ## Built-in traversals
 

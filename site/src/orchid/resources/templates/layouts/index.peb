@@ -3,7 +3,6 @@
 <head>
 {% head %}
 {% styles %}
-{% include 'includes/head' %}
 </head>
 <body>
 {% include 'includes/navbar' %}
