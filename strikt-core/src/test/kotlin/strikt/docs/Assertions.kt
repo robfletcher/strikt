@@ -28,14 +28,14 @@ internal class Assertions {
 // -----------------------------------------------------------------------------
 
   @Test fun `assertion styles 1, 2`() {
+    val s = """
     // START assertion_styles_2
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
              found 5
-    """ // IGNORE
     // END assertion_styles_2
+    """
 
     expectThrows<AssertionFailedError> {
       // START assertion_styles_1
@@ -47,19 +47,19 @@ internal class Assertions {
       // END assertion_styles_1
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 3, 4`() {
+    val s = """
     // START assertion_styles_4
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
              found 5
       ✗ is upper case
-    """ // IGNORE
     // END assertion_styles_4
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_3
@@ -72,17 +72,17 @@ internal class Assertions {
       // END assertion_styles_3
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 5, 6`() {
+    val s = """
     // START assertion_styles_6
-    val s = """ // IGNORE
     ▼ Expect that 1:
       ✗ is less than 1
       ✗ is greater than 1
-    """ // IGNORE
     // END assertion_styles_6
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_5
@@ -94,12 +94,12 @@ internal class Assertions {
       // END assertion_styles_5
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 7, 8`() {
+    val s = """
     // START assertion_styles_8
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
@@ -107,8 +107,8 @@ internal class Assertions {
     ▼ Expect that 1:
       ✗ is less than 1
       ✗ is greater than 1
-    """ // IGNORE
     // END assertion_styles_8
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_7
@@ -125,15 +125,15 @@ internal class Assertions {
       // END assertion_styles_7
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
 // collection-elements.md
 // -----------------------------------------------------------------------------
 
   @Test fun `collections 1, 2`() {
+    val s = """
     // START collections_1
-    val s = """ // IGNORE
     ▼ Expect that ["catflap", "rubberplant", "marzipan"]:
       ✗ all elements match:
         ▼ "catflap":
@@ -147,8 +147,8 @@ internal class Assertions {
           ✓ is lower case
           ✗ starts with 'c'
                   found 'm'
-    """ // IGNORE
     // END collections_1
+    """
 
     expectThrows<AssertionFailedError> {
       // START collections_2
@@ -160,7 +160,7 @@ internal class Assertions {
       // END collections_2
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
 // expecting-exceptions.md
@@ -222,4 +222,10 @@ internal class Assertions {
       .hasLength(3)
     // END flow_typing_1
   }
+}
+
+fun String.removeSnippetTags(): String {
+  return this
+    .replace("// START (.*)$".toRegex(RegexOption.MULTILINE), "")
+    .replace("// END (.*)$".toRegex(RegexOption.MULTILINE), "")
 }
