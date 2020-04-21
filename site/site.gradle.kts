@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  val orchidVersion = "0.19.0"
+  val orchidVersion = "0.20.0"
   orchidImplementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidDocs:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPluginDocs:$orchidVersion")

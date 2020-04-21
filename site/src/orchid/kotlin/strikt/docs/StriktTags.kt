@@ -5,6 +5,7 @@ import com.eden.orchid.api.compilers.TemplateTag
 import com.eden.orchid.api.options.annotations.Description
 import com.eden.orchid.api.options.annotations.Option
 import com.eden.orchid.api.options.annotations.StringDefault
+import com.eden.orchid.api.resources.resourcesource.LocalResourceSource
 import java.util.regex.Pattern
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ constructor() : TemplateTag("codesnippets", Type.Tabbed, true) {
     return Snippet(key, content)
   }
 
-  inner class Snippet(private val key: String?, private val content: String?) : TemplateTag.Tab {
+  inner class Snippet(private val name: String?, private val content: String?) : TemplateTag.Tab(Type.Tabbed.name) {
 
     @Option
     @Description("The title of the tab")
@@ -49,8 +50,8 @@ constructor() : TemplateTag("codesnippets", Type.Tabbed, true) {
     @Description("The language to markup snippet content.")
     lateinit var language: String
 
-    override fun getKey(): String? {
-      return key
+    override fun getName(): String? {
+      return name
     }
 
     override fun getContent(): String? {
@@ -62,7 +63,7 @@ constructor() : TemplateTag("codesnippets", Type.Tabbed, true) {
     }
 
     fun getSnippetContent(): String {
-      return getSnippetContent(context, testClassPath, testClass, key!!)
+      return getSnippetContent(context, testClassPath, testClass, name!!)
     }
   }
 }
@@ -105,8 +106,9 @@ fun getSnippetContent(
   testClass: String,
   key: String
 ): String {
-  val resource = context.getLocalResourceEntry("../../../../strikt-core/src/test/kotlin/$testClassPath/$testClass.kt")
-  val content = resource?.rawContent ?: ""
+
+  val resource = context.getResourceEntry("../../../../strikt-core/src/test/kotlin/$testClassPath/$testClass.kt", LocalResourceSource)
+  val content = resource?.content ?: ""
 
   val pattern = Pattern.compile("(?s)// START $key(.*?)// END $key")
 
