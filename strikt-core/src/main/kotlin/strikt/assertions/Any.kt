@@ -2,6 +2,8 @@ package strikt.assertions
 
 import java.beans.Introspector
 import strikt.api.Assertion.Builder
+import java.io.PrintWriter
+import java.io.StringWriter
 
 /**
  * Asserts that the subject is `null`.
@@ -161,3 +163,31 @@ infix fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
   } then {
     if (allPassed) pass() else fail()
   }
+
+/**
+ * Asserts that the check execution did not throw any exception. The assertion fails
+ * if execution throws an exception.
+ */
+infix fun <R> Builder<R>.pass(check: R.(R) -> Unit): Builder<R> {
+  return assert("passes check") { value ->
+    runCatching { value.check(value) }.apply {
+      when {
+        isSuccess -> pass()
+        else -> {
+          fun Throwable.stackTraceAsString(): String {
+            val stringWriter = StringWriter()
+            this.printStackTrace(PrintWriter(stringWriter))
+            return stringWriter.toString()
+          }
+          fail(
+            description = "failure: %s%n"
+              + exceptionOrNull()!!.stackTraceAsString().trim().prependIndent(" "),
+            actual = exceptionOrNull()!!,
+            cause = exceptionOrNull()!!
+          )
+        }
+      }
+    }
+  }
+}
+
