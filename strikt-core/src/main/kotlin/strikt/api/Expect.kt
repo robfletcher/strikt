@@ -7,6 +7,8 @@ import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Throwing
 import strikt.internal.AssertionSubject
+import kotlin.Result.Companion.failure
+import kotlin.Result.Companion.success
 
 /**
  * Starts a block of assertions that will all be evaluated regardless of whether
@@ -28,12 +30,12 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
 
     override fun <T> catching(
       action: suspend () -> T
-    ): DescribeableBuilder<Try<T>> =
+    ): DescribeableBuilder<Result<T>> =
       that(
         try {
-          runBlocking { action() }.let(::Success)
+          runBlocking { action() }.let(::success)
         } catch (e: Throwable) {
-          Failure(e)
+          failure<T>(e)
         }
       )
   }
@@ -94,11 +96,11 @@ inline fun <reified E : Throwable> expectThrows(
  *
  * @return an assertion for the successful or failed result of [action].
  */
-fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Try<T>> =
+fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Result<T>> =
   expectThat(
     try {
-      runBlocking { action() }.let(::Success)
+      runBlocking { action() }.let(::success)
     } catch (e: Throwable) {
-      Failure(e)
+      failure<T>(e)
     }
   )

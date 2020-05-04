@@ -5,44 +5,43 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
-import strikt.api.Try
 import strikt.api.expectCatching
 import strikt.api.expectThat
-import strikt.assertions.failed
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
+import strikt.assertions.isSuccess
 import strikt.assertions.message
-import strikt.assertions.succeeded
 
 internal class Catching : JUnit5Minutests {
-  fun tests() = rootContext<Assertion.Builder<Try<String>>> {
+  fun tests() = rootContext<Assertion.Builder<Result<String>>> {
     context("a successful action") {
       fixture {
         expectCatching { "kthxbye" }
       }
 
       test("maps to the action's returned value") {
-        succeeded()
+        isSuccess()
           .isA<String>()
           .isEqualTo("kthxbye")
       }
 
       test("is not failed") {
         assertThrows<AssertionFailedError> {
-          failed()
+          isFailure()
         }
       }
 
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
           and {
-            failed().isA<NullPointerException>()
+            isFailure().isA<NullPointerException>()
           }
         }.also { exception ->
           expectThat(exception.message).isEqualTo(
             """
             |▼ Expect that Success(kthxbye):
-            |  ✗ failed with an exception
+            |  ✗ is failure
             |    returned "kthxbye"
           """.trimMargin()
           )
@@ -56,7 +55,7 @@ internal class Catching : JUnit5Minutests {
       }
 
       test("maps to the exception thrown by the action") {
-        failed()
+        isFailure()
           .isA<IllegalStateException>()
           .message
           .isEqualTo("o noes")
@@ -64,20 +63,20 @@ internal class Catching : JUnit5Minutests {
 
       test("is not successful") {
         assertThrows<AssertionFailedError> {
-          succeeded()
+          isSuccess()
         }
       }
 
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
           and {
-            succeeded().isA<String>()
+            isSuccess().isA<String>()
           }
         }.also { exception ->
           expectThat(exception.message).isEqualTo(
             """
-            |▼ Expect that Failure(IllegalStateException: o noes):
-            |  ✗ succeeded
+            |▼ Expect that Failure(java.lang.IllegalStateException: o noes):
+            |  ✗ is success
             |    threw java.lang.IllegalStateException
           """.trimMargin()
           )

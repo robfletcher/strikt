@@ -29,7 +29,7 @@ val <T : Throwable> Builder<T>.cause: DescribeableBuilder<Throwable?>
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Builder<Result<R>>.isFailure(): Builder<Throwable> =
-  assert("is Failure") {
+  assert("is failure") {
     when {
       it.isFailure -> pass()
       else -> fail(
@@ -52,7 +52,7 @@ fun <R> Builder<Result<R>>.isFailure(): Builder<Throwable> =
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Builder<Result<R>>.isSuccess(): Builder<R> =
-  assert("is Success") {
+  assert("is success") {
     when {
       it.isSuccess -> pass()
       else -> fail(
