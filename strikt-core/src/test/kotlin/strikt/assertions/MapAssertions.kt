@@ -2,15 +2,13 @@ package strikt.assertions
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
 
-@DisplayName("assertions on Map")
 internal object MapAssertions : JUnit5Minutests {
-  fun mapAssertions() = rootContext<Assertion.Builder<Map<String, String>>> {
+  fun tests() = rootContext<Assertion.Builder<Map<String, String>>> {
     context("an empty subject") {
       fixture { expectThat(emptyMap()) }
 
