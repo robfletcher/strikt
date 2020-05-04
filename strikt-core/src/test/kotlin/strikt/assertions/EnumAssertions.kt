@@ -1,30 +1,43 @@
 package strikt.assertions
 
-import dev.minutest.junit.testFactoryFor
+import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.TestFactory
+import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
+import strikt.api.expectThrows
 
 @DisplayName("assertions on enums")
-internal object EnumAssertions {
-  @TestFactory
-  fun `can map to the enum name"`() = testFactoryFor(rootContext<Unit> {
-    for (deity in Pantheon.values()) {
-      test("Can get name on $deity") {
-        expectThat(deity).name.isEqualTo(deity.name)
+internal object EnumAssertions : JUnit5Minutests {
+  fun tests() = rootContext {
+    context("name mapping") {
+      Pantheon.values().forEach { deity ->
+        test("Can get name on $deity") {
+          expectThat(deity).name.isEqualTo(deity.name)
+        }
       }
     }
-  })
 
-  @TestFactory
-  fun `can map to the enum ordinal`() = testFactoryFor(rootContext<Unit> {
-    for (deity in Pantheon.values()) {
-      test("Can get ordinal on $deity") {
-        expectThat(deity).ordinal.isEqualTo(deity.ordinal)
+    context("ordinal mapping") {
+      Pantheon.values().forEach { deity ->
+        test("Can get ordinal on $deity") {
+          expectThat(deity).ordinal.isEqualTo(deity.ordinal)
+        }
       }
     }
-  })
+
+    context("isOneOf assertion") {
+      test("Passes if the subject is one of the specified values") {
+        expectThat(Pantheon.NORSE).isOneOf(Pantheon.NORSE, Pantheon.GREEK)
+      }
+
+      test("Fails if the subject is not one of the specified values") {
+        expectThrows<AssertionFailedError> {
+          expectThat(Pantheon.NORSE).isOneOf(Pantheon.ROMAN, Pantheon.GREEK)
+        }
+      }
+    }
+  }
 }
 
 enum class Pantheon(val ruler: String, val underworldRuler: String) {

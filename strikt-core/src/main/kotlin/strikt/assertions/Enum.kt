@@ -17,3 +17,15 @@ val <T : Enum<T>> Builder<T>.name: Builder<String>
  */
 val <T : Enum<T>> Builder<T>.ordinal: Builder<Int>
   get() = get(Enum<T>::ordinal)
+
+/**
+ * Asserts that the subject is one of [values].
+ */
+fun <T : Enum<T>> Builder<T>.isOneOf(vararg values: T): Builder<T> =
+  assert("is one of ${values.joinToString()}") {
+    if (it in values) {
+      pass()
+    } else {
+      fail(it)
+    }
+  }

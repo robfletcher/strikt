@@ -8,11 +8,13 @@ import io.mockk.verify
 import org.gradle.testkit.runner.BuildTask
 import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.testkit.runner.TaskOutcome.FAILED
+import org.gradle.testkit.runner.TaskOutcome.FROM_CACHE
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.assertThrows
 import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
+import strikt.assertions.isOneOf
 
 internal object BuildTaskAssertions : JUnit5Minutests {
 
@@ -37,6 +39,10 @@ internal object BuildTaskAssertions : JUnit5Minutests {
         assertThrows<AssertionError> {
           assertion.hasOutcome(FAILED)
         }
+      }
+
+      test("can use standard enum assertions") {
+        assertion.outcome.isOneOf(SUCCESS, FROM_CACHE)
       }
     }
 
