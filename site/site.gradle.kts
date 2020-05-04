@@ -18,7 +18,7 @@ Commands:
 
 plugins {
   id("nebula.kotlin")
-  id("com.eden.orchidPlugin") version "0.19.0"
+  id("com.eden.orchidPlugin") version "0.20.0"
 }
 
 repositories {
@@ -28,20 +28,19 @@ repositories {
 }
 
 dependencies {
-  val orchidVersion = "0.19.0"
+  val orchidVersion = "0.20.0"
   orchidImplementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
+  orchidImplementation("io.github.javaeden.orchid:OrchidCopper:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidDocs:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPluginDocs:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidKotlindoc:$orchidVersion")
   orchidRuntimeOnly("io.github.javaeden.orchid:OrchidGithub:$orchidVersion")
+  orchidRuntimeOnly("io.github.javaeden.orchid:OrchidSnippets:$orchidVersion")
 }
 
 project.version = "${project.version}"
 
 orchid {
-  theme = "StriktTheme"
-  baseUrl = "https://strikt.io/"
-
   environment = if (findProperty("env") == "prod") { "prod" } else { "debug" }
   args = listOf("--experimentalSourceDoc")
 

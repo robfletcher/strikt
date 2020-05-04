@@ -30,9 +30,11 @@ The standard assertions `isNull`, `isEqualTo`, `isA<T>` and many others are simp
 
 Let's imagine we're implementing an assertion function for `java.time.LocalDate` that tests if the represented date is a leap day.
 
-{% codesnippet key='custom_assertions_1' testClass='CustomAssertions' %}
+```kotlin
+{% snippet 'custom_assertions_1' %}
+```
 
-Breaking this down: 
+Breaking this down:
 
 1. We declare the assertion function applies only to `Assertion.Builder<LocalDate>`.
 2. Note that the function also returns `Assertion.Builder<LocalDate>` so we can include this assertion as part of a chain.
@@ -41,7 +43,9 @@ Breaking this down:
 
 If this assertion fails it will produce a message like:
 
-{% codesnippet key='custom_assertions_2' testClass='CustomAssertions' language='text' %}
+```text
+{% snippet 'custom_assertions_2' %}
+```
 
 ### Note
 
@@ -57,11 +61,15 @@ That way any assertion failure message will be more helpful.
 In order to do this, Strikt provides an overridden version of `fail()` that accepts a message string and the actual value found.
 The message string should contain a format placeholder for the value.
 
-{% codesnippet key='custom_assertions_3' testClass='CustomAssertions' %}
+```kotlin
+{% snippet 'custom_assertions_3' %}
+```
 
 Now if the assertion fails there is a little more detail.
 
-{% codesnippet key='custom_assertions_4' testClass='CustomAssertions' language='text' %}
+```text
+{% snippet 'custom_assertions_4' %}
+```
 
 In this case that's not terribly helpful but when dealing with properties, method return values, or the like it can save a lot of effort in identifying the precise cause of an error.
 When comparing large string values it also means IDEs such as IntelliJ IDEA will present a detailed diff dialog in the event of a test failure.
@@ -72,7 +80,9 @@ For the simplest assertion functions, instead of using `assert` and calling `pas
 
 We can re-implement the example above like this:
 
-{% codesnippet key='custom_assertions_5' testClass='CustomAssertions' %}
+```kotlin
+{% snippet 'custom_assertions_5' %}
+```
 
 You should not use this form when you want to provide a meaningful description of the actual value but for simple assertions it's slightly less verbose.
 
@@ -88,7 +98,9 @@ Composed assertions are useful for things like:
 
 Imagine we're creating an assertion function that tests fails if any element of a collection is `null`.
 
-{% codesnippet key='custom_assertions_6' testClass='CustomAssertions' %}
+```kotlin
+{% snippet 'custom_assertions_6' %}
+```
 
 Breaking this down:
 
@@ -101,11 +113,13 @@ The receiver of the block passed to `result` has the properties `allFailed`, `an
 
 If the assertion failed we'll see something like this:
 
-{% codesnippet key='custom_assertions_7' testClass='CustomAssertions' language='text' %}
+```text
+{% snippet 'custom_assertions_7' %}
+```
 
 As well as the overall assertion failure message we get a detailed breakdown allowing us to easily find exactly where the problem is.
 
 Several assertion functions in Strikt's standard assertions library use nested assertions.
 For example, `Assertion.Builder<Iterable<E>>.all` applies assertions to each element of an `Iterable` then passes the overall assertion if (and only if) all those nested assertions passed (`allPassed`).
 On the other hand `Assertion.Builder<Iterable<E>>.any` applies assertions to the elements of an `Iterable` but will pass the overall assertion if at least one of those nested assertions passed (`anyPassed`).
-The `Assertion.Builder<Iterable<E>>.none` assertion passes only if `allFailed` is true for its nested assertions! 
+The `Assertion.Builder<Iterable<E>>.none` assertion passes only if `allFailed` is true for its nested assertions!

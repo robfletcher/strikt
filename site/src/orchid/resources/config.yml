@@ -1,4 +1,6 @@
 site:
+  theme: 'StriktTheme'
+  baseUrl: 'https://strikt.io/'
   about:
     siteName: Strikt
     siteDescription: Strikt is an assertion library for Kotlin intended for use with a test runner such as JUnit or Spek.
@@ -19,9 +21,9 @@ theme:
       link: 'https://twitter.com/stri_kt'
       buttonColor: 'info'
   menu:
-  - type: 'link'
+  - type: 'page'
     title: 'Home'
-    url: '/'
+    itemId: 'home'
     icon: 'home'
   - type: 'wiki'
     icon: 'graduation-cap'
@@ -52,9 +54,9 @@ theme:
       itemId: 'Changelog'
   metaComponents:
     - type: 'orchidSearch'
-      extraCss:
-        - 'assets/css/orchidSearch.scss'
+      extraCss: ['assets/css/orchidSearch.scss']
     - type: 'prism'
+      extraCss: ['assets/css/prismFixes.scss']
       theme: 'tomorrow'
       languages:
         - 'clike'
@@ -83,6 +85,26 @@ kotlindoc:
     - { name: 'Gradle Module',     slug: 'gradle',   sourceDirs: '../../../../strikt-gradle/src/main/kotlin/',    moduleGroup: 'module' }
     - { name: 'Jackson Module',    slug: 'jackson',  sourceDirs: '../../../../strikt-jackson/src/main/kotlin/',   moduleGroup: 'module' }
     - { name: 'Java Module',       slug: 'java',     sourceDirs: '../../../../strikt-java-time/src/main/kotlin/', moduleGroup: 'module' }
-    - { name: 'MockK Module',      slug: 'java',     sourceDirs: '../../../../strikt-mockk/src/main/kotlin/',     moduleGroup: 'module' }
+    - { name: 'MockK Module',      slug: 'mockk',    sourceDirs: '../../../../strikt-mockk/src/main/kotlin/',     moduleGroup: 'module' }
     - { name: 'Protobuf Module',   slug: 'protobuf', sourceDirs: '../../../../strikt-protobuf/src/main/kotlin/',  moduleGroup: 'module' }
     - { name: 'Spring Module',     slug: 'spring',   sourceDirs: '../../../../strikt-spring/src/main/kotlin/',    moduleGroup: 'module' }
+
+snippets:
+  sections:
+    - tags: ['code_snippets']
+      adapter:
+        type: 'embedded'
+        baseDirs:
+            - '../../../../strikt-core/src/test/kotlin/'
+            - '../../../../strikt-bom/src/test/kotlin/'
+            - '../../../../strikt-arrow/src/test/kotlin/'
+            - '../../../../strikt-gradle/src/test/kotlin/'
+            - '../../../../strikt-jackson/src/test/kotlin/'
+            - '../../../../strikt-java-time/test/main/kotlin/'
+            - '../../../../strikt-mockk/src/test/kotlin/'
+            - '../../../../strikt-protobuf/src/test/kotlin/'
+            - '../../../../strikt-spring/src/test/kotlin/'
+        recursive: true
+        startPattern: '^.*?//.*?START(.+?)$'
+        endPattern: '^.*?//.*?END(.+?)$'
+        patternNameGroup: 1

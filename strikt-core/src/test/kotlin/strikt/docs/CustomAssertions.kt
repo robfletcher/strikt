@@ -29,18 +29,18 @@ internal class CustomAssertions {
       }
     // END custom_assertions_1
 
+    val s = """
     // START custom_assertions_2
-    val s = """ // IGNORE
     ▼ Expect that 2018-05-01:
       ✗ is St. Tib's Day
-    """ // IGNORE
     // END custom_assertions_2
+    """
 
     expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `custom assertions 3, 4`() {
@@ -57,19 +57,19 @@ internal class CustomAssertions {
       }
     // END custom_assertions_3
 
+    val s = """
     // START custom_assertions_4
-    val s = """ // IGNORE
     ▼ Expect that 2018-05-01:
       ✗ is St. Tib's Day
         in fact it is 2018-05-01
-    """ // IGNORE
     // END custom_assertions_4
+    """
 
     expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `custom assertions 5`() {
@@ -80,16 +80,16 @@ internal class CustomAssertions {
       }
     // END custom_assertions_5
 
-    val s = """ // IGNORE
+    val s = """
     ▼ Expect that 2018-05-01:
       ✗ is St. Tib's Day
-    """ // IGNORE
+    """
 
     expectThrows<AssertionFailedError> {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.trimIndent().trim())
   }
 
   @Test fun `custom assertions 6`() {
@@ -104,8 +104,8 @@ internal class CustomAssertions {
       }
     // END custom_assertions_6
 
+    val s = """
     // START custom_assertions_7
-    val s = """ // IGNORE
     ▼ Expect that ["catflap", null, "rubberplant", "marzipan"]:
       ✗ does not contain any null elements
         ▼ "catflap":
@@ -116,8 +116,8 @@ internal class CustomAssertions {
           ✓ is not null
         ▼ "marzipan":
           ✓ is not null
-    """ // IGNORE
     // END custom_assertions_7
+    """
 
     val subject = listOf("catflap", null, "rubberplant", "marzipan")
 
@@ -125,6 +125,6 @@ internal class CustomAssertions {
       expectThat(subject).containsNoNullElements()
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 }

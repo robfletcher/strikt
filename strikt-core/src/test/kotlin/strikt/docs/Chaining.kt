@@ -40,8 +40,8 @@ internal class Chaining {
   }
 
   @Test fun `traversing subjects 2, 3`() {
+    val s = """
     // START traversing_subjects_3
-    val s = """ // IGNORE
     ▼ Expect that Person(name=David, birthDate=1947-01-08):
       ▼ name:
         ✗ is equal to "Ziggy"
@@ -49,8 +49,8 @@ internal class Chaining {
       ▼ birthDate.year:
         ✗ is equal to 1971
                 found 1947
-    """ // IGNORE
     // END traversing_subjects_3
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START traversing_subjects_2
@@ -62,7 +62,7 @@ internal class Chaining {
       // END traversing_subjects_2
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `traversing subjects 4`() {

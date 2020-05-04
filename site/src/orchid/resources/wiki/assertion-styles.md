@@ -14,11 +14,15 @@ That is, the first assertion that fails breaks the chain and further assertions 
 
 Each assertion in the chain returns an `Assertion.Builder` object that supports further assertions.
 
-{% codesnippet key='assertion_styles_1' testClass='Assertions' %}
+```kotlin
+{% snippet 'assertion_styles_1' %}
+```
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_2' testClass='Assertions' language='text' %}
+```text
+{% snippet 'assertion_styles_2' %}
+```
 
 Notice that the `isUpperCase()` assertion is not applied as the earlier `hasLength(1)` assertion failed.
 
@@ -30,11 +34,15 @@ They allow multiple assertions (or assertion chains) to be evaluated against the
 Block assertions do _not_ fail fast.
 That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
 
-{% codesnippet key='assertion_styles_3' testClass='Assertions' %}
+```kotlin
+{% snippet 'assertion_styles_3' %}
+```
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_4' testClass='Assertions' language='text' %}
+```text
+{% snippet 'assertion_styles_4' %}
+```
 
 All assertions are applied and since two fail there are two errors logged.
 
@@ -42,16 +50,20 @@ All assertions are applied and since two fail there are two errors logged.
 
 Chained assertions inside a block _will_ still fail fast but will not prevent other assertions in the block from being evaluated.
 
-{% codesnippet key='assertion_styles_5' testClass='Assertions' %}
+```kotlin
+{% snippet 'assertion_styles_5' %}
+```
 
 Produces the output:
 
-{% codesnippet key='assertion_styles_6' testClass='Assertions' language='text' %}
+```text
+{% snippet 'assertion_styles_6' %}
+```
 
 Note the `isA<Int>` assertion (that would have failed) was not evaluated since it was chained after `lessThan(1)` which failed.
 The `greaterThan(1)` assertion _was_ evaluated since it was not part of the same chain.
 
-## Assertions with multiple subjects 
+## Assertions with multiple subjects
 
 As well as `expectThat` Strikt provides a top-level `expect` method that just takes a lambda parameter.
 Inside the `expect` block you use `that` to define a subject and start a chain or nested block of assertions.
@@ -60,4 +72,6 @@ All assertions inside the `expect` lambda are evaluated.
 
 The previous examples can be combined into a single `expect` block.
 
-{% codesnippet key='assertion_styles_7' testClass='Assertions' %}
+```kotlin
+{% snippet 'assertion_styles_7' %}
+```

@@ -8,17 +8,17 @@ import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.api.expectThrows
 import strikt.assertions.all
-import strikt.assertions.failed
 import strikt.assertions.hasLength
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isFailure
 import strikt.assertions.isGreaterThan
 import strikt.assertions.isLessThan
 import strikt.assertions.isLowerCase
+import strikt.assertions.isSuccess
 import strikt.assertions.isUpperCase
 import strikt.assertions.message
 import strikt.assertions.startsWith
-import strikt.assertions.succeeded
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("Snippets used in Orchid docs")
@@ -28,14 +28,14 @@ internal class Assertions {
 // -----------------------------------------------------------------------------
 
   @Test fun `assertion styles 1, 2`() {
+    val s = """
     // START assertion_styles_2
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
              found 5
-    """ // IGNORE
     // END assertion_styles_2
+    """
 
     expectThrows<AssertionFailedError> {
       // START assertion_styles_1
@@ -47,19 +47,19 @@ internal class Assertions {
       // END assertion_styles_1
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 3, 4`() {
+    val s = """
     // START assertion_styles_4
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
              found 5
       ✗ is upper case
-    """ // IGNORE
     // END assertion_styles_4
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_3
@@ -72,17 +72,17 @@ internal class Assertions {
       // END assertion_styles_3
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 5, 6`() {
+    val s = """
     // START assertion_styles_6
-    val s = """ // IGNORE
     ▼ Expect that 1:
       ✗ is less than 1
       ✗ is greater than 1
-    """ // IGNORE
     // END assertion_styles_6
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_5
@@ -94,12 +94,12 @@ internal class Assertions {
       // END assertion_styles_5
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test fun `assertion styles 7, 8`() {
+    val s = """
     // START assertion_styles_8
-    val s = """ // IGNORE
     ▼ Expect that "fnord":
       ✓ is an instance of java.lang.String
       ✗ has length 1
@@ -107,8 +107,8 @@ internal class Assertions {
     ▼ Expect that 1:
       ✗ is less than 1
       ✗ is greater than 1
-    """ // IGNORE
     // END assertion_styles_8
+    """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_7
@@ -125,15 +125,15 @@ internal class Assertions {
       // END assertion_styles_7
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
 // collection-elements.md
 // -----------------------------------------------------------------------------
 
   @Test fun `collections 1, 2`() {
+    val s = """
     // START collections_1
-    val s = """ // IGNORE
     ▼ Expect that ["catflap", "rubberplant", "marzipan"]:
       ✗ all elements match:
         ▼ "catflap":
@@ -147,8 +147,8 @@ internal class Assertions {
           ✓ is lower case
           ✗ starts with 'c'
                   found 'm'
-    """ // IGNORE
     // END collections_1
+    """
 
     expectThrows<AssertionFailedError> {
       // START collections_2
@@ -160,7 +160,7 @@ internal class Assertions {
       // END collections_2
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
 // expecting-exceptions.md
@@ -169,26 +169,26 @@ internal class Assertions {
   @Test fun `catching exceptions 1, 2, 3`() {
     // START catching_exceptions_1
     expectCatching { identifyHotdog("hamburger") }
-      .failed()
+      .isFailure()
       .isA<NotHotdogException>()
     // END catching_exceptions_1
 
     // START catching_exceptions_2
     expectCatching { identifyHotdog("hamburger") }
-      .failed()
+      .isFailure()
     // END catching_exceptions_2
 
     // START catching_exceptions_3
     expect {
       catching { identifyHotdog("hamburger") }
-        .failed()
+        .isFailure()
         .isA<NotHotdogException>()
 
       catching { identifyHotdog("hotdog") }
-        .succeeded()
+        .isSuccess()
     }
     expectCatching { identifyHotdog("hotdog") }
-      .succeeded()
+      .isSuccess()
     // END catching_exceptions_3
   }
 
@@ -222,4 +222,10 @@ internal class Assertions {
       .hasLength(3)
     // END flow_typing_1
   }
+}
+
+fun String.removeSnippetTags(): String {
+  return this
+    .replace("// START (.*)$".toRegex(RegexOption.MULTILINE), "")
+    .replace("// END (.*)$".toRegex(RegexOption.MULTILINE), "")
 }

@@ -29,8 +29,8 @@ internal class Throws {
     }.let { error ->
       val expected =
         """▼ Expect that Success(kotlin.Unit):
-          |  ✗ failed with an exception
-          |    ran successfully"""
+          |  ✗ is failure
+          |    returned kotlin.Unit"""
           .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
@@ -42,9 +42,9 @@ internal class Throws {
       expectThrows<NullPointerException> { error("o noes") }
     }.let { error ->
       val expected =
-        """▼ Expect that Failure(IllegalStateException: o noes):
-          |  ✓ failed with an exception
-          |  ▼ caught exception:
+        """▼ Expect that Failure(java.lang.IllegalStateException: o noes):
+          |  ✓ is failure
+          |  ▼ exception:
           |    ✗ is an instance of java.lang.NullPointerException
           |                  found java.lang.IllegalStateException"""
           .trimMargin()

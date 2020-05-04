@@ -14,7 +14,7 @@ dependencies {
   compileOnly(gradleTestKit())
 
   testImplementation(gradleTestKit())
-  testImplementation("io.mockk:mockk:1.9.3")
+  testImplementation("io.mockk:mockk:1.10.0")
   testImplementation("dev.minutest:minutest:1.11.0")
 }
 

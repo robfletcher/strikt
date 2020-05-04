@@ -25,9 +25,8 @@ import strikt.assertions.startsWith
 import strikt.internal.opentest4j.CompoundAssertionFailure
 
 // Wrap each code snippet in comments like "// START (snippet name)...// END (snippet name)"
-// Lines that end in "// IGNORE" will be excluded from the example
-// Code snippets can be referenced from the docs using the {% example %} tag
-// (see homepage.md for sample usage)
+// Code snippets can be referenced from the docs using the {% snippet %} tag
+// (see https://orchid.run/plugins/orchidsnippets for snippets docs)
 @DisplayName("Snippets used in Orchid docs")
 internal class Homepage {
   @Test
@@ -66,16 +65,16 @@ internal class Homepage {
 
   @Test
   fun `homepage five, six, seven`() {
+    val s = """
     // START homepage_six
-    val s = """ // IGNORE
     ▼ Expect that "The Enlightened take things Lightly":
       ✗ has length 5
              found 35
       ✗ matches the regular expression /\d+/
                                  found "The Enlightened take things Lightly"
       ✓ starts with "T"
-    """ // IGNORE
     // END homepage_six
+    """
 
     expectThrows<CompoundAssertionFailure> {
       /* ktlint-disable no-multi-spaces */
@@ -90,7 +89,7 @@ internal class Homepage {
       /* ktlint-enable no-multi-spaces */
     }
       .message
-      .isEqualTo(s.replace(" // IGNORE", "").trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
   }
 
   @Test
@@ -146,15 +145,17 @@ internal class Homepage {
     // END homepage_ten
   }
 
-  // START homepage_eleven
+  // START homepage_eleven_a
   val Assertion.Builder<Pantheon>.realm: Assertion.Builder<String>
     get() = get { "$ruler to $underworldRuler" }
+  // END homepage_eleven_a
 
-  @Test fun `homepage eleven`() { // IGNORE
+  @Test fun `homepage eleven`() {
+    // START homepage_eleven_b
     val subject = Pantheon.NORSE
     expectThat(subject)
       .realm
       .isEqualTo("Odin to Hel")
-  } // IGNORE
-  // END homepage_eleven
+    // END homepage_eleven_b
+  }
 }
