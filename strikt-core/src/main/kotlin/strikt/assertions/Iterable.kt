@@ -34,7 +34,10 @@ fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
  * @see Iterable.single
  */
 fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> =
-  assertThat("has only one element") { it.size == 1 }
+  assert("has only one element") {
+    if (it.size == 1) pass()
+    else fail(it.size)
+  }
     .get("single element %s") { single() }
 
 /**

@@ -1,6 +1,5 @@
 package strikt
 
-import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -22,6 +21,7 @@ import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
+import java.time.LocalDate
 
 @DisplayName("mapping assertions")
 internal class Mapping {
@@ -52,14 +52,31 @@ internal class Mapping {
   }
 
   @Test
-  fun `single() fails when the iterable has multiple entries`() {
+  fun `single() fails when the iterable has no elements`() {
+    val subject = emptyList<String>()
+    assertThrows<AssertionError> {
+      expectThat(subject).single().isEqualTo("catflap")
+    }.let { error ->
+      expectThat(error).message.isEqualTo(
+        """▼ Expect that []:
+          |  ✗ has only one element
+          |    found 0"""
+          .trimMargin()
+      )
+    }
+  }
+
+  @Test
+  fun `single() fails when the iterable has multiple elements`() {
     val subject = listOf("catflap", "rubberplant")
     assertThrows<AssertionError> {
       expectThat(subject).single().isEqualTo("catflap")
     }.let { error ->
       expectThat(error).message.isEqualTo(
         """▼ Expect that ["catflap", "rubberplant"]:
-  ✗ has only one element"""
+          |  ✗ has only one element
+          |    found 2"""
+          .trimMargin()
       )
     }
   }
