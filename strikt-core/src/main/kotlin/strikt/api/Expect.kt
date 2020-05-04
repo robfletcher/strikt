@@ -6,7 +6,9 @@ import strikt.assertions.failedWith
 import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Throwing
+import strikt.internal.AssertionStrategy.Throwing.evaluate
 import strikt.internal.AssertionSubject
+import strikt.internal.DefaultExpectationBuilder
 import kotlin.Result.Companion.failure
 import kotlin.Result.Companion.success
 
@@ -17,35 +19,14 @@ import kotlin.Result.Companion.success
  */
 fun expect(block: suspend ExpectationBuilder.() -> Unit) {
   val subjects = mutableListOf<AssertionSubject<*>>()
-  object : ExpectationBuilder {
-    override fun <T> that(subject: T): DescribeableBuilder<T> =
-      AssertionSubject(subject)
-        .also { subjects.add(it) }
-        .let { AssertionBuilder(it, Collecting) }
-
-    override fun <T> that(
-      subject: T,
-      block: Builder<T>.() -> Unit
-    ): DescribeableBuilder<T> = that(subject).apply(block)
-
-    override fun <T> catching(
-      action: suspend () -> T
-    ): DescribeableBuilder<Result<T>> =
-      that(
-        try {
-          runBlocking { action() }.let(::success)
-        } catch (e: Throwable) {
-          failure<T>(e)
-        }
-      )
-  }
+  DefaultExpectationBuilder(subjects)
     .apply {
       runBlocking {
         block()
       }
     }
     .let {
-      Throwing.evaluate(subjects)
+      evaluate(subjects)
     }
 }
 
@@ -74,7 +55,7 @@ fun <T> expectThat(
 ) {
   AssertionSubject(subject).let { context ->
     AssertionBuilder(context, Collecting).apply(block)
-    Throwing.evaluate(context)
+    evaluate(context)
   }
 }
 

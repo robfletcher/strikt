@@ -13,6 +13,7 @@ import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.api.expectThrows
+import strikt.assertions.contains
 import strikt.assertions.containsExactly
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
@@ -47,14 +48,8 @@ internal object BuildResultAssertions : JUnit5Minutests {
           assertion.task(":existingPath").isNotNull().isSuccess()
         }
           .message
-          .isEqualTo(
-            """▼ Expect that BuildResult(#36):
-              |  ▼ task path :existingPath:
-              |    ✓ is not null
-              |    ✗ outcome is SUCCESS
-              |           found FAILED"""
-              .trimMargin()
-          )
+          .isNotNull()
+          .contains("▼ task path :existingPath:")
       }
     }
 
