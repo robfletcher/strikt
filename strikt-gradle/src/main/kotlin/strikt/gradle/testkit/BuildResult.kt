@@ -10,7 +10,7 @@ import strikt.api.Assertion
  * @see BuildResult.task
  */
 infix fun <T : BuildResult> Assertion.Builder<T>.task(taskPath: String): Assertion.Builder<BuildTask?> =
-  get("task path") { task(taskPath) }
+  get("task path $taskPath") { task(taskPath) }
 
 /**
  * Maps this assertion to the task paths of the build with the provided [outcome].
