@@ -7,6 +7,7 @@ import strikt.api.CompoundAssertions
 import strikt.api.DescribeableBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Negating
+import strikt.internal.opentest4j.MappingFailed
 
 internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
@@ -100,15 +101,21 @@ internal class AssertionBuilder<T>(
     function: (T) -> R
   ): DescribeableBuilder<R> =
     if (context.allowChain) {
-      val mappedValue = function(context.subject)
-      AssertionBuilder(
-        AssertionSubject(context, mappedValue, description),
-        strategy
-      )
+      runCatching {
+        function(context.subject)
+      }
+        .getOrElse { ex -> throw MappingFailed(description, ex) }
+        .let {
+          AssertionBuilder(
+            AssertionSubject(context, it, description),
+            strategy
+          )
+        }
     } else {
       // fake return a builder that will never get invoked. If `allowChain` is
       // `false` we may have an inappropriate subject to pass to `function` that
       // will raise an unexpected `IllegalArgumentException`.
+      @Suppress("UNCHECKED_CAST")
       this as AssertionBuilder<R> // TODO: no, this is a lie
     }
 
@@ -117,12 +124,17 @@ internal class AssertionBuilder<T>(
     function: T.() -> R,
     block: Builder<R>.() -> Unit
   ): Builder<T> {
-    val mappedValue = function(context.subject)
-    AssertionSubject(context, mappedValue, description)
-      .also { nestedContext ->
-        AssertionBuilder(nestedContext, Collecting).apply(block)
-        strategy.evaluate(nestedContext)
+    runCatching {
+      function(context.subject)
+    }
+      .onSuccess {
+        AssertionSubject(context, it, description)
+          .also { nestedContext ->
+            AssertionBuilder(nestedContext, Collecting).apply(block)
+            strategy.evaluate(nestedContext)
+          }
       }
+      .onFailure { ex -> throw MappingFailed(description, ex) }
     return this
   }
 

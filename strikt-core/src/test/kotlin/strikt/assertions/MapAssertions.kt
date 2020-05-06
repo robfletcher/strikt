@@ -7,6 +7,7 @@ import org.opentest4j.AssertionFailedError
 import org.opentest4j.MultipleFailuresError
 import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.internal.opentest4j.MappingFailed
 
 internal object MapAssertions : JUnit5Minutests {
   fun tests() = rootContext<Assertion.Builder<Map<String, String>>> {
@@ -28,8 +29,7 @@ internal object MapAssertions : JUnit5Minutests {
       }
 
       test("withValue throws an exception") {
-        // TODO: proper exception here
-        assertThrows<NoSuchElementException> {
+        assertThrows<MappingFailed> {
           withValue("foo") {
             isNotBlank()
           }
@@ -172,14 +172,13 @@ internal object MapAssertions : JUnit5Minutests {
         }
 
         test("fails for a non-existent key") {
-          // TODO: proper exception
-          assertThrows<NoSuchElementException> {
+          assertThrows<MappingFailed> {
             withValue("bar") {
               isEqualTo("this will never get evaluated")
             }
           }.also {
             expectThat(it.message)
-              .isEqualTo("Key bar is missing in the map.")
+              .isEqualTo("Mapping 'entry [\"bar\"]' failed with: Key bar is missing in the map.")
           }
         }
       }

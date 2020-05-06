@@ -11,7 +11,12 @@ import rpg.Mace
 import rpg.Role
 import rpg.Sword
 import strikt.api.expectThat
+import strikt.api.expectThrows
+import strikt.assertions.cause
+import strikt.assertions.isA
 import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.internal.opentest4j.MappingFailed
 
 @DisplayName("assertions on com.google.protobuf.Any")
 class AnyAssertions {
@@ -76,10 +81,13 @@ class AnyAssertions {
 
   @Test
   fun `trying to unpack a field to the wrong type throws an exception`() {
-    assertThrows<InvalidProtocolBufferException> {
+    expectThrows<MappingFailed> {
       expectThat(subject)
         .get { weapon }
         .unpack<Mace>()
     }
+      .cause
+      .isNotNull()
+      .isA<InvalidProtocolBufferException>()
   }
 }

@@ -38,4 +38,4 @@ inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): B
  * @see com.google.protobuf.Any.unpack
  */
 inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpack(): Builder<T> =
-  get { unpack(T::class.java) }
+  get("unpacked as ${T::class.java.name}") { unpack(T::class.java) }

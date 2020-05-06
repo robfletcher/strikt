@@ -15,6 +15,7 @@ import strikt.assertions.endsWith
 import strikt.assertions.hasLength
 import strikt.assertions.isEqualTo
 import strikt.assertions.startsWith
+import strikt.internal.opentest4j.MappingFailed
 import java.util.function.Consumer
 
 class CapturingSlotAssertions : JUnit5Minutests {
@@ -51,8 +52,7 @@ class CapturingSlotAssertions : JUnit5Minutests {
       }
 
       test("does something unexpected if nothing has been captured") {
-        // TODO: this should be a properly handled exception type. See #220
-        assertThrows<IllegalStateException> {
+        assertThrows<MappingFailed> {
           expectThat(slot).captured
         }
       }

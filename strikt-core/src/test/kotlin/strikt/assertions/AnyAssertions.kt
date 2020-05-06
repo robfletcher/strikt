@@ -4,14 +4,13 @@ import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
-import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import strikt.api.expectThat
 import java.time.Instant
 
 internal object AnyAssertions : JUnit5Minutests {
 
-  fun tests() = rootContext<Assertion.Builder<Any?>> {
+  fun tests() = rootContext<Builder<Any?>> {
     context("isNull") {
       context("the subject is null") {
         fixture { expectThat(null) }
