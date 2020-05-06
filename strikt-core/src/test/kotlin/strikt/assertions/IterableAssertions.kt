@@ -3,6 +3,7 @@ package strikt.assertions
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expectThat
 
 internal object IterableAssertions : JUnit5Minutests {
@@ -634,6 +635,7 @@ internal object IterableAssertions : JUnit5Minutests {
     context("containsExactlyInAnyOrder assertion") {
       derivedContext<Set<String>>("a ${Set::class}") {
         fixture { setOf("catflap", "rubberplant", "marzipan") }
+
         test("passes if the elements are identical") {
           expectThat(fixture)
             .containsExactlyInAnyOrder("rubberplant", "catflap", "marzipan")
@@ -792,6 +794,66 @@ internal object IterableAssertions : JUnit5Minutests {
           expectThat(emptySubject).containsExactlyInAnyOrder()
         }
       }
+    }
+
+    context("withFirst function") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("runs assertions on the first element of a ${subject.javaClass.simpleName}") {
+            expectThat(subject).withFirst {
+              isEqualTo("catflap")
+            }
+          }
+
+          test("fails if the nested assertions fail on the first element of a ${subject.javaClass.simpleName}") {
+            assertThrows<MultipleFailuresError> {
+              expectThat(subject).withFirst {
+                isEqualTo("rubberplant")
+              }
+            }
+          }
+        }
+    }
+
+    context("withLast function") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("runs assertions on the last element of a ${subject.javaClass.simpleName}") {
+            expectThat(subject.sorted()).withLast {
+              isEqualTo("rubberplant")
+            }
+          }
+
+          test("fails if the nested assertions fail on the last element of a ${subject.javaClass.simpleName}") {
+            assertThrows<MultipleFailuresError> {
+              expectThat(subject.sorted()).withLast {
+                isEqualTo("marzipan")
+              }
+            }
+          }
+        }
+    }
+
+    context("withElementAt function") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("runs assertions on the nth element of a ${subject.javaClass.simpleName}") {
+            expectThat(subject.sorted()).withElementAt(1) {
+              isEqualTo("marzipan")
+            }
+          }
+
+          test("fails if the nested assertions fail on the nth element of a ${subject.javaClass.simpleName}") {
+            assertThrows<MultipleFailuresError> {
+              expectThat(subject.sorted()).withElementAt(1) {
+                isEqualTo("catflap")
+              }
+            }
+          }
+        }
     }
   }
 }

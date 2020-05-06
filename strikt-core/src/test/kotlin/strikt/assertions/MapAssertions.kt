@@ -4,6 +4,7 @@ import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
+import org.opentest4j.MultipleFailuresError
 import strikt.api.Assertion
 import strikt.api.expectThat
 
@@ -24,6 +25,15 @@ internal object MapAssertions : JUnit5Minutests {
 
       test("get mapping returns a null subject") {
         get("foo").isNull()
+      }
+
+      test("withValue throws an exception") {
+        // TODO: proper exception here
+        assertThrows<NoSuchElementException> {
+          withValue("foo") {
+            isNotBlank()
+          }
+        }
       }
     }
 
@@ -142,6 +152,34 @@ internal object MapAssertions : JUnit5Minutests {
                 |  ✗ has an entry with the key "bar"
               """.trimMargin()
               )
+          }
+        }
+      }
+
+      context("withValue function") {
+        test("runs assertions on the value associated with the key") {
+          withValue("foo") {
+            isEqualTo("bar")
+          }
+        }
+
+        test("fails if the nested assertions fail") {
+          assertThrows<MultipleFailuresError> {
+            withValue("foo") {
+              isEqualTo("baz")
+            }
+          }
+        }
+
+        test("fails for a non-existent key") {
+          // TODO: proper exception
+          assertThrows<NoSuchElementException> {
+            withValue("bar") {
+              isEqualTo("this will never get evaluated")
+            }
+          }.also {
+            expectThat(it.message)
+              .isEqualTo("Key bar is missing in the map.")
           }
         }
       }

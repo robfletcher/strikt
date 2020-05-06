@@ -19,6 +19,16 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
   get("first element %s") { first() }
 
 /**
+ * Runs a group of assertions on the first element in the subject iterable.
+ *
+ * @param block a closure that can perform multiple assertions that will all
+ * be evaluated regardless of whether preceding ones pass or fail.
+ * @return this builder, to facilitate chaining.
+ */
+fun <T : Iterable<E>, E> Builder<T>.withFirst(block: Builder<E>.() -> Unit): Builder<T> =
+  with("first element %s", Iterable<E>::first, block)
+
+/**
  * Maps this assertion to an assertion over the indexed element in the subject
  * iterable.
  *
@@ -26,6 +36,19 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  */
 fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
   get("element at index $index %s") { elementAt(index) }
+
+/**
+ * Runs a group of assertions on the element at [index] in the subject iterable.
+ *
+ * @param block a closure that can perform multiple assertions that will all
+ * be evaluated regardless of whether preceding ones pass or fail.
+ * @return this builder, to facilitate chaining.
+ */
+fun <T : Iterable<E>, E> Builder<T>.withElementAt(
+  index: Int,
+  block: Builder<E>.() -> Unit
+): Builder<T> =
+  with("element at index $index %s", { elementAt(index) }, block)
 
 /**
  * Maps this assertion to an assertion over the single element in the subject
@@ -57,6 +80,16 @@ infix fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Buil
  */
 fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
   get("last element %s") { last() }
+
+/**
+ * Runs a group of assertions on the last element in the subject iterable.
+ *
+ * @param block a closure that can perform multiple assertions that will all
+ * be evaluated regardless of whether preceding ones pass or fail.
+ * @return this builder, to facilitate chaining.
+ */
+fun <T : Iterable<E>, E> Builder<T>.withLast(block: Builder<E>.() -> Unit): Builder<T> =
+  with("last element %s", Iterable<E>::last, block)
 
 /**
  * Maps this assertion to an assertion over a flattened list of the results of

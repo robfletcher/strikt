@@ -9,8 +9,12 @@ import io.mockk.mockk
 import io.mockk.slot
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
+import org.opentest4j.MultipleFailuresError
 import strikt.api.expectThat
+import strikt.assertions.endsWith
+import strikt.assertions.hasLength
 import strikt.assertions.isEqualTo
+import strikt.assertions.startsWith
 import java.util.function.Consumer
 
 class CapturingSlotAssertions : JUnit5Minutests {
@@ -47,8 +51,22 @@ class CapturingSlotAssertions : JUnit5Minutests {
       }
 
       test("does something unexpected if nothing has been captured") {
+        // TODO: this should be a properly handled exception type. See #220
         assertThrows<IllegalStateException> {
           expectThat(slot).captured
+        }
+      }
+    }
+
+    context("withCaptured method") {
+      test("runs nested assertions on the captured value") {
+        mockFunction.accept("fnord")
+        assertThrows<MultipleFailuresError> {
+          expectThat(slot).withCaptured {
+            hasLength(5)
+            startsWith("f")
+            endsWith("!")
+          }
         }
       }
     }

@@ -49,6 +49,19 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.getValue(key: K): Builder<V> =
     }
 
 /**
+ * Runs a group of assertions on the first element in the subject iterable.
+ *
+ * @param block a closure that can perform multiple assertions that will all
+ * be evaluated regardless of whether preceding ones pass or fail.
+ * @return this builder, to facilitate chaining.
+ */
+fun <T : Map<K, V>, K, V> Builder<T>.withValue(
+  key: K,
+  block: Builder<V>.() -> Unit
+): Builder<T> =
+  with("entry [${formatValue(key)}]", { getValue(key) }, block)
+
+/**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on
  * the map implementation the value associated with [key] may be `null`. This
  * assertion just tests for the existence of the key.
