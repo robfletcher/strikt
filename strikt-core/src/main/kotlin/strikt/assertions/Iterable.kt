@@ -68,9 +68,23 @@ fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> =
  * iterable that matches [predicate].
  *
  * @see Iterable.first
+ * @throws strikt.internal.opentest4j.MappingFailed if no elements match [predicate].
  */
 infix fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Builder<E> =
   get("first matching element %s") { first(predicate) }
+
+/**
+ * Runs a group of assertions on the first element in the subject iterable that
+ * matches [predicate].
+ *
+ * @see Iterable.first
+ * @throws strikt.internal.opentest4j.MappingFailed if no elements match [predicate].
+ */
+fun <T : Iterable<E>, E> Builder<T>.withFirst(
+  predicate: (E) -> Boolean,
+  block: Builder<E>.() -> Unit
+): Builder<T> =
+  with("first matching element %s", { first(predicate) }, block)
 
 /**
  * Maps this assertion to an assertion over the last element in the subject

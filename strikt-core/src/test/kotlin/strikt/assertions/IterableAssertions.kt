@@ -5,6 +5,7 @@ import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.MultipleFailuresError
 import strikt.api.expectThat
+import strikt.internal.opentest4j.MappingFailed
 
 internal object IterableAssertions : JUnit5Minutests {
 
@@ -810,6 +811,34 @@ internal object IterableAssertions : JUnit5Minutests {
             assertThrows<MultipleFailuresError> {
               expectThat(subject).withFirst {
                 isEqualTo("rubberplant")
+              }
+            }
+          }
+        }
+    }
+
+    context("withFirst(predicate) function") {
+      listOf("catflap", "rubberplant", "marzipan")
+        .permute()
+        .forEach { subject ->
+          test("runs assertions on the first element of a ${subject.javaClass.simpleName} that matches the predicate") {
+            expectThat(subject).withFirst({ it.startsWith('r') }) {
+              isEqualTo("rubberplant")
+            }
+          }
+
+          test("fails if the nested assertions fail on the first element of a ${subject.javaClass.simpleName} that matches the predicate") {
+            assertThrows<MultipleFailuresError> {
+              expectThat(subject).withFirst({ it.startsWith('r') }) {
+                isEqualTo("catflap")
+              }
+            }
+          }
+
+          test("fails if nothing in a ${subject.javaClass.simpleName} matches the predicate") {
+            assertThrows<MappingFailed> {
+              expectThat(subject).withFirst({ it.startsWith('z') }) {
+                isEqualTo("catflap")
               }
             }
           }
