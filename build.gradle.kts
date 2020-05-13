@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE", "UnstableApiUsage")
 
+import com.adarshr.gradle.testlogger.TestLoggerExtension
+import com.adarshr.gradle.testlogger.theme.ThemeType.STANDARD_PARALLEL
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -11,6 +13,7 @@ plugins {
   id("org.jmailen.kotlinter") version "2.3.2" apply false
   id("info.solidsoft.pitest") version "1.5.0" apply false
   id("com.github.ben-manes.versions") version "0.28.0"
+  id("com.adarshr.test-logger") version "2.0.0" apply false
 }
 
 buildscript {
@@ -85,5 +88,11 @@ subprojects {
         outputFormats.set(setOf("XML", "HTML"))
       }
     }
+  }
+
+  apply(plugin = "com.adarshr.test-logger")
+  configure<TestLoggerExtension> {
+    theme = STANDARD_PARALLEL
+    showSimpleNames = true
   }
 }
