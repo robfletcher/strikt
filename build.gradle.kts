@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE", "UnstableApiUsage")
 
 import com.adarshr.gradle.testlogger.TestLoggerExtension
-import com.adarshr.gradle.testlogger.theme.ThemeType.STANDARD_PARALLEL
+import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -92,7 +92,7 @@ subprojects {
 
   apply(plugin = "com.adarshr.test-logger")
   configure<TestLoggerExtension> {
-    theme = STANDARD_PARALLEL
+    theme = MOCHA_PARALLEL
     showSimpleNames = true
   }
 }
