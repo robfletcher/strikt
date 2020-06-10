@@ -11,6 +11,22 @@ import java.time.Instant
 internal object AnyAssertions : JUnit5Minutests {
 
   fun tests() = rootContext<Builder<Any?>> {
+    context("satisfies") {
+      context("the subject satisfies condition") {
+        fixture { expectThat("true") }
+
+        test("the condition returns true") {
+          satisfies("is true") { it == "true" }
+        }
+
+        test("the condition returns false") {
+          assertThrows<AssertionFailedError> {
+            satisfies("is true") { it == "false" }
+          }
+        }
+      }
+    }
+
     context("isNull") {
       context("the subject is null") {
         fixture { expectThat(null) }

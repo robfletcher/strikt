@@ -4,6 +4,17 @@ import java.beans.Introspector
 import strikt.api.Assertion.Builder
 
 /**
+ * Asserts that the subject statisfies a given condition.
+ *
+ * @param description a description for the condition the assertion evaluates.
+ * @param condition the condition that should result true if subject statisfies condition else false.
+ * @return this assertion builder, in order to facilitate a fluent API.
+ */
+fun <T> Builder<T>.satisfies(description: String, condition: (T) -> Boolean): Builder<T> {
+  return assert(description) { if (condition(it)) pass() else fail() }
+}
+
+/**
  * Asserts that the subject is `null`.
  */
 @Suppress("UNCHECKED_CAST")
