@@ -1,7 +1,6 @@
-@file:Suppress("UNUSED_VARIABLE", "UnstableApiUsage")
-
 import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -13,7 +12,7 @@ plugins {
   id("org.jmailen.kotlinter") version "2.4.1" apply false
   id("info.solidsoft.pitest") version "1.5.0" apply false
   id("com.github.ben-manes.versions") version "0.28.0"
-  id("com.adarshr.test-logger") version "2.0.0" apply false
+  id("com.adarshr.test-logger") version "2.1.0" apply false
 }
 
 buildscript {
@@ -32,6 +31,7 @@ subprojects {
 
   repositories {
     jcenter()
+    mavenCentral() // needed for dependencyUpdates to work with arrow which has no metadata on jcenter
   }
 
   afterEvaluate {
@@ -94,5 +94,14 @@ subprojects {
   configure<TestLoggerExtension> {
     theme = MOCHA_PARALLEL
     showSimpleNames = true
+  }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+  revision = "release"
+  checkConstraints = true
+  gradleReleaseChannel = "current"
+  rejectVersionIf {
+    candidate.version.contains(Regex("""-M\d+(-eap-[\d-]+)?$"""))
   }
 }

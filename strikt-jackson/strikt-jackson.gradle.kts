@@ -10,10 +10,10 @@ plugins {
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("com.fasterxml.jackson.core:jackson-databind:2.11.0")
+  compileOnly("com.fasterxml.jackson.core:jackson-databind:2.11.1")
 
   testImplementation("dev.minutest:minutest:1.11.0")
-  testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.0")
+  testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1")
 }
 
 tasks.dokka {
