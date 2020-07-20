@@ -11,7 +11,7 @@ plugins {
   id("nebula.kotlin") version "1.3.72" apply false
   id("org.jmailen.kotlinter") version "2.4.1" apply false
   id("info.solidsoft.pitest") version "1.5.0" apply false
-  id("com.github.ben-manes.versions") version "0.28.0"
+  id("com.github.ben-manes.versions") version "0.29.0"
   id("com.adarshr.test-logger") version "2.1.0" apply false
 }
 
@@ -51,7 +51,7 @@ subprojects {
       // Test with JUnit 5
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.3.72"))
-        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.7"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.8"))
         "testImplementation"(platform("org.junit:junit-bom:5.6.2"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
@@ -102,6 +102,6 @@ tasks.withType<DependencyUpdatesTask> {
   checkConstraints = true
   gradleReleaseChannel = "current"
   rejectVersionIf {
-    candidate.version.contains(Regex("""-M\d+(-eap-[\d-]+)?$"""))
+    candidate.version.contains(Regex("""-(M|eap|rc)-?[\d-]+$"""))
   }
 }
