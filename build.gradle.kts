@@ -102,6 +102,6 @@ tasks.withType<DependencyUpdatesTask> {
   checkConstraints = true
   gradleReleaseChannel = "current"
   rejectVersionIf {
-    candidate.version.contains(Regex("""-(M|eap|rc|alpha|beta)-?[\d-]+$"""))
+    candidate.version.contains(Regex("""-(M|eap|rc|alpha|beta)(-?[\d-]+)?$"""))
   }
 }
