@@ -1,6 +1,6 @@
 plugins {
   `java-library`
-  id("nebula.kotlin")
+  kotlin("jvm")
   id("published")
   id("info.solidsoft.pitest")
 }

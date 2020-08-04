@@ -8,7 +8,7 @@ import java.net.URL
 
 plugins {
   `java-library`
-  id("nebula.kotlin")
+  kotlin("jvm")
   id("published")
   id("com.google.protobuf") version "0.8.12"
   id("info.solidsoft.pitest")

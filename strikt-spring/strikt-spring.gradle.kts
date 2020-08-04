@@ -2,10 +2,10 @@ import java.net.URL
 
 plugins {
   `java-library`
-  id("nebula.kotlin")
+  kotlin("jvm")
   id("published")
   id("info.solidsoft.pitest")
-  id("kotlin-spring")
+  id("org.jetbrains.kotlin.plugin.spring") version "1.4.0-rc"
 }
 
 dependencies {
