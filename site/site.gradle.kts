@@ -17,7 +17,7 @@ Commands:
 */
 
 plugins {
-  id("nebula.kotlin")
+  kotlin("jvm")
   id("com.eden.orchidPlugin") version "0.21.1"
 }
 
