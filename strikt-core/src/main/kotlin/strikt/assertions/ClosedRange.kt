@@ -6,15 +6,13 @@ import strikt.api.Assertion.Builder
  * Maps an assertion on the [ClosedRange] to an assertion on its [ClosedRange.start].
  */
 val <T : ClosedRange<E>, E> Builder<T>.start: Builder<E>
-  get() =
-    get { start }
+  get() = get { start }
 
 /**
  * Maps an assertion on the [ClosedRange] to an assertion on its [ClosedRange.endInclusive].
  */
 val <T : ClosedRange<E>, E> Builder<T>.endInclusive: Builder<E>
-  get() =
-    get { endInclusive }
+  get() = get { endInclusive }
 
 /**
  * Asserts that the subject range contains the provided [element].

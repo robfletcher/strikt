@@ -47,7 +47,7 @@ infix fun <T> Assertion.Builder<Try<T>>.isSuccess(value: T) =
  * @return Assertion builder over the unwrapped subject
  */
 val <T> Assertion.Builder<Success<T>>.value: Assertion.Builder<T>
-  get() = get("success value") { value }
+  get() = get("success value", Success<T>::value)
 
 /**
  * Asserts that the [Try] is [Failure]
@@ -68,4 +68,4 @@ fun <T> Assertion.Builder<Try<T>>.isFailure() =
  * @return Assertion builder over the unwrapped [Throwable]
  */
 val Assertion.Builder<Failure>.exception: Assertion.Builder<Throwable>
-  get() = get("failure exception") { exception }
+  get() = get("failure exception", Failure::exception)

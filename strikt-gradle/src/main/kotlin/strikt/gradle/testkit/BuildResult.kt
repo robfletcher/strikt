@@ -24,7 +24,7 @@ infix fun <T : BuildResult> Assertion.Builder<T>.taskPaths(outcome: TaskOutcome)
  * @see BuildResult.getTasks
  */
 val <T : BuildResult> Assertion.Builder<T>.tasks: Assertion.Builder<List<BuildTask>>
-  get() = get("all tasks", BuildResult::getTasks)
+  get() = get("all tasks") { tasks }
 
 /**
  * Maps this assertion to the tasks of the build with the provided [outcome].
@@ -39,4 +39,4 @@ infix fun <T : BuildResult> Assertion.Builder<T>.tasks(outcome: TaskOutcome): As
  * @see BuildResult
  */
 val <T : BuildResult> Assertion.Builder<T>.output: Assertion.Builder<String>
-  get() = get("output", BuildResult::getOutput)
+  get() = get("output") { output }

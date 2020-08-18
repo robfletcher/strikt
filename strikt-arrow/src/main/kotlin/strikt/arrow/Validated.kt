@@ -32,7 +32,7 @@ infix fun <E, A> Assertion.Builder<Validated<E, A>>.isValid(value: A) =
  */
 val <A> Assertion.Builder<Validated.Valid<A>>.a: Assertion.Builder<A>
   @JvmName("validatedValid")
-  get() = get("valid value") { a }
+  get() = get("valid value", Validated.Valid<A>::a)
 
 /**
  * Asserts that the [Validated] is [Validated.Invalid]
@@ -63,4 +63,4 @@ infix fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid(value: E) =
  */
 val <E> Assertion.Builder<Validated.Invalid<E>>.e: Assertion.Builder<E>
   @JvmName("validatedInvalid")
-  get() = get("invalid value") { e }
+  get() = get("invalid value", Validated.Invalid<E>::e)

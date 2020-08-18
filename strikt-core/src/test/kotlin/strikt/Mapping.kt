@@ -237,9 +237,7 @@ internal class Mapping {
       val error = assertThrows<AssertionError> {
         expectThat(subject) {
           get { name }.isEqualTo("Ziggy")
-          get {
-            birthDate.year
-          }.isEqualTo(1971)
+          get { birthDate.year }.isEqualTo(1971)
         }
       }
       expectThat(error.message).isEqualTo(

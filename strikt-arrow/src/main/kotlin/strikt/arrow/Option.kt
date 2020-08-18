@@ -59,4 +59,4 @@ infix fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
  * @return Assertion builder over the unwrapped subject
  */
 val <T> Assertion.Builder<Some<T>>.t: Assertion.Builder<T>
-  get() = get("some value") { t }
+  get() = get("some value", Some<T>::t)
