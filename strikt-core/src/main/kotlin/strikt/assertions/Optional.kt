@@ -9,7 +9,7 @@ import strikt.api.Assertion
  */
 fun <T> Assertion.Builder<Optional<T>>.isPresent(): Assertion.Builder<T> =
   assertThat("a value is present", Optional<T>::isPresent)
-    .get { get() }
+    .get(Optional<T>::get)
 
 /**
  * Asserts that an `Optional` does not contain a value.

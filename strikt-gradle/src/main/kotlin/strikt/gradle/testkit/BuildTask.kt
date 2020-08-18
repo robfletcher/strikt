@@ -22,7 +22,7 @@ infix fun <T : BuildTask> Assertion.Builder<T>.hasOutcome(outcome: TaskOutcome) 
  * @see BuildTask.getOutcome
  */
 val <T : BuildTask> Assertion.Builder<T>.outcome: Assertion.Builder<TaskOutcome>
-  get() = get("outcome", BuildTask::getOutcome)
+  get() = get("outcome") { outcome }
 
 /**
  * Asserts that the outcome is [TaskOutcome.SUCCESS].
@@ -70,4 +70,4 @@ fun <T : BuildTask> Assertion.Builder<T>.isNoSource() =
  * @see BuildTask.getPath
  */
 val <T : BuildTask> Assertion.Builder<T>.path: Assertion.Builder<String>
-  get() = get("task path", BuildTask::getPath)
+  get() = get("task path") { path }

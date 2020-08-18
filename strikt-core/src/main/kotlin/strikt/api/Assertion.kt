@@ -244,8 +244,8 @@ interface Assertion {
       block: Builder<R>.() -> Unit
     ) = with(describe(function), function, block)
 
-    private fun <R> describe(function: T.() -> R): String {
-      return when (function) {
+    private fun <R> describe(function: T.() -> R): String =
+      when (function) {
         is KProperty<*> ->
           "value of property ${function.name}"
         is KFunction<*> ->
@@ -260,7 +260,6 @@ interface Assertion {
           }
         }
       }
-    }
 
     /**
      * Maps the assertion subject to the result of [function].

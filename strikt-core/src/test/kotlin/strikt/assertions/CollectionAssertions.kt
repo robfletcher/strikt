@@ -67,7 +67,7 @@ internal object CollectionAssertions : JUnit5Minutests {
         fixture { expectThat(emptyList()) }
 
         test("the assertion passes") {
-          isSorted(Comparator.comparingInt(Any::hashCode))
+          isSorted(Comparator.comparingInt(Any?::hashCode))
         }
       }
     }
@@ -134,7 +134,7 @@ internal object CollectionAssertions : JUnit5Minutests {
         }
 
         test("the assertion passes") {
-          isSorted(Comparator.comparing(Collection<String>::size))
+          isSorted(Comparator.comparing { it?.size ?: 0 })
         }
 
         test("fails if the subject is not sorted according to the comparator") {

@@ -82,6 +82,6 @@ fun <T : Any?> expectCatching(action: suspend () -> T): DescribeableBuilder<Resu
     try {
       runBlocking { action() }.let(::success)
     } catch (e: Throwable) {
-      failure<T>(e)
+      failure(e)
     }
   )

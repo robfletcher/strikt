@@ -43,7 +43,7 @@ infix fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
  */
 val <R> Assertion.Builder<Either.Right<R>>.b: Assertion.Builder<R>
   @JvmName("eitherB")
-  get() = get("right value") { b }
+  get() = get("right value", Either.Right<R>::b)
 
 /**
  * Asserts that the [Either] is [Either.Left]
@@ -86,4 +86,4 @@ infix fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
  */
 val <L> Assertion.Builder<Either.Left<L>>.a: Assertion.Builder<L>
   @JvmName("eitherA")
-  get() = get("left value") { a }
+  get() = get("left value", Either.Left<L>::a)
