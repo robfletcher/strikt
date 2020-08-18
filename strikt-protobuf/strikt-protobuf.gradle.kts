@@ -10,13 +10,13 @@ plugins {
   `java-library`
   kotlin("jvm")
   id("published")
-  id("com.google.protobuf") version "0.8.12"
+  id("com.google.protobuf") version "0.8.13"
   id("info.solidsoft.pitest")
 }
 
 dependencies {
   api(project(":strikt-core"))
-  api("com.google.protobuf:protobuf-java:3.12.4")
+  api("com.google.protobuf:protobuf-java:3.13.0")
 }
 
 tasks.dokka {
@@ -33,7 +33,7 @@ tasks.dokka {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:3.12.4"
+      artifact = "com.google.protobuf:protoc:3.13.0"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")
