@@ -12,36 +12,40 @@ import strikt.assertions.isEqualTo
 object OptionAssertions {
 
   @TestFactory
-  fun someOption() = testFactoryFor(rootContext {
-    val option = Option.just("aValue")
+  fun someOption() = testFactoryFor(
+    rootContext {
+      val option = Option.just("aValue")
 
-    test("can assert on type") {
-      expectThat(option).isSome()
-    }
+      test("can assert on type") {
+        expectThat(option).isSome()
+      }
 
-    test("can negate assertion") {
-      expectThat(option).not().isNone()
-    }
+      test("can negate assertion") {
+        expectThat(option).not().isNone()
+      }
 
-    test("can assert on type and value equality") {
-      expectThat(option).isSome("aValue")
-    }
+      test("can assert on type and value equality") {
+        expectThat(option).isSome("aValue")
+      }
 
-    test("can assert on type and traverse wrapped value") {
-      expectThat(option).isSome().t.isEqualTo("aValue")
+      test("can assert on type and traverse wrapped value") {
+        expectThat(option).isSome().t.isEqualTo("aValue")
+      }
     }
-  })
+  )
 
   @TestFactory
-  fun noneOption() = testFactoryFor(rootContext {
-    val option = Option.empty<String>()
+  fun noneOption() = testFactoryFor(
+    rootContext {
+      val option = Option.empty<String>()
 
-    test("can assert on type") {
-      expectThat(option).isNone()
-    }
+      test("can assert on type") {
+        expectThat(option).isNone()
+      }
 
-    test("can negate assertion") {
-      expectThat(option).not().isSome()
+      test("can negate assertion") {
+        expectThat(option).not().isSome()
+      }
     }
-  })
+  )
 }

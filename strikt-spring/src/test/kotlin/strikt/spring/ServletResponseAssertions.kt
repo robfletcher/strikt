@@ -2,7 +2,6 @@ package strikt.spring
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
-import javax.servlet.ServletResponse
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.opentest4j.AssertionFailedError
@@ -24,6 +23,7 @@ import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import strikt.spring.app.App
 import strikt.spring.app.Controller
+import javax.servlet.ServletResponse
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(

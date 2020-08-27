@@ -28,14 +28,15 @@ internal class Assertions {
 // -----------------------------------------------------------------------------
 
   @Test fun `assertion styles 1, 2`() {
-    val s = """
-    // START assertion_styles_2
-    ▼ Expect that "fnord":
-      ✓ is an instance of java.lang.String
-      ✗ has length 1
-             found 5
-    // END assertion_styles_2
-    """
+    val s =
+      """
+      // START assertion_styles_2
+      ▼ Expect that "fnord":
+        ✓ is an instance of java.lang.String
+        ✗ has length 1
+               found 5
+      // END assertion_styles_2
+      """
 
     expectThrows<AssertionFailedError> {
       // START assertion_styles_1
@@ -51,15 +52,16 @@ internal class Assertions {
   }
 
   @Test fun `assertion styles 3, 4`() {
-    val s = """
-    // START assertion_styles_4
-    ▼ Expect that "fnord":
-      ✓ is an instance of java.lang.String
-      ✗ has length 1
-             found 5
-      ✗ is upper case
-    // END assertion_styles_4
-    """
+    val s =
+      """
+      // START assertion_styles_4
+      ▼ Expect that "fnord":
+        ✓ is an instance of java.lang.String
+        ✗ has length 1
+               found 5
+        ✗ is upper case
+      // END assertion_styles_4
+      """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_3
@@ -76,13 +78,14 @@ internal class Assertions {
   }
 
   @Test fun `assertion styles 5, 6`() {
-    val s = """
-    // START assertion_styles_6
-    ▼ Expect that 1:
-      ✗ is less than 1
-      ✗ is greater than 1
-    // END assertion_styles_6
-    """
+    val s =
+      """
+      // START assertion_styles_6
+      ▼ Expect that 1:
+        ✗ is less than 1
+        ✗ is greater than 1
+      // END assertion_styles_6
+      """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_5
@@ -98,17 +101,18 @@ internal class Assertions {
   }
 
   @Test fun `assertion styles 7, 8`() {
-    val s = """
-    // START assertion_styles_8
-    ▼ Expect that "fnord":
-      ✓ is an instance of java.lang.String
-      ✗ has length 1
-             found 5
-    ▼ Expect that 1:
-      ✗ is less than 1
-      ✗ is greater than 1
-    // END assertion_styles_8
-    """
+    val s =
+      """
+      // START assertion_styles_8
+      ▼ Expect that "fnord":
+        ✓ is an instance of java.lang.String
+        ✗ has length 1
+               found 5
+      ▼ Expect that 1:
+        ✗ is less than 1
+        ✗ is greater than 1
+      // END assertion_styles_8
+      """
 
     expectThrows<CompoundAssertionFailure> {
       // START assertion_styles_7
@@ -132,23 +136,24 @@ internal class Assertions {
 // -----------------------------------------------------------------------------
 
   @Test fun `collections 1, 2`() {
-    val s = """
-    // START collections_1
-    ▼ Expect that ["catflap", "rubberplant", "marzipan"]:
-      ✗ all elements match:
-        ▼ "catflap":
-          ✓ is lower case
-          ✓ starts with 'c'
-        ▼ "rubberplant":
-          ✓ is lower case
-          ✗ starts with 'c'
-                  found 'r'
-        ▼ "marzipan":
-          ✓ is lower case
-          ✗ starts with 'c'
-                  found 'm'
-    // END collections_1
-    """
+    val s =
+      """
+      // START collections_1
+      ▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+        ✗ all elements match:
+          ▼ "catflap":
+            ✓ is lower case
+            ✓ starts with 'c'
+          ▼ "rubberplant":
+            ✓ is lower case
+            ✗ starts with 'c'
+                    found 'r'
+          ▼ "marzipan":
+            ✓ is lower case
+            ✗ starts with 'c'
+                    found 'm'
+      // END collections_1
+      """
 
     expectThrows<AssertionFailedError> {
       // START collections_2

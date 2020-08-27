@@ -115,32 +115,37 @@ internal open class DefaultResultWriter : ResultWriter {
         val alignIndentFollowing =
           alignIndent + failedDescription.indexOf("%") + (indent * 2)
         writer
-          .append(description.format(formattedComparison.expected).let {
-            val lines = it.lines()
-            if (lines.size > 1) {
-              lines
-                .joinToString("\n${"".padStart(descriptionIndentFollowing)}|")
-            } else {
-              it
+          .append(
+            description.format(formattedComparison.expected).let {
+              val lines = it.lines()
+              if (lines.size > 1) {
+                lines
+                  .joinToString("\n${"".padStart(descriptionIndentFollowing)}|")
+              } else {
+                it
+              }
             }
-          })
+          )
           .append("\n")
         writeLineStart(writer, this, indent)
         writer
           .append("".padEnd(alignIndent))
-          .append(failedDescription.format(formattedComparison.actual).let {
-            val lines = it.lines()
-            if (lines.size > 1) {
-              lines.joinToString("\n${"".padStart(alignIndentFollowing)}|")
-            } else {
-              it
+          .append(
+            failedDescription.format(formattedComparison.actual).let {
+              val lines = it.lines()
+              if (lines.size > 1) {
+                lines.joinToString("\n${"".padStart(alignIndentFollowing)}|")
+              } else {
+                it
+              }
             }
-          })
+          )
       }
-      failed?.description != null -> writer
-        .append(description.format(formatValue(expected)))
-        .append(" : ")
-        .append(failed.description)
+      failed?.description != null ->
+        writer
+          .append(description.format(formatValue(expected)))
+          .append(" : ")
+          .append(failed.description)
       else -> writer.append(description.format(formatValue(expected)))
     }
   }

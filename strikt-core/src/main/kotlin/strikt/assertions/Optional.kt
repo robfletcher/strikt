@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import java.util.Optional
 import strikt.api.Assertion
+import java.util.Optional
 
 /**
  * Asserts that an `Optional` contains a value (is not empty) and returns an

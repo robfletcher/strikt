@@ -1,8 +1,8 @@
 package strikt.spring
 
-import javax.servlet.ServletResponse
 import org.springframework.http.MediaType
 import strikt.api.Assertion
+import javax.servlet.ServletResponse
 
 /**
  * Maps this assertion to an assertion on the content type of the servlet

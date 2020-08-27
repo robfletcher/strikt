@@ -27,11 +27,12 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
 infix fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
   assert("should be Right($value)") {
     when (it) {
-      is Either.Right -> if (it.b == value) {
-        pass()
-      } else {
-        fail()
-      }
+      is Either.Right ->
+        if (it.b == value) {
+          pass()
+        } else {
+          fail()
+        }
 
       else -> fail()
     }

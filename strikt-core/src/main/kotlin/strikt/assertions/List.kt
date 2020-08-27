@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import java.util.Collections
 import strikt.api.Assertion.Builder
+import java.util.Collections
 
 /**
  * Maps this assertion to an assertion on the element at index [i] in the

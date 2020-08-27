@@ -1,7 +1,5 @@
 package strikt.docs
 
-import java.time.LocalDate
-import java.time.MonthDay
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import strikt.Person
@@ -23,6 +21,8 @@ import strikt.assertions.matches
 import strikt.assertions.message
 import strikt.assertions.startsWith
 import strikt.internal.opentest4j.CompoundAssertionFailure
+import java.time.LocalDate
+import java.time.MonthDay
 
 // Wrap each code snippet in comments like "// START (snippet name)...// END (snippet name)"
 // Code snippets can be referenced from the docs using the {% snippet %} tag
@@ -65,16 +65,17 @@ internal class Homepage {
 
   @Test
   fun `homepage five, six, seven`() {
-    val s = """
-    // START homepage_six
-    ▼ Expect that "The Enlightened take things Lightly":
-      ✗ has length 5
-             found 35
-      ✗ matches the regular expression /\d+/
-                                 found "The Enlightened take things Lightly"
-      ✓ starts with "T"
-    // END homepage_six
-    """
+    val s =
+      """
+      // START homepage_six
+      ▼ Expect that "The Enlightened take things Lightly":
+        ✗ has length 5
+               found 35
+        ✗ matches the regular expression /\d+/
+                                   found "The Enlightened take things Lightly"
+        ✓ starts with "T"
+      // END homepage_six
+      """
 
     expectThrows<CompoundAssertionFailure> {
       /* ktlint-disable no-multi-spaces */

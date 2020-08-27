@@ -8,11 +8,13 @@ import strikt.internal.AssertionNode
 internal object AnsiColorResultWriter : DefaultResultWriter() {
   override fun writeLineStart(writer: Appendable, node: AssertionNode<*>, indent: Int) {
     super.writeLineStart(writer, node, indent)
-    writer.append(when (node.status) {
-      is Passed -> ANSI_GREEN
-      is Failed -> ANSI_RED
-      is Pending -> ANSI_YELLOW
-    })
+    writer.append(
+      when (node.status) {
+        is Passed -> ANSI_GREEN
+        is Failed -> ANSI_RED
+        is Pending -> ANSI_YELLOW
+      }
+    )
   }
 
   override fun writeLineEnd(writer: Appendable, node: AssertionNode<*>) {

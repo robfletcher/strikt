@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import kotlin.text.RegexOption.IGNORE_CASE
 import strikt.api.Assertion.Builder
+import kotlin.text.RegexOption.IGNORE_CASE
 
 /**
  * Asserts that the subject has a [CharSequence.length] of exactly [expected].

@@ -140,9 +140,10 @@ internal class Formatting {
 
   @Test
   fun `multi-line string values in failure messages are formatted with margins`() {
-    val subject = """a string
-                           |with
-                           |line breaks""".trimMargin()
+    val subject =
+      """a string
+               |with
+               |line breaks""".trimMargin()
 
     val e = assertThrows<AssertionError> {
       expectThat(subject) isEqualTo """a different string

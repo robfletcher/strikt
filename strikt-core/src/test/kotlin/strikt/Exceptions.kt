@@ -64,10 +64,10 @@ class Exceptions {
             .first()
             .isA<AssertionFailedError>()
             .message.isEqualTo(
-            """▼ Expect that "fnord":
-              |  ✗ is upper case"""
-              .trimMargin()
-          )
+              """▼ Expect that "fnord":
+                |  ✗ is upper case"""
+                .trimMargin()
+            )
         }
     }
   }

@@ -1,7 +1,7 @@
 package strikt.assertions
 
-import kotlin.math.absoluteValue
 import strikt.api.Assertion.Builder
+import kotlin.math.absoluteValue
 
 /**
  * Asserts that the subject is within [tolerance] of [expected].

@@ -3,9 +3,9 @@ package strikt.assertions
 import dev.minutest.TestContextBuilder
 import dev.minutest.junit.testFactoryFor
 import dev.minutest.rootContext
-import java.util.stream.Stream
 import org.junit.jupiter.api.DynamicNode
 import strikt.api.Assertion
+import java.util.stream.Stream
 
 inline fun <reified S : Any?> testFactory(noinline builder: TestContextBuilder<Unit, S>.() -> Unit): Stream<out DynamicNode> =
   testFactoryFor(

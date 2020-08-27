@@ -1,10 +1,10 @@
 package strikt.api
 
 import filepeek.LambdaBody
+import strikt.internal.FilePeek
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
-import strikt.internal.FilePeek
 
 /**
  * Allows assertion implementations to determine a result.

@@ -15,54 +15,58 @@ import strikt.assertions.isNotNull
 object EitherAssertions {
 
   @TestFactory
-  fun leftEither() = testFactoryFor(rootContext<Unit> {
+  fun leftEither() = testFactoryFor(
+    rootContext<Unit> {
 
-    val anEither = Either.left("left")
+      val anEither = Either.left("left")
 
-    test("can assert on type") {
-      expectThat(anEither).isLeft()
-    }
+      test("can assert on type") {
+        expectThat(anEither).isLeft()
+      }
 
-    test("can assert on type and value equality") {
-      expectThat(anEither).isLeft("left")
-    }
+      test("can assert on type and value equality") {
+        expectThat(anEither).isLeft("left")
+      }
 
-    test("can assert on type and traverse unwrapped value") {
-      expectThat(anEither).isLeft().a.isEqualTo("left")
-    }
+      test("can assert on type and traverse unwrapped value") {
+        expectThat(anEither).isLeft().a.isEqualTo("left")
+      }
 
-    test("can have nested assertions on unwrapped value") {
-      expectThat(Either.left(MyTuple("myName", 1, "uuid"))).isLeft().a.and {
-        get { name } isEqualTo "myName"
-        get { id }.isNotNull() isGreaterThan 0L
-        get { uuid }.isNotNull().isNotBlank()
+      test("can have nested assertions on unwrapped value") {
+        expectThat(Either.left(MyTuple("myName", 1, "uuid"))).isLeft().a.and {
+          get { name } isEqualTo "myName"
+          get { id }.isNotNull() isGreaterThan 0L
+          get { uuid }.isNotNull().isNotBlank()
+        }
       }
     }
-  })
+  )
 
   @TestFactory
-  fun rightEither() = testFactoryFor(rootContext<Unit> {
+  fun rightEither() = testFactoryFor(
+    rootContext<Unit> {
 
-    val anEither = Either.right("right")
+      val anEither = Either.right("right")
 
-    test("can assert on type") {
-      expectThat(anEither).isRight()
-    }
+      test("can assert on type") {
+        expectThat(anEither).isRight()
+      }
 
-    test("can assert on type and value equality") {
-      expectThat(anEither).isRight("right")
-    }
+      test("can assert on type and value equality") {
+        expectThat(anEither).isRight("right")
+      }
 
-    test("can assert on type and traverse unwrapped value") {
-      expectThat(anEither).isRight().b.isEqualTo("right")
-    }
+      test("can assert on type and traverse unwrapped value") {
+        expectThat(anEither).isRight().b.isEqualTo("right")
+      }
 
-    test("can have nested assertions on unwrapped value") {
-      expectThat(Either.right(MyTuple("myName", 1, "uuid"))).isRight().b and {
-        get { name } isEqualTo "myName"
-        get { id }.isNotNull() isGreaterThan 0L
-        get { uuid }.isNotNull().isNotBlank()
+      test("can have nested assertions on unwrapped value") {
+        expectThat(Either.right(MyTuple("myName", 1, "uuid"))).isRight().b and {
+          get { name } isEqualTo "myName"
+          get { id }.isNotNull() isGreaterThan 0L
+          get { uuid }.isNotNull().isNotBlank()
+        }
       }
     }
-  })
+  )
 }

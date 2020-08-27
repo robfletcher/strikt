@@ -15,40 +15,44 @@ import strikt.assertions.message
 object TryAssertions {
 
   @TestFactory
-  fun trySuccess() = testFactoryFor(rootContext {
-    val aTry = Try.just("success")
+  fun trySuccess() = testFactoryFor(
+    rootContext {
+      val aTry = Try.just("success")
 
-    test("can assert on type") {
-      expectThat(aTry).isSuccess()
-    }
+      test("can assert on type") {
+        expectThat(aTry).isSuccess()
+      }
 
-    test("can negate assertion") {
-      expectThat(aTry).not().isFailure()
-    }
+      test("can negate assertion") {
+        expectThat(aTry).not().isFailure()
+      }
 
-    test("can assert on type and value equality") {
-      expectThat(aTry).isSuccess("success")
-    }
+      test("can assert on type and value equality") {
+        expectThat(aTry).isSuccess("success")
+      }
 
-    test("can assert on type and traverse value") {
-      expectThat(aTry).isSuccess().value.isEqualTo("success")
+      test("can assert on type and traverse value") {
+        expectThat(aTry).isSuccess().value.isEqualTo("success")
+      }
     }
-  })
+  )
 
   @TestFactory
-  fun tryFailure() = testFactoryFor(rootContext {
-    val aTry = Try.raiseError(IllegalArgumentException("testFailure"))
+  fun tryFailure() = testFactoryFor(
+    rootContext {
+      val aTry = Try.raiseError(IllegalArgumentException("testFailure"))
 
-    test("can assert on type") {
-      expectThat(aTry).isFailure()
-    }
+      test("can assert on type") {
+        expectThat(aTry).isFailure()
+      }
 
-    test("can negate assertion") {
-      expectThat(aTry).not().isSuccess()
-    }
+      test("can negate assertion") {
+        expectThat(aTry).not().isSuccess()
+      }
 
-    test("can assert on type and traverse exception") {
-      expectThat(aTry).isFailure().exception.message.isEqualTo("testFailure")
+      test("can assert on type and traverse exception") {
+        expectThat(aTry).isFailure().exception.message.isEqualTo("testFailure")
+      }
     }
-  })
+  )
 }

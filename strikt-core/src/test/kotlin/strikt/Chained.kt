@@ -57,14 +57,15 @@ internal class Chained {
     val error = assertThrows<AssertionError> {
       expectThat(listOf(1, 2, 3, 4)).containsExactly(1, 2)
     }
-    val expected = """▼ Expect that [1, 2, 3, 4]:
-                     |  ✗ contains exactly the elements [1, 2]
-                     |    ✓ contains 1
-                     |    ✓ …at index 0
-                     |    ✓ contains 2
-                     |    ✓ …at index 1
-                     |    ✗ contains no further elements
-                     |      found [3, 4]""".trimMargin()
+    val expected =
+      """▼ Expect that [1, 2, 3, 4]:
+        |  ✗ contains exactly the elements [1, 2]
+        |    ✓ contains 1
+        |    ✓ …at index 0
+        |    ✓ contains 2
+        |    ✓ …at index 1
+        |    ✗ contains no further elements
+        |      found [3, 4]""".trimMargin()
     expectThat(error)
       .isA<AssertionFailedError>()
       .message

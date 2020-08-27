@@ -36,18 +36,20 @@ internal class Nested {
 
   @Test
   fun `nested expectations can be described`() {
-    expectThat(assertThrows<AssertionError> {
-      expect {
-        (1 until 3).forEach {
-          that("foo").describedAs("pass $it").isEqualTo("bar")
+    expectThat(
+      assertThrows<AssertionError> {
+        expect {
+          (1 until 3).forEach {
+            that("foo").describedAs("pass $it").isEqualTo("bar")
+          }
         }
       }
-    }).message isEqualTo """▼ Expect that pass 1:
-                           |  ✗ is equal to "bar"
-                           |          found "foo"
-                           |▼ Expect that pass 2:
-                           |  ✗ is equal to "bar"
-                           |          found "foo"""".trimMargin()
+    ).message isEqualTo """▼ Expect that pass 1:
+                          |  ✗ is equal to "bar"
+                          |          found "foo"
+                          |▼ Expect that pass 2:
+                          |  ✗ is equal to "bar"
+                          |          found "foo"""".trimMargin()
   }
 
   @Test

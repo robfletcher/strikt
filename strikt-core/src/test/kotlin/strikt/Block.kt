@@ -1,6 +1,5 @@
 package strikt
 
-import java.time.LocalDate
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -17,6 +16,7 @@ import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.single
 import strikt.assertions.startsWith
+import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
 internal class Block {
@@ -31,14 +31,15 @@ internal class Block {
         isA<Number>()
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that "fnord":
         |  ✗ is null
         |  ✓ is not null
         |  ✓ is an instance of java.lang.String
         |  ✗ is an instance of java.lang.Number
         |                found java.lang.String"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -53,13 +54,14 @@ internal class Block {
         isEqualTo("fnord")
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that "fnord":
         |  ✓ is not null
         |  ✗ is an instance of java.lang.Number
         |                found java.lang.String
         |  ✓ is equal to "fnord""""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -72,10 +74,11 @@ internal class Block {
         isNotNull().isEqualTo("fnord")
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that null:
         |  ✗ is not null"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -88,11 +91,12 @@ internal class Block {
         isA<Int>().get("multiplied by two") { this * 2 }.isGreaterThan(1)
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that "fnord":
         |  ✗ is an instance of java.lang.Integer
         |                found java.lang.String"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -108,13 +112,14 @@ internal class Block {
         not().isA<Number>()
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that "fnord":
         |  ✓ is not null
         |  ✗ is null
         |  ✗ is not an instance of java.lang.String
         |  ✓ is not an instance of java.lang.Number"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -130,13 +135,14 @@ internal class Block {
         isA<Number>()
       }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that "fnord":
         |  ✓ is not null
         |  ✗ is null
         |  ✗ is not an instance of java.lang.String
         |  ✓ is not an instance of java.lang.Number"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -165,7 +171,8 @@ internal class Block {
           hasLength(5)
         }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ name:
         |    ✗ starts with "Z"
@@ -173,7 +180,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -189,7 +196,8 @@ internal class Block {
           hasLength(5)
         }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ value of property name:
         |    ✗ starts with "Z"
@@ -197,7 +205,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -216,7 +224,8 @@ internal class Block {
           hasLength(5)
         }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ value of property birthDate:
         |    ✓ is less than 2019-11-30
@@ -226,7 +235,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -245,7 +254,8 @@ internal class Block {
           isLessThan(LocalDate.of(2019, 11, 30))
         }
     }.let { error ->
-      val expected = """
+      val expected =
+        """
         |▼ Expect that Person(name=David, birthDate=1947-01-08):
         |  ▼ value of property name:
         |    ✗ starts with "Z"
@@ -253,7 +263,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-        .trimMargin()
+          .trimMargin()
       expectThat(error.message).isEqualTo(expected)
     }
   }
