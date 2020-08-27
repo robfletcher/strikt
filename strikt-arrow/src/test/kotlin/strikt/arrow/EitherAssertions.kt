@@ -1,10 +1,9 @@
 package strikt.arrow
 
 import arrow.core.Either
-import dev.minutest.junit.testFactoryFor
+import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
@@ -12,11 +11,10 @@ import strikt.assertions.isNotBlank
 import strikt.assertions.isNotNull
 
 @DisplayName("assertions on Either")
-object EitherAssertions {
+object EitherAssertions : JUnit5Minutests {
 
-  @TestFactory
-  fun leftEither() = testFactoryFor(
-    rootContext<Unit> {
+  fun tests() = rootContext {
+    context("leftEither") {
 
       val anEither = Either.left("left")
 
@@ -40,11 +38,8 @@ object EitherAssertions {
         }
       }
     }
-  )
 
-  @TestFactory
-  fun rightEither() = testFactoryFor(
-    rootContext<Unit> {
+    context("rightEither") {
 
       val anEither = Either.right("right")
 
@@ -68,5 +63,5 @@ object EitherAssertions {
         }
       }
     }
-  )
+  }
 }

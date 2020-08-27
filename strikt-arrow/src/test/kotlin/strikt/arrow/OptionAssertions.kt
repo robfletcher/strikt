@@ -1,19 +1,17 @@
 package strikt.arrow
 
 import arrow.core.Option
-import dev.minutest.junit.testFactoryFor
+import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
 @DisplayName("assertions on Option")
-object OptionAssertions {
+object OptionAssertions : JUnit5Minutests {
 
-  @TestFactory
-  fun someOption() = testFactoryFor(
-    rootContext {
+  fun tests() = rootContext {
+    context("someOption") {
       val option = Option.just("aValue")
 
       test("can assert on type") {
@@ -32,11 +30,8 @@ object OptionAssertions {
         expectThat(option).isSome().t.isEqualTo("aValue")
       }
     }
-  )
 
-  @TestFactory
-  fun noneOption() = testFactoryFor(
-    rootContext {
+    context("noneOption") {
       val option = Option.empty<String>()
 
       test("can assert on type") {
@@ -47,5 +42,5 @@ object OptionAssertions {
         expectThat(option).not().isSome()
       }
     }
-  )
+  }
 }

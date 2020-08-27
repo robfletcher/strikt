@@ -2,10 +2,9 @@ package strikt.arrow
 
 import arrow.core.invalid
 import arrow.core.valid
-import dev.minutest.junit.testFactoryFor
+import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.TestFactory
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
@@ -13,11 +12,10 @@ import strikt.assertions.isNotBlank
 import strikt.assertions.isNotNull
 
 @DisplayName("assertions on Either")
-object ValidatedAssertions {
+object ValidatedAssertions : JUnit5Minutests {
 
-  @TestFactory
-  fun invalidValidated() = testFactoryFor(
-    rootContext<Unit> {
+  fun tests() = rootContext {
+    context("invalidValidated") {
       val aValidated = "invalid".invalid()
 
       test("can assert on type") {
@@ -40,11 +38,8 @@ object ValidatedAssertions {
         }
       }
     }
-  )
 
-  @TestFactory
-  fun validValidated() = testFactoryFor(
-    rootContext<Unit> {
+    context("validValidated") {
       val aValidated = "valid".valid()
 
       test("can assert on type") {
@@ -67,5 +62,5 @@ object ValidatedAssertions {
         }
       }
     }
-  )
+  }
 }
