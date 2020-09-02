@@ -13,6 +13,7 @@ plugins {
   id("info.solidsoft.pitest") version "1.5.0" apply false
   id("com.github.ben-manes.versions") version "0.29.0"
   id("com.adarshr.test-logger") version "2.1.0" apply false
+  id("com.autonomousapps.dependency-analysis") version "0.57.0"
 }
 
 buildscript {

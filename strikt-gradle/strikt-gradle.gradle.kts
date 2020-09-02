@@ -2,7 +2,6 @@ import org.gradle.util.GradleVersion
 import java.net.URL
 
 plugins {
-  `java-library`
   kotlin("jvm")
   id("published")
   id("info.solidsoft.pitest")
