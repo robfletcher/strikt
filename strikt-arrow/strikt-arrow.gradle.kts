@@ -15,13 +15,13 @@ dependencies {
   testImplementation("dev.minutest:minutest:1.11.0")
 }
 
-tasks.dokka {
-  configuration {
-    "https://arrow-kt.io/docs/apidocs/arrow-core-data/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
-      }
-    }
-  }
-}
+//dokka {
+//  configuration {
+//    "https://arrow-kt.io/docs/apidocs/arrow-core-data/".also {
+//      externalDocumentationLink {
+//        url = URL(it)
+//        packageListUrl = URL(it + "package-list")
+//      }
+//    }
+//  }
+//}

@@ -1,38 +1,16 @@
 import com.jfrog.bintray.gradle.BintrayExtension
 
 plugins {
-  id("org.jetbrains.dokka")
   id("nebula.maven-publish")
   id("nebula.source-jar")
   id("nebula.nebula-bintray-publishing")
 }
 
+apply(plugin = "org.jetbrains.dokka")
+
 plugins.withId("kotlin") {
   tasks.withType<Javadoc> {
     enabled = false
-  }
-
-  tasks.dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    configuration {
-      jdkVersion = 9
-    }
-  }
-
-  val dokkaJar = task<Jar>("dokkaJar") {
-    group = "build"
-    description = "Assembles Javadoc jar from Dokka API docs"
-    archiveClassifier.set("javadoc")
-    from(tasks.dokka)
-  }
-
-  publishing {
-    publications {
-      getByName<MavenPublication>("nebula") {
-        artifact(dokkaJar)
-      }
-    }
   }
 }
 

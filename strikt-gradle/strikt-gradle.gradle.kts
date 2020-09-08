@@ -17,13 +17,13 @@ dependencies {
   testImplementation("dev.minutest:minutest:1.11.0")
 }
 
-tasks.dokka {
-  configuration {
-    "https://docs.gradle.org/${GradleVersion.current().version}/javadoc/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
-      }
-    }
-  }
-}
+//tasks.dokka {
+//  configuration {
+//    "https://docs.gradle.org/${GradleVersion.current().version}/javadoc/".also {
+//      externalDocumentationLink {
+//        url = URL(it)
+//        packageListUrl = URL(it + "package-list")
+//      }
+//    }
+//  }
+//}

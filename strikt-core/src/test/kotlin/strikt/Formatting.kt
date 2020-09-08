@@ -163,4 +163,19 @@ internal class Formatting {
         |                |line breaks"""".trimMargin()
     )
   }
+
+  @Test
+  fun `whitespace only differences are highlighted`() {
+    val subject = """a string that should not have whitespace at the end   """
+
+    val e = assertThrows<AssertionError> {
+      expectThat(subject) isEqualTo "a string that should not have whitespace at the end"
+    }
+
+    expectThat(e.message) isEqualTo """
+      |▼ Expect that "a string that should not have whitespace at the end   ":
+      |  ✗ is equal to "a string that should not have whitespace at the end"
+      |          found "a string that should not have whitespace at the end   "
+    """.trimMargin()
+  }
 }

@@ -15,13 +15,13 @@ dependencies {
   testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2")
 }
 
-tasks.dokka {
-  configuration {
-    "https://fasterxml.github.io/jackson-databind/javadoc/2.11/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
-      }
-    }
-  }
-}
+//tasks.dokka {
+//  configuration {
+//    "https://fasterxml.github.io/jackson-databind/javadoc/2.11/".also {
+//      externalDocumentationLink {
+//        url = URL(it)
+//        packageListUrl = URL(it + "package-list")
+//      }
+//    }
+//  }
+//}

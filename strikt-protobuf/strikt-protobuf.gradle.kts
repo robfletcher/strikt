@@ -20,16 +20,16 @@ dependencies {
   testImplementation("com.google.protobuf:protobuf-java:3.13.0")
 }
 
-tasks.dokka {
-  configuration {
-    "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
-      }
-    }
-  }
-}
+//tasks.dokka {
+//  configuration {
+//    "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
+//      externalDocumentationLink {
+//        url = URL(it)
+//        packageListUrl = URL(it + "package-list")
+//      }
+//    }
+//  }
+//}
 
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {

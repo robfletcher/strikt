@@ -21,13 +21,13 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-web")
 }
 
-tasks.dokka {
-  configuration {
-    "https://docs.spring.io/spring-framework/docs/current/javadoc-api/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
-      }
-    }
-  }
-}
+//tasks.dokka {
+//  configuration {
+//    "https://docs.spring.io/spring-framework/docs/current/javadoc-api/".also {
+//      externalDocumentationLink {
+//        url = URL(it)
+//        packageListUrl = URL(it + "package-list")
+//      }
+//    }
+//  }
+//}
