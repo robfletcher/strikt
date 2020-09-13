@@ -212,7 +212,7 @@ interface Assertion {
      * [function].
      */
     fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
-      get(describe(function), function)
+      get(function.describe(), function)
 
     /**
      * Runs a group of assertions on the subject returned by [function].
@@ -242,24 +242,7 @@ interface Assertion {
     fun <R> with(
       function: T.() -> R,
       block: Builder<R>.() -> Unit
-    ) = with(describe(function), function, block)
-
-    private fun <R> describe(function: T.() -> R): String =
-      when (function) {
-        is KProperty<*> ->
-          "value of property ${function.name}"
-        is KFunction<*> ->
-          "return value of ${function.name}"
-        is CallableReference -> "value of ${function.propertyName}"
-        else -> {
-          try {
-            val line = FilePeek.filePeek.getCallerFileInfo().line
-            LambdaBody("get", line).body.trim()
-          } catch (e: Exception) {
-            "%s"
-          }
-        }
-      }
+    ) = with(function.describe(), function, block)
 
     /**
      * Maps the assertion subject to the result of [function].
@@ -331,13 +314,30 @@ interface Assertion {
     infix fun and(
       assertions: Builder<T>.() -> Unit
     ): Builder<T>
-
-    private val CallableReference.propertyName: String
-      get() = "^get(.+)$".toRegex().find(name).let { match ->
-        return when (match) {
-          null -> name
-          else -> match.groupValues[1].decapitalize()
-        }
-      }
   }
 }
+
+private fun <Receiver, Result> (Receiver.() -> Result).describe(): String =
+  when (this) {
+    is KProperty<*> ->
+      "value of property $name"
+    is KFunction<*> ->
+      "return value of $name"
+    is CallableReference -> "value of $propertyName"
+    else -> {
+      try {
+        val line = FilePeek.filePeek.getCallerFileInfo().line
+        LambdaBody("get", line).body.trim()
+      } catch (e: Exception) {
+        "%s"
+      }
+    }
+  }
+
+private val CallableReference.propertyName: String
+  get() = "^get(.+)$".toRegex().find(name).let { match ->
+    return when (match) {
+      null -> name
+      else -> match.groupValues[1].decapitalize()
+    }
+  }
