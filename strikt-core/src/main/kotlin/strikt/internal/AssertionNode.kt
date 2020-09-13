@@ -65,7 +65,7 @@ internal class AssertionSubject<S>(
       children.isEmpty() -> Pending
       children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
-      else -> Passed
+      else -> Passed()
     }
 }
 
@@ -97,7 +97,7 @@ internal class AssertionChain<S>(
       children.isEmpty() -> Pending
       children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
-      else -> Passed
+      else -> Passed()
     }
 
   override val allowChain: Boolean
@@ -132,7 +132,7 @@ internal class AssertionChainedGroup<S>(
       children.isEmpty() -> Pending
       children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
-      else -> Passed
+      else -> Passed()
     }
 }
 

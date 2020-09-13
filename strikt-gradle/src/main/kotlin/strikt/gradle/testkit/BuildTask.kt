@@ -11,9 +11,9 @@ import strikt.api.Assertion
 infix fun <T : BuildTask> Assertion.Builder<T>.hasOutcome(outcome: TaskOutcome) =
   assert("outcome is %s", outcome) {
     if (it.outcome == outcome) {
-      pass()
+      pass(actual = it.outcome)
     } else {
-      fail(it.outcome)
+      fail(actual = it.outcome)
     }
   }
 

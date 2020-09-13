@@ -17,7 +17,7 @@ import java.nio.file.Path
 infix fun <T : Path> Builder<T>.endsWith(other: Path): Builder<T> =
   assert("ends with %s", other) {
     if (it.endsWith(other)) {
-      pass()
+      pass(actual = it)
     } else {
       fail(actual = it)
     }
@@ -32,7 +32,7 @@ infix fun <T : Path> Builder<T>.endsWith(other: Path): Builder<T> =
 infix fun <T : Path> Builder<T>.endsWith(other: String): Builder<T> =
   assert("ends with %s", other) {
     if (it.endsWith(other)) {
-      pass()
+      pass(actual = it)
     } else {
       fail(actual = it)
     }

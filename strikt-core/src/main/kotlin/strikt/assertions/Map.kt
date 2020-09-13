@@ -21,7 +21,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.isNotEmpty() =
 infix fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =
   assert("has size %d", expected) {
     when (it.size) {
-      expected -> pass()
+      expected -> pass(actual = it.size)
       else -> fail(actual = it.size)
     }
   }

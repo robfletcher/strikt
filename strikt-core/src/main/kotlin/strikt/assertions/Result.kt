@@ -14,7 +14,10 @@ import strikt.api.Assertion
 fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
   assert("is failure") {
     when {
-      it.isFailure -> pass()
+      it.isFailure -> pass(
+        description = "threw %s",
+        actual = it.exceptionOrNull()
+      )
       else -> fail(
         description = "returned %s",
         actual = it.getOrThrow()

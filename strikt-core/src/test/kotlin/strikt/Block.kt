@@ -117,7 +117,8 @@ internal class Block {
         |▼ Expect that "fnord":
         |  ✓ is not null
         |  ✗ is null
-        |  ✗ is not an instance of java.lang.String
+        |  ✗ is not an instance of java.lang.String (Class)
+        |                    found java.lang.String (Class)
         |  ✓ is not an instance of java.lang.Number"""
           .trimMargin()
       expectThat(error.message).isEqualTo(expected)
@@ -140,7 +141,8 @@ internal class Block {
         |▼ Expect that "fnord":
         |  ✓ is not null
         |  ✗ is null
-        |  ✗ is not an instance of java.lang.String
+        |  ✗ is not an instance of java.lang.String (Class)
+        |                    found java.lang.String (Class)
         |  ✓ is not an instance of java.lang.Number"""
           .trimMargin()
       expectThat(error.message).isEqualTo(expected)

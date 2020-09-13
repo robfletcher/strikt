@@ -24,7 +24,7 @@ val <T : Enum<T>> Builder<T>.ordinal: Builder<Int>
 fun <T : Enum<T>> Builder<T>.isOneOf(vararg values: T): Builder<T> =
   assert("is one of ${values.joinToString()}") {
     if (it in values) {
-      pass()
+      pass(it)
     } else {
       fail(it)
     }

@@ -5,6 +5,19 @@ package strikt.api
  */
 interface AtomicAssertion : Assertion {
   /**
+   * Mark this result as passed due to a comparison between two values.
+   *
+   * @param actual an actual value, that is the value that matched
+   * the expected value.
+   * @param description A description of the assertion. May contain a
+   * [String.format] style placeholder for the [actual] value.
+   */
+  fun pass(
+    actual: Any?,
+    description: String? = null
+  )
+
+  /**
    * Mark this result as failed due to a comparison between two values.
    *
    * @param actual an actual value, that is the value that differed

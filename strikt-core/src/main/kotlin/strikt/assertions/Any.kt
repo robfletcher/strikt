@@ -39,7 +39,7 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
   assert("is an instance of %s", T::class.java) {
     when (it) {
       null -> fail(actual = null)
-      is T -> pass()
+      is T -> pass(actual = T::class.java)
       else -> fail(actual = it.javaClass)
     }
   } as Builder<T>
@@ -53,16 +53,16 @@ inline fun <reified T> Builder<*>.isA(): Builder<T> =
 infix fun <T> Builder<T>.isEqualTo(expected: T?): Builder<T> =
   assert("is equal to %s", expected) {
     when (it) {
-      expected -> pass()
-      is ByteArray -> if (expected is ByteArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is BooleanArray -> if (expected is BooleanArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is CharArray -> if (expected is CharArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is ShortArray -> if (expected is ShortArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is IntArray -> if (expected is IntArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is LongArray -> if (expected is LongArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is FloatArray -> if (expected is FloatArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is DoubleArray -> if (expected is DoubleArray && it.contentEquals(expected)) pass() else fail(actual = it)
-      is Array<*> -> if (expected is Array<*> && it.contentEquals(expected)) pass() else fail(actual = it)
+      expected -> pass(actual = it)
+      is ByteArray -> if (expected is ByteArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is BooleanArray -> if (expected is BooleanArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is CharArray -> if (expected is CharArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is ShortArray -> if (expected is ShortArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is IntArray -> if (expected is IntArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is LongArray -> if (expected is LongArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is FloatArray -> if (expected is FloatArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is DoubleArray -> if (expected is DoubleArray && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
+      is Array<*> -> if (expected is Array<*> && it.contentEquals(expected)) pass(actual = it) else fail(actual = it)
       else -> fail(actual = it)
     }
   }

@@ -24,9 +24,9 @@ import strikt.assertions.map
 infix fun <T : JsonNode> Assertion.Builder<T>.has(fieldName: String): Assertion.Builder<T> =
   assert("has a field named '$fieldName'") { subject ->
     if (subject.has(fieldName)) {
-      pass()
+      pass(actual = subject.fields().asSequence().map { it.key }.toList())
     } else {
-      fail(subject.fields().asSequence().map { it.key }.toList())
+      fail(actual = subject.fields().asSequence().map { it.key }.toList())
     }
   }
 
@@ -181,7 +181,7 @@ infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
 ): Assertion.Builder<T> =
   assert("is a $nodeType node", nodeType) {
     when (it.nodeType) {
-      nodeType -> pass()
+      nodeType -> pass(actual = it.nodeType, description = "found a %s node")
       else -> fail(actual = it.nodeType, description = "found a %s node")
     }
   }
@@ -193,8 +193,8 @@ infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
  */
 infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
   assert("has $expected elements", expected) { subject ->
-    if (subject.size() == expected) pass()
-    else fail(subject.size())
+    if (subject.size() == expected) pass(actual = subject.size())
+    else fail(actual = subject.size())
   }
 
 /**

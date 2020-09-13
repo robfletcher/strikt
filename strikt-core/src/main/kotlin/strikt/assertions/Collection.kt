@@ -8,7 +8,7 @@ import strikt.api.Assertion.Builder
 infix fun <T : Collection<E>, E> Builder<T>.hasSize(expected: Int): Builder<T> =
   assert("has size %d", expected) {
     when (it.size) {
-      expected -> pass()
+      expected -> pass(actual = it.size)
       else -> fail(actual = it.size)
     }
   }

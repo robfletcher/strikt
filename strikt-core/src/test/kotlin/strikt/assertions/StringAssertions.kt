@@ -39,9 +39,14 @@ internal object StringAssertions : JUnit5Minutests {
       }
 
       test("outputs real start when startsWith fails") {
-        expectThrows<AssertionError> {
-          expectThat("fnord").startsWith("fnrd")
+        val expectThrows = expectThrows<AssertionError> {
+          try {
+            expectThat("fnord").startsWith("fnrd")
+          } catch (e: Throwable) {
+            throw e
+          }
         }
+        expectThrows
           .message
           .isNotNull()
           .contains(

@@ -25,8 +25,16 @@ internal sealed class AssertionStrategy {
       override var status: Status = Pending
         private set
 
-      override fun pass() {
-        status = onPass()
+      override fun pass(description: String?) {
+        status = onPass(description = description)
+        afterStatusSet(this)
+      }
+
+      override fun pass(actual: Any?, description: String?) {
+        status = onPass(
+          description = description,
+          comparison = ComparedValues(expected, actual)
+        )
         afterStatusSet(this)
       }
 
@@ -59,8 +67,8 @@ internal sealed class AssertionStrategy {
       override var status: Status = Pending
         private set
 
-      override fun pass() {
-        status = onPass()
+      override fun pass(description: String?) {
+        status = onPass(description)
         afterStatusSet(this)
       }
 
@@ -91,7 +99,10 @@ internal sealed class AssertionStrategy {
 
   protected open fun <T> afterStatusSet(result: AssertionResult<T>) {}
 
-  protected open fun onPass(): Status = Passed
+  protected open fun onPass(
+    description: String? = null,
+    comparison: ComparedValues? = null
+  ): Status = Passed(description, comparison)
 
   protected open fun onFail(
     description: String? = null,
@@ -174,13 +185,16 @@ internal sealed class AssertionStrategy {
         default.replace(regex, replacement)
       } ?: "does not match: $default"
 
-    override fun onPass() = Failed()
+    override fun onPass(
+      description: String?,
+      comparison: ComparedValues?
+    ): Status = Failed(description, comparison)
 
     override fun onFail(
       description: String?,
       comparison: ComparedValues?,
       cause: Throwable?
-    ) = Passed
+    ) = Passed(description, comparison)
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       delegate.afterStatusSet(result)

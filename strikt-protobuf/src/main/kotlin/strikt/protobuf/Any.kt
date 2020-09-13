@@ -24,7 +24,7 @@ inline fun <reified T : Message> Builder<com.google.protobuf.Any>.unpacksTo(): B
   val expected = getDefaultInstance(T::class.java).descriptorForType.fullName
   return assert("unpacks to %s", expected) {
     if (it.`is`(T::class.java)) {
-      pass()
+      pass(actual = it.descriptorForType.fullName)
     } else {
       fail(actual = it.descriptorForType.fullName)
     }

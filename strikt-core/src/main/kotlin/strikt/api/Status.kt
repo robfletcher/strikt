@@ -14,7 +14,10 @@ internal sealed class Status {
   /**
    * The assertion passed.
    */
-  object Passed : Status()
+  data class Passed(
+    val description: String? = null,
+    val comparison: ComparedValues? = null
+  ) : Status()
 
   data class Failed(
     val description: String? = null,

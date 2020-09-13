@@ -12,8 +12,10 @@ import kotlin.reflect.KProperty
 interface Assertion {
   /**
    * Mark this result as passed.
+   *
+   * @param description An optional description of the assertion result.
    */
-  fun pass()
+  fun pass(description: String? = null)
 
   /**
    * Mark this result as failed.
