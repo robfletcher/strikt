@@ -11,7 +11,7 @@ plugins {
   id("nebula.release") version "15.0.1"
   id("org.jmailen.kotlinter") version "3.0.2" apply false
   id("info.solidsoft.pitest") version "1.5.0" apply false
-  id("com.github.ben-manes.versions") version "0.31.0"
+  id("com.github.ben-manes.versions") version "0.33.0"
   id("com.adarshr.test-logger") version "2.1.0" apply false
   id("com.autonomousapps.dependency-analysis") version "0.59.0"
 }
@@ -53,7 +53,7 @@ subprojects {
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.10"))
         "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.9"))
-        "testImplementation"(platform("org.junit:junit-bom:5.6.2"))
+        "testImplementation"(platform("org.junit:junit-bom:5.7.0"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
