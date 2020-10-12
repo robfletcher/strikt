@@ -123,9 +123,13 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("lastModified") {
       context("given the subject is a file with last modified") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setLastModified(1602491019000L)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setLastModified(1602491019000L)
+            }
+          )
+        }
         test("then the mapped value is the last modified") {
           lastModified
             .isEqualTo(1602491019000L)
@@ -135,9 +139,13 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("length") {
       context("given the subject is a file with length") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          writeBytes("Hello World".toByteArray(Charsets.US_ASCII)) // us-ascii enforce 1 byte per character
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              writeBytes("Hello World".toByteArray(Charsets.US_ASCII)) // us-ascii enforce 1 byte per character
+            }
+          )
+        }
         test("then the mapped value is the length") {
           length
             .isEqualTo(11L)
@@ -223,7 +231,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("childFiles") {
       context("given the subject is a regular file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the mapped value is empty") {
           childFiles
             .isEmpty()
@@ -231,17 +243,21 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is a directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          File(this, "foo.txt").apply {
-            createNewFile()
-          }
-          File(this, "bar.zip").apply {
-            createNewFile()
-          }
-          File(this, "zap.tar").apply {
-            createNewFile()
-          }
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              File(this, "foo.txt").apply {
+                createNewFile()
+              }
+              File(this, "bar.zip").apply {
+                createNewFile()
+              }
+              File(this, "zap.tar").apply {
+                createNewFile()
+              }
+            }
+          )
+        }
         test("then the mapped value contains all children") {
           childFiles
             .map { it.name }
@@ -265,17 +281,21 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is a directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          File(this, "foo.txt").apply {
-            createNewFile()
-          }
-          File(this, "bar.zip").apply {
-            createNewFile()
-          }
-          File(this, "zap.tar").apply {
-            createNewFile()
-          }
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              File(this, "foo.txt").apply {
+                createNewFile()
+              }
+              File(this, "bar.zip").apply {
+                createNewFile()
+              }
+              File(this, "zap.tar").apply {
+                createNewFile()
+              }
+            }
+          )
+        }
         test("then the mapped value contains the children") {
           childFile("foo.txt")
             .and {
@@ -293,7 +313,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("exists") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             exists()
@@ -302,7 +326,11 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should pass") {
           exists()
         }
@@ -311,14 +339,22 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("notExists") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           notExists()
         }
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             notExists()
@@ -329,7 +365,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isRegularFile") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isRegularFile()
@@ -338,14 +378,22 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should pass") {
           isRegularFile()
         }
       }
 
       context("given the subject is an existing directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile()) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile()
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isRegularFile()
@@ -356,14 +404,22 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isNotRegularFile") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           isNotRegularFile()
         }
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotRegularFile()
@@ -372,7 +428,11 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile()) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile()
+          )
+        }
         test("then the assertion should pass") {
           isNotRegularFile()
         }
@@ -381,7 +441,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isDirectory") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isDirectory()
@@ -390,7 +454,11 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isDirectory()
@@ -399,7 +467,11 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile()) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile()
+          )
+        }
         test("then the assertion should pass") {
           isDirectory()
         }
@@ -408,21 +480,33 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isNotDirectory") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           isNotDirectory()
         }
       }
 
       context("given the subject is an existing file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile())) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile())
+          )
+        }
         test("then the assertion should pass") {
           isNotDirectory()
         }
       }
 
       context("given the subject is an existing directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile()) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile()
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotDirectory()
@@ -433,7 +517,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isReadable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isReadable()
@@ -442,64 +530,92 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing readable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setReadable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setReadable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isReadable()
         }
       }
 
       context("given the subject is an existing readable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setReadable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setReadable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isReadable()
         }
       }
 
       context("given the subject is an existing not readable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setReadable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setReadable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isReadable()
           }
         }
         after {
-          get { setReadable(true, false) }
+          get {
+            setReadable(true, false)
+          }
         }
       }
 
       context("given the subject is an existing not readable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setReadable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setReadable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isReadable()
           }
         }
         after {
-          get { setReadable(true, false) }
+          get {
+            setReadable(true, false)
+          }
         }
       }
     }
 
     context("isNotReadable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           isNotReadable()
         }
       }
 
       context("given the subject is an existing readable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setReadable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setReadable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotReadable()
@@ -508,9 +624,13 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing readable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setReadable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setReadable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotReadable()
@@ -519,33 +639,49 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing not readable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setReadable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setReadable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotReadable()
         }
         after {
-          get { setReadable(true, false) }
+          get {
+            setReadable(true, false)
+          }
         }
       }
 
       context("given the subject is an existing not readable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setReadable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setReadable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotReadable()
         }
         after {
-          get { setReadable(true, false) }
+          get {
+            setReadable(true, false)
+          }
         }
       }
     }
 
     context("isWritable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isWritable()
@@ -554,27 +690,39 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing writable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setWritable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setWritable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isWritable()
         }
       }
 
       context("given the subject is an existing writable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setWritable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setWritable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isWritable()
         }
       }
 
       context("given the subject is an existing not writable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setWritable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setWritable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isWritable()
@@ -583,9 +731,13 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing not writable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setWritable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setWritable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isWritable()
@@ -596,16 +748,24 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isNotWritable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           isNotWritable()
         }
       }
 
       context("given the subject is an existing writable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setWritable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setWritable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotWritable()
@@ -614,9 +774,13 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing writable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setWritable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setWritable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotWritable()
@@ -625,18 +789,26 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing not writable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setWritable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setWritable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotWritable()
         }
       }
 
       context("given the subject is an existing not writable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setWritable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setWritable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotWritable()
         }
@@ -645,7 +817,11 @@ internal object FileAssertions : JUnit5Minutests {
 
     context("isExecutable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isExecutable()
@@ -654,64 +830,92 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing executable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setExecutable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setExecutable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isExecutable()
         }
       }
 
       context("given the subject is an existing executable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setExecutable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setExecutable(true, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isExecutable()
         }
       }
 
       context("given the subject is an existing not executable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setExecutable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setExecutable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isExecutable()
           }
         }
         after {
-          get { setExecutable(true, false) }
+          get {
+            setExecutable(true, false)
+          }
         }
       }
 
       context("given the subject is an existing not executable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setExecutable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setExecutable(false, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isExecutable()
           }
         }
         after {
-          get { setExecutable(true, false) }
+          get {
+            setExecutable(true, false)
+          }
         }
       }
     }
 
     context("isNotExecutable") {
       context("given the subject is a non-existing file") {
-        fixture { expectThat(File("example.txt")) }
+        fixture {
+          expectThat(
+            File("example.txt")
+          )
+        }
         test("then the assertion should pass") {
           isNotExecutable()
         }
       }
 
       context("given the subject is an existing executable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setExecutable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setExecutable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotExecutable()
@@ -720,9 +924,13 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing executable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setExecutable(true, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setExecutable(true, false)
+            }
+          )
+        }
         test("then the assertion should fail") {
           assertThrows<AssertionFailedError> {
             isNotExecutable()
@@ -731,29 +939,40 @@ internal object FileAssertions : JUnit5Minutests {
       }
 
       context("given the subject is an existing not executable file") {
-        fixture { expectThat(File.createTempFile("example", ".txt", directory.toFile()).apply {
-          setExecutable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            File.createTempFile("example", ".txt", directory.toFile()).apply {
+              setExecutable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotExecutable()
         }
         after {
-          get { setExecutable(true, false) }
+          get {
+            setExecutable(true, false)
+          }
         }
       }
 
       context("given the subject is an existing not executable directory") {
-        fixture { expectThat(Files.createTempDirectory(directory, "example").toFile().apply {
-          setExecutable(false, false)
-        }) }
+        fixture {
+          expectThat(
+            Files.createTempDirectory(directory, "example").toFile().apply {
+              setExecutable(false, false)
+            }
+          )
+        }
         test("then the assertion should pass") {
           isNotExecutable()
         }
         after {
-          get { setExecutable(true, false) }
+          get {
+            setExecutable(true, false)
+          }
         }
       }
     }
-
   }
 }
