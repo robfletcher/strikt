@@ -273,7 +273,9 @@ internal object FileAssertions : JUnit5Minutests {
           childFile("foo.txt")
             .and {
               name.isEqualTo("foo.txt")
-              parent.isNotNull()
+              parentFile
+                .isNotNull()
+                .name
                 .startsWith("example")
                 .endsWith(".txt")
             }
@@ -300,9 +302,10 @@ internal object FileAssertions : JUnit5Minutests {
           childFile("foo.txt")
             .and {
               name.isEqualTo("foo.txt")
-              parent.isNotNull()
+              parentFile
+                .isNotNull()
+                .name
                 .startsWith("example")
-                .endsWith(".txt")
               assertThat("is an existing file") {
                 it.exists()
               }
