@@ -29,7 +29,7 @@ val <T : File> Builder<T>.parent: Builder<String?>
  * @see File.getParentFile
  */
 val <T : File> Builder<T>.parentFile: Builder<File?>
-  get() = get(File::getParentFile)
+  get() = get("parentFile", File::getParentFile)
 
 /**
  * Maps this assertion to an assertion on a path object representing this subject.
