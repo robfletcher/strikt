@@ -108,3 +108,8 @@ snippets:
         startPattern: '^.*?//.*?START(.+?)$'
         endPattern: '^.*?//.*?END(.+?)$'
         patternNameGroup: 1
+
+changelog:
+  adapter:
+    type: "file"
+    baseDir: "../../../../"

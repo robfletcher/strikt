@@ -11,9 +11,9 @@ plugins {
   id("nebula.release") version "15.0.1"
   id("org.jmailen.kotlinter") version "3.2.0" apply false
   id("info.solidsoft.pitest") version "1.5.0" apply false
-  id("com.github.ben-manes.versions") version "0.33.0"
+  id("com.github.ben-manes.versions") version "0.34.0"
   id("com.adarshr.test-logger") version "2.1.1" apply false
-  id("com.autonomousapps.dependency-analysis") version "0.63.0"
+  id("com.autonomousapps.dependency-analysis") version "0.64.0"
 }
 
 buildscript {
