@@ -1,0 +1,13 @@
+<h1>Changelog</h1>
+<section id="changelog">
+  {% for version in component.model.versions %}
+    <article class="content">
+      <h2 class="title is-4">{{ version.version }}</h2>
+      <p class="subtitle is-6">
+        <time datetime="{{ version.releaseDate }}">{{ version.releaseDate | date("MMM dd, yyyy", existingFormat="yyyy-MM-dd") }}</time>
+      </p>
+      {{ version.content | raw }}
+    </article>
+    <hr>
+  {% endfor %}
+</section>
