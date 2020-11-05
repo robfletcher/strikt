@@ -1,7 +1,7 @@
 ## 0.28.0 Invincible Sadness - 2020-09-13
 
-- Fixes compilation using Android due to use of private interface methods. [See #229](https://github.com/robfletcher/strikt/issues/229)
-- Assertion chains that use `not` will now report actual values if they fail. [See #222](https://github.com/robfletcher/strikt/issues/222)
+- Fixes compilation using Android due to use of private interface methods. See [#229](https://github.com/robfletcher/strikt/issues/229)
+- Assertion chains that use `not` will now report actual values if they fail. See [#222](https://github.com/robfletcher/strikt/issues/222)
 
 ## 0.27.0 Hungry Spear - 2020-08-18
 
