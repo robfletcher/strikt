@@ -13,7 +13,7 @@ plugins {
   id("info.solidsoft.pitest") version "1.5.0" apply false
   id("com.github.ben-manes.versions") version "0.36.0"
   id("com.adarshr.test-logger") version "2.1.1" apply false
-  id("com.autonomousapps.dependency-analysis") version "0.64.0"
+  id("com.autonomousapps.dependency-analysis") version "0.65.0"
 }
 
 buildscript {
@@ -46,6 +46,7 @@ subprojects {
           jvmTarget = VERSION_1_8.toString()
           languageVersion = "1.4"
           freeCompilerArgs = listOf("-Xjvm-default=all")
+//          allWarningsAsErrors = true
         }
       }
 

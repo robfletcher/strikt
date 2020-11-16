@@ -34,7 +34,7 @@ tasks.dokka {
 protobuf {
   protobuf(delegateClosureOf<ProtobufConfigurator> {
     protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:3.13.0"
+      artifact = "com.google.protobuf:protoc:3.14.0"
     })
     generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
       ofSourceSet("test")

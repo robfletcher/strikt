@@ -11,7 +11,7 @@ dependencies {
 
   api(project(":strikt-core"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.3.5.RELEASE"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.4.0"))
   compileOnly("org.springframework:spring-test")
   compileOnly("org.springframework:spring-web")
   compileOnly("javax.servlet:javax.servlet-api")
