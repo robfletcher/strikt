@@ -13,7 +13,7 @@ plugins {
   id("info.solidsoft.pitest") version "1.5.0" apply false
   id("com.github.ben-manes.versions") version "0.36.0"
   id("com.adarshr.test-logger") version "2.1.1" apply false
-  id("com.autonomousapps.dependency-analysis") version "0.65.0"
+  id("com.autonomousapps.dependency-analysis") version "0.68.0"
 }
 
 buildscript {
@@ -53,7 +53,7 @@ subprojects {
       // Test with JUnit 5
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.20"))
-        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.1"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"))
         "testImplementation"(platform("org.junit:junit-bom:5.7.0"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
