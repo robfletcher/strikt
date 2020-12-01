@@ -1,3 +1,25 @@
+## 0.28.1 Distant Princess - 2020-12-01
+
+- Adds `count()` and `count(predicate)` mappings for `Iterable` subjects.
+- Additional support for `File` subjects. See [#230](https://github.com/robfletcher/strikt/pull/230)
+  - mapping property `Assertion.Builder<File>.parentFile: Builder<File>`
+  - mapping property `Assertion.Builder<File>.lastModified: Long`
+  - mapping property `Assertion.Builder<File>.length: Long`
+  - mapping property `Assertion.Builder<File>.childFiles: Builder<List<File>>`
+  - mapping function `Assertion.Builder<File>.childFile(name): Builder<File>`
+  - assertion `Assertion.Builder<File>.exists()`
+  - assertion `Assertion.Builder<File>.notExists()`
+  - assertion `Assertion.Builder<File>.isRegularFile()`
+  - assertion `Assertion.Builder<File>.isNotRegularFile()`
+  - assertion `Assertion.Builder<File>.isDirectory()`
+  - assertion `Assertion.Builder<File>.isNotDirectory()`
+  - assertion `Assertion.Builder<File>.isReadable()`
+  - assertion `Assertion.Builder<File>.isNotReadable()`
+  - assertion `Assertion.Builder<File>.isWritable()`
+  - assertion `Assertion.Builder<File>.isNotWritable()`
+  - assertion `Assertion.Builder<File>.isExecutable()`
+  - assertion `Assertion.Builder<File>.isNotExecutable()`
+
 ## 0.28.0 Invincible Sadness - 2020-09-13
 
 - Fixes compilation using Android due to use of private interface methods. See [#229](https://github.com/robfletcher/strikt/issues/229)
