@@ -884,5 +884,19 @@ internal object IterableAssertions : JUnit5Minutests {
           }
         }
     }
+
+    context("count mapping") {
+      test("maps to an assertion on the iterable's size") {
+        val subject = listOf("catflap", "rubberplant", "marzipan")
+        expectThat(subject).count().isEqualTo(subject.size)
+      }
+
+      test("maps to an assertion on the count of elements matching the predicate") {
+        val subject = listOf("catflap", "rubberplant", "marzipan")
+        expectThat(subject)
+          .count("elements containing 't'") { it.contains("t") }
+          .isEqualTo(2)
+      }
+    }
   }
 }

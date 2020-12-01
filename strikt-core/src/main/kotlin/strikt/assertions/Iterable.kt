@@ -3,6 +3,22 @@ package strikt.assertions
 import strikt.api.Assertion.Builder
 
 /**
+ * Maps this assertion to an assertion over the count of elements in the subject.
+ *
+ * @see Iterable.count
+ */
+fun Builder<out Iterable<*>>.count(): Builder<Int> =
+  get(Iterable<*>::count)
+
+/**
+ * Maps this assertion to an assertion over the count of elements matching [predicate].
+ *
+ * @see Iterable.count
+ */
+fun <T : Iterable<E>, E> Builder<T>.count(description: String, predicate: (E) -> Boolean): Builder<Int> =
+  get("count matching $description") { count(predicate) }
+
+/**
  * Applies [Iterable.map] with [function] to the subject and returns an
  * assertion builder wrapping the result.
  */
