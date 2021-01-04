@@ -73,7 +73,7 @@ class Exceptions {
   }
 
   @Test
-  fun `chains involving "and" raise a single compound exception`() {
+  fun `chains involving 'and' raise a single compound exception`() {
     assertThrows<AssertionError> {
       expectThat("fnord")
         .length
@@ -138,7 +138,7 @@ class Exceptions {
   }
 
   @Test
-  fun `blocks involving "and" raise a single compound exception`() {
+  fun `blocks involving 'and' raise a single compound exception`() {
     assertThrows<AssertionError> {
       expectThat("fnord") {
         length
