@@ -10,7 +10,6 @@ plugins {
   kotlin("jvm")
   id("published")
   id("com.google.protobuf") version "0.8.14"
-  id("info.solidsoft.pitest")
 }
 
 dependencies {

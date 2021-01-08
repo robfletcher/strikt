@@ -1,6 +1,5 @@
 import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -11,20 +10,8 @@ plugins {
   kotlin("jvm") version "1.4.21-2" apply false
   id("nebula.release") version "15.0.1"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
-  id("info.solidsoft.pitest") version "1.5.0" apply false
-  id("com.github.ben-manes.versions") version "0.36.0"
+  id("info.solidsoft.pitest") version "1.5.2" apply false
   id("com.adarshr.test-logger") version "2.1.1" apply false
-}
-
-buildscript {
-  configurations.classpath {
-    resolutionStrategy.activateDependencyLocking()
-  }
-
-  configurations.maybeCreate("pitest")
-  dependencies {
-    "pitest"("org.pitest:pitest-junit5-plugin:0.12")
-  }
 }
 
 val candidateVersionPattern = Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE)
@@ -37,7 +24,9 @@ allprojects {
   }
 
   configurations.all {
+    @Suppress("ObjectLiteralToLambda")
     resolutionStrategy.componentSelection.all(object : Action<ComponentSelection> {
+      @Suppress("UnstableApiUsage")
       @Mutate
       override fun execute(selection: ComponentSelection) {
         val isChanging = selection.metadata?.isChanging ?: false
@@ -101,13 +90,11 @@ subprojects {
 
     plugins.withId("info.solidsoft.pitest") {
       configure<PitestPluginExtension> {
-        jvmArgs.set(listOf("-Xmx512m"))
-        testPlugin.set("junit5")
+        junit5PluginVersion.set("0.12")
         avoidCallsTo.set(setOf("kotlin.jvm.internal"))
-        mutators.set(setOf("NEW_DEFAULTS"))
-        targetClasses.set(setOf("strikt.*"))  //by default "${project.group}.*"
+        targetClasses.set(setOf("strikt.*"))  // by default "${project.group}.*"
         targetTests.set(setOf("strikt.**.*"))
-        pitestVersion.set("1.5.1")
+        pitestVersion.set("1.6.2")
         threads.set(
           System.getenv("PITEST_THREADS")?.toInt()
             ?: Runtime.getRuntime().availableProcessors()
@@ -121,14 +108,5 @@ subprojects {
   configure<TestLoggerExtension> {
     theme = MOCHA_PARALLEL
     showSimpleNames = true
-  }
-}
-
-tasks.withType<DependencyUpdatesTask> {
-  revision = "release"
-  checkConstraints = true
-  gradleReleaseChannel = "current"
-  rejectVersionIf {
-    candidate.version.contains(candidateVersionPattern)
   }
 }
