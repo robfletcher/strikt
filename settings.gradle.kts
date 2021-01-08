@@ -1,5 +1,7 @@
 rootProject.name = "strikt"
 
+enableFeaturePreview("ONE_LOCKFILE_PER_PROJECT")
+
 include(
   "strikt-bom",
   "strikt-core",

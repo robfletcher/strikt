@@ -7,8 +7,8 @@ plugins {
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.mockk:mockk:1.10.0")
+  compileOnly("io.mockk:mockk:+")
 
-  testImplementation("dev.minutest:minutest:1.11.0")
-  testImplementation("io.mockk:mockk:1.10.0")
+  testImplementation("dev.minutest:minutest:+")
+  testImplementation("io.mockk:mockk:+")
 }

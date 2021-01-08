@@ -5,6 +5,7 @@ import info.solidsoft.gradle.pitest.PitestPluginExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
+import kotlin.text.RegexOption.*
 
 plugins {
   kotlin("jvm") version "1.4.21-2" apply false
@@ -16,14 +17,38 @@ plugins {
 }
 
 buildscript {
+  configurations.classpath {
+    resolutionStrategy.activateDependencyLocking()
+  }
+
   configurations.maybeCreate("pitest")
   dependencies {
     "pitest"("org.pitest:pitest-junit5-plugin:0.12")
   }
 }
 
+val candidateVersionPattern = Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE)
+
 allprojects {
   group = "io.strikt"
+
+  dependencyLocking {
+    lockAllConfigurations()
+  }
+
+  configurations.all {
+    resolutionStrategy.componentSelection.all(object : Action<ComponentSelection> {
+      @Mutate
+      override fun execute(selection: ComponentSelection) {
+        val isChanging = selection.metadata?.isChanging ?: false
+        val isRelease = selection.metadata?.status == "release"
+        val isCandidate = selection.candidate.version.contains(candidateVersionPattern)
+        if (isChanging || !isRelease || isCandidate) {
+          selection.reject("Non-release versions are not allowed.")
+        }
+      }
+    })
+  }
 }
 
 subprojects {
@@ -52,9 +77,9 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.21-2"))
-        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"))
-        "testImplementation"(platform("org.junit:junit-bom:5.7.0"))
+        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.+"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.+"))
+        "testImplementation"(platform("org.junit:junit-bom:+"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
@@ -104,6 +129,6 @@ tasks.withType<DependencyUpdatesTask> {
   checkConstraints = true
   gradleReleaseChannel = "current"
   rejectVersionIf {
-    candidate.version.contains(Regex("""-(M|eap|rc|RC|alpha|beta)(-?[\d-]+)?$"""))
+    candidate.version.contains(candidateVersionPattern)
   }
 }

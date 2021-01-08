@@ -11,12 +11,12 @@ dependencies {
 
   api(project(":strikt-core"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:2.4.1"))
+  implementation(platform("org.springframework.boot:spring-boot-dependencies:+"))
   compileOnly("org.springframework:spring-test")
   compileOnly("org.springframework:spring-web")
   compileOnly("javax.servlet:javax.servlet-api")
 
-  testImplementation("dev.minutest:minutest:1.11.0")
+  testImplementation("dev.minutest:minutest:+")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
   testImplementation("org.springframework.boot:spring-boot-starter-web")
 }

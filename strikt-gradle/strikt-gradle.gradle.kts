@@ -13,8 +13,8 @@ dependencies {
   compileOnly(gradleTestKit())
 
   testImplementation(gradleTestKit())
-  testImplementation("io.mockk:mockk:1.10.0")
-  testImplementation("dev.minutest:minutest:1.11.0")
+  testImplementation("io.mockk:mockk:+")
+  testImplementation("dev.minutest:minutest:+")
 }
 
 tasks.dokka {
