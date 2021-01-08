@@ -3,9 +3,9 @@
 # This file is expected to be part of source control.
 com.christophsturm:filepeek:0.1.2=testRuntimeClasspath
 dev.minutest:minutest:1.11.0=testCompileClasspath,testRuntimeClasspath
-io.arrow-kt:arrow-annotations:0.10.5=compileClasspath,testCompileClasspath,testRuntimeClasspath
-io.arrow-kt:arrow-core-data:0.10.5=compileClasspath,testCompileClasspath,testRuntimeClasspath
-io.arrow-kt:arrow-core:0.10.5=compileClasspath,testCompileClasspath,testRuntimeClasspath
+io.arrow-kt:arrow-annotations:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
+io.arrow-kt:arrow-core-data:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
+io.arrow-kt:arrow-core:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
 io.github.classgraph:classgraph:4.8.28=testRuntimeClasspath
 io.kindedj:kindedj:1.1.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.0=testCompileClasspath,testRuntimeClasspath
