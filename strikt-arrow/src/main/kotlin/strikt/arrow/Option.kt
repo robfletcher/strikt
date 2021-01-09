@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION")
 package strikt.arrow
 
 import arrow.core.None

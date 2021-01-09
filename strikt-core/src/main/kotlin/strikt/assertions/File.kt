@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import java.io.File
 import java.nio.charset.Charset
