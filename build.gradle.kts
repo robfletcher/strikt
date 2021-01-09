@@ -60,7 +60,7 @@ subprojects {
           languageVersion = "1.4"
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
-//          allWarningsAsErrors = true
+          allWarningsAsErrors = true
         }
       }
 
