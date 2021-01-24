@@ -2,7 +2,8 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.christophsturm:filepeek:0.1.2=compileClasspath,implementationCopy,implementationCopy2,testCompileClasspath,testImplementationCopy,testRuntimeClasspath
-dev.minutest:minutest:1.11.0=testCompileClasspath,testImplementationCopy,testImplementationCopy2,testRuntimeClasspath
+dev.minutest:minutest:1.11.0=testImplementationCopy,testImplementationCopy2
+dev.minutest:minutest:1.12.0=testCompileClasspath,testRuntimeClasspath
 io.github.classgraph:classgraph:4.8.28=testImplementationCopy,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.0=testCompileClasspath,testImplementationCopy,testRuntimeClasspath
 org.jetbrains.dokka:dokka-fatjar:0.10.0=dokkaRuntimeCopy

@@ -2,7 +2,7 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.christophsturm:filepeek:0.1.2=testRuntimeClasspath
-dev.minutest:minutest:1.11.0=testCompileClasspath,testRuntimeClasspath
+dev.minutest:minutest:1.12.0=testCompileClasspath,testRuntimeClasspath
 io.arrow-kt:arrow-annotations:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
 io.arrow-kt:arrow-core-data:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
 io.arrow-kt:arrow-core:0.11.0=compileClasspath,testCompileClasspath,testRuntimeClasspath
