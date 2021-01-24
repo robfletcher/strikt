@@ -5,6 +5,7 @@ import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.*
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
   kotlin("jvm") version "1.4.21-2" apply false
@@ -12,9 +13,11 @@ plugins {
   id("org.jmailen.kotlinter") version "3.3.0" apply false
   id("info.solidsoft.pitest") version "1.5.2" apply false
   id("com.adarshr.test-logger") version "2.1.1" apply false
+  id("com.github.ben-manes.versions") version "0.36.0"
 }
 
-val candidateVersionPattern = Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE)
+fun org.gradle.api.artifacts.component.ModuleComponentIdentifier.isNonStable() =
+  version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
 
 allprojects {
   group = "io.strikt"
@@ -31,7 +34,7 @@ allprojects {
       override fun execute(selection: ComponentSelection) {
         val isChanging = selection.metadata?.isChanging ?: false
         val isRelease = selection.metadata?.status == "release"
-        val isCandidate = selection.candidate.version.contains(candidateVersionPattern)
+        val isCandidate = selection.candidate.isNonStable()
         if (isChanging || !isRelease || isCandidate) {
           selection.reject("Non-release versions are not allowed.")
         }
@@ -108,5 +111,15 @@ subprojects {
   configure<TestLoggerExtension> {
     theme = MOCHA_PARALLEL
     showSimpleNames = true
+  }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+  revision = "release"
+  checkConstraints = true
+  gradleReleaseChannel = "current"
+  checkForGradleUpdate = true
+  rejectVersionIf {
+    candidate.isNonStable()
   }
 }
