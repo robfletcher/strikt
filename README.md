@@ -1,6 +1,8 @@
 # Strikt
 
-Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/), [Spek](http://spekframework.org/), or [KotlinTest](https://github.com/kotlintest/kotlintest)
+Strikt is an assertion library for Kotlin intended for use with a test runner such as [JUnit](https://junit.org/junit5/), [Minutest](https://github.com/dmcg/minutest), [Spek](http://spekframework.org/), or [KotlinTest](https://github.com/kotlintest/kotlintest).
+
+Strikt uses a fluent assertion style similar to [AssertJ](https://assertj.github.io/doc/) but leverages Kotlin's type system and extension functions rather than needing a complex hierarchy of assertion builder classes.
 
 Strikt is under development, but 100% usable.
 The API may change until a [version 1.0](https://github.com/robfletcher/strikt/milestone/1) is released.
@@ -63,7 +65,7 @@ dependencies {
 
 ## Using Strikt
 
-Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/api/strikt-core).
+Please see the [project documentation](https://strikt.io/) and [API docs](https://strikt.io/modules/core/).
 
 ## Community
 
