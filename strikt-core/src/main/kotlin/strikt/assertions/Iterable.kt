@@ -15,7 +15,10 @@ fun Builder<out Iterable<*>>.count(): Builder<Int> =
  *
  * @see Iterable.count
  */
-fun <T : Iterable<E>, E> Builder<T>.count(description: String, predicate: (E) -> Boolean): Builder<Int> =
+fun <T : Iterable<E>, E> Builder<T>.count(
+  description: String,
+  predicate: (E) -> Boolean,
+): Builder<Int> =
   get("count matching $description") { count(predicate) }
 
 /**
@@ -62,7 +65,7 @@ fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
  */
 fun <T : Iterable<E>, E> Builder<T>.withElementAt(
   index: Int,
-  block: Builder<E>.() -> Unit
+  block: Builder<E>.() -> Unit,
 ): Builder<T> =
   with("element at index $index %s", { elementAt(index) }, block)
 
@@ -98,7 +101,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Buil
  */
 fun <T : Iterable<E>, E> Builder<T>.withFirst(
   predicate: (E) -> Boolean,
-  block: Builder<E>.() -> Unit
+  block: Builder<E>.() -> Unit,
 ): Builder<T> =
   with("first matching element %s", { first(predicate) }, block)
 
@@ -198,7 +201,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit):
 infix fun <T : Iterable<E>, E> Builder<T>.anyIndexed(predicate: Builder<E>.(Int) -> Unit): Builder<T> =
   compose("at least one element matches:") { subject ->
     subject.forEachIndexed { index, element ->
-      get("%s") { element }.apply{ predicate(index) }
+      get("%s") { element }.apply { predicate(index) }
     }
   } then {
     if (anyPassed) pass() else fail()
@@ -222,7 +225,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit)
 infix fun <T : Iterable<E>, E> Builder<T>.noneIndexed(predicate: Builder<E>.(Int) -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEachIndexed { index, element ->
-      get("%s") { element }.apply{ predicate(index) }
+      get("%s") { element }.apply { predicate(index) }
     }
   } then {
     if (allFailed) pass() else fail()
@@ -240,7 +243,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.one(predicate: Builder<E>.() -> Unit):
  */
 fun <T : Iterable<E>, E> Builder<T>.atLeast(
   count: Int,
-  predicate: Builder<E>.() -> Unit
+  predicate: Builder<E>.() -> Unit,
 ): Builder<T> =
   compose("at least $count elements match:") { subject ->
     subject.forEach { element ->
@@ -256,7 +259,7 @@ fun <T : Iterable<E>, E> Builder<T>.atLeast(
  */
 fun <T : Iterable<E>, E> Builder<T>.atMost(
   count: Int,
-  predicate: Builder<E>.() -> Unit
+  predicate: Builder<E>.() -> Unit,
 ): Builder<T> =
   compose("at most $count elements match:") { subject ->
     subject.forEach { element ->
@@ -272,7 +275,7 @@ fun <T : Iterable<E>, E> Builder<T>.atMost(
  */
 fun <T : Iterable<E>, E> Builder<T>.exactly(
   count: Int,
-  predicate: Builder<E>.() -> Unit
+  predicate: Builder<E>.() -> Unit,
 ): Builder<T> =
   compose("exactly $count elements match:") { subject ->
     subject.forEach { element ->

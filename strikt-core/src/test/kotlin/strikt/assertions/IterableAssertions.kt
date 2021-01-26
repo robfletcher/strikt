@@ -3,10 +3,8 @@ package strikt.assertions
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
-import org.opentest4j.AssertionFailedError
 import org.opentest4j.MultipleFailuresError
 import strikt.api.expectThat
-import strikt.api.expectThrows
 import strikt.internal.opentest4j.MappingFailed
 
 internal object IterableAssertions : JUnit5Minutests {
