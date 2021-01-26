@@ -1,3 +1,8 @@
+## 0.28.2 Hidden Ruin - 2021-01-26
+
+- Removes support for Arrow's `Try` type that has been removed from `arrow-core`.
+- Adds `anyIndexed`, `allIndexed`, and `noneIndexed` assertions for `Iterable<*>`.
+
 ## 0.28.1 Distant Princess - 2020-12-01
 
 - Adds `count()` and `count(predicate)` mappings for `Iterable` subjects.
