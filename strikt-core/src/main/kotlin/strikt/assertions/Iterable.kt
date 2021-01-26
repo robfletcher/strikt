@@ -167,6 +167,18 @@ infix fun <T : Iterable<E>, E> Builder<T>.all(predicate: Builder<E>.() -> Unit):
   }
 
 /**
+ * Asserts that all elements of the subject pass the assertions in [predicate].
+ */
+infix fun <T : Iterable<E>, E> Builder<T>.allIndexed(predicate: Builder<E>.(Int) -> Unit): Builder<T> =
+  compose("all elements match:") { subject ->
+    subject.forEachIndexed { index, element ->
+      get("%s") { element }.apply { predicate(index) }
+    }
+  } then {
+    if (allPassed) pass() else fail()
+  }
+
+/**
  * Asserts that _at least one_ element of the subject pass the assertions in
  * [predicate].
  */
@@ -180,12 +192,37 @@ infix fun <T : Iterable<E>, E> Builder<T>.any(predicate: Builder<E>.() -> Unit):
   }
 
 /**
+ * Asserts that _at least one_ element of the subject pass the assertions in
+ * [predicate].
+ */
+infix fun <T : Iterable<E>, E> Builder<T>.anyIndexed(predicate: Builder<E>.(Int) -> Unit): Builder<T> =
+  compose("at least one element matches:") { subject ->
+    subject.forEachIndexed { index, element ->
+      get("%s") { element }.apply{ predicate(index) }
+    }
+  } then {
+    if (anyPassed) pass() else fail()
+  }
+
+/**
  * Asserts that _no_ elements of the subject pass the assertions in [predicate].
  */
 infix fun <T : Iterable<E>, E> Builder<T>.none(predicate: Builder<E>.() -> Unit): Builder<T> =
   compose("no elements match:") { subject ->
     subject.forEach { element ->
       get("%s") { element }.apply(predicate)
+    }
+  } then {
+    if (allFailed) pass() else fail()
+  }
+
+/**
+ * Asserts that _no_ elements of the subject pass the assertions in [predicate].
+ */
+infix fun <T : Iterable<E>, E> Builder<T>.noneIndexed(predicate: Builder<E>.(Int) -> Unit): Builder<T> =
+  compose("no elements match:") { subject ->
+    subject.forEachIndexed { index, element ->
+      get("%s") { element }.apply{ predicate(index) }
     }
   } then {
     if (allFailed) pass() else fail()

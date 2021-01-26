@@ -3,8 +3,10 @@ package strikt.assertions
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
+import org.opentest4j.AssertionFailedError
 import org.opentest4j.MultipleFailuresError
 import strikt.api.expectThat
+import strikt.api.expectThrows
 import strikt.internal.opentest4j.MappingFailed
 
 internal object IterableAssertions : JUnit5Minutests {
@@ -61,6 +63,28 @@ internal object IterableAssertions : JUnit5Minutests {
       }
     }
 
+    context("allIndexed assertion") {
+      context("passes if all elements") {
+        test("of a List conform") {
+          val subject = listOf("catflap-0", "rubberplant-1", "marzipan-2")
+          expectThat(subject).allIndexed { index ->
+            endsWith("-$index")
+          }
+        }
+      }
+
+      context("fails if any element") {
+        test("of a List does not conform") {
+          val subject = listOf("catflap-1", "rubberplant-1", "marzipan-1")
+          assertThrows<AssertionError> {
+            expectThat(subject).allIndexed { index ->
+              endsWith("-$index")
+            }
+          }
+        }
+      }
+    }
+
     context("any assertion") {
       context("passes if") {
         listOf("catflap", "rubberplant", "marzipan")
@@ -72,6 +96,7 @@ internal object IterableAssertions : JUnit5Minutests {
               }
             }
           }
+
         listOf("catflap", "RUBBERPLANT", "MARZIPAN")
           .permute()
           .forEach { subject ->
@@ -105,6 +130,42 @@ internal object IterableAssertions : JUnit5Minutests {
       }
     }
 
+    context("anyIndexed assertion") {
+      context("passes if") {
+        test("all elements of a List conform") {
+          val subject = listOf("catflap-0", "rubberplant-1", "marzipan-2")
+          expectThat(subject).anyIndexed { index ->
+            endsWith("-$index")
+          }
+        }
+
+        test("one element of a List conforms") {
+          val subject = listOf("catflap-1", "rubberplant-1", "marzipan-1")
+          expectThat(subject).anyIndexed { index ->
+            endsWith("-$index")
+          }
+        }
+      }
+
+      context("fails if") {
+        test("no elements of a List conform") {
+          val subject = listOf("catflap", "rubberplant", "marzipan")
+          assertThrows<AssertionError> {
+            expectThat(subject).anyIndexed { index ->
+              endsWith("-$index")
+            }
+          }
+        }
+      }
+
+      test("works with not") {
+        val subject = setOf("catflap", "rubberplant", "marzipan")
+        expectThat(subject).not().anyIndexed { index ->
+          endsWith("-$index")
+        }
+      }
+    }
+
     context("none assertion") {
       context("passes if") {
         listOf("catflap", "rubberplant", "marzipan")
@@ -130,6 +191,7 @@ internal object IterableAssertions : JUnit5Minutests {
               }
             }
           }
+
         listOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
           .permute()
           .forEach { subject ->
@@ -141,10 +203,49 @@ internal object IterableAssertions : JUnit5Minutests {
               }
             }
           }
+
         test("works with not") {
           val subject = setOf("CATFLAP", "RUBBERPLANT", "MARZIPAN")
           expectThat(subject).not().none {
             isUpperCase()
+          }
+        }
+      }
+    }
+
+    context("noneIndexed assertion") {
+      context("passes if") {
+        test("no elements of a List conform") {
+          val subject = listOf("catflap", "rubberplant", "marzipan")
+          expectThat(subject).noneIndexed { index ->
+            endsWith("-$index")
+          }
+        }
+      }
+
+      context("fails if") {
+        test("some elements of a List conforms") {
+          val subject = listOf("catflap-1", "rubberplant-1", "marzipan-1")
+          assertThrows<AssertionError> {
+            expectThat(subject).noneIndexed { index ->
+              endsWith("-$index")
+            }
+          }
+        }
+
+        test("all elements of a List conform") {
+          val subject = listOf("catflap-0", "rubberplant-1", "marzipan-2")
+          assertThrows<AssertionError> {
+            expectThat(subject).noneIndexed { index ->
+              endsWith("-$index")
+            }
+          }
+        }
+
+        test("works with not") {
+          val subject = setOf("catflap-1", "rubberplant-1", "marzipan-1")
+          expectThat(subject).not().noneIndexed { index ->
+            endsWith("-$index")
           }
         }
       }
