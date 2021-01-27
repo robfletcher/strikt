@@ -12,4 +12,6 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
   testImplementation("dev.minutest:minutest:+")
+  testImplementation("com.christophsturm:failfast:0.2.0")
+
 }

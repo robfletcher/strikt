@@ -1,10 +1,9 @@
 package strikt
 
-import dev.minutest.junit.JUnit5Minutests
-import dev.minutest.rootContext
+import failfast.FailFast
+import failfast.describe
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
-import strikt.api.Assertion
 import strikt.api.expectCatching
 import strikt.api.expectThat
 import strikt.assertions.isA
@@ -13,28 +12,32 @@ import strikt.assertions.isFailure
 import strikt.assertions.isSuccess
 import strikt.assertions.message
 
-internal class Catching : JUnit5Minutests {
-  fun tests() = rootContext<Assertion.Builder<Result<String>>> {
+fun main() {
+//  FailFast.runTest("Catching > a failed action > maps to the exception thrown by the action")
+  FailFast.runTest()
+}
+
+object Catching {
+  val context = describe("Catching") {
     context("a successful action") {
-      fixture {
+      val fixture =
         expectCatching { "kthxbye" }
-      }
 
       test("maps to the action's returned value") {
-        isSuccess()
+        fixture.isSuccess()
           .isA<String>()
           .isEqualTo("kthxbye")
       }
 
       test("is not failed") {
         assertThrows<AssertionFailedError> {
-          isFailure()
+          fixture.isFailure()
         }
       }
 
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
-          and {
+          fixture.and {
             isFailure().isA<NullPointerException>()
           }
         }.also { exception ->
@@ -50,12 +53,11 @@ internal class Catching : JUnit5Minutests {
     }
 
     context("a failed action") {
-      fixture {
+      val fixture =
         expectCatching { error("o noes") }
-      }
 
       test("maps to the exception thrown by the action") {
-        isFailure()
+        fixture.isFailure()
           .isA<IllegalStateException>()
           .message
           .isEqualTo("o noes")
@@ -63,13 +65,13 @@ internal class Catching : JUnit5Minutests {
 
       test("is not successful") {
         assertThrows<AssertionFailedError> {
-          isSuccess()
+          fixture.isSuccess()
         }
       }
 
       test("chains correctly in a block") {
         assertThrows<AssertionError> {
-          and {
+          fixture.and {
             isSuccess().isA<String>()
           }
         }.also { exception ->
@@ -83,5 +85,6 @@ internal class Catching : JUnit5Minutests {
         }
       }
     }
+
   }
 }
