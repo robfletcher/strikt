@@ -13,3 +13,11 @@ dependencies {
 
   testImplementation("dev.minutest:minutest:+")
 }
+
+val failfastTests =
+  task("failfastTests", JavaExec::class) {
+    main = "strikt.FailfastKt"
+    classpath = sourceSets["test"].runtimeClasspath
+  }
+
+tasks.check { dependsOn(failfastTests) }
