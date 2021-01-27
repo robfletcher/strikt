@@ -37,4 +37,4 @@ org.pitest:pitest-command-line:1.6.2=pitest
 org.pitest:pitest-entry:1.6.2=pitest
 org.pitest:pitest-junit5-plugin:0.12=pitest
 org.pitest:pitest:1.6.2=pitest
-empty=annotationProcessorCopy,apiElements-publishedCopy,apiElementsCopy,archivesCopy,compileCopy,kotlinNativeCompilerPluginClasspathCopy,pitestCopy,runtimeCopy,runtimeOnlyCopy,sourceArtifactsCopy,testAnnotationProcessor,testCompileCopy,testRuntimeCopy
+empty=annotationProcessor,annotationProcessorCopy,apiElements-publishedCopy,apiElementsCopy,archivesCopy,compileCopy,kotlinNativeCompilerPluginClasspathCopy,pitestCopy,runtimeCopy,runtimeOnlyCopy,sourceArtifactsCopy,testAnnotationProcessor,testCompileCopy,testRuntimeCopy
