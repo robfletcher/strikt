@@ -71,6 +71,7 @@ subprojects {
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.+"))
         "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.+"))
+        "testImplementation"("failfast:failfast")
         "testImplementation"(platform("org.junit:junit-bom:+"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
