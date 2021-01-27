@@ -19,8 +19,4 @@ rootProject.children.forEach {
   it.buildFileName = "${it.name}.gradle.kts"
 }
 
-includeBuild("../failfast") {
-  dependencySubstitution {
-    substitute(module("failfast:failfast")).with(project(":failfast"))
-  }
-}
+includeBuild("../../mine/failfast")
