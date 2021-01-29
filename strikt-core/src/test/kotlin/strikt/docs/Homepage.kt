@@ -110,11 +110,11 @@ internal class Homepage {
     /* ktlint-disable no-multi-spaces */
     // START homepage_eight
     val subject: Any? = "The Enlightened take things Lightly"
-    expectThat(subject) // type: Assertion<Any?>
-      .isNotNull()      // type: Assertion<Any>
-      .isA<String>()    // type: Assertion<String>
+    expectThat(subject) // type: Assertion.Builder<Any?>
+      .isNotNull()      // type: Assertion.Builder<Any>
+      .isA<String>()    // type: Assertion.Builder<String>
+      // only available on Assertion.Builder<CharSequence>
       .matches(Regex("[\\w\\s]+"))
-    // only available on Assertion<CharSequence>
     // END homepage_eight
     /* ktlint-enable no-multi-spaces */
   }
@@ -151,7 +151,8 @@ internal class Homepage {
     get() = get { "$ruler to $underworldRuler" }
   // END homepage_eleven_a
 
-  @Test fun `homepage eleven`() {
+  @Test
+  fun `homepage eleven`() {
     // START homepage_eleven_b
     val subject = Pantheon.NORSE
     expectThat(subject)

@@ -24,7 +24,8 @@ layout: 'homepage'
     <div class="content is-medium">
       <p>
         Strikt is an assertion library for Kotlin intended for use with a test runner such as <a
-        href="https://junit.org/junit5/">JUnit</a> or <a href="http://spekframework.org/">Spek</a>.
+        href="https://junit.org/junit5/">JUnit</a>, <a href="https://github.com/dmcg/minutest">Minutest</a>
+        or <a href="http://spekframework.org/">Spek</a>.
       </p>
       <p>Strikt gives you…</p>
     </div>
@@ -51,7 +52,8 @@ layout: 'homepage'
     <div class="column is-8">
       <pre class="notification content is-medium is-dark"><code class="language-{{ snippet.lang }}">
         {%- for name in snippet.snippets -%}
-          {%- snippet snippetName=name -%}
+          {%- set snip = snippet(name) -%}
+          {{ snip.content | escape }}&#13;
         {%- endfor -%}
       </code></pre>
     </div>
