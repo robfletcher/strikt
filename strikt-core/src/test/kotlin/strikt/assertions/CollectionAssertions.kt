@@ -62,7 +62,7 @@ internal object CollectionAssertions : JUnit5Minutests {
       }
     }
 
-    derivedContext<Assertion.Builder<Collection<Any?>>>("isSortedOnAny") {
+    derivedContext<Assertion.Builder<Collection<Any?>>>("isSorted on Any") {
       context("an empty collection subject") {
         fixture { expectThat(emptyList()) }
 
@@ -91,7 +91,7 @@ internal object CollectionAssertions : JUnit5Minutests {
       }
     }
 
-    derivedContext<Assertion.Builder<Collection<String?>>>("isSortedOnString") {
+    derivedContext<Assertion.Builder<Collection<String?>>>("isSorted on String") {
       context("an non-empty simple value collection subject") {
         fixture { expectThat(listOf("catflap", "marzipan", "rubber")) }
 
@@ -121,8 +121,8 @@ internal object CollectionAssertions : JUnit5Minutests {
       }
     }
 
-    derivedContext<Assertion.Builder<Collection<Collection<String>?>>>("isSortedOnNonComparable") {
-      context("an non-empty non Comparable value collection subject") {
+    derivedContext<Assertion.Builder<Collection<Collection<String>?>>>("isSorted on non-Comparable") {
+      context("a non-empty non Comparable value collection subject") {
         fixture {
           expectThat(
             listOf(
@@ -140,6 +140,22 @@ internal object CollectionAssertions : JUnit5Minutests {
         test("fails if the subject is not sorted according to the comparator") {
           assertThrows<AssertionError> {
             isSorted(Comparator.comparing(Collection<String>::size).reversed())
+          }
+        }
+      }
+    }
+
+    context("isSorted on Comparable elements") {
+      context("a non-empty collection of Comparable elements") {
+        test("the assertion passes if the elements are in natural order") {
+          expectThat(listOf("catflap", "marzipan", "rubberplant"))
+            .isSorted()
+        }
+
+        test("the assertion fails if the elements are not in natural order") {
+          assertThrows<AssertionError> {
+            expectThat(listOf("catflap", "rubberplant", "marzipan"))
+              .isSorted()
           }
         }
       }
