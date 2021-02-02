@@ -4,6 +4,7 @@ import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.MultipleFailuresError
+import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.internal.opentest4j.MappingFailed
 
@@ -995,6 +996,95 @@ internal object IterableAssertions : JUnit5Minutests {
         expectThat(subject)
           .count("elements containing 't'") { it.contains("t") }
           .isEqualTo(2)
+      }
+    }
+
+    context("isSorted(Comparable) assertion") {
+
+      test("passes if the subject is empty") {
+        expectThat(emptyList<Any?>())
+          .isSorted(Comparator.comparingInt(Any?::hashCode))
+      }
+
+      test("fails in a block assertion if the subject is not in order") {
+        assertThrows<AssertionError> {
+          expectThat(listOf(1, 3, 2)) {
+            isSorted(Comparator.naturalOrder())
+          }
+        }
+      }
+
+      context("fails in a chained assertion if the subject is not in order") {
+        assertThrows<AssertionError> {
+          expectThat(listOf(1, 3, 2))
+            .isSorted(Comparator.naturalOrder())
+        }
+      }
+
+      test("the assertion passes if the subject is in order") {
+        expectThat(listOf("catflap", "marzipan", "rubberplant"))
+          .isSorted(Comparator.naturalOrder<String>())
+      }
+
+      test("fails if the subject is not sorted according to the comparator") {
+        assertThrows<AssertionError> {
+          expectThat(listOf("catflap", "rubberplant", "marzipan"))
+            .isSorted(Comparator.naturalOrder<String>().reversed())
+        }
+      }
+    }
+
+    test("the assertion passes if the Null value is handled through the Comparator instance") {
+      expectThat(listOf("catflap", "marzipan", null))
+        .isSorted(Comparator.nullsLast(Comparator.naturalOrder<String>()))
+    }
+
+    test("fails with NPE if the Null value isn't handled through the Comparator instances") {
+      assertThrows<NullPointerException> {
+        expectThat(listOf("catflap", "marzipan", null))
+          .isSorted(Comparator.naturalOrder<String>())
+      }
+    }
+
+    derivedContext<Assertion.Builder<Collection<Collection<String>?>>>("isSorted on non-Comparable") {
+      context("a non-empty non Comparable value collection subject") {
+        fixture {
+          expectThat(
+            listOf(
+              listOf("catflap"),
+              listOf("marzipan", "persipan"),
+              listOf("rubberplant", "rubber bush", "rubber tree")
+            )
+          )
+        }
+
+        test("the assertion passes") {
+          isSorted(Comparator.comparing { it?.size ?: 0 })
+        }
+
+        test("fails if the subject is not sorted according to the comparator") {
+          assertThrows<AssertionError> {
+            isSorted(Comparator.comparing(Collection<String>::size).reversed())
+          }
+        }
+      }
+    }
+
+    context("isSorted assertion") {
+      test("passes if the subject is empty") {
+        expectThat(emptyList<String>()).isSorted()
+      }
+
+      test("the assertion passes if the elements are in natural order") {
+        expectThat(listOf("catflap", "marzipan", "rubberplant"))
+          .isSorted()
+      }
+
+      test("the assertion fails if the elements are not in natural order") {
+        assertThrows<AssertionError> {
+          expectThat(listOf("catflap", "rubberplant", "marzipan"))
+            .isSorted()
+        }
       }
     }
   }

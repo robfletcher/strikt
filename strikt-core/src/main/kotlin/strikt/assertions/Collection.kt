@@ -26,30 +26,6 @@ fun <T : Collection<E>, E> Builder<T>.isNotEmpty(): Builder<T> =
   assertThat("is not empty", Collection<E>::isNotEmpty)
 
 /**
- * Asserts that the subject collection is sorted according to the Comparator. Empty collections are
- * considered sorted.
- */
-infix fun <T : Collection<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
-  assert("is sorted") { actual ->
-    val failed = (0 until actual.size - 1).fold(false) { notSorted, index ->
-      if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {
-        notSorted
-      } else {
-        fail(actual, "${actual.elementAt(index)} is greater than ${actual.elementAt(index + 1)}")
-        true
-      }
-    }
-    if (!failed) pass()
-  }
-
-/**
- * Asserts that the subject collection is sorted according to its natural order. Empty collections
- * are considered sorted.
- */
-fun <T : Collection<E>, E : Comparable<E>> Builder<T>.isSorted() =
-  isSorted(Comparator.naturalOrder())
-
-/**
  * Maps an assertion on a collection to an assertion on its size.
  *
  * @see Collection.size

@@ -463,3 +463,27 @@ infix fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Co
   } then {
     if (allPassed) pass() else fail()
   }
+
+/**
+ * Asserts that the subject iterable is sorted according to the Comparator. Empty iterables are
+ * considered sorted.
+ */
+infix fun <T : Iterable<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
+  assert("is sorted") { actual ->
+    val failed = (0 until actual.count() - 1).fold(false) { notSorted, index ->
+      if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {
+        notSorted
+      } else {
+        fail(actual, "${actual.elementAt(index)} is greater than ${actual.elementAt(index + 1)}")
+        true
+      }
+    }
+    if (!failed) pass()
+  }
+
+/**
+ * Asserts that the subject iterable is sorted according to the natural order of its elements. Empty
+ * iterables are considered sorted.
+ */
+fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() =
+  isSorted(Comparator.naturalOrder())
