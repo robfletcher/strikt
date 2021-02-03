@@ -1,4 +1,4 @@
-package strikt.time
+package strikt.java.time
 
 import strikt.api.Assertion
 import java.time.Instant

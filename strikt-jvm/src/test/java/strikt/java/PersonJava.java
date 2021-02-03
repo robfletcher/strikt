@@ -1,4 +1,4 @@
-package strikt.assertions;
+package strikt.java;
 
 import java.time.LocalDate;
 import java.util.Arrays;

@@ -1,10 +1,14 @@
-package strikt.assertions
+package strikt.java
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.expectThat
-import strikt.internal.reporting.toHex
+import strikt.assertions.isA
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
+import strikt.assertions.isTrue
 import java.time.LocalDate
 import java.util.UUID
 
@@ -34,7 +38,7 @@ internal object BeanPropertyAssertions {
     val subject = PersonKotlin(
       name = "David",
       dateOfBirth = LocalDate.of(1947, 1, 8),
-      image = randomBytes()
+      image = "catflap".toByteArray()
     )
     val other = subject.copy(
       name = "Ziggy",
@@ -54,7 +58,7 @@ internal object BeanPropertyAssertions {
           |    ▼ value of property id:
           |      ✓ is equal to ${subject.id}
           |    ▼ value of property image:
-          |      ✓ array content equals 0x${subject.image.toHex()}
+          |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
           |              found "David"""".trimMargin()
@@ -80,7 +84,7 @@ internal object BeanPropertyAssertions {
     val subject = PersonJava(
       "David",
       LocalDate.of(1947, 1, 8),
-      randomBytes()
+      "catflap".toByteArray()
     )
     val other = PersonJava(
       subject.id,
@@ -102,7 +106,7 @@ internal object BeanPropertyAssertions {
           |    ▼ value of property id:
           |      ✓ is equal to ${subject.id}
           |    ▼ value of property image:
-          |      ✓ array content equals 0x${subject.image.toHex()}
+          |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
           |              found "David"""".trimMargin()

@@ -4,7 +4,7 @@ plugins {
   kotlin("jvm")
   id("published")
   id("info.solidsoft.pitest")
-  id("org.jetbrains.kotlin.plugin.spring") version "1.4.21-2"
+  id("org.jetbrains.kotlin.plugin.spring") version "1.4.30"
 }
 
 dependencies {

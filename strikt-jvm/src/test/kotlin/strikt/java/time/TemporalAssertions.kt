@@ -1,4 +1,4 @@
-package strikt.time
+package strikt.java.time
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext

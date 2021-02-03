@@ -1,4 +1,4 @@
-package strikt.assertions
+package strikt.java
 
 import dev.minutest.TestDescriptor
 import dev.minutest.junit.JUnit5Minutests
@@ -9,6 +9,16 @@ import org.junit.jupiter.api.io.TempDir
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
+import strikt.assertions.containsExactlyInAnyOrder
+import strikt.assertions.endsWith
+import strikt.assertions.isA
+import strikt.assertions.isEmpty
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
+import strikt.assertions.map
+import strikt.assertions.startsWith
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path

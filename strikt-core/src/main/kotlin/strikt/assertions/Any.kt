@@ -1,7 +1,6 @@
 package strikt.assertions
 
 import strikt.api.Assertion.Builder
-import java.beans.Introspector
 
 /**
  * Asserts that the subject is `null`.
@@ -107,57 +106,4 @@ infix fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
       it === expected -> fail()
       else -> pass()
     }
-  }
-
-/**
- * Asserts that all properties of the subject match those of [other] according
- * to either [contentEquals] in the case of array properties or [isEqualTo] in
- * other cases.
- *
- * Properties are identified using Java beans conventions.
- */
-infix fun <T : Any> Builder<T>.propertiesAreEqualTo(other: T): Builder<T> =
-  compose("is equal field-by-field to %s", other) { subject ->
-    Introspector.getBeanInfo(subject.javaClass).let { beanInfo ->
-      beanInfo
-        .propertyDescriptors
-        .filter { it.name != "class" }
-        .forEach { property ->
-          val mappedAssertion = get("value of property ${property.name}") {
-            property.readMethod(this)
-          }
-          val otherValue = property.readMethod(other)
-          @Suppress("UNCHECKED_CAST")
-          when {
-            property.propertyType == BooleanArray::class.java ->
-              (mappedAssertion as Builder<BooleanArray>)
-                .contentEquals(otherValue as BooleanArray)
-            property.propertyType == ByteArray::class.java ->
-              (mappedAssertion as Builder<ByteArray>)
-                .contentEquals(otherValue as ByteArray)
-            property.propertyType == ShortArray::class.java ->
-              (mappedAssertion as Builder<ShortArray>)
-                .contentEquals(otherValue as ShortArray)
-            property.propertyType == IntArray::class.java ->
-              (mappedAssertion as Builder<IntArray>)
-                .contentEquals(otherValue as IntArray)
-            property.propertyType == LongArray::class.java ->
-              (mappedAssertion as Builder<LongArray>)
-                .contentEquals(otherValue as LongArray)
-            property.propertyType == FloatArray::class.java ->
-              (mappedAssertion as Builder<FloatArray>)
-                .contentEquals(otherValue as FloatArray)
-            property.propertyType == DoubleArray::class.java ->
-              (mappedAssertion as Builder<DoubleArray>)
-                .contentEquals(otherValue as DoubleArray)
-            property.propertyType.isArray ->
-              (mappedAssertion as Builder<Array<*>>)
-                .contentEquals(otherValue as Array<*>)
-            else ->
-              mappedAssertion.isEqualTo(otherValue)
-          }
-        }
-    }
-  } then {
-    if (allPassed) pass() else fail()
   }

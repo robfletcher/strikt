@@ -1,4 +1,4 @@
-package strikt.assertions
+package strikt.java
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
@@ -6,6 +6,9 @@ import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
 import java.util.Optional
 
 internal object OptionalAssertions : JUnit5Minutests {

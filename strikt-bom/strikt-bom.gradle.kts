@@ -20,7 +20,7 @@ dependencies {
     api(project(":strikt-core"))
     api(project(":strikt-gradle"))
     api(project(":strikt-jackson"))
-    api(project(":strikt-java-time"))
+    api(project(":strikt-jvm"))
     api(project(":strikt-mockk"))
     api(project(":strikt-protobuf"))
     api(project(":strikt-spring"))

@@ -1,4 +1,4 @@
-package strikt.assertions
+package strikt.java
 
 import strikt.api.Assertion.Builder
 import java.io.File

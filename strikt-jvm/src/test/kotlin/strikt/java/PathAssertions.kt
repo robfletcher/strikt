@@ -1,10 +1,19 @@
-package strikt.assertions
+package strikt.java
 
 import dev.minutest.TestDescriptor
+import dev.minutest.junit.toTestFactory
+import dev.minutest.rootContext
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.io.TempDir
+import strikt.api.Assertion
 import strikt.api.expectThat
+import strikt.assertions.containsExactly
+import strikt.assertions.isA
+import strikt.assertions.isEmpty
+import strikt.assertions.isEqualTo
+import strikt.assertions.isNotNull
+import strikt.assertions.isNull
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.LinkOption
@@ -20,7 +29,7 @@ internal object PathAssertions {
     fullName().joinToString(separator = "_")
 
   @TestFactory
-  internal fun endsWith() = assertionTests<Path> {
+  internal fun endsWith() = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(Paths.get("startsWith", "endsWith")) }
 
     context("passes when the subject ends with") {
@@ -46,20 +55,20 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun fileName() = assertionTests<Path> {
+  internal fun fileName() = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(Paths.get("some", "path", "with", "name")) }
 
     test("maps to a Path of the file name") {
       fileName
         .isEqualTo(Paths.get("name"))
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isAbsolute() = assertionTests<Path> {
+  internal fun isAbsolute() = rootContext<Assertion.Builder<Path>> {
     context("when subject is an absolute path") {
       fixture { expectThat(Paths.get("/tmp", "path").toAbsolutePath()) }
 
@@ -77,10 +86,10 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun parent() = assertionTests<Path> {
+  internal fun parent() = rootContext<Assertion.Builder<Path>> {
     context("when subject is the root Path") {
       fixture { expectThat(Paths.get("/").root) }
       test("then the mapped value is null") {
@@ -96,10 +105,10 @@ internal object PathAssertions {
           .isEqualTo(Paths.get("parent"))
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun resolve() = assertionTests<Path> {
+  internal fun resolve() = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(Paths.get("parent")) }
 
     context("when the resolve value type is a Path") {
@@ -115,10 +124,10 @@ internal object PathAssertions {
           .isEqualTo(Paths.get("parent", "child"))
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun startsWith() = assertionTests<Path> {
+  internal fun startsWith() = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(Paths.get("startsWith", "endsWith")) }
 
     context("passes when the subject starts with") {
@@ -144,19 +153,19 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun toFile() = assertionTests<Path> {
+  internal fun toFile() = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(Paths.get("path", "of", "file")) }
     test("mapped value is a File") {
       toFile()
         .isA<File>()
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun exists(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun exists(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("assertion passes") {
       context("when Path points to an existing file") {
         fixture { expectThat(Files.createFile(directory.resolve(it.name))) }
@@ -234,10 +243,10 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isDirectory(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun isDirectory(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("when subject Path is a regular file") {
       fixture { expectThat(Files.createFile(directory.resolve(it.joinFullName()))) }
       test("assertion fails") {
@@ -290,10 +299,10 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isExecutable(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun isExecutable(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("passes when") {
       fixture {
         expectThat(
@@ -328,20 +337,20 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isReadable(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun isReadable(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     fixture { expectThat(directory) }
     context("when subject is an existing directory") {
       test("then assertion passes") {
         isReadable()
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isRegularFile(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun isRegularFile(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("when subject is a regular file") {
       fixture { expectThat(Files.createFile(directory.resolve(it.joinFullName()))) }
       test("then assertion passes when no link options are provided") {
@@ -361,10 +370,10 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun isSymbolicLink(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun isSymbolicLink(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("subject does not exist") {
       fixture { expectThat(directory.resolve(it.joinFullName())) }
       test("then assertion fails") {
@@ -413,10 +422,10 @@ internal object PathAssertions {
         }
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun allBytes(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun allBytes(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("subject is an empty file") {
       fixture {
         expectThat(Files.createFile(directory.resolve(it.joinFullName())))
@@ -442,10 +451,10 @@ internal object PathAssertions {
           .isEqualTo(byteArrayOf(1, 2, 3, 4))
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun allLines(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun allLines(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("subject is an empty file") {
       fixture {
         expectThat(Files.createFile(directory.resolve(it.joinFullName())))
@@ -479,10 +488,10 @@ internal object PathAssertions {
           .containsExactly("first line")
       }
     }
-  }
+  }.toTestFactory()
 
   @TestFactory
-  internal fun size(@TempDir directory: Path) = assertionTests<Path> {
+  internal fun size(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
 
     context("subject is an empty file") {
       fixture {
@@ -510,5 +519,5 @@ internal object PathAssertions {
           .isEqualTo(4)
       }
     }
-  }
+  }.toTestFactory()
 }

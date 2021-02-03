@@ -31,7 +31,7 @@ Strikt has the following additional libraries:
 * `strikt-arrow` -- supports data types from the [Arrow](https://arrow-kt.io/) functional programming library.
 * `strikt-gradle` -- supports the Gradle build tool.
 * `strikt-jackson` -- supports the Jackson JSON library.
-* `strikt-java-time` -- supports the JSR-310 `java.time` package.
+* `strikt-jvm` -- supports types from the Java SDK.
 * `strikt-mockk` -- supports types from the [MockK](https://mockk.io/) library.
 * `strikt-protobuf` -- supports Protobuf / gRPC.
 * `strikt-spring` -- supports the Spring Framework.
@@ -43,7 +43,7 @@ For example:
 
 ```kotlin
 dependencies {
-  testImplementation("io.strikt:strikt-java-time:<version>")
+  testImplementation("io.strikt:strikt-jvm:<version>")
 }
 ```
 
@@ -58,7 +58,7 @@ dependencies {
 
   // Versions can be omitted as they are supplied by the BOM
   testImplementation("io.strikt:strikt-jackson")
-  testImplementation("io.strikt:strikt-java-time")
+  testImplementation("io.strikt:strikt-jvm")
   testImplementation("io.strikt:strikt-spring")
 }
 ```

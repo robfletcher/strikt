@@ -16,7 +16,7 @@ plugins {
   id("com.github.ben-manes.versions") version "0.36.0"
 }
 
-fun org.gradle.api.artifacts.component.ModuleComponentIdentifier.isNonStable() =
+fun ModuleComponentIdentifier.isNonStable() =
   version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
 
 allprojects {
@@ -50,6 +50,14 @@ subprojects {
     jcenter()
     mavenCentral() // needed for dependencyUpdates to work with arrow which has no metadata on jcenter
   }
+
+//  configurations.all {
+//    resolutionStrategy.eachDependency {
+//      if (requested.group == "org.jetbrains.kotlin") {
+//        useVersion("1.4.30")
+//      }
+//    }
+//  }
 
   afterEvaluate {
     plugins.withId("kotlin") {

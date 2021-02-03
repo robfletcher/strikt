@@ -9,7 +9,7 @@ include(
   "strikt-arrow",
   "strikt-gradle",
   "strikt-jackson",
-  "strikt-java-time",
+  "strikt-jvm",
   "strikt-mockk",
   "strikt-protobuf",
   "strikt-spring"
