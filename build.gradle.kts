@@ -47,8 +47,8 @@ subprojects {
   apply(plugin = "nebula.release")
 
   repositories {
-    jcenter()
-    mavenCentral() // needed for dependencyUpdates to work with arrow which has no metadata on jcenter
+    mavenCentral()
+    jcenter() // TODO: required until filepeek is on Maven Central
   }
 
 //  configurations.all {
