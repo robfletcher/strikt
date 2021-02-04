@@ -40,6 +40,7 @@ publishing {
   publications {
     getByName<MavenPublication>("nebula") {
       pom {
+        description.set("An assertion library for Kotlin")
         url.set("https://strikt.io/")
         licenses {
           license {
