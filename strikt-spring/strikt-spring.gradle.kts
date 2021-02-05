@@ -7,6 +7,8 @@ plugins {
   id("org.jetbrains.kotlin.plugin.spring") version "1.4.21-2"
 }
 
+description = "Extensions for testing code that uses the Spring Framework."
+
 dependencies {
 
   api(project(":strikt-core"))

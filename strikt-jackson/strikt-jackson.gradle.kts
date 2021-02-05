@@ -6,6 +6,8 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
+description = "Extensions for assertions and traversals on types Jackson's JsonNode and sub-types."
+
 dependencies {
   api(project(":strikt-core"))
 

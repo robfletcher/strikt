@@ -16,7 +16,7 @@ plugins {
   id("com.github.ben-manes.versions") version "0.36.0"
 }
 
-fun org.gradle.api.artifacts.component.ModuleComponentIdentifier.isNonStable() =
+fun ModuleComponentIdentifier.isNonStable() =
   version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
 
 allprojects {
@@ -47,8 +47,8 @@ subprojects {
   apply(plugin = "nebula.release")
 
   repositories {
+    mavenCentral()
     jcenter()
-    mavenCentral() // needed for dependencyUpdates to work with arrow which has no metadata on jcenter
   }
 
   afterEvaluate {

@@ -4,6 +4,8 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
+description = "The core API for Strikt."
+
 dependencies {
   api("org.opentest4j:opentest4j:+")
 
