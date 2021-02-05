@@ -7,6 +7,8 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
+description = "Extensions for assertions and traversals on Gradle's test kit."
+
 dependencies {
   api(project(":strikt-core"))
 

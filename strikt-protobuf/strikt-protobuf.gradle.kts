@@ -12,6 +12,8 @@ plugins {
   id("com.google.protobuf") version "0.8.14"
 }
 
+description = "Extensions for testing code that uses Protobuf / gRPC."
+
 dependencies {
   api(project(":strikt-core"))
 

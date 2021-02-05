@@ -6,6 +6,8 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
+description = "Extensions for assertions and traversals on types from the Arrow functional programming library."
+
 dependencies {
   api(project(":strikt-core"))
 
