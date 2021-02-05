@@ -11,10 +11,10 @@ description = "Extensions for assertions and traversals on types from the Arrow 
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.arrow-kt:arrow-core:+")
-  testImplementation("io.arrow-kt:arrow-core:+")
+  compileOnly("io.arrow-kt:arrow-core:${property("versions.arrow")}")
+  testImplementation("io.arrow-kt:arrow-core:${property("versions.arrow")}")
 
-  testImplementation("dev.minutest:minutest:+")
+  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
 }
 
 tasks.dokka {

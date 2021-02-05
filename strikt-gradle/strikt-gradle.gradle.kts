@@ -15,8 +15,8 @@ dependencies {
   compileOnly(gradleTestKit())
 
   testImplementation(gradleTestKit())
-  testImplementation("io.mockk:mockk:+")
-  testImplementation("dev.minutest:minutest:+")
+  testImplementation("io.mockk:mockk:${property("versions.mockk")}")
+  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
 }
 
 tasks.dokka {

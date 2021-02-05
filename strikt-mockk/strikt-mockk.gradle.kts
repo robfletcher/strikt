@@ -9,8 +9,8 @@ description = "Extensions for assertions and traversals on types from the Mockk 
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.mockk:mockk:+")
+  compileOnly("io.mockk:mockk:${property("versions.mockk")}")
 
-  testImplementation("dev.minutest:minutest:+")
-  testImplementation("io.mockk:mockk:+")
+  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation("io.mockk:mockk:${property("versions.mockk")}")
 }

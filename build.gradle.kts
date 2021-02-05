@@ -21,26 +21,6 @@ fun ModuleComponentIdentifier.isNonStable() =
 
 allprojects {
   group = "io.strikt"
-
-  dependencyLocking {
-    lockAllConfigurations()
-  }
-
-  configurations.all {
-    @Suppress("ObjectLiteralToLambda")
-    resolutionStrategy.componentSelection.all(object : Action<ComponentSelection> {
-      @Suppress("UnstableApiUsage")
-      @Mutate
-      override fun execute(selection: ComponentSelection) {
-        val isChanging = selection.metadata?.isChanging ?: false
-        val isRelease = selection.metadata?.status == "release"
-        val isCandidate = selection.candidate.isNonStable()
-        if (isChanging || !isRelease || isCandidate) {
-          selection.reject("Non-release versions are not allowed.")
-        }
-      }
-    })
-  }
 }
 
 subprojects {
@@ -50,14 +30,6 @@ subprojects {
     mavenCentral()
     jcenter() // TODO: required until filepeek is on Maven Central
   }
-
-//  configurations.all {
-//    resolutionStrategy.eachDependency {
-//      if (requested.group == "org.jetbrains.kotlin") {
-//        useVersion("1.4.30")
-//      }
-//    }
-//  }
 
   afterEvaluate {
     plugins.withId("kotlin") {
@@ -77,9 +49,9 @@ subprojects {
 
       // Test with JUnit 5
       dependencies {
-        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:1.4.+"))
-        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.+"))
-        "testImplementation"(platform("org.junit:junit-bom:+"))
+        "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:${property("versions.kotlin")}"))
+        "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:${property("versions.kotlinx-coroutines")}"))
+        "testImplementation"(platform("org.junit:junit-bom:${property("versions.junit")}"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
