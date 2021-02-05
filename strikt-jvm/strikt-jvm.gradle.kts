@@ -4,7 +4,7 @@ plugins {
   id("info.solidsoft.pitest")
 }
 
-description = "Extensions for assertions and traversals on types from the java.time package."
+description = "Extensions for assertions and traversals on types from the Java standard library."
 
 dependencies {
   api(project(":strikt-core"))
