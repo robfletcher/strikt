@@ -8,7 +8,7 @@ import kotlin.text.RegexOption.*
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-  kotlin("jvm") version "1.4.21-2" apply false
+  kotlin("jvm") version "1.4.30" apply false
   id("nebula.release") version "15.0.1"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
   id("info.solidsoft.pitest") version "1.5.2" apply false
@@ -16,11 +16,18 @@ plugins {
   id("com.github.ben-manes.versions") version "0.36.0"
 }
 
-fun ModuleComponentIdentifier.isNonStable() =
-  version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
-
 allprojects {
   group = "io.strikt"
+
+  apply<com.github.benmanes.gradle.versions.VersionsPlugin>()
+
+  configurations.all {
+    resolutionStrategy.eachDependency {
+      if (requested.group == "org.jetbrains.kotlin") {
+        useVersion("${property("versions.kotlin")}")
+      }
+    }
+  }
 }
 
 subprojects {
@@ -47,14 +54,16 @@ subprojects {
         }
       }
 
-      // Test with JUnit 5
       dependencies {
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom:${property("versions.kotlin")}"))
         "implementation"(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:${property("versions.kotlinx-coroutines")}"))
+
         "testImplementation"(platform("org.junit:junit-bom:${property("versions.junit")}"))
         "testImplementation"("org.junit.jupiter:junit-jupiter-api")
         "testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
       }
+
+      // Test with JUnit 5
       tasks.withType<Test> {
         systemProperty("junit.jupiter.execution.parallel.enabled", "false")
         useJUnitPlatform {
@@ -93,6 +102,9 @@ subprojects {
     showSimpleNames = true
   }
 }
+
+fun ModuleComponentIdentifier.isNonStable() =
+  version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
 
 tasks.withType<DependencyUpdatesTask> {
   revision = "release"

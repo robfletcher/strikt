@@ -25,6 +25,13 @@ fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
     }
   }
     .get("exception") {
+      // WORKAROUND - Handle inline class bug. (This will also work when this bug is fixed)
+      val value = getOrNull()
+      if (value is Result<*>) {
+        return@get value.exceptionOrNull()!!
+      }
+      // WORKAROUND - END
+
       exceptionOrNull()!!
     }
 
