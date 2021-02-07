@@ -8,12 +8,12 @@ It can be used with JUnit, Spek or any other runner that supports tests written 
 
 ## Installation
 
-Strikt is available from JCenter.
+Strikt is available from Maven Central.
 Add the following to your `build.gradle` or `build.gradle.kts`.
 
 ```kotlin
 repositories {
-  jcenter()
+  mavenCentral()
 }
 
 dependencies {
@@ -32,4 +32,3 @@ import strikt.assertions.*
 
 The `strikt.api` package contains top level functions such as `expect`, `expectThat`, and `expectThrows` that you will use to create assertions as well as the API classes you will interact with if you decide to implement your own assertion functions.
 The `strikt.assertions` package contains the standard library of assertion functions.
-

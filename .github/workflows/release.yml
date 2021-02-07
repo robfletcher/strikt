@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
-      - name: Release to Bintray
+      - name: Release to Sonatype
         run: ./gradlew build final -Prelease.useLastTag=true
         env:
           ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
