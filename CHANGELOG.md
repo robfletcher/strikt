@@ -1,4 +1,4 @@
-## 0.28.3 Hateful Mantis - 2021-02-02
+## 0.29.0 Hateful Mantis - 2021-02-06
 
 - Moves several JVM-specific assertions to the new `strikt-jvm` module.
 - Removes the `strikt-java-time` module (use `strikt-jvm` instead).
