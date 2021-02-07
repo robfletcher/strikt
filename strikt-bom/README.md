@@ -11,6 +11,6 @@ dependencies {
   testImplementation(platform("io.strikt:strikt-bom:{{ site.version }}"))
   testImplementation("io.strikt:strikt-arrow")
   testImplementation("io.strikt:strikt-jackson")
-  testImplementation("io.strikt:strikt-java-time")
+  testImplementation("io.strikt:strikt-jvm")
 }
 ```
