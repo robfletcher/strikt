@@ -1,3 +1,10 @@
+## 0.28.3 Hateful Mantis - 2021-02-02
+
+- Moves several JVM-specific assertions to the new `strikt-jvm` module.
+- Removes the `strikt-java-time` module (use `strikt-jvm` instead).
+- Adds `isSorted` assertion for `Iterable<Comparable<*>>`.
+- Broadens `isSorted(Comparator)` so that it applies to `Iterable<*>` rather than `Collection<*>`.
+
 ## 0.28.2 Hidden Ruin - 2021-01-26
 
 - Removes support for Arrow's `Try` type that has been removed from `arrow-core`.
