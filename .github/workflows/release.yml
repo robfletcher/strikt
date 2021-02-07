@@ -11,14 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:11})
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
           java-version: 8
       - name: Release to Sonatype
-        run: ./gradlew -Prelease.version=$RELEASE_VERSION publish
+        run: ./gradlew -Prelease.version=${GITHUB_REF:11} publish
         env:
           ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
