@@ -10,7 +10,6 @@ import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
   kotlin("jvm") version "1.4.30" apply false
-  id("nebula.release") version "15.0.1"
   id("io.codearte.nexus-staging") version "0.22.0"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
   id("info.solidsoft.pitest") version "1.5.2" apply false
@@ -31,8 +30,6 @@ allprojects {
 }
 
 subprojects {
-  apply(plugin = "nebula.release")
-
   repositories {
     mavenCentral()
     jcenter() // TODO: required until filepeek is on Maven Central
@@ -101,14 +98,6 @@ subprojects {
     theme = MOCHA_PARALLEL
     showSimpleNames = true
   }
-}
-
-// Release configuration
-tasks.named("release") {
-  finalizedBy(
-    tasks.named("publish"),
-    tasks.named("closeAndReleaseRepository")
-  )
 }
 
 configure<NexusStagingExtension> {
