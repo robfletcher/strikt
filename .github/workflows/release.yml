@@ -18,8 +18,8 @@ jobs:
       - name: Release to Bintray
         run: ./gradlew build final -Prelease.useLastTag=true
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
       - name: Publish site
         run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:

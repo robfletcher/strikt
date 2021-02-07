@@ -1,15 +1,17 @@
 import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import info.solidsoft.gradle.pitest.PitestPluginExtension
+import io.codearte.gradle.nexus.NexusStagingExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
-import kotlin.text.RegexOption.*
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
   kotlin("jvm") version "1.4.30" apply false
   id("nebula.release") version "15.0.1"
+  id("io.codearte.nexus-staging") version "0.22.0"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
   id("info.solidsoft.pitest") version "1.5.2" apply false
   id("com.adarshr.test-logger") version "2.1.1" apply false
@@ -18,8 +20,6 @@ plugins {
 
 allprojects {
   group = "io.strikt"
-
-  apply<com.github.benmanes.gradle.versions.VersionsPlugin>()
 
   configurations.all {
     resolutionStrategy.eachDependency {
@@ -103,6 +103,19 @@ subprojects {
   }
 }
 
+// Release configuration
+tasks.named("release") {
+  finalizedBy(
+    tasks.named("publish"),
+    tasks.named("closeAndReleaseRepository")
+  )
+}
+
+configure<NexusStagingExtension> {
+  stagingProfileId = "3fc70880a122f"
+}
+
+// Dependency updates configuration
 fun ModuleComponentIdentifier.isNonStable() =
   version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
 

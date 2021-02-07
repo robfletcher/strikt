@@ -8,7 +8,7 @@ plugins {
 publishing {
   repositories {
     maven {
-      name = "sonatypeOss"
+      name = "nexus"
       url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
       credentials(PasswordCredentials::class)
     }
@@ -32,6 +32,7 @@ publishing {
             email.set("rob at freeside.co")
           }
         }
+        inceptionYear.set("2017")
         scm {
           connection.set("scm:git:git://github.com/robfletcher/strikt.git")
           developerConnection.set("scm:git:ssh://github.com/robfletcher/strikt.git")
