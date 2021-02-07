@@ -16,10 +16,12 @@ jobs:
         with:
           java-version: 8
       - name: Release to Sonatype
-        run: ./gradlew -Prelease.version=${GITHUB_REF:11} publish
+        run: ./gradlew -Prelease.version=${GITHUB_REF:11} publish closeAndReleaseRepository
         env:
           ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
       - name: Publish site
         run: ./gradlew :site:orchidDeploy -Prelease.useLastTag=true -Penv=prod
         env:
