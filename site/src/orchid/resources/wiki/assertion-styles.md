@@ -32,7 +32,7 @@ Block assertions are declared in a lambda whose receiver is an `Assertion.Builde
 They allow multiple assertions (or assertion chains) to be evaluated against the subject.
 
 Block assertions do _not_ fail fast.
-That is, all assertions in the block are evaluated and the result of the "compound" assertion will include results for all the assertions made in the block.
+That is, all assertions in the block are evaluated, and the result of the "compound" assertion will include results for all the assertions made in the block.
 
 ```kotlin
 {% snippet 'assertion_styles_3' %}

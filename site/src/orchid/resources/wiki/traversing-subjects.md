@@ -19,7 +19,7 @@ Strikt allows for this using the `Assertion.Builder<T>.get` method.
 The first override of `get` takes a property or (zero argument) method reference as a parameter.
 The `get` method returns an `Assertion.Builder<R>` where the new subject (whose type is `R`) is the value returned by invoking that property or method on the current subject.
 
-This is useful for making assertions about the properties of an object or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
+This is useful for making assertions about the properties of an object, or the values returned by methods, particularly if you want to use a block-style assertion to validate multiple object properties.
 
 ```kotlin
 {% snippet'traversing_subjects_4' %}

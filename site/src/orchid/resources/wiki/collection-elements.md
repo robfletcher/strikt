@@ -16,7 +16,6 @@ This produces the output:
 {% snippet 'collections_1' %}
 ```
 
-The results are broken down by individual elements in the collection so it's easy to see which failed.
+The results are broken down by individual elements in the collection, so it's easy to see which failed.
 
-Similarly, `any` asserts that at least one element passes the nested assertions and `none` succeeds if all elements of the collection _fail_ the nested assertions.
-
+Similarly, `any` asserts that at least one element passes the nested assertions, `one` succeeds if exactly one element passes the nested assertions, and `none` succeeds if all elements of the collection _fail_ the nested assertions.

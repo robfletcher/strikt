@@ -16,6 +16,8 @@ import strikt.assertions.isNotNull
 import strikt.assertions.last
 import strikt.assertions.map
 import strikt.assertions.message
+import strikt.assertions.withFirst
+import strikt.assertions.withLast
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import java.time.LocalDate
 
@@ -116,6 +118,7 @@ internal class Chaining {
 // -----------------------------------------------------------------------------
 
   @Test fun `grouping with and 1`() {
+    @Suppress("RedundantNullableReturnType")
     val subject: String? = "subject"
     // START grouping_with_and_1
     expectThat(subject)
@@ -138,6 +141,16 @@ internal class Chaining {
       }
     // END grouping_with_and_2
 
+    // START grouping_with_with_1
+    expectThat(person)
+      .with(Person::name) {
+        isEqualTo("David")
+      }
+      .with({ birthDate.year }) {
+        isEqualTo(1947)
+      }
+    // END grouping_with_with_1
+
     // START grouping_with_and_3
     expect {
       that(person.name).isEqualTo("David")
@@ -158,5 +171,16 @@ internal class Chaining {
       .and { first().get { name }.isEqualTo("David Bowie") }
       .and { last().get { name }.isEqualTo("Blackstar") }
     // END grouping_with_and_4
+
+    // START grouping_with_with_2
+    expectThat(albums)
+      .hasSize(26)
+      .withFirst {
+        get { name }.isEqualTo("David Bowie")
+      }
+      .withLast {
+        get { name }.isEqualTo("Blackstar")
+      }
+    // END grouping_with_with_2
   }
 }

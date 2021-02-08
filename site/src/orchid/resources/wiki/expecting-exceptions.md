@@ -3,14 +3,14 @@
 
 # Expecting exceptions
 
-To assert that some code does or does not throw an exception use the `expectCatching` function that accepts a lambda `() -> Any?` that performs the operation that may throw an exception and the `succeeded()` or `failed()` assertion functions.
+To assert that some code does or does not throw an exception use the `expectCatching` function that accepts a lambda `() -> Any?` that performs the operation that may throw an exception, along with the `isSuccess()` or `isFailure()` assertion functions.
 For example:
 
 ```kotlin
 {% snippet 'catching_exceptions_1' %}
 ```
 
-The `expectCatching` function returns `Assertion.Builder<Try<T>>` with the assertion's subject being a wrapper for either the value the lambda returns or the exception it throws.
+The `expectCatching` function returns `Assertion.Builder<Try<T>>` with the assertion's subject being a wrapper for either the value the lambda returns, or the exception it throws.
 
 ## Asserting failure
 
@@ -46,7 +46,7 @@ For example:
 
 ## Asserting success
 
-You can also assert that an exception is _not_ thrown by the `expectCatching` lambda using the `succeeded()` assertion function.
+You can also assert that an exception is _not_ thrown by the `expectCatching` lambda using the `isSuccess()` assertion function.
 
-The `succeeded()` function returns an `Assertion.Builder<T>` where the type of the chained assertion subject is inferred from the value the lambda returns.
+The `isSuccess()` function returns an `Assertion.Builder<T>` where the type of the chained assertion subject is inferred from the value the lambda returns.
 This allows you to chain further assertions about the returned value.

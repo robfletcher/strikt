@@ -49,7 +49,7 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.getValue(key: K): Builder<V> =
     }
 
 /**
- * Runs a group of assertions on the first element in the subject iterable.
+ * Runs a group of assertions on the value in the subject map tht corresponds to [key].
  *
  * @param block a closure that can perform multiple assertions that will all
  * be evaluated regardless of whether preceding ones pass or fail.

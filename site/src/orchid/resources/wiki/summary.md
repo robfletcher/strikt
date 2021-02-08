@@ -5,6 +5,6 @@
 - [Expecting Exceptions](expecting-exceptions.md)
 - [Strongly Typed Assertions](flow-typing.md)
 - [Traversing Assertion Subjects](traversing-subjects.md)
-- [Grouping Assertions With and](grouping-with-and.md)
+- [Grouping Assertions With and or with](grouping-with-and.md)
 - [Custom Assertions](custom-assertions.md)
 - [Additional Modules](additional-modules.md)
