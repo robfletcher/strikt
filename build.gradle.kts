@@ -32,7 +32,7 @@ allprojects {
 subprojects {
   repositories {
     mavenCentral()
-    jcenter() // TODO: required until filepeek is on Maven Central
+    jcenter() // TODO: required until minutest is on Maven Central
   }
 
   afterEvaluate {
