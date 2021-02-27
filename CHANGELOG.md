@@ -1,3 +1,7 @@
+## Next
+
+- Adds `isContainedIn` assertion.
+
 ## 0.29.0 Hateful Mantis - 2021-02-06
 
 - Moves several JVM-specific assertions to the new `strikt-jvm` module.

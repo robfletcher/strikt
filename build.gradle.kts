@@ -9,8 +9,8 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
-  kotlin("jvm") version "1.4.30" apply false
-  id("io.codearte.nexus-staging") version "0.22.0"
+  kotlin("jvm") version "1.4.31" apply false
+  id("io.codearte.nexus-staging") version "0.30.0"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
   id("info.solidsoft.pitest") version "1.5.2" apply false
   id("com.adarshr.test-logger") version "2.1.1" apply false
