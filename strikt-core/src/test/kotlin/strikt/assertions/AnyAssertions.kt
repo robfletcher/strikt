@@ -262,5 +262,34 @@ internal object AnyAssertions : JUnit5Minutests {
           }
         }
     }
+
+    context("isContainedIn") {
+      context("with a collection of the same type") {
+        fixture {
+          expectThat("fnord")
+        }
+
+        test("fails if the subject is not in the expected iterable") {
+          assertThrows<AssertionFailedError> {
+            isContainedIn(listOf("catflap", "rubberplant", "marzipan"))
+          }
+        }
+
+        test("passes if the subject is in the expected iterable") {
+          isContainedIn(listOf("catflap", "rubberplant", "marzipan", "fnord"))
+        }
+      }
+
+      context("with a collection of a super type") {
+        fixture {
+          expectThat(1)
+        }
+
+        test("passes if the subject is in the expected iterable") {
+          // this is really just testing compilation works
+          isContainedIn(listOf<Number>(1, 1L, 1.0, 1.0f))
+        }
+      }
+    }
   }
 }

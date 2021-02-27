@@ -107,3 +107,17 @@ infix fun <T> Builder<T>.isNotSameInstanceAs(expected: Any?): Builder<T> =
       else -> pass()
     }
   }
+
+/**
+ * Asserts that the subject is contained in [expected] according to the standard Kotlin `in`
+ * operator.
+ *
+ * @param expected the expected iterable.
+ */
+infix fun <T> Builder<T>.isContainedIn(expected: Iterable<T>): Builder<T> =
+  assert("is contained in %s", expected) {
+    when (it) {
+      in expected -> pass()
+      else -> fail()
+    }
+  }
