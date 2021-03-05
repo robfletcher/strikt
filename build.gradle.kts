@@ -12,9 +12,9 @@ plugins {
   kotlin("jvm") version "1.4.31" apply false
   id("io.codearte.nexus-staging") version "0.30.0"
   id("org.jmailen.kotlinter") version "3.3.0" apply false
-  id("info.solidsoft.pitest") version "1.5.2" apply false
+  id("info.solidsoft.pitest") version "1.6.0" apply false
   id("com.adarshr.test-logger") version "2.1.1" apply false
-  id("com.github.ben-manes.versions") version "0.36.0"
+  id("com.github.ben-manes.versions") version "0.38.0"
 }
 
 allprojects {
