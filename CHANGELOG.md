@@ -1,5 +1,6 @@
-## Next
+## 0.30.0 Sorrowful Glass - 2021-03-21
 
+- All transitive dependencies are now resolvable from Maven Central rather than needing JCenter.
 - Adds `isContainedIn` assertion.
 
 ## 0.29.0 Hateful Mantis - 2021-02-06
