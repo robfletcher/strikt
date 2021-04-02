@@ -13,7 +13,7 @@ plugins {
   id("io.codearte.nexus-staging") version "0.30.0"
   id("org.jmailen.kotlinter") version "3.4.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
-  id("com.adarshr.test-logger") version "2.1.1" apply false
+  id("com.adarshr.test-logger") version "3.0.0" apply false
   id("com.github.ben-manes.versions") version "0.38.0"
 }
 
@@ -32,7 +32,6 @@ allprojects {
 subprojects {
   repositories {
     mavenCentral()
-    jcenter() // TODO: required until minutest is on Maven Central
   }
 
   afterEvaluate {
