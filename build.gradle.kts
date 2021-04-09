@@ -105,7 +105,7 @@ configure<NexusStagingExtension> {
 
 // Dependency updates configuration
 fun ModuleComponentIdentifier.isNonStable() =
-  version.contains(Regex("""-(m|eap|rc|alpha|beta)(-?[\d-]+)?$""", IGNORE_CASE))
+  version.contains(Regex("""-(m|eap|rc|alpha|beta|b)(-?[\d-]+)?$""", IGNORE_CASE))
 
 tasks.withType<DependencyUpdatesTask> {
   revision = "release"
