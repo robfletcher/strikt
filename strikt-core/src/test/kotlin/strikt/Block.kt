@@ -6,8 +6,10 @@ import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.contains
 import strikt.assertions.endsWith
+import strikt.assertions.filter
 import strikt.assertions.getValue
 import strikt.assertions.hasLength
+import strikt.assertions.hasSize
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
@@ -21,6 +23,7 @@ import java.time.LocalDate
 @DisplayName("assertions in blocks")
 internal class Block {
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `all assertions in a block are evaluated even if some fail`() {
     assertThrows<AssertionError> {
       val subject: Any? = "fnord"
@@ -45,6 +48,7 @@ internal class Block {
   }
 
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `chains inside of blocks break on the first failure`() {
     assertThrows<AssertionError> {
       val subject: Any? = "fnord"
@@ -84,6 +88,7 @@ internal class Block {
   }
 
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `get chained after a failing assertion is not evaluated`() {
     assertThrows<AssertionError> {
       val subject: Any? = "fnord"
@@ -102,6 +107,7 @@ internal class Block {
   }
 
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `assertions in a block can be negated`() {
     assertThrows<AssertionError> {
       val subject: Any? = "fnord"
@@ -126,6 +132,7 @@ internal class Block {
   }
 
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `assertions in a block can be negated in a not block`() {
     assertThrows<AssertionError> {
       val subject: Any? = "fnord"
@@ -150,6 +157,7 @@ internal class Block {
   }
 
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `an and block can be negated`() {
     val subject: Any? = "fnord"
     expectThat(subject).not().and {
@@ -292,6 +300,7 @@ internal class Block {
    * @see https://github.com/robfletcher/strikt/issues/203
    */
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `failing mappings inside an and block throw correct exception type`() {
     assertThrows<AssertionError> {
       class Person(val firstName: String, val hobbies: List<String>)
@@ -325,6 +334,7 @@ internal class Block {
    * @see https://github.com/robfletcher/strikt/issues/204
    */
   @Test
+  @Suppress("RedundantNullableReturnType")
   fun `nested and is not evaluated if preceding assertion failed`() {
     assertThrows<AssertionError> {
       class Person(val name: String, val friend: Person?)
@@ -336,6 +346,22 @@ internal class Block {
         get { friend }.isNotNull().and {
           get { name }.isEqualTo("Jack")
         }
+      }
+    }
+  }
+
+  /**
+   * @see https://github.com/robfletcher/strikt/issues/243
+   */
+  @Test
+  fun `unterminated mapping does not mask failing assertions`() {
+    assertThrows<AssertionError> {
+      val subject = listOf("catflap", "rubberplant", "marzipan")
+      expectThat(subject) {
+        // this assertion should cause the block to fail
+        hasSize(2)
+        // this mapping is valid but is not followed by an assertion
+        filter { it == "catflap" }.single()
       }
     }
   }

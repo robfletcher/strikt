@@ -63,8 +63,8 @@ internal class AssertionSubject<S>(
   override val status: Status
     get() = when {
       children.isEmpty() -> Pending
-      children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
+      children.any { it.status is Pending } -> Pending
       else -> Passed()
     }
 }
@@ -95,8 +95,8 @@ internal class AssertionChain<S>(
   override val status: Status
     get() = when {
       children.isEmpty() -> Pending
-      children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
+      children.any { it.status is Pending } -> Pending
       else -> Passed()
     }
 
@@ -130,8 +130,8 @@ internal class AssertionChainedGroup<S>(
   override val status: Status
     get() = when {
       children.isEmpty() -> Pending
-      children.any { it.status is Pending } -> Pending
       children.any { it.status is Failed } -> Failed()
+      children.any { it.status is Pending } -> Pending
       else -> Passed()
     }
 }

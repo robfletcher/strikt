@@ -1,3 +1,7 @@
+## 0.30.1 Ascending Ivory = 2021-04-11
+
+- Fixes an issue where pending assertion chains in a block took precedence over failures, causing false positives. See [#243](https://github.com/robfletcher/strikt/issues/243)
+
 ## 0.30.0 Sorrowful Glass - 2021-03-21
 
 - All transitive dependencies are now resolvable from Maven Central rather than needing JCenter.
