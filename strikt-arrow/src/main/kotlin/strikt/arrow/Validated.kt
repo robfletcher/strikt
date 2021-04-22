@@ -22,17 +22,26 @@ fun <E, A> Assertion.Builder<Validated<E, A>>.isValid() =
  */
 @Suppress("UNCHECKED_CAST")
 infix fun <E, A> Assertion.Builder<Validated<E, A>>.isValid(value: A) =
-  assert("should be Valid") {
-    it.fold({ fail() }, { if (it == value) pass() else fail() })
+  assert("should be Valid") { subject ->
+    subject.fold({ fail() }, { if (it == value) pass() else fail() })
   } as Assertion.Builder<Validated.Valid<A>>
 
 /**
  * Unwraps the containing value of the [Validated.Valid]
  * @return Assertion builder over the unwrapped subject
  */
+@Deprecated("Use value instead", replaceWith = ReplaceWith("value"))
 val <A> Assertion.Builder<Validated.Valid<A>>.a: Assertion.Builder<A>
-  @JvmName("validatedValid")
-  get() = get("valid value", Validated.Valid<A>::a)
+  get() = value
+
+/**
+ * Unwraps the containing value of the [Validated.Valid]
+ * @return Assertion builder over the unwrapped subject
+ * @see Validated.Valid.value
+ */
+val <A> Assertion.Builder<Validated.Valid<A>>.value: Assertion.Builder<A>
+  @JvmName("validatedValidValue")
+  get() = get("valid value", Validated.Valid<A>::value)
 
 /**
  * Asserts that the [Validated] is [Validated.Invalid]
@@ -41,8 +50,8 @@ val <A> Assertion.Builder<Validated.Valid<A>>.a: Assertion.Builder<A>
  */
 @Suppress("UNCHECKED_CAST")
 fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid() =
-  assert("should be Invalid") {
-    it.fold({ pass() }, { fail() })
+  assert("should be Invalid") { subject ->
+    subject.fold({ pass() }, { fail() })
   } as Assertion.Builder<Validated.Invalid<E>>
 
 /**
@@ -53,14 +62,23 @@ fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid() =
  */
 @Suppress("UNCHECKED_CAST")
 infix fun <E, A> Assertion.Builder<Validated<E, A>>.isInvalid(value: E) =
-  assert("should be Valid") {
-    it.fold({ if (it == value) pass() else fail() }, { fail() })
+  assert("should be Valid") { subject ->
+    subject.fold({ if (it == value) pass() else fail() }, { fail() })
   } as Assertion.Builder<Validated.Invalid<E>>
 
 /**
  * Unwraps the containing value of the [Validated.Invalid]
  * @return Assertion builder over the unwrapped subject
  */
+@Deprecated("Use value instead", replaceWith = ReplaceWith("value"))
 val <E> Assertion.Builder<Validated.Invalid<E>>.e: Assertion.Builder<E>
-  @JvmName("validatedInvalid")
-  get() = get("invalid value", Validated.Invalid<E>::e)
+  get() = value
+
+/**
+ * Unwraps the containing value of the [Validated.Invalid]
+ * @return Assertion builder over the unwrapped subject
+ * @see Validated.Invalid.value
+ */
+val <E> Assertion.Builder<Validated.Invalid<E>>.value: Assertion.Builder<E>
+  @JvmName("validatedInvalidValue")
+  get() = get("invalid value", Validated.Invalid<E>::value)

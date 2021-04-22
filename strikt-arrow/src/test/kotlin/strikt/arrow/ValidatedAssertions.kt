@@ -1,10 +1,12 @@
 package strikt.arrow
 
+import arrow.core.Validated
 import arrow.core.invalid
 import arrow.core.valid
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
+import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isGreaterThan
@@ -15,23 +17,31 @@ import strikt.assertions.isNotNull
 object ValidatedAssertions : JUnit5Minutests {
 
   fun tests() = rootContext {
-    context("invalidValidated") {
-      val aValidated = "invalid".invalid()
+    derivedContext<Assertion.Builder<Validated<String, *>>>("invalidValidated") {
+      fixture {
+        expectThat("invalid".invalid())
+      }
 
       test("can assert on type") {
-        expectThat(aValidated).isInvalid()
+        isInvalid()
       }
 
       test("can assert on type and value equality") {
-        expectThat(aValidated).isInvalid("invalid")
+        isInvalid("invalid")
       }
 
       test("can assert on type and traverse unwrapped value") {
-        expectThat(aValidated).isInvalid().e.isEqualTo("invalid")
+        isInvalid().value isEqualTo "invalid"
+      }
+    }
+
+    derivedContext<Assertion.Builder<Validated<MyTuple, *>>>("invalidValidated") {
+      fixture {
+        expectThat(MyTuple("myName", 1, "uuid").invalid())
       }
 
       test("can have nested assertions on unwrapped value") {
-        expectThat(MyTuple("myName", 1, "uuid").invalid()).isInvalid().e.and {
+        isInvalid().value.and {
           get { name }.isEqualTo("myName")
           get { id }.isNotNull().isGreaterThan(0L)
           get { uuid }.isNotNull().isNotBlank()
@@ -39,23 +49,31 @@ object ValidatedAssertions : JUnit5Minutests {
       }
     }
 
-    context("validValidated") {
-      val aValidated = "valid".valid()
+    derivedContext<Assertion.Builder<Validated<*, String>>>("validValidated") {
+      fixture {
+        expectThat("valid".valid())
+      }
 
       test("can assert on type") {
-        expectThat(aValidated).isValid()
+        isValid()
       }
 
       test("can assert on type and value equality") {
-        expectThat(aValidated).isValid("valid")
+        isValid("valid")
       }
 
       test("can assert on type and traverse unwrapped value") {
-        expectThat(aValidated).isValid().a.isEqualTo("valid")
+        isValid().value.isEqualTo("valid")
+      }
+    }
+
+    derivedContext<Assertion.Builder<Validated<*, MyTuple>>>("validValidated") {
+      fixture {
+        expectThat(MyTuple("myName", 1, "uuid").valid())
       }
 
       test("can have nested assertions on unwrapped value") {
-        expectThat(MyTuple("myName", 1, "uuid").valid()).isValid().a.and {
+        isValid().value.and {
           get { name }.isEqualTo("myName")
           get { id }.isNotNull().isGreaterThan(0L)
           get { uuid }.isNotNull().isNotBlank()

@@ -1,46 +1,52 @@
-@file:Suppress("DEPRECATION")
 package strikt.arrow
 
+import arrow.core.None
 import arrow.core.Option
+import arrow.core.Some
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
 import org.junit.jupiter.api.DisplayName
+import strikt.api.Assertion
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
 @DisplayName("assertions on Option")
 object OptionAssertions : JUnit5Minutests {
 
-  fun tests() = rootContext {
+  fun tests() = rootContext<Assertion.Builder<Option<String>>> {
     context("someOption") {
-      val option = Option.just("aValue")
+      fixture {
+        expectThat(Some("aValue"))
+      }
 
       test("can assert on type") {
-        expectThat(option).isSome()
+        isSome()
       }
 
       test("can negate assertion") {
-        expectThat(option).not().isNone()
+        not().isNone()
       }
 
       test("can assert on type and value equality") {
-        expectThat(option).isSome("aValue")
+        isSome("aValue")
       }
 
       test("can assert on type and traverse wrapped value") {
-        expectThat(option).isSome().t.isEqualTo("aValue")
+        isSome().value.isEqualTo("aValue")
       }
     }
 
     context("noneOption") {
-      val option = Option.empty<String>()
+      fixture {
+        expectThat(None)
+      }
 
       test("can assert on type") {
-        expectThat(option).isNone()
+        isNone()
       }
 
       test("can negate assertion") {
-        expectThat(option).not().isSome()
+        not().isSome()
       }
     }
   }

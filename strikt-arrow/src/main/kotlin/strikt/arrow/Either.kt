@@ -10,8 +10,8 @@ import strikt.api.Assertion
  */
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
-  assert("should be Right") {
-    when (it) {
+  assert("should be Right") { subject ->
+    when (subject) {
       is Either.Right -> pass()
       is Either.Left -> fail()
     }
@@ -25,10 +25,10 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isRight() =
  */
 @Suppress("UNCHECKED_CAST")
 infix fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
-  assert("should be Right($value)") {
-    when (it) {
+  assert("should be Right($value)") { subject ->
+    when (subject) {
       is Either.Right ->
-        if (it.b == value) {
+        if (subject.value == value) {
           pass()
         } else {
           fail()
@@ -42,9 +42,18 @@ infix fun <L, R> Assertion.Builder<Either<L, R>>.isRight(value: R) =
  * Unwraps the containing value of the [Either.Right]
  * @return Assertion builder over the unwrapped subject
  */
+@Deprecated("Use value instead", replaceWith = ReplaceWith("value"))
 val <R> Assertion.Builder<Either.Right<R>>.b: Assertion.Builder<R>
-  @JvmName("eitherB")
-  get() = get("right value", Either.Right<R>::b)
+  get() = value
+
+/**
+ * Unwraps the containing value of the [Either.Right]
+ * @return Assertion builder over the unwrapped subject
+ * @see Either.Right.value
+ */
+val <R> Assertion.Builder<Either.Right<R>>.value: Assertion.Builder<R>
+  @JvmName("EitherRightValue")
+  get() = get("right value", Either.Right<R>::value)
 
 /**
  * Asserts that the [Either] is [Either.Left]
@@ -53,10 +62,10 @@ val <R> Assertion.Builder<Either.Right<R>>.b: Assertion.Builder<R>
  */
 @Suppress("UNCHECKED_CAST")
 fun <L, R> Assertion.Builder<Either<L, R>>.isLeft() =
-  assert("should be Left") {
+  assert("should be Left") { subject ->
     when {
-      it.isRight() -> fail()
-      it.isLeft() -> pass()
+      subject.isRight() -> fail()
+      subject.isLeft() -> pass()
     }
   } as Assertion.Builder<Either.Left<L>>
 
@@ -68,10 +77,10 @@ fun <L, R> Assertion.Builder<Either<L, R>>.isLeft() =
  */
 @Suppress("UNCHECKED_CAST")
 infix fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
-  assert("should be Left($value)") {
-    when (it) {
+  assert("should be Left($value)") { subject ->
+    when (subject) {
       is Either.Left -> {
-        if (it.a == value) {
+        if (subject.value == value) {
           pass()
         } else {
           fail()
@@ -84,7 +93,16 @@ infix fun <L, R> Assertion.Builder<Either<L, R>>.isLeft(value: L) =
 /**
  * Unwraps the containing value of the [Either.Left]
  * @return Assertion builder over the unwrapped subject
+ * @see Either.Left.value
  */
+@Deprecated("Use value instead", replaceWith = ReplaceWith("value"))
 val <L> Assertion.Builder<Either.Left<L>>.a: Assertion.Builder<L>
-  @JvmName("eitherA")
-  get() = get("left value", Either.Left<L>::a)
+  get() = value
+
+/**
+ * Unwraps the containing value of the [Either.Left]
+ * @return Assertion builder over the unwrapped subject
+ */
+val <L> Assertion.Builder<Either.Left<L>>.value: Assertion.Builder<L>
+  @JvmName("EitherLeftValue")
+  get() = get("left value", Either.Left<L>::value)

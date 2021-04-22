@@ -45,7 +45,7 @@ infix fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
   assert("should be Some($value)") {
     when (it) {
       is Some -> {
-        if (it.t == value) {
+        if (it.value == value) {
           pass()
         } else {
           fail()
@@ -59,5 +59,13 @@ infix fun <T> Assertion.Builder<Option<T>>.isSome(value: T) =
  * Unwraps the containing value of the [Some]
  * @return Assertion builder over the unwrapped subject
  */
+@Deprecated("Use value instead", replaceWith = ReplaceWith("value"))
 val <T> Assertion.Builder<Some<T>>.t: Assertion.Builder<T>
-  get() = get("some value", Some<T>::t)
+  get() = value
+
+/**
+ * Unwraps the containing value of the [Some]
+ * @return Assertion builder over the unwrapped subject
+ */
+val <T> Assertion.Builder<Some<T>>.value: Assertion.Builder<T>
+  get() = get("some value", Some<T>::value)
