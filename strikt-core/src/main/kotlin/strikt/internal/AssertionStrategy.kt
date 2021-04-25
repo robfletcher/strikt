@@ -5,6 +5,7 @@ import strikt.api.Status
 import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
+import strikt.internal.opentest4j.AssertionFailed
 import strikt.internal.opentest4j.CompoundAssertionFailure
 import strikt.internal.opentest4j.IncompleteAssertion
 import strikt.internal.reporting.writePartialToString
@@ -209,14 +210,14 @@ internal sealed class AssertionStrategy {
     failed: Failed?,
   ): AssertionFailedError {
     val error = if (failed?.comparison != null)
-      AssertionFailedError(
+      AssertionFailed(
         message,
         failed.comparison.expected,
         failed.comparison.actual,
         failed.cause
       )
     else
-      AssertionFailedError(
+      AssertionFailed(
         message,
         failed?.cause
       )
