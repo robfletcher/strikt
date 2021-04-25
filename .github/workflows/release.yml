@@ -14,14 +14,19 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          java-version: 8
-      - name: Release to Sonatype
-        run: ./gradlew -Pversion=${GITHUB_REF:11} publish closeAndReleaseRepository
+          java-version: 11
+      - name: Publish to Sonatype
+        run: ./gradlew -Pversion=${GITHUB_REF:11} publish
         env:
           ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
+      - name: Release to Sonatype
+        run: ./gradlew -Pversion=${GITHUB_REF:11} closeAndReleaseRepository
+        env:
+          ORG_GRADLE_PROJECT_nexusUsername: ${{ secrets.NEXUS_USERNAME }}
+          ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
       - name: Publish site
         run: ./gradlew -Pversion=${GITHUB_REF:11} -Penv=prod :site:orchidDeploy
         env:
