@@ -2,6 +2,7 @@ package strikt.docs
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import strikt.Album
 import strikt.Person
 import strikt.api.Assertion
@@ -19,6 +20,7 @@ import strikt.assertions.message
 import strikt.assertions.withFirst
 import strikt.assertions.withLast
 import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.IncompleteAssertion
 import java.time.LocalDate
 
 @DisplayName("Snippets used in Orchid docs")
@@ -118,15 +120,17 @@ internal class Chaining {
 // -----------------------------------------------------------------------------
 
   @Test fun `grouping with and 1`() {
-    @Suppress("RedundantNullableReturnType")
-    val subject: String? = "subject"
-    // START grouping_with_and_1
-    expectThat(subject)
-      .isNotNull()
-      .and {
-        // perform other assertions on a known non-null subject
-      }
-    // END grouping_with_and_1
+    assertThrows<IncompleteAssertion> {
+      @Suppress("RedundantNullableReturnType")
+      val subject: String? = "subject"
+      // START grouping_with_and_1
+      expectThat(subject)
+        .isNotNull()
+        .and {
+          // perform other assertions on a known non-null subject
+        }
+        // END grouping_with_and_1
+    }
   }
 
   @Test fun `grouping with and 2, 3`() {

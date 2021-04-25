@@ -18,6 +18,7 @@ import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.single
 import strikt.assertions.startsWith
+import strikt.internal.opentest4j.IncompleteAssertion
 import java.time.LocalDate
 
 @DisplayName("assertions in blocks")
@@ -362,6 +363,16 @@ internal class Block {
         hasSize(2)
         // this mapping is valid but is not followed by an assertion
         filter { it == "catflap" }.single()
+      }
+    }
+  }
+
+  @Test
+  fun `a block with only pending assertions fails`() {
+    assertThrows<IncompleteAssertion> {
+      val subject = listOf("catflap")
+      expectThat(subject) {
+        single()
       }
     }
   }

@@ -6,6 +6,7 @@ import strikt.api.Status.Failed
 import strikt.api.Status.Passed
 import strikt.api.Status.Pending
 import strikt.internal.opentest4j.CompoundAssertionFailure
+import strikt.internal.opentest4j.IncompleteAssertion
 import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
 
@@ -14,7 +15,7 @@ internal sealed class AssertionStrategy {
   fun <T> appendAtomic(
     context: AssertionGroup<T>,
     description: String,
-    expected: Any?
+    expected: Any?,
   ): AtomicAssertionNode<T> =
     object : AtomicAssertionNode<T>(
       context,
@@ -56,7 +57,7 @@ internal sealed class AssertionStrategy {
   fun <T> appendCompound(
     context: AssertionGroup<T>,
     description: String,
-    expected: Any?
+    expected: Any?,
   ): CompoundAssertionNode<T> =
     object : CompoundAssertionNode<T>(
       context,
@@ -101,13 +102,13 @@ internal sealed class AssertionStrategy {
 
   protected open fun onPass(
     description: String? = null,
-    comparison: ComparedValues? = null
+    comparison: ComparedValues? = null,
   ): Status = Passed(description, comparison)
 
   protected open fun onFail(
     description: String? = null,
     comparison: ComparedValues? = null,
-    cause: Throwable? = null
+    cause: Throwable? = null,
   ): Status = Failed(description, comparison, cause)
 
   object Collecting : AssertionStrategy()
@@ -125,6 +126,8 @@ internal sealed class AssertionStrategy {
               )
             }
         )
+      } else if (tree.status is Pending) {
+        throw IncompleteAssertion()
       }
     }
 
@@ -144,7 +147,7 @@ internal sealed class AssertionStrategy {
     }
 
     override fun evaluate(trees: Collection<AssertionGroup<*>>) {
-      if (trees.any { it.status is Status.Failed }) {
+      if (trees.any { it.status is Failed }) {
         val failures = trees
           .filter { it.status is Failed }
           .map {
@@ -167,7 +170,7 @@ internal sealed class AssertionStrategy {
   }
 
   class Negating(
-    private val delegate: AssertionStrategy
+    private val delegate: AssertionStrategy,
   ) : AssertionStrategy() {
     override fun provideDescription(default: String) =
       listOf(
@@ -187,13 +190,13 @@ internal sealed class AssertionStrategy {
 
     override fun onPass(
       description: String?,
-      comparison: ComparedValues?
+      comparison: ComparedValues?,
     ): Status = Failed(description, comparison)
 
     override fun onFail(
       description: String?,
       comparison: ComparedValues?,
-      cause: Throwable?
+      cause: Throwable?,
     ) = Passed(description, comparison)
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
@@ -203,7 +206,7 @@ internal sealed class AssertionStrategy {
 
   internal fun createAssertionFailedError(
     message: String,
-    failed: Failed?
+    failed: Failed?,
   ): AssertionFailedError {
     val error = if (failed?.comparison != null)
       AssertionFailedError(
