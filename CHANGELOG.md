@@ -1,4 +1,10 @@
-## 0.30.1 Ascending Ivory = 2021-04-11
+## 0.31.0 Ashen Forests - 2021-04-22
+
+- Incomplete assertion chains now throw `IncompleteAssertion`.
+- Suppresses class name in the `toString` of exceptions thrown by Strikt assertions.
+- Updates `strikt-arrow` to support recent changes in the Arrow library.
+
+## 0.30.1 Ascending Ivory - 2021-04-11
 
 - Fixes an issue where pending assertion chains in a block took precedence over failures, causing false positives. See [#243](https://github.com/robfletcher/strikt/issues/243)
 
