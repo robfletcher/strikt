@@ -69,6 +69,32 @@ internal object AnyAssertions : JUnit5Minutests {
       }
     }
 
+    context("withNotNull") {
+      context("when the subject is null") {
+        fixture { expectThat(null) }
+
+        test("the assertion fails") {
+          assertThrows<AssertionFailedError> {
+            withNotNull {
+              isEqualTo("fnord")
+            }
+          }
+        }
+      }
+
+      listOf("fnord", 1L, "null").forEach<Any?> {
+        context("a non-null subject : ${it.quoted()}") {
+          fixture { expectThat(it) }
+
+          test("the assertion passes") {
+            withNotNull {
+              isEqualTo(it)
+            }
+          }
+        }
+      }
+    }
+
     context("isA") {
       context("when the subject is null") {
         fixture { expectThat(null) }
