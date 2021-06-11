@@ -29,7 +29,7 @@ internal class Mapping {
   fun `map() on iterable subjects maps to an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
     expectThat(subject)
-      .map { it.toUpperCase() }
+      .map { it.uppercase() }
       .containsExactly("CATFLAP", "RUBBERPLANT", "MARZIPAN")
   }
 
@@ -191,7 +191,7 @@ internal class Mapping {
     @Test
     fun `closures can call methods`() {
       expectThat(subject) {
-        get { name.toUpperCase() }.isEqualTo("DAVID")
+        get { name.uppercase() }.isEqualTo("DAVID")
         get { birthDate.plusYears(69).plusDays(2) }
           .isEqualTo(LocalDate.of(2016, 1, 10))
       }

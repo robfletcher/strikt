@@ -1003,7 +1003,7 @@ internal object IterableAssertions : JUnit5Minutests {
 
       test("passes if the subject is empty") {
         expectThat(emptyList<Any?>())
-          .isSorted(Comparator.comparingInt(Any?::hashCode))
+          .isSorted(Comparator.comparingInt { it.hashCode() })
       }
 
       test("fails in a block assertion if the subject is not in order") {

@@ -1,7 +1,7 @@
 package strikt
 
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -80,6 +80,6 @@ internal class Nested {
 }
 
 private suspend fun <T> delayedReturnValue(input: T): T =
-  GlobalScope.async {
+  withContext(Dispatchers.Default) {
     input
-  }.await()
+  }

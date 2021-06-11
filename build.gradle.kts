@@ -9,7 +9,7 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
-  kotlin("jvm") version "1.5.0" apply false
+  kotlin("jvm") version "1.5.10" apply false
   id("io.codearte.nexus-staging") version "0.30.0"
   id("org.jmailen.kotlinter") version "3.4.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
@@ -43,7 +43,7 @@ subprojects {
       tasks.withType<KotlinCompile> {
         kotlinOptions {
           jvmTarget = VERSION_1_8.toString()
-          languageVersion = "1.4"
+          languageVersion = "1.5"
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
           allWarningsAsErrors = true
