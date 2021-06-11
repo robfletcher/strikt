@@ -31,7 +31,7 @@ fun <T> Builder<T?>.isNotNull(): Builder<T> =
 /**
  * A convenient shorthand for [isNotNull] followed by [Builder.and].
  */
-fun <T> Builder<T?>.withNotNull(block: Builder<T>.() -> Unit) : Builder<T> =
+fun <T> Builder<T?>.withNotNull(block: Builder<T>.() -> Unit): Builder<T> =
   isNotNull().and(block)
 
 /**

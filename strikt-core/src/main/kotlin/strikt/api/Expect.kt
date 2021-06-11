@@ -9,8 +9,6 @@ import strikt.internal.AssertionStrategy.Throwing
 import strikt.internal.AssertionStrategy.Throwing.evaluate
 import strikt.internal.AssertionSubject
 import strikt.internal.DefaultExpectationBuilder
-import kotlin.Result.Companion.failure
-import kotlin.Result.Companion.success
 
 /**
  * Starts a block of assertions that will all be evaluated regardless of whether

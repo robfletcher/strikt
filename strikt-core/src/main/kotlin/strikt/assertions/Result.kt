@@ -1,7 +1,6 @@
 package strikt.assertions
 
 import strikt.api.Assertion
-import strikt.internal.AssertionBuilder
 
 /**
  * Asserts that the result of an action did throw an exception and maps to
