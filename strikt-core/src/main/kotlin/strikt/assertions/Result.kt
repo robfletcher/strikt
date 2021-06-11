@@ -1,6 +1,7 @@
 package strikt.assertions
 
 import strikt.api.Assertion
+import strikt.internal.AssertionBuilder
 
 /**
  * Asserts that the result of an action did throw an exception and maps to
@@ -12,15 +13,15 @@ import strikt.api.Assertion
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
-  assert("is failure") {
+  assert("is failure") { // subject: Result<R> ->
     when {
-      it.isFailure -> pass(
+      subject.isFailure -> pass(
         description = "threw %s",
-        actual = it.exceptionOrNull()
+        actual = subject.exceptionOrNull()
       )
       else -> fail(
         description = "returned %s",
-        actual = it.getOrThrow()
+        actual = subject.getOrThrow()
       )
     }
   }
@@ -45,13 +46,13 @@ fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Assertion.Builder<Result<R>>.isSuccess(): Assertion.Builder<R> =
-  assert("is success") {
+  assert("is success") { // subject: Result<R> ->
     when {
-      it.isSuccess -> pass()
+      subject.isSuccess -> pass()
       else -> fail(
         description = "threw %s",
-        actual = it.exceptionOrNull(),
-        cause = it.exceptionOrNull()
+        actual = subject.exceptionOrNull(),
+        cause = subject.exceptionOrNull()
       )
     }
   }
@@ -113,9 +114,9 @@ inline fun <reified E : Throwable> Assertion.Builder<Result<*>>.failedWith() =
 )
 @Suppress("UNCHECKED_CAST")
 fun <R : Any> Assertion.Builder<Result<R>>.doesNotThrow(): Assertion.Builder<R> =
-  assert("did not throw an exception") {
+  assert("did not throw an exception") { // subject: Result<R> ->
     when {
-      it.isSuccess -> pass()
+      subject.isSuccess -> pass()
       else -> fail(
         description = "threw %s",
         actual = it.exceptionOrNull(),

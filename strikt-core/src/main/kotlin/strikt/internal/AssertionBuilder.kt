@@ -13,6 +13,7 @@ internal class AssertionBuilder<T>(
   private val context: AssertionGroup<T>,
   private val strategy: AssertionStrategy
 ) : DescribeableBuilder<T> {
+  override val subject = context.subject
 
   override fun describedAs(description: String): Builder<T> {
     if (context is DescribedNode<*>) {

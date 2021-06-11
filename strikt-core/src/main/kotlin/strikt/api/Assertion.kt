@@ -2,6 +2,7 @@ package strikt.api
 
 import filepeek.LambdaBody
 import strikt.internal.FilePeek
+import java.util.Locale
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
@@ -37,6 +38,8 @@ interface Assertion {
    * @see Assertion
    */
   interface Builder<T> {
+
+    val subject: T
 
     /**
      * Evaluates a condition that may pass or fail.
@@ -340,6 +343,6 @@ private val CallableReference.propertyName: String
   get() = "^get(.+)$".toRegex().find(name).let { match ->
     return when (match) {
       null -> name
-      else -> match.groupValues[1].decapitalize()
+      else -> match.groupValues[1].replaceFirstChar { it.lowercase(Locale.getDefault()) }
     }
   }
