@@ -7,7 +7,6 @@ include(
   "strikt-core",
   "site",
   "strikt-arrow",
-  "strikt-gradle",
   "strikt-jackson",
   "strikt-jvm",
   "strikt-mockk",

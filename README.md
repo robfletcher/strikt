@@ -30,7 +30,6 @@ See the button below or [releases/latest](https://github.com/robfletcher/strikt/
 Strikt has the following additional libraries:
 
 * `strikt-arrow` -- supports data types from the [Arrow](https://arrow-kt.io/) functional programming library.
-* `strikt-gradle` -- supports the Gradle build tool.
 * `strikt-jackson` -- supports the Jackson JSON library.
 * `strikt-jvm` -- supports types from the Java SDK.
 * `strikt-mockk` -- supports types from the [MockK](https://mockk.io/) library.

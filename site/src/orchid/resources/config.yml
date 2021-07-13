@@ -82,7 +82,6 @@ kotlindoc:
     - { name: 'Core API',          slug: 'core',     sourceDirs: '../../../../strikt-core/src/main/kotlin/',      moduleGroup: 'core'   }
     - { name: 'Bill of Materials', slug: 'bom',      sourceDirs: '../../../../strikt-bom/src/main/kotlin/',       moduleGroup: 'bom'    }
     - { name: 'Arrow Module',      slug: 'arrow',    sourceDirs: '../../../../strikt-arrow/src/main/kotlin/',     moduleGroup: 'module' }
-    - { name: 'Gradle Module',     slug: 'gradle',   sourceDirs: '../../../../strikt-gradle/src/main/kotlin/',    moduleGroup: 'module' }
     - { name: 'Jackson Module',    slug: 'jackson',  sourceDirs: '../../../../strikt-jackson/src/main/kotlin/',   moduleGroup: 'module' }
     - { name: 'JVM Module',        slug: 'jvm',      sourceDirs: '../../../../strikt-jvm/src/main/kotlin/',       moduleGroup: 'module' }
     - { name: 'MockK Module',      slug: 'mockk',    sourceDirs: '../../../../strikt-mockk/src/main/kotlin/',     moduleGroup: 'module' }
@@ -98,7 +97,6 @@ snippets:
             - '../../../../strikt-core/src/test/kotlin/'
             - '../../../../strikt-bom/src/test/kotlin/'
             - '../../../../strikt-arrow/src/test/kotlin/'
-            - '../../../../strikt-gradle/src/test/kotlin/'
             - '../../../../strikt-jackson/src/test/kotlin/'
             - '../../../../strikt-jvm/test/main/kotlin/'
             - '../../../../strikt-mockk/src/test/kotlin/'

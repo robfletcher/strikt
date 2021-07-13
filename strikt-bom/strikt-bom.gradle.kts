@@ -18,7 +18,6 @@ dependencies {
   constraints {
     api(project(":strikt-arrow"))
     api(project(":strikt-core"))
-    api(project(":strikt-gradle"))
     api(project(":strikt-jackson"))
     api(project(":strikt-jvm"))
     api(project(":strikt-mockk"))
