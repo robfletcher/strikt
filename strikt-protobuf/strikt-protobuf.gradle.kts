@@ -3,6 +3,7 @@
 import com.google.protobuf.gradle.ExecutableLocator
 import com.google.protobuf.gradle.ProtobufConfigurator
 import com.google.protobuf.gradle.ProtobufConfigurator.JavaGenerateProtoTaskCollection
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.net.URL
 
@@ -21,12 +22,14 @@ dependencies {
   testImplementation("com.google.protobuf:protobuf-java:${property("versions.protobuf")}")
 }
 
-tasks.dokka {
-  configuration {
-    "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
+tasks.withType<DokkaTaskPartial>().configureEach {
+  dokkaSourceSets {
+    configureEach {
+      "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
+        externalDocumentationLink {
+          url.set(URL(it))
+          packageListUrl.set(URL("${it}package-list"))
+        }
       }
     }
   }

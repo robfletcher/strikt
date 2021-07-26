@@ -1,3 +1,9 @@
+## 0.32.0 Golden Depths - 2021-07-13
+
+- Supports Kotlin 1.5
+- Removes `strikt-gradle` module as classpath isolation is problematic with Kotlin 1.5 and the `gradleTestKit` dependency.
+- Adds `Assertion.Builder<T>.subject : T` property for accessing the subject value.
+
 ## 0.31.0 Ashen Forests - 2021-04-22
 
 - Incomplete assertion chains now throw `IncompleteAssertion`.

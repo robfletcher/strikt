@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
+
 plugins {
   id("org.jetbrains.dokka")
   id("nebula.maven-publish")
@@ -59,11 +61,11 @@ plugins.withId("kotlin") {
     enabled = false
   }
 
-  tasks.dokka {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/javadoc"
-    configuration {
-      jdkVersion = 9
+  tasks.withType<DokkaTaskPartial>().configureEach {
+    dokkaSourceSets {
+      configureEach {
+        jdkVersion.set(11)
+      }
     }
   }
 
@@ -71,7 +73,7 @@ plugins.withId("kotlin") {
     group = "build"
     description = "Assembles Javadoc jar from Dokka API docs"
     archiveClassifier.set("javadoc")
-    from(tasks.dokka)
+    from(tasks.dokkaHtml)
   }
 
   publishing {

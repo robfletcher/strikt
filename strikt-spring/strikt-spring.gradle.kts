@@ -1,3 +1,4 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URL
 
 plugins {
@@ -23,12 +24,14 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-web")
 }
 
-tasks.dokka {
-  configuration {
-    "https://docs.spring.io/spring-framework/docs/current/javadoc-api/".also {
-      externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
+tasks.withType<DokkaTaskPartial>().configureEach {
+  dokkaSourceSets {
+    configureEach {
+      "https://docs.spring.io/spring-framework/docs/current/javadoc-api/".also {
+        externalDocumentationLink {
+          url.set(URL(it))
+          packageListUrl.set(URL("${it}package-list"))
+        }
       }
     }
   }

@@ -15,6 +15,15 @@ plugins {
   id("info.solidsoft.pitest") version "1.6.0" apply false
   id("com.adarshr.test-logger") version "3.0.0" apply false
   id("com.github.ben-manes.versions") version "0.39.0"
+  id("org.jetbrains.dokka")
+}
+
+repositories {
+  mavenCentral()
+  // needed for dokka plugin, feels like this belongs in published.gradle.kts but it doesn't work there
+  maven {
+    url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+  }
 }
 
 allprojects {
@@ -32,6 +41,10 @@ allprojects {
 subprojects {
   repositories {
     mavenCentral()
+    // needed for dokka plugin, feels like this belongs in published.gradle.kts but it doesn't work there
+    maven {
+      url = uri("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+    }
   }
 
   afterEvaluate {

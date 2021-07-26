@@ -1,3 +1,4 @@
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URL
 
 plugins {
@@ -19,13 +20,15 @@ dependencies {
   testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
 }
 
-tasks.dokka {
-  configuration {
+tasks.withType<DokkaTaskPartial>().configureEach {
+  dokkaSourceSets {
+    configureEach {
     "https://fasterxml.github.io/jackson-databind/javadoc/2.12/".also {
       externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
+        url.set(URL(it))
+        packageListUrl.set(URL("${it}package-list"))
       }
+    }
     }
   }
 }
