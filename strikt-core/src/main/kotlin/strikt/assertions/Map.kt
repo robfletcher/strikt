@@ -72,6 +72,17 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.containsKey(key: K): Builder<T> =
   }
 
 /**
+ * Asserts that the subject map does not contain an entry indexed by [key]. Depending on
+ * the map implementation the value associated with [key] may be `null`. This
+ * assertion just tests for the nonexistence of the key.
+ */
+infix fun <T : Map<K, V>, K, V> Builder<T>.doesNotContainKey(key: K): Builder<T> =
+  assertThat("does not have an entry with the key %s", key) {
+    !it.containsKey(key)
+  }
+  
+
+/**
  * Asserts that the subject map contains entries for all [keys].
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
@@ -80,6 +91,16 @@ fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
   } then {
     if (allPassed) pass() else fail()
   }
+
+/**
+ * Asserts that the subject map doesn't contain entries for all [keys].
+ */
+fun <T : Map<K, V>, K, V> Builder<T>.doesNotContainKeys(vararg keys: K): Builder<T> =
+compose("doesn't have entries with the keys %s", keys.toList()) {
+  keys.forEach { key -> doesNotContainKey(key) }
+} then {
+  if (allPassed) pass() else fail()
+}
 
 /**
  * Asserts that the subject map contains an entry indexed by [key] with a value
