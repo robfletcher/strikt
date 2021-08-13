@@ -75,6 +75,23 @@ internal object MapAssertions : JUnit5Minutests {
         }
       }
 
+      context("doesNotContainKey assertion") {
+        test("passes if the subject doesn't have a matching key") {
+          doesNotContainKey("bar")
+        }
+
+        test("fails if the subject does have a matching key") {
+          val error = assertThrows<AssertionError> {
+            doesNotContainKey("foo")
+          }
+          expectThat(error.message).isEqualTo(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✗ does not have an entry with the key "foo""""
+              .trimMargin()
+          )
+        }
+      }
+
       context("containsKeys assertion") {
         test("passes if the subject has all the specified keys") {
           containsKeys("foo", "baz")
@@ -90,6 +107,26 @@ internal object MapAssertions : JUnit5Minutests {
               |    ✓ has an entry with the key "foo"
               |    ✗ has an entry with the key "bar"
               |    ✗ has an entry with the key "fnord""""
+              .trimMargin()
+          )
+        }
+      }
+
+      context("doesNotContainKeys assertion") {
+        test("passes if the subject does not have all the specified keys") {
+          doesNotContainKeys("bar", "fnord")
+        }
+
+        test("fails if the subject does have a matching key") {
+          val error = assertThrows<AssertionError> {
+            doesNotContainKeys("bar", "fnord", "foo")
+          }
+          expectThat(error.message).isEqualTo(
+            """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
+              |  ✗ doesn't have entries with the keys ["bar", "fnord", "foo"]
+              |    ✓ does not have an entry with the key "bar"
+              |    ✓ does not have an entry with the key "fnord"
+              |    ✗ does not have an entry with the key "foo""""
               .trimMargin()
           )
         }
