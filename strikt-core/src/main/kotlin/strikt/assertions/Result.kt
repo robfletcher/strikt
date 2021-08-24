@@ -12,7 +12,7 @@ import strikt.api.Assertion
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
-  assert("is failure") { // subject: Result<R> ->
+  assert("is failure") { subject ->
     when {
       subject.isFailure -> pass(
         description = "threw %s",
@@ -25,13 +25,6 @@ fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
     }
   }
     .get("exception") {
-      // WORKAROUND - Handle inline class bug. (This will also work when this bug is fixed)
-      val value = getOrNull()
-      if (value is Result<*>) {
-        return@get value.exceptionOrNull()!!
-      }
-      // WORKAROUND - END
-
       exceptionOrNull()!!
     }
 
@@ -45,7 +38,7 @@ fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
  * @author [Bengt Brodersen](https://github.com/qoomon)
  */
 fun <R> Assertion.Builder<Result<R>>.isSuccess(): Assertion.Builder<R> =
-  assert("is success") { // subject: Result<R> ->
+  assert("is success") { subject ->
     when {
       subject.isSuccess -> pass()
       else -> fail(
@@ -56,13 +49,6 @@ fun <R> Assertion.Builder<Result<R>>.isSuccess(): Assertion.Builder<R> =
     }
   }
     .get("value") {
-      // WORKAROUND - Handle inline class bug. (This will also work when this bug is fixed)
-      val value = getOrThrow()
-      if (value is Result<*>)
-        @Suppress("UNCHECKED_CAST")
-        return@get value.getOrThrow() as R
-      // WORKAROUND - END
-
       getOrThrow()
     }
 
@@ -113,13 +99,13 @@ inline fun <reified E : Throwable> Assertion.Builder<Result<*>>.failedWith() =
 )
 @Suppress("UNCHECKED_CAST")
 fun <R : Any> Assertion.Builder<Result<R>>.doesNotThrow(): Assertion.Builder<R> =
-  assert("did not throw an exception") { // subject: Result<R> ->
+  assert("did not throw an exception") { subject ->
     when {
       subject.isSuccess -> pass()
       else -> fail(
         description = "threw %s",
-        actual = it.exceptionOrNull(),
-        cause = it.exceptionOrNull()
+        actual = subject.exceptionOrNull(),
+        cause = subject.exceptionOrNull()
       )
     }
   }
