@@ -1,4 +1,4 @@
-## 0.32.0 Golden Depths - 2021-07-13
+## 0.32.0 Golden Depths - 2021-08-25
 
 - Supports Kotlin 1.5
 - Removes `strikt-gradle` module as classpath isolation is problematic with Kotlin 1.5 and the `gradleTestKit` dependency.
