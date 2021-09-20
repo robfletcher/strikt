@@ -5,7 +5,7 @@ plugins {
   kotlin("jvm")
   id("published")
   id("info.solidsoft.pitest")
-  id("org.jetbrains.kotlin.plugin.spring") version "1.5.30"
+  id("org.jetbrains.kotlin.plugin.spring") version "1.5.31"
 }
 
 description = "Extensions for testing code that uses the Spring Framework."
