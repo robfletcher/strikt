@@ -1,3 +1,8 @@
+## 0.33.0 Scarlet Attitude - 2021-11-16
+
+- Supports Kotlin 1.6
+- Add `doesNotContainKey` and `doesNotContainKeys` map assertions
+
 ## 0.32.0 Golden Depths - 2021-08-25
 
 - Supports Kotlin 1.5
