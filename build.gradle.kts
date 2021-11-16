@@ -11,9 +11,9 @@ import kotlin.text.RegexOption.IGNORE_CASE
 plugins {
   kotlin("jvm") version "1.5.31" apply false
   id("io.codearte.nexus-staging") version "0.30.0"
-  id("org.jmailen.kotlinter") version "3.6.0" apply false
+  id("org.jmailen.kotlinter") version "3.7.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
-  id("com.adarshr.test-logger") version "3.0.0" apply false
+  id("com.adarshr.test-logger") version "3.1.0" apply false
   id("com.github.ben-manes.versions") version "0.39.0"
   id("org.jetbrains.dokka")
 }
