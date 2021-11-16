@@ -16,6 +16,7 @@ plugins {
   id("com.adarshr.test-logger") version "3.1.0" apply false
   id("com.github.ben-manes.versions") version "0.39.0"
   id("org.jetbrains.dokka")
+  id("org.jetbrains.kotlinx.kover") version "0.4.2"
 }
 
 repositories {
