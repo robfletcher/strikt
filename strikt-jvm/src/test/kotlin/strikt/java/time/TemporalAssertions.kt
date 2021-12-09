@@ -12,6 +12,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.MonthDay
+import java.time.OffsetDateTime
 import java.time.OffsetTime
 import java.time.Year
 import java.time.YearMonth
@@ -29,10 +30,12 @@ internal class TemporalAssertions : JUnit5Minutests {
 
   companion object {
     val zone: ZoneId = ZoneId.of("America/Los_Angeles")
+    val offset: ZoneOffset = ZoneOffset.ofHours(6)
     val instant: Instant = LocalDateTime.of(2019, 11, 29, 16, 43)
       .atZone(zone)
       .toInstant()
     val local: ZonedDateTime = instant.atZone(zone)
+    val localOffset: OffsetDateTime = instant.atOffset(offset)
     val date: LocalDate = local.toLocalDate()
     val time: LocalTime = local.toLocalTime()
   }
@@ -56,7 +59,8 @@ internal class TemporalAssertions : JUnit5Minutests {
         Pair(OffsetTime.from(local), local.plusSeconds(1)),
         Pair(Year.from(date), date.plusYears(1)),
         Pair(YearMonth.from(date), date.plusMonths(1)),
-        local to local.plusDays(1)
+        local to local.plusDays(1),
+        Pair(localOffset, localOffset.plusNanos(1))
       ).forEach { (subject, expected) ->
         test("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isBefore(expected)
@@ -89,7 +93,8 @@ internal class TemporalAssertions : JUnit5Minutests {
         Pair(Year.from(date), date.minusYears(1)),
         Pair(YearMonth.from(date), date),
         Pair(YearMonth.from(date), date.minusMonths(1)),
-        local to local.minusDays(1)
+        local to local.minusDays(1),
+        Pair(localOffset, localOffset.minusNanos(1))
       ).forEach { (subject, expected) ->
         test("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
@@ -104,6 +109,52 @@ internal class TemporalAssertions : JUnit5Minutests {
         test("fails asserting $subject is before $expected") {
           assertThrows<DateTimeException> {
             expectThat(subject).isBefore(expected)
+          }
+        }
+      }
+    }
+
+    context("isSameInstant assertion") {
+      listOf<Pair<TemporalAccessor, TemporalAccessor>>(
+        Pair(instant, instant),
+        Pair(date, date),
+        Pair(JapaneseDate.from(date), date),
+        Pair(time, time),
+        Pair(MonthDay.from(date), MonthDay.from(date)),
+        Pair(local, local),
+        Pair(local, localOffset),
+        Pair(localOffset, localOffset),
+        Pair(localOffset, localOffset.withOffsetSameInstant(ZoneOffset.ofTotalSeconds(offset.totalSeconds + 3600))),
+        Pair(OffsetTime.from(local), OffsetTime.from(local)),
+        Pair(OffsetTime.from(local), local.toOffsetDateTime()),
+        Pair(OffsetTime.from(local), local),
+        Pair(Year.from(date), date),
+        Pair(YearMonth.from(date), date)
+      ).forEach { (subject, expected) ->
+        test("passes asserting $subject (${subject.javaClass.simpleName}) is the same instant as $expected (${expected.javaClass.simpleName})") {
+          expectThat(subject).isSameInstant(expected)
+        }
+      }
+
+      listOf<Pair<TemporalAccessor, TemporalAccessor>>(
+        Pair(instant, instant.plusNanos(1)),
+        Pair(date, date.plusDays(1)),
+        Pair(JapaneseDate.from(date), date.plusDays(1)),
+        Pair(time, time.plusNanos(1)),
+        Pair(MonthDay.from(date), MonthDay.from(date.plusDays(1))),
+        Pair(local, local.plusNanos(1)),
+        Pair(local, localOffset.plusNanos(1)),
+        Pair(localOffset, localOffset.plusNanos(1)),
+        Pair(localOffset, localOffset.withOffsetSameInstant(ZoneOffset.ofTotalSeconds(offset.totalSeconds + 3600)).plusNanos(1)),
+        Pair(OffsetTime.from(local), OffsetTime.from(local).plusNanos(1)),
+        Pair(OffsetTime.from(local), local.toOffsetDateTime().plusNanos(1)),
+        Pair(OffsetTime.from(local), local.plusNanos(1)),
+        Pair(Year.from(date), date.plusYears(1)),
+        Pair(YearMonth.from(date), date.plusMonths(1))
+      ).forEach { (subject, expected) ->
+        test("fails asserting $subject (${subject.javaClass.simpleName}) is the same instant as $expected (${expected.javaClass.simpleName})") {
+          assertThrows<AssertionFailedError> {
+            expectThat(subject).isSameInstant(expected)
           }
         }
       }
@@ -127,7 +178,8 @@ internal class TemporalAssertions : JUnit5Minutests {
         Pair(OffsetTime.from(local), local.minusSeconds(1)),
         Pair(Year.from(date), date.minusYears(1)),
         Pair(YearMonth.from(date), date.minusMonths(1)),
-        local to local.minusDays(1)
+        local to local.minusDays(1),
+        Pair(localOffset, localOffset.minusNanos(1))
       ).forEach { (subject, expected) ->
         test("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isAfter(expected)
@@ -160,7 +212,8 @@ internal class TemporalAssertions : JUnit5Minutests {
         Pair(Year.from(date), date.plusYears(1)),
         Pair(YearMonth.from(date), date),
         Pair(YearMonth.from(date), date.plusMonths(1)),
-        local to local.plusDays(1)
+        local to local.plusDays(1),
+        Pair(localOffset, localOffset.plusNanos(1))
       ).forEach { (subject, expected) ->
         test("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
