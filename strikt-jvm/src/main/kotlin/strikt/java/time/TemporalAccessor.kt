@@ -56,6 +56,27 @@ infix fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: Temporal
   }
 
 /**
+ * Asserts that the subject is after [expected].
+ *
+ * @throws java.time.DateTimeException if [expected] is not a compatible
+ * temporal type.
+ */
+infix fun <T : TemporalAccessor> Assertion.Builder<T>.isSameInstant(expected: TemporalAccessor): Assertion.Builder<T> =
+  assertThat("is same instant as %s", expected) {
+    when (it) {
+      is Instant -> it == Instant.from(expected)
+      is ChronoLocalDate -> it.isEqual(LocalDate.from(expected))
+      is LocalTime -> it == LocalTime.from(expected)
+      is MonthDay -> it == MonthDay.from(expected)
+      is OffsetTime -> it.isEqual(OffsetTime.from(expected))
+      is Year -> it == Year.from(expected)
+      is YearMonth -> it == YearMonth.from(expected)
+      is ZonedDateTime -> it.isEqual(ZonedDateTime.from(expected))
+      else -> throw UnsupportedOperationException("Strikt's isSameInstant does not (currently) support ${it.javaClass.simpleName}")
+    }
+  }
+
+/**
  * Maps an assertion on the subject to an assertion on the value of the
  * specified temporal field.
  *
