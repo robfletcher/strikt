@@ -29,6 +29,12 @@ fun <T> Builder<T?>.isNotNull(): Builder<T> =
   } as Builder<T>
 
 /**
+ * noop not null assertion on not nullable receiver
+ */
+@JvmName("isNotNullT?")
+fun <T : Any> Builder<T>.isNotNull(): Builder<T> = this
+
+/**
  * A convenient shorthand for [isNotNull] followed by [Builder.and].
  */
 fun <T> Builder<T?>.withNotNull(block: Builder<T>.() -> Unit): Builder<T> =
