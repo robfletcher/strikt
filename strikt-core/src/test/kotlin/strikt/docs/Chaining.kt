@@ -129,7 +129,7 @@ internal class Chaining {
         .and {
           // perform other assertions on a known non-null subject
         }
-        // END grouping_with_and_1
+      // END grouping_with_and_1
     }
   }
 
