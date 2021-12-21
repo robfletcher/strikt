@@ -77,7 +77,7 @@ subprojects {
       tasks.withType<Test> {
         systemProperty("junit.jupiter.execution.parallel.enabled", "false")
         useJUnitPlatform {
-          includeEngines("junit-jupiter")
+          includeEngines("junit-jupiter", "failgood")
         }
       }
 
