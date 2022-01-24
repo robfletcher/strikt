@@ -60,7 +60,7 @@ internal class Mapping {
       expectThat(error).message.isEqualTo(
         """▼ Expect that []:
           |  ✗ has only one element
-          |    found 0"""
+          |    found []"""
           .trimMargin()
       )
     }
@@ -75,7 +75,7 @@ internal class Mapping {
       expectThat(error).message.isEqualTo(
         """▼ Expect that ["catflap", "rubberplant"]:
           |  ✗ has only one element
-          |    found 2"""
+          |    found ["catflap", "rubberplant"]"""
           .trimMargin()
       )
     }
