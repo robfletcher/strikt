@@ -78,7 +78,6 @@ internal object BeanPropertyAssertions {
       dateOfBirth = LocalDate.of(1947, 1, 8),
       image = "catflap".toByteArray()
     )
-
     val error = assertThrows<AssertionError> {
       expectThat(subject).propertiesAreEqualToIgnoring(
         other,
