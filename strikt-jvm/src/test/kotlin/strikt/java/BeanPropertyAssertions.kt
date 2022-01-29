@@ -67,6 +67,40 @@ internal object BeanPropertyAssertions {
   }
 
   @Test
+  fun `ignores excluded properties`() {
+    val subject = PersonKotlin(
+      name = "David",
+      dateOfBirth = LocalDate.of(1947, 1, 8),
+      image = "catflap".toByteArray()
+    )
+    val other = PersonKotlin(
+      name = "Ziggy",
+      dateOfBirth = LocalDate.of(1947, 1, 8),
+      image = "catflap".toByteArray()
+    )
+
+    val error = assertThrows<AssertionError> {
+      expectThat(subject).propertiesAreEqualToIgnoring(
+        other,
+        PersonKotlin::id,
+        PersonKotlin::image
+      )
+    }
+    expectThat(error.message) {
+      isNotNull()
+      isEqualTo(
+        """▼ Expect that Person(David):
+          |  ✗ is equal field-by-field to Person(Ziggy)
+          |    ▼ value of property dateOfBirth:
+          |      ✓ is equal to 1947-01-08
+          |    ▼ value of property name:
+          |      ✗ is equal to "Ziggy"
+          |              found "David"""".trimMargin()
+      )
+    }
+  }
+
+  @Test
   fun `isEqualTo works with java fields that are null`() {
     val subject = PersonJava(null, null, null, null)
     expectThat(
