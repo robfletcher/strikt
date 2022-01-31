@@ -1,3 +1,8 @@
+## 0.34.0 Stalwart Blossom - 2022-01-31
+
+- Adds `propertiesAreEqualToIgnoring` assertion.
+- Adds `isSameInstant` assertion for date/time types.
+
 ## 0.33.0 Scarlet Attitude - 2021-11-16
 
 - Supports Kotlin 1.6
