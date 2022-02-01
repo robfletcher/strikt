@@ -14,7 +14,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 17
       - name: Publish to Sonatype
         run: ./gradlew -Pversion=${GITHUB_REF:11} publish
         env:
@@ -38,7 +38,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 17
       - name: Publish site
         run: ./gradlew -Pversion=${GITHUB_REF:11} -Penv=prod :site:orchidDeploy
         env:
