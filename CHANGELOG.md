@@ -1,3 +1,7 @@
+## 0.34.1 Glorious Bureaucrat - 2022-02-02
+
+- Removes the overload of `isNotNull` to avoid overload ambiguity when the subject is a platform type.
+
 ## 0.34.0 Stalwart Blossom - 2022-01-31
 
 - Adds `propertiesAreEqualToIgnoring` assertion.
