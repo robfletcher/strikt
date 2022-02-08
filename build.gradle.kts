@@ -14,7 +14,7 @@ plugins {
   id("org.jmailen.kotlinter") version "3.8.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
   id("com.adarshr.test-logger") version "3.1.0" apply false
-  id("com.github.ben-manes.versions") version "0.41.0"
+  id("com.github.ben-manes.versions") version "0.42.0"
   id("org.jetbrains.dokka")
   id("org.jetbrains.kotlinx.kover") version "0.5.0"
 }
