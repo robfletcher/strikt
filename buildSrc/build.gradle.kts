@@ -10,6 +10,6 @@ repositories {
 }
 
 dependencies {
-  implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.4.30")
-  implementation("com.netflix.nebula:nebula-publishing-plugin:18.0.0")
+  implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
+  implementation("com.netflix.nebula:nebula-publishing-plugin:18.2.0")
 }
