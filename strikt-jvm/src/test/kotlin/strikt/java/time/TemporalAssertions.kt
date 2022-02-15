@@ -181,7 +181,7 @@ internal class TemporalAssertions : JUnit5Minutests {
         local to local.minusDays(1),
         Pair(localOffset, localOffset.minusNanos(1))
       ).forEach { (subject, expected) ->
-        test("passes asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+        test("passes asserting $subject (${subject.javaClass.simpleName}) is after $expected (${expected.javaClass.simpleName})") {
           expectThat(subject).isAfter(expected)
         }
       }
@@ -215,7 +215,7 @@ internal class TemporalAssertions : JUnit5Minutests {
         local to local.plusDays(1),
         Pair(localOffset, localOffset.plusNanos(1))
       ).forEach { (subject, expected) ->
-        test("fails asserting $subject (${subject.javaClass.simpleName}) is before $expected (${expected.javaClass.simpleName})") {
+        test("fails asserting $subject (${subject.javaClass.simpleName}) is after $expected (${expected.javaClass.simpleName})") {
           assertThrows<AssertionFailedError> {
             expectThat(subject).isAfter(expected)
           }
