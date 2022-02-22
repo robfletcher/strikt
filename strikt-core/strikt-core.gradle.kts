@@ -12,6 +12,6 @@ dependencies {
   implementation("com.christophsturm:filepeek:${property("versions.filepeek")}")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-  testImplementation("dev.failgood:failgood:0.5.3")
+  testImplementation("dev.failgood:failgood:0.6.0")
   testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
 }
