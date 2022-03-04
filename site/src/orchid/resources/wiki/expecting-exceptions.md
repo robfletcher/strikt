@@ -14,12 +14,12 @@ The `expectCatching` function returns `Assertion.Builder<Try<T>>` with the asser
 
 ## Asserting failure
 
-The `failed()` assertion function returns an `Assertion.Builder<Throwable>` so you can chain assertions about the exception itself after it.
+The `isFailure()` assertion function returns an `Assertion.Builder<Throwable>` so you can chain assertions about the exception itself after it.
 For example, combining it with the `isA<T>()` assertion allows testing for specific exception types.
 
-The `failed()` assertion will fail if the lambda does not throw an exception.
+The `isFailure()` assertion will fail if the lambda does not throw an exception.
 
-If you just need to test that _any_ exception was thrown you can just use the `failed()` assertion by itself.
+If you just need to test that _any_ exception was thrown you can just use the `isFailure()` assertion by itself.
 For example:
 
 ```kotlin
@@ -37,7 +37,7 @@ The `catching` function returns a `Assertion.Builder<Try<T>>` mentioned above.
 
 ### Shorthand form
 
-You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the `expectCatching` / `failed` / `isA<E>` combination.
+You can also use the `expectThrows<E>(A)` function which is simply a shorthand for the `expectCatching` / `isFailure` / `isA<E>` combination.
 For example:
 
 ```kotlin
