@@ -43,7 +43,7 @@ infix fun <T : TemporalAccessor> Assertion.Builder<T>.isBefore(expected: Tempora
  * temporal type.
  */
 infix fun <T : TemporalAccessor> Assertion.Builder<T>.isAfter(expected: TemporalAccessor): Assertion.Builder<T> =
-  assertThat("is before %s", expected) {
+  assertThat("is after %s", expected) {
     when (it) {
       is Instant -> it.isAfter(Instant.from(expected))
       is ChronoLocalDate -> it.isAfter(LocalDate.from(expected))
