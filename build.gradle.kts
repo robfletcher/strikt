@@ -9,9 +9,9 @@ import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
-  kotlin("jvm") version "1.6.20" apply false
+  kotlin("jvm") version "1.6.21" apply false
   id("io.codearte.nexus-staging") version "0.30.0"
-  id("org.jmailen.kotlinter") version "3.9.0" apply false
+  id("org.jmailen.kotlinter") version "3.10.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
   id("com.adarshr.test-logger") version "3.2.0" apply false
   id("com.github.ben-manes.versions") version "0.42.0"
@@ -85,7 +85,7 @@ subprojects {
       apply(plugin = "org.jmailen.kotlinter")
       configure<KotlinterExtension> {
         ignoreFailures = true
-        indentSize = 2
+//        indentSize = 2
         reporters = arrayOf("html", "plain")
       }
     }
