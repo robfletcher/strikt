@@ -174,7 +174,7 @@ infix fun <T : CharSequence> Builder<T>.isEqualToIgnoringWhitespace(expected: T)
     val expectedNormalized = expected.filterNot { it.isWhitespace() }
     return assert("equals %s (ignoring whitespace)", expectedNormalized) {
         val actualNormalized = it.filterNot { it.isWhitespace() }
-        if (actualNormalized == expectedNormalized) {
+        if (actualNormalized.contentEquals(expectedNormalized)) {
             pass(actual = actualNormalized)
         } else {
             fail(actual = actualNormalized)
