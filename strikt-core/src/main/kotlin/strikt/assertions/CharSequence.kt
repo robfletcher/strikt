@@ -166,6 +166,21 @@ infix fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSeque
       fail(actual = it)
     }
   }
+  
+/**
+ * Asserts that the subject equals the [expected] string, ignoring whitespace.
+ */
+infix fun <T : CharSequence> Builder<T>.isEqualToIgnoringWhitespace(expected: T): Builder<T> {
+    val expectedNormalized = expected.filterNot { it.isWhitespace() }
+    return assert("equals %s (ignoring whitespace)", expectedNormalized) {
+        val actualNormalized = it.filterNot { it.isWhitespace() }
+        if (actualNormalized == expectedNormalized) {
+            pass(actual = actualNormalized)
+        } else {
+            fail(actual = actualNormalized)
+        }
+    }
+}
 
 /**
  * Asserts that the subject is `null` or the empty string.
