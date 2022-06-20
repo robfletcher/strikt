@@ -4,12 +4,13 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import info.solidsoft.gradle.pitest.PitestPluginExtension
 import io.codearte.gradle.nexus.NexusStagingExtension
 import org.gradle.api.JavaVersion.VERSION_1_8
+import org.gradle.api.JavaVersion.VERSION_11
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
 
 plugins {
-  kotlin("jvm") version "1.6.21" apply false
+  kotlin("jvm") version "1.7.0" apply false
   id("io.codearte.nexus-staging") version "0.30.0"
   id("org.jmailen.kotlinter") version "3.10.0" apply false
   id("info.solidsoft.pitest") version "1.6.0" apply false
@@ -51,13 +52,13 @@ subprojects {
   afterEvaluate {
     plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
-        sourceCompatibility = VERSION_1_8
+        sourceCompatibility = VERSION_11
       }
 
       tasks.withType<KotlinCompile> {
         kotlinOptions {
-          jvmTarget = VERSION_1_8.toString()
-          languageVersion = "1.6"
+          jvmTarget = VERSION_11.toString()
+          languageVersion = "1.7"
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
           allWarningsAsErrors = true
