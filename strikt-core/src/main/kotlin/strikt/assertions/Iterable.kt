@@ -44,7 +44,7 @@ fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return this builder, to facilitate chaining.
  */
-fun <T : Iterable<E>, E> Builder<T>.withFirst(block: Builder<E>.() -> Unit): Builder<T> =
+infix fun <T : Iterable<E>, E> Builder<T>.withFirst(block: Builder<E>.() -> Unit): Builder<T> =
   with("first element %s", Iterable<E>::first, block)
 
 /**
