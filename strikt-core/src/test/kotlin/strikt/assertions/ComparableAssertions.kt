@@ -85,6 +85,24 @@ internal object ComparableAssertions {
         isLessThanOrEqualTo(value.incrementor())
       }
     }
+
+    context("comparesEqualTo assertion") {
+      test("fails if the subject is greater than the expected value") {
+        assertThrows<AssertionError> {
+          comparesEqualTo(value.decrementor())
+        }
+      }
+
+      test("fails if the subject is less than the expected value") {
+        assertThrows<AssertionError> {
+          comparesEqualTo(value.incrementor())
+        }
+      }
+
+      test("passes if the subject is equal to the expected value") {
+        comparesEqualTo(value)
+      }
+    }
   }
 
   @TestFactory

@@ -1,3 +1,7 @@
+## 0.34.2
+
+- Adds `comparesEqualTo` for comparable subjects.
+
 ## 0.34.1 Glorious Bureaucrat - 2022-02-02
 
 - Removes the overload of `isNotNull` to avoid overload ambiguity when the subject is a platform type.

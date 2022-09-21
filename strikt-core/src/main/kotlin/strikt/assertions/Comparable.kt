@@ -60,3 +60,14 @@ infix fun <T : Comparable<T>> Builder<T>.isIn(expected: ClosedRange<T>): Builder
       else -> fail()
     }
   }
+
+/**
+ * Asserts that the subject compares equal to [expected] according to [Comparable.compareTo].
+ */
+infix fun <T: Comparable<T>> Builder<T>.comparesEqualTo(expected: T): Builder<T> =
+  assert("compares euql to %s", expected) {
+    when {
+      it.compareTo(expected) == 0 -> pass()
+      else -> fail()
+    }
+  }
