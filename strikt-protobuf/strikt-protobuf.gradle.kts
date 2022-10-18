@@ -1,8 +1,5 @@
 @file:Suppress("KDocMissingDocumentation")
 
-import com.google.protobuf.gradle.ExecutableLocator
-import com.google.protobuf.gradle.ProtobufConfigurator
-import com.google.protobuf.gradle.ProtobufConfigurator.JavaGenerateProtoTaskCollection
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.net.URL
@@ -10,7 +7,7 @@ import java.net.URL
 plugins {
   kotlin("jvm")
   id("published")
-  id("com.google.protobuf") version "0.8.19"
+  id("com.google.protobuf") version "0.9.1"
 }
 
 description = "Extensions for testing code that uses Protobuf / gRPC."
@@ -36,14 +33,12 @@ tasks.withType<DokkaTaskPartial>().configureEach {
 }
 
 protobuf {
-  protobuf(delegateClosureOf<ProtobufConfigurator> {
-    protoc(delegateClosureOf<ExecutableLocator> {
-      artifact = "com.google.protobuf:protoc:${property("versions.protobuf")}"
-    })
-    generateProtoTasks(delegateClosureOf<JavaGenerateProtoTaskCollection> {
-      ofSourceSet("test")
-    })
-  })
+  protoc {
+    artifact = "com.google.protobuf:protoc:${property("versions.protobuf")}"
+  }
+  generateProtoTasks {
+    ofSourceSet("test")
+  }
 }
 
 // This seems to be necessary just to get IntelliJ to notice the proto sources.
