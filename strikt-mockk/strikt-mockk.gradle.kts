@@ -1,7 +1,6 @@
 plugins {
   kotlin("jvm")
   id("published")
-  id("info.solidsoft.pitest")
 }
 
 description = "Extensions for assertions and traversals on types from the Mockk mocking and verification library."

@@ -4,7 +4,6 @@ import java.net.URL
 plugins {
   kotlin("jvm")
   id("published")
-  id("info.solidsoft.pitest")
   id("org.jetbrains.kotlin.plugin.spring")
 }
 

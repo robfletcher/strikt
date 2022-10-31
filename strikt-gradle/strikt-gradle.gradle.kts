@@ -4,7 +4,6 @@ import java.net.URL
 plugins {
   kotlin("jvm")
   id("published")
-  id("info.solidsoft.pitest")
 }
 
 description = "Extensions for assertions and traversals on Gradle's test kit."

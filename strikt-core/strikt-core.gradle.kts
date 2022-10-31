@@ -1,7 +1,6 @@
 plugins {
   kotlin("jvm")
   id("published")
-  id("info.solidsoft.pitest")
 }
 
 description = "The core API for Strikt."

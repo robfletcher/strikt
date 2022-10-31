@@ -4,7 +4,6 @@ import java.net.URL
 plugins {
   kotlin("jvm")
   id("published")
-  id("info.solidsoft.pitest")
 }
 
 description = "Extensions for assertions and traversals on types Jackson's JsonNode and sub-types."
