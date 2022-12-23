@@ -10,7 +10,7 @@ import kotlin.text.RegexOption.IGNORE_CASE
 plugins {
   kotlin("jvm") apply false
   id("io.codearte.nexus-staging") version "0.30.0"
-  id("org.jmailen.kotlinter") version "3.12.0" apply false
+  id("org.jmailen.kotlinter") version "3.13.0" apply false
   id("com.adarshr.test-logger") version "3.2.0" apply false
   id("com.github.ben-manes.versions") version "0.44.0"
   id("org.jetbrains.dokka")
