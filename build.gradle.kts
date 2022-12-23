@@ -2,7 +2,7 @@ import com.adarshr.gradle.testlogger.TestLoggerExtension
 import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.codearte.gradle.nexus.NexusStagingExtension
-import org.gradle.api.JavaVersion.VERSION_11
+import org.gradle.api.JavaVersion.VERSION_1_8
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -49,12 +49,12 @@ subprojects {
   afterEvaluate {
     plugins.withId("kotlin") {
       configure<JavaPluginConvention> {
-        sourceCompatibility = VERSION_11
+        sourceCompatibility = VERSION_1_8
       }
 
       tasks.withType<KotlinCompile> {
         kotlinOptions {
-          jvmTarget = VERSION_11.toString()
+          jvmTarget = VERSION_1_8.toString()
           languageVersion = "1.7"
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
