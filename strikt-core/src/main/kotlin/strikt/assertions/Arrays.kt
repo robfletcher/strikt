@@ -14,6 +14,7 @@ infix fun <T> Assertion.Builder<Array<out T>>.contentEquals(other: Array<out T>)
 /**
  * Asserts that the subject has a [Array.size] of exactly [expected].
  */
+@JvmName("hasSize_ObjectArray")
 infix fun <T> Assertion.Builder<Array<T>>.hasSize(expected: Int): Assertion.Builder<Array<T>> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -42,6 +43,7 @@ infix fun Assertion.Builder<BooleanArray>.contentEquals(other: BooleanArray): As
 /**
  * Asserts that the subject has a [BooleanArray.size] of exactly [expected].
  */
+@JvmName("hasSize_BooleanArray")
 infix fun Assertion.Builder<BooleanArray>.hasSize(expected: Int): Assertion.Builder<BooleanArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -70,6 +72,7 @@ infix fun Assertion.Builder<ByteArray>.contentEquals(other: ByteArray): Assertio
 /**
  * Asserts that the subject has a [ByteArray.size] of exactly [expected].
  */
+@JvmName("hasSize_ByteArray")
 infix fun Assertion.Builder<ByteArray>.hasSize(expected: Int): Assertion.Builder<ByteArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -98,6 +101,7 @@ infix fun Assertion.Builder<ShortArray>.contentEquals(other: ShortArray): Assert
 /**
  * Asserts that the subject has a [ShortArray.size] of exactly [expected].
  */
+@JvmName("hasSize_ShortArray")
 infix fun Assertion.Builder<ShortArray>.hasSize(expected: Int): Assertion.Builder<ShortArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -126,6 +130,7 @@ infix fun Assertion.Builder<IntArray>.contentEquals(other: IntArray): Assertion.
 /**
  * Asserts that the subject has a [IntArray.size] of exactly [expected].
  */
+@JvmName("hasSize_IntArray")
 infix fun Assertion.Builder<IntArray>.hasSize(expected: Int): Assertion.Builder<IntArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -154,6 +159,7 @@ infix fun Assertion.Builder<LongArray>.contentEquals(other: LongArray): Assertio
 /**
  * Asserts that the subject has a [LongArray.size] of exactly [expected].
  */
+@JvmName("hasSize_LongArray")
 infix fun Assertion.Builder<LongArray>.hasSize(expected: Int): Assertion.Builder<LongArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -182,6 +188,7 @@ infix fun Assertion.Builder<FloatArray>.contentEquals(other: FloatArray): Assert
 /**
  * Asserts that the subject has a [FloatArray.size] of exactly [expected].
  */
+@JvmName("hasSize_FloatArray")
 infix fun Assertion.Builder<FloatArray>.hasSize(expected: Int): Assertion.Builder<FloatArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -210,6 +217,7 @@ infix fun Assertion.Builder<DoubleArray>.contentEquals(other: DoubleArray): Asse
 /**
  * Asserts that the subject has a [DoubleArray.size] of exactly [expected].
  */
+@JvmName("hasSize_DoubleArray")
 infix fun Assertion.Builder<DoubleArray>.hasSize(expected: Int): Assertion.Builder<DoubleArray> =
   assert("has size %d", expected) {
     when (it.size) {
@@ -238,6 +246,7 @@ infix fun Assertion.Builder<CharArray>.contentEquals(other: CharArray): Assertio
 /**
  * Asserts that the subject has a [CharArray.size] of exactly [expected].
  */
+@JvmName("hasSize_CharArray")
 infix fun Assertion.Builder<CharArray>.hasSize(expected: Int): Assertion.Builder<CharArray> =
   assert("has size %d", expected) {
     when (it.size) {
