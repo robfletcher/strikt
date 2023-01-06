@@ -55,7 +55,7 @@ subprojects {
       tasks.withType<KotlinCompile> {
         kotlinOptions {
           jvmTarget = VERSION_1_8.toString()
-          languageVersion = "1.7"
+          languageVersion = "1.8"
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
           allWarningsAsErrors = true
