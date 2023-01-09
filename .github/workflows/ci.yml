@@ -4,11 +4,20 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build on Java ${{ matrix.java }}
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ ubuntu-latest, windows-latest ]
         java: [8, 11, 17, 19]
+        exclude:
+          - os: windows-latest
+            java: 8
+          - os: windows-latest
+            java: 11
+          - os: windows-latest
+            java: 19
+
+    name: Build on Java ${{ matrix.java }} - ${{ matrix.os}}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
