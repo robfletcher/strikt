@@ -110,3 +110,19 @@ fun <T : Map<K, V>, K, V> Builder<T>.hasEntry(
   value: V
 ): Builder<T> =
   apply { containsKey(key)[key].isEqualTo(value) }
+
+/**
+ * Maps an assertion on a map to an assertion on its keys.
+ *
+ * @see Map.keys
+ */
+val <T : Map<K, *>, K> Builder<T>.keys: Builder<Set<K>>
+  get() = get(Map<K, *>::keys)
+
+/**
+ * Maps an assertion on a map to an assertion on its values.
+ *
+ * @see Map.values
+ */
+val <T : Map<*, V>, V> Builder<T>.values: Builder<Collection<V>>
+  get() = get(Map<*, V>::values)

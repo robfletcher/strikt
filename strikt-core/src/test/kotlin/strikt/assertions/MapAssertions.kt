@@ -35,6 +35,14 @@ internal object MapAssertions : JUnit5Minutests {
           }
         }
       }
+
+      test("keys mapping returns an empty set subject") {
+        keys.isEmpty()
+      }
+
+      test("values mapping returns an empty collection subject") {
+        values.isEmpty()
+      }
     }
 
     context("a non-empty map") {
@@ -217,6 +225,18 @@ internal object MapAssertions : JUnit5Minutests {
             expectThat(it.message)
               .isEqualTo("Mapping 'entry [\"bar\"]' failed with: Key bar is missing in the map.")
           }
+        }
+      }
+
+      context("keys mapping") {
+        test("returns the map keys as a subject") {
+          keys.isEqualTo(setOf("foo", "baz", "qux"))
+        }
+      }
+
+      context("values mapping") {
+        test("returns the map values as a subject") {
+          values.containsExactlyInAnyOrder("bar", "fnord", "fnord")
         }
       }
     }
