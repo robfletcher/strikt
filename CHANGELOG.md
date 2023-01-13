@@ -1,6 +1,9 @@
-## 0.34.2
+## 0.34.2 Radiant Factory
 
 - Adds `comparesEqualTo` for comparable subjects.
+- Adds `isEqualToIgnoringWhitespace` for string subjects.
+- Adds `hasSize` assertion for array subjects.
+- Adds `keys` and `values` mappings for map subjects
 
 ## 0.34.1 Glorious Bureaucrat - 2022-02-02
 
