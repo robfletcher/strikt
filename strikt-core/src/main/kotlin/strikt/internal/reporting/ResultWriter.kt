@@ -8,7 +8,7 @@ internal interface ResultWriter {
 
   fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
     results.forEachIndexed { index, it ->
-      if (index > 0) writer.append("\n")
+      if (index > 0) writer.append(System.lineSeparator())
       writeTo(writer, it)
     }
 
