@@ -23,10 +23,15 @@ import java.nio.file.attribute.PosixFilePermission
 import java.nio.file.attribute.PosixFilePermissions
 
 // TODO: improve how fixture Path's are generated since we leveraging @TempDir, which only gets created once for the entire minutest test context
+/**
+ * IMPORTANT:
+ * On Windows, your IDE needs to be run as administrator in order for these tests to pass.
+ */
 internal object PathAssertions {
 
   private fun TestDescriptor.joinFullName() =
     fullName().joinToString(separator = "_")
+      .filterNot { it.isWhitespace() } // Windows doesn't support paths with whitespace characters
 
   @TestFactory
   internal fun endsWith() = rootContext<Assertion.Builder<Path>> {
@@ -305,17 +310,10 @@ internal object PathAssertions {
   internal fun isExecutable(@TempDir directory: Path) = rootContext<Assertion.Builder<Path>> {
     context("passes when") {
       fixture {
-        expectThat(
-          Files.createFile(
-            directory.resolve(it.joinFullName()),
-            PosixFilePermissions.asFileAttribute(
-              setOf(
-                PosixFilePermission.OWNER_READ,
-                PosixFilePermission.OWNER_EXECUTE
-              )
-            )
-          )
-        )
+        val path = Files.createFile(directory.resolve(it.joinFullName()))
+        path.toFile().setExecutable(true)
+
+        expectThat(path)
       }
       test("path has executable permission") {
         isExecutable()
