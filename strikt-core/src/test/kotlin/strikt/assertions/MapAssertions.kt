@@ -78,7 +78,7 @@ internal object MapAssertions : JUnit5Minutests {
           expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ has an entry with the key "bar""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -95,7 +95,7 @@ internal object MapAssertions : JUnit5Minutests {
           expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ does not have an entry with the key "foo""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -115,7 +115,7 @@ internal object MapAssertions : JUnit5Minutests {
               |    ✓ has an entry with the key "foo"
               |    ✗ has an entry with the key "bar"
               |    ✗ has an entry with the key "fnord""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -135,7 +135,7 @@ internal object MapAssertions : JUnit5Minutests {
               |    ✓ does not have an entry with the key "bar"
               |    ✓ does not have an entry with the key "fnord"
               |    ✗ does not have an entry with the key "foo""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -152,7 +152,7 @@ internal object MapAssertions : JUnit5Minutests {
           expectThat(error.message).isEqualTo(
             """▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
               |  ✗ has an entry with the key "bar""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -166,7 +166,7 @@ internal object MapAssertions : JUnit5Minutests {
               |  ▼ entry ["foo"]:
               |    ✗ is equal to "baz"
               |            found "bar""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -195,7 +195,7 @@ internal object MapAssertions : JUnit5Minutests {
                 """
                 |▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
                 |  ✗ has an entry with the key "bar"
-              """.trimMargin()
+              """.trimMargin().replace("\n", System.lineSeparator())
               )
           }
         }

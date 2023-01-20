@@ -43,7 +43,7 @@ internal class Block {
         |  ✓ is an instance of java.lang.String
         |  ✗ is an instance of java.lang.Number
         |                found java.lang.String"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -66,7 +66,7 @@ internal class Block {
         |  ✗ is an instance of java.lang.Number
         |                found java.lang.String
         |  ✓ is equal to "fnord""""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -83,7 +83,7 @@ internal class Block {
         """
         |▼ Expect that null:
         |  ✗ is not null"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -102,7 +102,7 @@ internal class Block {
         |▼ Expect that "fnord":
         |  ✗ is an instance of java.lang.Integer
         |                found java.lang.String"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -127,7 +127,7 @@ internal class Block {
         |  ✗ is not an instance of java.lang.String (Class)
         |                    found java.lang.String (Class)
         |  ✓ is not an instance of java.lang.Number"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -152,7 +152,7 @@ internal class Block {
         |  ✗ is not an instance of java.lang.String (Class)
         |                    found java.lang.String (Class)
         |  ✓ is not an instance of java.lang.Number"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -191,7 +191,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -216,7 +216,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -246,7 +246,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -274,7 +274,7 @@ internal class Block {
         |    ✗ ends with "y"
         |          found "d"
         |    ✓ has length 5"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }

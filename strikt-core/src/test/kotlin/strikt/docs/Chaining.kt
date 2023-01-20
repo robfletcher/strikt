@@ -67,7 +67,7 @@ internal class Chaining {
       // END traversing_subjects_2
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `traversing subjects 4`() {

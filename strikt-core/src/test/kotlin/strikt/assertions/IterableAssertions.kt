@@ -442,7 +442,8 @@ internal object IterableAssertions : JUnit5Minutests {
           |  ✗ contains the elements ["fnord", "marzipan", "bojack"]
           |    ✗ contains "fnord"
           |    ✓ contains "marzipan"
-          |    ✗ contains "bojack"""".trimMargin()
+          |    ✗ contains "bojack""""
+            .trimMargin().replace("\n", System.lineSeparator())
         )
       }
 
@@ -452,8 +453,9 @@ internal object IterableAssertions : JUnit5Minutests {
             .contains("fnord")
         }
         expectThat(error.message).isEqualTo(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ contains \"fnord\""
+          """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+            |  ✗ contains "fnord""""
+            .trimMargin().replace("\n", System.lineSeparator())
         )
       }
     }
@@ -532,7 +534,8 @@ internal object IterableAssertions : JUnit5Minutests {
           |  ✗ does not contain any of the elements ["catflap", "wye", "marzipan"]
           |    ✗ does not contain "catflap"
           |    ✓ does not contain "wye"
-          |    ✗ does not contain "marzipan"""".trimMargin()
+          |    ✗ does not contain "marzipan""""
+            .trimMargin().replace("\n", System.lineSeparator())
         )
       }
 
@@ -542,8 +545,9 @@ internal object IterableAssertions : JUnit5Minutests {
             .doesNotContain("catflap")
         }
         expectThat(error.message).isEqualTo(
-          "▼ Expect that [\"catflap\", \"rubberplant\", \"marzipan\"]:\n" +
-            "  ✗ does not contain \"catflap\""
+          """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
+            |  ✗ does not contain "catflap""""
+            .trimMargin().replace("\n", System.lineSeparator())
         )
       }
     }
@@ -597,7 +601,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "rubberplant"
             |    ✓ …at index 1
             |    ✗ contains no further elements
-            |      found ["marzipan"]""".trimMargin()
+            |      found ["marzipan"]"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -616,7 +621,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
             |    ✗ contains "fnord"
-            |    ✓ contains no further elements""".trimMargin()
+            |    ✓ contains no further elements"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -646,7 +652,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |      found "rubberplant"
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
-            |    ✓ contains no further elements""".trimMargin()
+            |    ✓ contains no further elements"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -665,7 +672,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "marzipan"
             |    ✓ …at index 2
             |    ✗ contains "marzipan"
-            |    ✓ contains no further elements""".trimMargin()
+            |    ✓ contains no further elements"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -781,7 +789,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "catflap"
             |    ✓ contains "rubberplant"
             |    ✗ contains no further elements
-            |      found ["marzipan"]""".trimMargin()
+            |      found ["marzipan"]"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -802,7 +811,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "rubberplant"
             |    ✓ contains "marzipan"
             |    ✗ contains "marzipan"
-            |    ✓ contains no further elements""".trimMargin()
+            |    ✓ contains no further elements"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -823,7 +833,8 @@ internal object IterableAssertions : JUnit5Minutests {
             |    ✓ contains "rubberplant"
             |    ✓ contains "marzipan"
             |    ✗ contains "fnord"
-            |    ✓ contains no further elements""".trimMargin()
+            |    ✓ contains no further elements"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 

@@ -61,7 +61,8 @@ internal object BeanPropertyAssertions {
           |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David""""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }
@@ -94,7 +95,8 @@ internal object BeanPropertyAssertions {
           |      ✓ is equal to 1947-01-08
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David""""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }
@@ -142,7 +144,8 @@ internal object BeanPropertyAssertions {
           |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David""""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }
@@ -182,7 +185,8 @@ internal object BeanPropertyAssertions {
             |              found "Oreo"
             |    ▼ value of property tails:
             |      ✗ is equal to 1
-            |              found 0""".trimMargin()
+            |              found 0"""
+            .trimMargin().replace("\n", System.lineSeparator())
         )
     }
   }

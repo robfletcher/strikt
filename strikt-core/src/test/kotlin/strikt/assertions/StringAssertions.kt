@@ -52,7 +52,8 @@ internal object StringAssertions : JUnit5Minutests {
           .contains(
             """▼ Expect that "fnord":
                     |  ✗ starts with "fnrd"
-                    |          found "fnor"""".trimMargin()
+                    |          found "fnor""""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
       }
     }
@@ -73,7 +74,8 @@ internal object StringAssertions : JUnit5Minutests {
           .isEqualTo(
             """▼ Expect that "fnord":
                      |  ✗ ends with "nor"
-                     |        found "ord"""".trimMargin()
+                     |        found "ord""""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
       }
     }

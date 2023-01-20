@@ -32,7 +32,8 @@ internal object ListAssertions : JUnit5Minutests {
             }
             expectThat(exception.message).isEqualTo(
               """▼ Expect that [1, 2, 3, 4]:
-            |  ✗ contains the sequence: [1, 4] in exactly the same order""".trimMargin()
+            |  ✗ contains the sequence: [1, 4] in exactly the same order"""
+                  .trimMargin().replace("\n", System.lineSeparator())
             )
           }
 
@@ -43,7 +44,8 @@ internal object ListAssertions : JUnit5Minutests {
             }
             expectThat(exception.message).isEqualTo(
               """▼ Expect that [1, 2, 3, 4]:
-              |  ✗ contains the sequence: [1, 2, 3, 4, 5] in exactly the same order : expected sequence cannot be longer than subject""".trimMargin()
+              |  ✗ contains the sequence: [1, 2, 3, 4, 5] in exactly the same order : expected sequence cannot be longer than subject"""
+                  .trimMargin().replace("\n", System.lineSeparator())
             )
           }
 
@@ -54,7 +56,8 @@ internal object ListAssertions : JUnit5Minutests {
             }
             expectThat(exception.message).isEqualTo(
               """▼ Expect that [1, 2, 3, 4]:
-            |  ✗ contains the sequence: [] in exactly the same order : expected sequence cannot empty""".trimMargin()
+            |  ✗ contains the sequence: [] in exactly the same order : expected sequence cannot empty"""
+                  .trimMargin().replace("\n", System.lineSeparator())
             )
           }
         }

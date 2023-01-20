@@ -189,7 +189,8 @@ internal object AnyAssertions : JUnit5Minutests {
           expectThat(error.message).isEqualTo(
             """▼ Expect that 5:
             |  ✗ is equal to 5 (Int)
-            |          found 5 (Long)""".trimMargin()
+            |          found 5 (Long)"""
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }

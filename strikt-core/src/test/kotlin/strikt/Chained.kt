@@ -47,8 +47,9 @@ internal class Chained {
       expectThat(subject).not().isLowerCase()
     }
     expectThat(error.message).isEqualTo(
-      "▼ Expect that \"fnord\":\n" +
-        "  ✗ is not lower case"
+      """▼ Expect that "fnord":
+      |  ✗ is not lower case"""
+        .trimMargin().replace("\n", System.lineSeparator())
     )
   }
 
@@ -65,7 +66,8 @@ internal class Chained {
         |    ✓ contains 2
         |    ✓ …at index 1
         |    ✗ contains no further elements
-        |      found [3, 4]""".trimMargin()
+        |      found [3, 4]"""
+        .trimMargin().replace("\n", System.lineSeparator())
     expectThat(error)
       .isA<AssertionFailedError>()
       .message
@@ -93,7 +95,7 @@ internal class Chained {
         |  ✓ contains "n"
         |  ✗ contains "z"
         |       found "fnord""""
-        .trimMargin()
+        .trimMargin().replace("\n", System.lineSeparator())
     )
   }
 

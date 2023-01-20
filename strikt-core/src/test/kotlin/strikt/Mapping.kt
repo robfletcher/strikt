@@ -61,7 +61,7 @@ internal class Mapping {
         """▼ Expect that []:
           |  ✗ has only one element
           |    found []"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }
@@ -76,7 +76,7 @@ internal class Mapping {
         """▼ Expect that ["catflap", "rubberplant"]:
           |  ✗ has only one element
           |    found ["catflap", "rubberplant"]"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }
@@ -215,7 +215,8 @@ internal class Mapping {
           |            found "David"
           |  ▼ birth year:
           |    ✗ is equal to 1971
-          |            found 1947""".trimMargin()
+          |            found 1947"""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
 
@@ -228,7 +229,8 @@ internal class Mapping {
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property name:
           |    ✗ is equal to "Ziggy"
-          |            found "David"""".trimMargin()
+          |            found "David""""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
 
@@ -247,7 +249,8 @@ internal class Mapping {
           |            found "David"
           |  ▼ birthDate.year:
           |    ✗ is equal to 1971
-          |            found 1947""".trimMargin()
+          |            found 1947"""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
 
@@ -263,7 +266,8 @@ internal class Mapping {
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
           |      ✗ is equal to 1971
-          |              found 1947""".trimMargin()
+          |              found 1947"""
+          .trimMargin().replace("\n", System.lineSeparator())
       )
     }
   }

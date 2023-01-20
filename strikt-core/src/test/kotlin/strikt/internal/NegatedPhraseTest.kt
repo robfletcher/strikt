@@ -28,7 +28,7 @@ internal class NegatedPhraseTest {
             expectThat("fnord").not().assert(phrase, "foo") { pass() }
           }
             .message
-            .isEqualTo("▼ Expect that \"fnord\":\n  ✗ $expected")
+            .isEqualTo("▼ Expect that \"fnord\":${System.lineSeparator()}  ✗ $expected")
         }
       }
 }
