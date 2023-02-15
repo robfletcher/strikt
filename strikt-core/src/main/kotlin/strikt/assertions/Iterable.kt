@@ -292,7 +292,7 @@ fun <T : Iterable<E>, E> Builder<T>.exactly(
  * If either the subject or [elements] are empty the assertion always fails.
  */
 fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
-  contains(elements.toList())
+  contains(elements.asList())
 
 /**
  * Asserts that all [elements] are present in the subject.
@@ -334,16 +334,16 @@ infix fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Bui
  * Asserts that none of [elements] are present in the subject.
  *
  * If [elements] is empty the assertion always fails.
- * If the subject is empty the assertion always passe.
+ * If the subject is empty the assertion always passes.
  */
 fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<T> =
-  doesNotContain(elements.toList())
+  doesNotContain(elements.asList())
 
 /**
  * Asserts that none of [elements] are present in the subject.
  *
  * If [elements] is empty the assertion always fails.
- * If the subject is empty the assertion always passe.
+ * If the subject is empty the assertion always passes.
  */
 infix fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>): Builder<T> =
   when {
@@ -382,7 +382,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>
  * [containsExactlyInAnyOrder] instead.
  */
 fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder<T> =
-  containsExactly(elements.toList())
+  containsExactly(elements.asList())
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject in the
@@ -430,7 +430,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E
  * regardless of what order they appear in.
  */
 fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E): Builder<T> =
-  containsExactlyInAnyOrder(elements.toList())
+  containsExactlyInAnyOrder(elements.asList())
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject.

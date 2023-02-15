@@ -85,7 +85,7 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.doesNotContainKey(key: K): Builder<T>
  * Asserts that the subject map contains entries for all [keys].
  */
 fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
-  compose("has entries with the keys %s", keys.toList()) {
+  compose("has entries with the keys %s", keys.asList()) {
     keys.forEach { key -> containsKey(key) }
   } then {
     if (allPassed) pass() else fail()
@@ -95,7 +95,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.containsKeys(vararg keys: K): Builder<T> =
  * Asserts that the subject map doesn't contain entries for all [keys].
  */
 fun <T : Map<K, V>, K, V> Builder<T>.doesNotContainKeys(vararg keys: K): Builder<T> =
-  compose("doesn't have entries with the keys %s", keys.toList()) {
+  compose("doesn't have entries with the keys %s", keys.asList()) {
     keys.forEach { key -> doesNotContainKey(key) }
   } then {
     if (allPassed) pass() else fail()
