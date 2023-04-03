@@ -2,8 +2,8 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 plugins {
   id("org.jetbrains.dokka")
-  id("nebula.maven-publish")
-  id("nebula.source-jar")
+  id("com.netflix.nebula.maven-publish")
+  id("com.netflix.nebula.source-jar")
   signing
 }
 
