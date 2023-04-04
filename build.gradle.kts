@@ -48,7 +48,7 @@ subprojects {
 
   afterEvaluate {
     plugins.withId("kotlin") {
-      configure<JavaPluginConvention> {
+      configure<JavaPluginExtension> {
         sourceCompatibility = VERSION_1_8
       }
 

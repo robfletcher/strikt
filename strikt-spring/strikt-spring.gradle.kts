@@ -16,7 +16,7 @@ dependencies {
   implementation(platform("org.springframework.boot:spring-boot-dependencies:${property("versions.spring-boot")}"))
   compileOnly("org.springframework:spring-test")
   compileOnly("org.springframework:spring-web")
-  compileOnly("javax.servlet:javax.servlet-api")
+  compileOnly("jakarta.servlet:jakarta.servlet-api")
 
   testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -31,6 +31,20 @@ tasks.withType<DokkaTaskPartial>().configureEach {
           url.set(URL(it))
           packageListUrl.set(URL("${it}package-list"))
         }
+      }
+    }
+  }
+}
+
+afterEvaluate {
+  plugins.withId("kotlin") {
+    configure<JavaPluginExtension> {
+      sourceCompatibility = JavaVersion.VERSION_17
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+      kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
       }
     }
   }
