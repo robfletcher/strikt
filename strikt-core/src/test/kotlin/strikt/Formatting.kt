@@ -36,7 +36,8 @@ internal class Formatting {
         |    ▼ "rubberplant":
         |      ✗ is upper case
         |    ▼ "marzipan":
-        |      ✗ is upper case""".trimMargin()
+        |      ✗ is upper case"""
+        .trimMargin().replace("\n", System.lineSeparator())
     expectThat(error.message).isEqualTo(expected)
   }
 
@@ -68,7 +69,8 @@ internal class Formatting {
         |    ▼ "marzipan":
         |      ✗ is upper case
         |      ✗ starts with 'c'
-        |              found 'm'""".trimMargin()
+        |              found 'm'"""
+        .trimMargin().replace("\n", System.lineSeparator())
     expectThat(error.message).isEqualTo(expected)
   }
 
@@ -95,7 +97,8 @@ internal class Formatting {
         |              found 'r'
         |    ▼ "marzipan":
         |      ✗ starts with 'c'
-        |              found 'm'""".trimMargin()
+        |              found 'm'"""
+        .trimMargin().replace("\n", System.lineSeparator())
 
     expectThat(error.message).isEqualTo(expected)
   }
@@ -143,12 +146,14 @@ internal class Formatting {
     val subject =
       """a string
                |with
-               |line breaks""".trimMargin()
+               |line breaks"""
+        .trimMargin().replace("\n", System.lineSeparator())
 
     val e = assertThrows<AssertionError> {
       expectThat(subject) isEqualTo """a different string
                                       |with
-                                      |line breaks""".trimMargin()
+                                      |line breaks"""
+        .trimMargin().replace("\n", System.lineSeparator())
     }
 
     expectThat(e.message).isEqualTo(
@@ -160,7 +165,8 @@ internal class Formatting {
         |                |line breaks"
         |          found "a string
         |                |with
-        |                |line breaks"""".trimMargin()
+        |                |line breaks""""
+        .trimMargin().replace("\n", System.lineSeparator())
     )
   }
 }

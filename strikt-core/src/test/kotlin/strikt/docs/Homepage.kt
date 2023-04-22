@@ -90,7 +90,7 @@ internal class Homepage {
       /* ktlint-enable no-multi-spaces */
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test

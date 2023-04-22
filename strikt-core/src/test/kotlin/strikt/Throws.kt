@@ -31,7 +31,7 @@ internal class Throws {
         """▼ Expect that Success(kotlin.Unit):
           |  ✗ is failure
           |    returned kotlin.Unit"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }
@@ -47,7 +47,7 @@ internal class Throws {
           |  ▼ exception:
           |    ✗ is an instance of java.lang.NullPointerException
           |                  found java.lang.IllegalStateException"""
-          .trimMargin()
+          .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }

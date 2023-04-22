@@ -35,7 +35,7 @@ class Exceptions {
           """▼ Expect that "fnord":
             |  ✓ has length 5
             |  ✗ is upper case"""
-            .trimMargin()
+            .trimMargin().replace("\n", System.lineSeparator())
         )
     }
   }
@@ -57,7 +57,7 @@ class Exceptions {
               |  ✓ has length 5
               |  ✗ is upper case
               |  ✓ starts with "f""""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
           get { failures }
             .hasSize(1)
@@ -66,7 +66,7 @@ class Exceptions {
             .message.isEqualTo(
               """▼ Expect that "fnord":
                 |  ✗ is upper case"""
-                .trimMargin()
+                .trimMargin().replace("\n", System.lineSeparator())
             )
         }
     }
@@ -95,7 +95,7 @@ class Exceptions {
               |            found 5
               |    ✗ is less than 2
               |    ✗ is not equal to 5"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
         .get { failures }
@@ -109,7 +109,7 @@ class Exceptions {
                 |  ▼ value of property length:
                 |    ✗ is equal to 1
                 |            found 5"""
-                .trimMargin()
+                .trimMargin().replace("\n", System.lineSeparator())
             )
         }
         .and {
@@ -120,7 +120,7 @@ class Exceptions {
               """▼ Expect that "fnord":
                 |  ▼ value of property length:
                 |    ✗ is less than 2"""
-                .trimMargin()
+                .trimMargin().replace("\n", System.lineSeparator())
             )
         }
         .and {
@@ -131,7 +131,7 @@ class Exceptions {
               """▼ Expect that "fnord":
                 |  ▼ value of property length:
                 |    ✗ is not equal to 5"""
-                .trimMargin()
+                .trimMargin().replace("\n", System.lineSeparator())
             )
         }
     }
@@ -161,7 +161,7 @@ class Exceptions {
               |            found 5
               |    ✗ is less than 2
               |    ✗ is not equal to 5"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
         .get { failures }
@@ -177,7 +177,7 @@ class Exceptions {
             |            found 5
             |    ✗ is less than 2
             |    ✗ is not equal to 5"""
-            .trimMargin()
+            .trimMargin().replace("\n", System.lineSeparator())
         )
     }
   }
@@ -201,7 +201,7 @@ class Exceptions {
               |    ✓ …at index 1
               |    ✗ contains no further elements
               |      found ["marzipan"]"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
       }
   }
@@ -227,7 +227,7 @@ class Exceptions {
                 """▼ Expect that ["catflap", "rubberplant", "marzipan"]:
                   |  ✗ has size 2
                   |       found 3"""
-                  .trimMargin()
+                  .trimMargin().replace("\n", System.lineSeparator())
               )
             get(1)
               .isA<AssertionFailedError>()
@@ -241,7 +241,7 @@ class Exceptions {
                   |    ✓ …at index 1
                   |    ✗ contains no further elements
                   |      found ["marzipan"]"""
-                  .trimMargin()
+                  .trimMargin().replace("\n", System.lineSeparator())
               )
           }
       }

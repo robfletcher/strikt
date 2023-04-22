@@ -48,7 +48,7 @@ internal class Assertions {
       // END assertion_styles_1
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `assertion styles 3, 4`() {
@@ -74,7 +74,7 @@ internal class Assertions {
       // END assertion_styles_3
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `assertion styles 5, 6`() {
@@ -97,7 +97,7 @@ internal class Assertions {
       // END assertion_styles_5
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `assertion styles 7, 8`() {
@@ -129,7 +129,7 @@ internal class Assertions {
       // END assertion_styles_7
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
 // collection-elements.md
@@ -165,7 +165,7 @@ internal class Assertions {
       // END collections_2
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
 // expecting-exceptions.md

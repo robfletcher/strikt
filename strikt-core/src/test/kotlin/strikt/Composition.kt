@@ -20,9 +20,10 @@ internal class Composition {
         if (allPassed) pass() else fail()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✗ matches a negated assertion\n" +
-        "    ✗ is not lower case"
+      val expected = """▼ Expect that "fnord":
+                            |  ✗ matches a negated assertion
+                            |    ✗ is not lower case"""
+                              .trimMargin().replace("\n", System.lineSeparator())
       expectThat(error.message).isEqualTo(expected)
     }
   }

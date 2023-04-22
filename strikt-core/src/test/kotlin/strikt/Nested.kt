@@ -24,12 +24,13 @@ internal class Nested {
         that("FNØRD").isLowerCase()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✗ is null\n" +
-        "▼ Expect that \"FNORD\":\n" +
-        "  ✓ is upper case\n" +
-        "▼ Expect that \"FNØRD\":\n" +
-        "  ✗ is lower case"
+      val expected = """▼ Expect that "fnord":
+                           |  ✗ is null
+                           |▼ Expect that "FNORD":
+                           |  ✓ is upper case
+                           |▼ Expect that "FNØRD":
+                           |  ✗ is lower case"""
+                            .trimMargin().replace("\n", System.lineSeparator())
       expectThat(expected).isEqualTo(error.message)
     }
   }
@@ -49,7 +50,8 @@ internal class Nested {
                           |          found "foo"
                           |▼ Expect that pass 2:
                           |  ✗ is equal to "bar"
-                          |          found "foo"""".trimMargin()
+                          |          found "foo""""
+      .trimMargin().replace("\n", System.lineSeparator())
   }
 
   @Test
@@ -68,12 +70,13 @@ internal class Nested {
         that(delayedReturnValue("FNØRD")).isLowerCase()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✗ is null\n" +
-        "▼ Expect that \"FNORD\":\n" +
-        "  ✓ is upper case\n" +
-        "▼ Expect that \"FNØRD\":\n" +
-        "  ✗ is lower case"
+      val expected = """▼ Expect that "fnord":
+                             |  ✗ is null
+                             |▼ Expect that "FNORD":
+                             |  ✓ is upper case
+                             |▼ Expect that "FNØRD":
+                             |  ✗ is lower case"""
+                              .trimMargin().replace("\n", System.lineSeparator())
       expectThat(expected).isEqualTo(error.message)
     }
   }

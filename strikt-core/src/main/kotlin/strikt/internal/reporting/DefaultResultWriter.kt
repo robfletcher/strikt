@@ -89,7 +89,7 @@ internal open class DefaultResultWriter : ResultWriter {
     writer
       .append(
         description.format(formattedValue).lines().joinToString(
-          "\n${"".padStart(
+          "$EOL${"".padStart(
             valueIndent
           )}|"
         )
@@ -120,13 +120,13 @@ internal open class DefaultResultWriter : ResultWriter {
               val lines = it.lines()
               if (lines.size > 1) {
                 lines
-                  .joinToString("\n${"".padStart(descriptionIndentFollowing)}|")
+                  .joinToString("$EOL${"".padStart(descriptionIndentFollowing)}|")
               } else {
                 it
               }
             }
           )
-          .append("\n")
+          .append(EOL)
         writeLineStart(writer, this, indent)
         writer
           .append("".padEnd(alignIndent))
@@ -134,7 +134,7 @@ internal open class DefaultResultWriter : ResultWriter {
             failedDescription.format(formattedComparison.actual).let {
               val lines = it.lines()
               if (lines.size > 1) {
-                lines.joinToString("\n${"".padStart(alignIndentFollowing)}|")
+                lines.joinToString("$EOL${"".padStart(alignIndentFollowing)}|")
               } else {
                 it
               }

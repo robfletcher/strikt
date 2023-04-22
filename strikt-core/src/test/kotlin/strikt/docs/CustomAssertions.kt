@@ -41,7 +41,7 @@ internal class CustomAssertions {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `custom assertions 3, 4`() {
@@ -71,7 +71,7 @@ internal class CustomAssertions {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `custom assertions 5`() {
@@ -92,7 +92,7 @@ internal class CustomAssertions {
       expectThat(LocalDate.of(2018, 5, 1)).isStTibsDay()
     }
       .message
-      .isEqualTo(s.trimIndent().trim())
+      .isEqualTo(s.trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 
   @Test fun `custom assertions 6`() {
@@ -129,6 +129,6 @@ internal class CustomAssertions {
       expectThat(subject).containsNoNullElements()
     }
       .message
-      .isEqualTo(s.removeSnippetTags().trimIndent().trim())
+      .isEqualTo(s.removeSnippetTags().trimIndent().replace("\n", System.lineSeparator()).trim())
   }
 }

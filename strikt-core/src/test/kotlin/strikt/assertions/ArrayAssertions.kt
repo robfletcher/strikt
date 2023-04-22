@@ -33,7 +33,7 @@ internal object ArrayAssertions {
           expectThat(error.message).isEqualTo(
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -45,7 +45,7 @@ internal object ArrayAssertions {
           expectThat(error.message).isEqualTo(
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -64,7 +64,7 @@ internal object ArrayAssertions {
             """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ is equal to 0x${expected.toHex()}
                 |          found 0x${subject.toHex()}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -117,7 +117,7 @@ internal object ArrayAssertions {
                 |  ✗ array content equals ${expected
               .toList()
               .map { "'$it'" }}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
@@ -129,7 +129,7 @@ internal object ArrayAssertions {
           expectThat(error.message).isEqualTo(
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
               |  ✗ array content equals ${expected.toList().map { "'$it'" }}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
       }
@@ -148,7 +148,7 @@ internal object ArrayAssertions {
             """▼ Expect that ${subject.toList().map { "'$it'" }}:
                 |  ✗ is equal to ${expected.toList().map { "'$it'" }}
                 |          found ${subject.toList().map { "'$it'" }}"""
-              .trimMargin()
+              .trimMargin().replace("\n", System.lineSeparator())
           )
         }
 
