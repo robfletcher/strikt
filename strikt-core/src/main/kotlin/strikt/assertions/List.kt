@@ -23,7 +23,7 @@ operator fun <T : List<E>, E> Builder<T>.get(range: IntRange): Builder<List<E>> 
  * Asserts that all [elements] are present in the subject in exactly the same order
  */
 fun <T : List<E>, E> Builder<T>.containsSequence(vararg elements: E) =
-  containsSequence(elements.toList())
+  containsSequence(elements.asList())
 
 /**
  * Asserts that all [elements] are present in the subject in exactly the same order
