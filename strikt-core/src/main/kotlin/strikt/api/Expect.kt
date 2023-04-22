@@ -3,6 +3,7 @@ package strikt.api
 import kotlinx.coroutines.runBlocking
 import strikt.api.Assertion.Builder
 import strikt.assertions.failedWith
+import strikt.assertions.isSuccess
 import strikt.internal.AssertionBuilder
 import strikt.internal.AssertionStrategy.Collecting
 import strikt.internal.AssertionStrategy.Throwing
@@ -63,6 +64,16 @@ fun <T> expectThat(
  * about messages, root causes, etc.
  */
 inline fun <reified E : Throwable> expectThrows(noinline action: suspend () -> Any?): Builder<E> = expectCatching(action).failedWith()
+
+
+/**
+ * Asserts that [action] does not throw an exception when executed.
+ *
+ * @return an assertion for result of [action].
+ */
+fun <T> expectDoesNotThrow(
+  action: suspend () -> T
+) = expectCatching(action).isSuccess()
 
 /**
  * Start a chain of assertions over the result of [action] which may either be
