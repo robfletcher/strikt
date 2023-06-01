@@ -6,6 +6,7 @@ import filepeek.SourceFileNotFoundException
 import strikt.internal.FilePeek
 import java.io.File
 import java.util.Locale
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty
@@ -360,6 +361,8 @@ interface Assertion {
   }
 }
 
+private val DESCRIBE_CACHE = ConcurrentHashMap<Class<*>, () -> String>()
+
 private fun <Receiver, Result> (Receiver.() -> Result).describe(): () -> String =
   when (this) {
     is KProperty<*> -> {
@@ -374,7 +377,16 @@ private fun <Receiver, Result> (Receiver.() -> Result).describe(): () -> String 
       { "value of $propertyName" }
     }
 
-    else -> captureGet(RuntimeException())
+    else -> {
+      var lambda = DESCRIBE_CACHE[javaClass]
+
+      if (lambda == null) {
+        lambda = captureGet(RuntimeException())
+        DESCRIBE_CACHE.putIfAbsent(javaClass, lambda)
+      }
+
+      lambda
+    }
   }
 
 private fun captureGet(ex: Throwable): () -> String {
