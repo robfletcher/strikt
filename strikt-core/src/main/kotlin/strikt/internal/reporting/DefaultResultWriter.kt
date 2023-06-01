@@ -82,6 +82,7 @@ internal open class DefaultResultWriter : ResultWriter {
     if (isRoot) {
       writer.append("Expect that ")
     }
+    val description = this.description()
     // if the value spans > 1 line, this is how much to indent following lines
     val valueIndent =
       (description.indexOf("%")).coerceAtLeast(0) + 14 + (indent * 2)
@@ -104,6 +105,7 @@ internal open class DefaultResultWriter : ResultWriter {
     val failed = status as? Failed
     when {
       failed?.comparison != null -> {
+        val description = this.description()
         val formattedComparison = failed.comparison.formatValues()
         val failedDescription = failed.description ?: "found %s"
         val descriptionIndent = description.indexOf("%")
@@ -143,10 +145,10 @@ internal open class DefaultResultWriter : ResultWriter {
       }
       failed?.description != null ->
         writer
-          .append(description.format(formatValue(expected)))
+          .append(description().format(formatValue(expected)))
           .append(" : ")
           .append(failed.description)
-      else -> writer.append(description.format(formatValue(expected)))
+      else -> writer.append(description().format(formatValue(expected)))
     }
   }
 

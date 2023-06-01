@@ -23,7 +23,7 @@ internal interface AssertionNode<S> {
 }
 
 internal interface DescribedNode<S> : AssertionNode<S> {
-  var description: String
+  var description: () -> String
 }
 
 internal interface AssertionGroup<S> : AssertionNode<S> {
@@ -39,7 +39,7 @@ internal interface AssertionResult<S> : DescribedNode<S> {
 internal class AssertionSubject<S>(
   override val parent: AssertionGroup<*>?,
   override val subject: S,
-  override var description: String = "%s"
+  override var description: () -> String = { "%s" }
 ) : AssertionGroup<S>, DescribedNode<S> {
   constructor(value: S) : this(null, value)
 
@@ -138,7 +138,7 @@ internal class AssertionChainedGroup<S>(
 
 internal abstract class AtomicAssertionNode<S>(
   final override val parent: AssertionGroup<S>,
-  override var description: String,
+  override var description: () -> String,
   override val expected: Any? = null
 ) : AssertionResult<S>, AtomicAssertion {
 
@@ -156,7 +156,7 @@ internal abstract class AtomicAssertionNode<S>(
 
 internal abstract class CompoundAssertionNode<S>(
   final override val parent: AssertionGroup<S>,
-  override var description: String,
+  override var description: () -> String,
   override val expected: Any? = null
 ) : AssertionGroup<S>, AssertionResult<S>, CompoundAssertion {
 

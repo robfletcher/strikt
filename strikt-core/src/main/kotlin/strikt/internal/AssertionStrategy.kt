@@ -20,7 +20,7 @@ internal sealed class AssertionStrategy {
   ): AtomicAssertionNode<T> =
     object : AtomicAssertionNode<T>(
       context,
-      provideDescription(description),
+      { provideDescription(description) },
       expected
     ) {
 
@@ -62,7 +62,7 @@ internal sealed class AssertionStrategy {
   ): CompoundAssertionNode<T> =
     object : CompoundAssertionNode<T>(
       context,
-      provideDescription(description),
+      { provideDescription(description) },
       expected
     ) {
 

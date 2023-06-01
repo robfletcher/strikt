@@ -1,7 +1,10 @@
 package strikt.api
 
+import filepeek.FileInfo
 import filepeek.LambdaBody
+import filepeek.SourceFileNotFoundException
 import strikt.internal.FilePeek
+import java.io.File
 import java.util.Locale
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
@@ -233,6 +236,24 @@ interface Assertion {
       description: String,
       function: T.() -> R,
       block: Builder<R>.() -> Unit
+    ): Builder<T> = with({ description }, function, block)
+
+    /**
+     * Runs a group of assertions on the subject returned by [function].
+     *
+     * The [description] is only invoked if the test fails.
+     *
+     * @param description a lambda that produces a description of the mapped result.
+     * @param function a lambda whose receiver is the current assertion subject.
+     * @param block a closure that can perform multiple assertions that will all
+     * be evaluated regardless of whether preceding ones pass or fail.
+     * @param R the mapped subject type.
+     * @return this builder, to facilitate chaining.
+     */
+    fun <R> with(
+      description: () -> String,
+      function: T.() -> R,
+      block: Builder<R>.() -> Unit
     ): Builder<T>
 
     /**
@@ -261,6 +282,23 @@ interface Assertion {
      */
     fun <R> get(
       description: String,
+      function: T.() -> R
+    ): DescribeableBuilder<R> = get({ description }, function)
+
+    /**
+     * Maps the assertion subject to the result of [function].
+     * This is useful for chaining to property values or method call results on
+     * the subject.
+     *
+     * The [description] is only invoked if the test fails.
+     *
+     * @param description a lambda that produces a description of the mapped result.
+     * @param function a lambda whose receiver is the current assertion subject.
+     * @return an assertion builder whose subject is the value returned by
+     * [function].
+     */
+    fun <R> get(
+      description: () -> String,
       function: T.() -> R
     ): DescribeableBuilder<R>
 
@@ -322,22 +360,105 @@ interface Assertion {
   }
 }
 
-private fun <Receiver, Result> (Receiver.() -> Result).describe(): String =
+private fun <Receiver, Result> (Receiver.() -> Result).describe(): () -> String =
   when (this) {
-    is KProperty<*> ->
-      "value of property $name"
-    is KFunction<*> ->
-      "return value of $name"
-    is CallableReference -> "value of $propertyName"
-    else -> {
-      try {
-        val line = FilePeek.filePeek.getCallerFileInfo().line
-        LambdaBody("get", line).body.trim()
-      } catch (e: Exception) {
-        "%s"
-      }
+    is KProperty<*> -> {
+      { "value of property $name" }
+    }
+
+    is KFunction<*> -> {
+      { "return value of $name" }
+    }
+
+    is CallableReference -> {
+      { "value of $propertyName" }
+    }
+
+    else -> captureGet(RuntimeException())
+  }
+
+private fun captureGet(ex: Throwable): () -> String {
+  return {
+    try {
+      val line = FilePeek.filePeek.specialGetCallerInfo(ex).line
+      LambdaBody("get", line).body.trim()
+    } catch (e: Exception) {
+      "%s"
     }
   }
+}
+
+private fun <T> Sequence<T>.takeWhileInclusive(pred: (T) -> Boolean): Sequence<T> {
+  var shouldContinue = true
+  return takeWhile {
+    val result = shouldContinue
+    shouldContinue = pred(it)
+    result
+  }
+}
+
+private val FS = File.separator
+
+private val ignoredPackages = listOf(
+  "strikt.internal",
+  "strikt.api",
+  "filepeek"
+)
+
+private val sourceRoots: List<String> = listOf("src${FS}test${FS}kotlin", "src${FS}test${FS}java")
+
+private fun filepeek.FilePeek.specialGetCallerInfo(ex: Throwable): FileInfo {
+  val callerStackTraceElement = ex.stackTrace.first { el ->
+    ignoredPackages
+      .none { el.className.startsWith(it) }
+  }
+  val className = callerStackTraceElement.className.substringBefore('$')
+  val clazz = javaClass.classLoader.loadClass(className)!!
+  val classFilePath = File(clazz.protectionDomain.codeSource.location.path)
+    .absolutePath
+
+  val buildDir = when {
+    classFilePath.contains("${FS}out$FS") -> "out${FS}test${FS}classes" // running inside IDEA
+    classFilePath.contains("build${FS}classes${FS}java") -> "build${FS}classes${FS}java${FS}test" // gradle 4.x java source
+    classFilePath.contains("build${FS}classes${FS}kotlin") -> "build${FS}classes${FS}kotlin${FS}test" // gradle 4.x kotlin sources
+    classFilePath.contains("target${FS}classes") -> "target${FS}classes" // maven
+    else -> "build${FS}classes${FS}test" // older gradle
+  }
+
+  val sourceFileCandidates = sourceRoots
+    .map { sourceRoot ->
+      val sourceFileWithoutExtension =
+        classFilePath.replace(buildDir, sourceRoot)
+          .plus(FS + className.replace(".", FS))
+
+      File(sourceFileWithoutExtension).parentFile
+        .resolve(callerStackTraceElement.fileName!!)
+    }
+  val sourceFile = sourceFileCandidates.singleOrNull(File::exists) ?: throw SourceFileNotFoundException(
+    classFilePath,
+    className,
+    sourceFileCandidates
+  )
+
+  val callerLine = sourceFile.bufferedReader().useLines { lines ->
+    var braceDelta = 0
+    lines.drop(callerStackTraceElement.lineNumber - 1)
+      .takeWhileInclusive { line ->
+        val openBraces = line.count { it == '{' }
+        val closeBraces = line.count { it == '}' }
+        braceDelta += openBraces - closeBraces
+        braceDelta != 0
+      }.map { it.trim() }.joinToString(separator = "")
+  }
+
+  return FileInfo(
+    callerStackTraceElement.lineNumber,
+    sourceFileName = sourceFile.absolutePath,
+    line = callerLine.trim(),
+    methodName = callerStackTraceElement.methodName
+
+  )
+}
 
 private val CallableReference.propertyName: String
   get() = "^get(.+)$".toRegex().find(name).let { match ->
