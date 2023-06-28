@@ -25,10 +25,10 @@ infix fun <T : Any> Assertion.Builder<T>.propertiesAreEqualTo(other: T): Asserti
  */
 fun <T : Any> Assertion.Builder<T>.propertiesAreEqualToIgnoring(
   other: T,
-  vararg ignoredProperties: KProperty1<T, Any>
+  vararg ignoredProperties: KProperty1<T, Any?>
 ): Assertion.Builder<T> = compareFieldByField(
   other,
-  ignoredProperties.map(KProperty1<T, Any>::name)
+  ignoredProperties.map(KProperty1<T, Any?>::name)
 )
 
 private fun <T : Any> Assertion.Builder<T>.compareFieldByField(
