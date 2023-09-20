@@ -195,7 +195,7 @@ internal object MapAssertions : JUnit5Minutests {
                 """
                 |▼ Expect that {"foo"="bar", "baz"="fnord", "qux"="fnord"}:
                 |  ✗ has an entry with the key "bar"
-              """.trimMargin()
+                """.trimMargin()
               )
           }
         }

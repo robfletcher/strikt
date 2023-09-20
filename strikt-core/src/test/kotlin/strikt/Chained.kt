@@ -65,7 +65,8 @@ internal class Chained {
         |    ✓ contains 2
         |    ✓ …at index 1
         |    ✗ contains no further elements
-        |      found [3, 4]""".trimMargin()
+        |      found [3, 4]
+      """.trimMargin()
     expectThat(error)
       .isA<AssertionFailedError>()
       .message

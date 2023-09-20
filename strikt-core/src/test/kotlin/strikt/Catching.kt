@@ -43,7 +43,7 @@ internal class Catching : JUnit5Minutests {
             |▼ Expect that Success(kthxbye):
             |  ✗ is failure
             |    returned "kthxbye"
-          """.trimMargin()
+            """.trimMargin()
           )
         }
       }
@@ -78,7 +78,7 @@ internal class Catching : JUnit5Minutests {
             |▼ Expect that Failure(java.lang.IllegalStateException: o noes):
             |  ✗ is success
             |    threw java.lang.IllegalStateException
-          """.trimMargin()
+            """.trimMargin()
           )
         }
       }

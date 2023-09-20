@@ -124,6 +124,9 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
 fun <T : Iterable<E>, E> Builder<T>.withLast(block: Builder<E>.() -> Unit): Builder<T> =
   with("last element %s", Iterable<E>::last, block)
 
+fun <T : Iterable<E>, E> Builder<T>.withSingle(block: Builder<E>.() -> Unit): Builder<T> =
+  with("single element %s", Iterable<E>::single, block)
+
 /**
  * Maps this assertion to an assertion over a flattened list of the results of
  * [transform] for each element in the subject iterable.

@@ -985,6 +985,38 @@ internal object IterableAssertions : JUnit5Minutests {
         }
     }
 
+    context("withSingle function") {
+      test("runs assertions on the single element of a collection") {
+        expectThat(listOf("catflap")).withSingle {
+          isEqualTo("catflap")
+        }
+      }
+
+      test("fails if the nested assertions fail on the single element of a collection") {
+        assertThrows<MultipleFailuresError> {
+          expectThat(listOf("catflap")).withSingle {
+            isEqualTo("rubberplant")
+          }
+        }
+      }
+
+      test("fails if a collection is empty") {
+        assertThrows<MappingFailed> {
+          expectThat(emptyList<String>()).withSingle {
+            isEqualTo("rubberplant")
+          }
+        }
+      }
+
+      test("fails if a collection contains more than one element") {
+        assertThrows<MappingFailed> {
+          expectThat(listOf("catflap", "rubberplant", "marzipan")).withSingle {
+            isEqualTo("rubberplant")
+          }
+        }
+      }
+    }
+
     context("count mapping") {
       test("maps to an assertion on the iterable's size") {
         val subject = listOf("catflap", "rubberplant", "marzipan")
@@ -1000,7 +1032,6 @@ internal object IterableAssertions : JUnit5Minutests {
     }
 
     context("isSorted(Comparable) assertion") {
-
       test("passes if the subject is empty") {
         expectThat(emptyList<Any?>())
           .isSorted(Comparator.comparingInt { it.hashCode() })

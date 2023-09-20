@@ -8,7 +8,6 @@ import strikt.api.expectThat
 @Suppress("SimplifyBooleanWithConstants")
 internal object BooleanAssertions : JUnit5Minutests {
   fun tests() = rootContext {
-
     context("isTrue") {
       test("passes when the subject is true") {
         expectThat("a" == "a").isTrue()

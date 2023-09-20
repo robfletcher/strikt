@@ -285,7 +285,6 @@ internal object ArrayAssertions {
       fixture { expectThat(subject) }
 
       context("isEqualTo assertion") {
-
         test("passes for a copy of itself") {
           isEqualTo(subject.copyOf())
         }
@@ -318,7 +317,6 @@ internal object ArrayAssertions {
       fixture { expectThat(subject) }
 
       context("isEqualTo assertion") {
-
         test("passes for a copy of itself") {
           isEqualTo(subject.copyOf())
         }
@@ -351,7 +349,6 @@ internal object ArrayAssertions {
       fixture { expectThat(subject) }
 
       context("isEqualTo assertion") {
-
         test("passes for a copy of itself") {
           isEqualTo(subject.copyOf())
         }
@@ -368,6 +365,7 @@ internal object ArrayAssertions {
 
     context("an empty double array") {
       fixture { expectThat(doubleArrayOf()) }
+
       context("isEmpty assertion") {
         test("passes") {
           isEmpty()
@@ -384,7 +382,6 @@ internal object ArrayAssertions {
       fixture { expectThat(subject) }
 
       context("isEqualTo assertion") {
-
         test("passes for a copy of itself") {
           isEqualTo(subject.copyOf())
         }
