@@ -7,7 +7,7 @@ import java.net.URL
 plugins {
   kotlin("jvm")
   id("published")
-  id("com.google.protobuf") version "0.9.3"
+  id("com.google.protobuf") version "0.9.4"
 }
 
 description = "Extensions for testing code that uses Protobuf / gRPC."

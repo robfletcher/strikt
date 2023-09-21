@@ -7,14 +7,10 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
-        java: [8, 11, 17, 20]
+        java: [17, 21]
         exclude:
           - os: windows-latest
-            java: 8
-          - os: windows-latest
-            java: 11
-          - os: windows-latest
-            java: 19
+            java: 21
 
     name: Build on Java ${{ matrix.java }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}

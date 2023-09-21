@@ -23,7 +23,7 @@ import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import strikt.spring.app.App
 import strikt.spring.app.Controller
-import javax.servlet.ServletResponse
+import jakarta.servlet.ServletResponse
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
