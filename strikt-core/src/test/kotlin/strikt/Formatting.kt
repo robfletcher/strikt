@@ -4,14 +4,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
-import strikt.assertions.all
-import strikt.assertions.contains
-import strikt.assertions.hasSize
-import strikt.assertions.isEqualTo
-import strikt.assertions.isNotEqualTo
-import strikt.assertions.isNotNull
-import strikt.assertions.isUpperCase
-import strikt.assertions.startsWith
+import strikt.assertions.*
+import java.time.LocalDate
 
 @DisplayName("error message formatting")
 internal class Formatting {
@@ -161,6 +155,46 @@ internal class Formatting {
         |          found "a string
         |                |with
         |                |line breaks"""".trimMargin()
+    )
+  }
+
+  @Test
+  fun `property name is used when using a lambda`() {
+    val subject = Mapping.Person("David", LocalDate.of(1947, 1, 8))
+
+    val error = assertThrows<AssertionError> {
+      expectThat(subject).get { birthDate }
+        .get(LocalDate::getYear)
+        .isEqualTo(1971)
+    }
+
+    expectThat(error.message).isEqualTo(
+      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ birthDate:
+          |    ▼ return value of getYear:
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin()
+    )
+  }
+
+  @Test
+  fun `property name is used when nesting using with and a lambda`() {
+    val subject = Mapping.Person("David", LocalDate.of(1947, 1, 8))
+
+    val error = assertThrows<AssertionError> {
+      expectThat(subject) {
+        with({ birthDate }) {
+          get { year }.isEqualTo(1971)
+        }
+      }
+    }
+
+    expectThat(error.message).isEqualTo(
+      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ birthDate:
+          |    ▼ year:
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin()
     )
   }
 }
