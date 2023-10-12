@@ -1,6 +1,7 @@
 package strikt
 
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
@@ -158,83 +159,95 @@ internal class Formatting {
     )
   }
 
-  @Test
-  fun `property name is used when using a lambda`() {
-    val subject = Person("David", LocalDate.of(1947, 1, 8))
+  @Nested
+  @DisplayName("subject description")
+  inner class SubjectDescription {
+    @Nested
+    @DisplayName("when using get")
+    inner class Get {
+      @Test
+      fun `is the property name when using a lambda`() {
+        val subject = Person("David", LocalDate.of(1947, 1, 8))
 
-    val error = assertThrows<AssertionError> {
-      expectThat(subject).get { birthDate }
-        .get(LocalDate::getYear)
-        .isEqualTo(1971)
-    }
+        val error = assertThrows<AssertionError> {
+          expectThat(subject).get { birthDate }
+            .get(LocalDate::getYear)
+            .isEqualTo(1971)
+        }
 
-    expectThat(error.message).isEqualTo(
-      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+        expectThat(error.message).isEqualTo(
+          """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ birthDate:
           |    ▼ return value of getYear:
           |      ✗ is equal to 1971
           |              found 1947""".trimMargin()
-    )
-  }
+        )
+      }
 
-  @Test
-  fun `property name is used when using a property`() {
-    val subject = Person("David", LocalDate.of(1947, 1, 8))
+      @Test
+      fun `is the property name when using a property`() {
+        val subject = Person("David", LocalDate.of(1947, 1, 8))
 
-    val error = assertThrows<AssertionError> {
-      expectThat(subject).get(Person::birthDate)
-        .get(LocalDate::getYear)
-        .isEqualTo(1971)
-    }
+        val error = assertThrows<AssertionError> {
+          expectThat(subject).get(Person::birthDate)
+            .get(LocalDate::getYear)
+            .isEqualTo(1971)
+        }
 
-    expectThat(error.message).isEqualTo(
-      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+        expectThat(error.message).isEqualTo(
+          """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
           |      ✗ is equal to 1971
           |              found 1947""".trimMargin()
-    )
-  }
-
-  @Test
-  fun `property name is used when using with and a lambda`() {
-    val subject = Person("David", LocalDate.of(1947, 1, 8))
-
-    val error = assertThrows<AssertionError> {
-      expectThat(subject) {
-        with({ birthDate }) {
-          get { year }.isEqualTo(1971)
-        }
+        )
       }
     }
 
-    expectThat(error.message).isEqualTo(
-      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+    @Nested
+    @DisplayName("when using with")
+    inner class With {
+      @Test
+      fun `is the property name when using a lambda`() {
+        val subject = Person("David", LocalDate.of(1947, 1, 8))
+
+        val error = assertThrows<AssertionError> {
+          expectThat(subject) {
+            with({ birthDate }) {
+              get { year }.isEqualTo(1971)
+            }
+          }
+        }
+
+        expectThat(error.message).isEqualTo(
+          """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ birthDate:
           |    ▼ year:
           |      ✗ is equal to 1971
           |              found 1947""".trimMargin()
-    )
-  }
-
-  @Test
-  fun `property name is used when using with and a property`() {
-    val subject = Person("David", LocalDate.of(1947, 1, 8))
-
-    val error = assertThrows<AssertionError> {
-      expectThat(subject) {
-        with(Person::birthDate) {
-          get { year }.isEqualTo(1971)
-        }
+        )
       }
-    }
 
-    expectThat(error.message).isEqualTo(
-      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+      @Test
+      fun `is property name when using a property`() {
+        val subject = Person("David", LocalDate.of(1947, 1, 8))
+
+        val error = assertThrows<AssertionError> {
+          expectThat(subject) {
+            with(Person::birthDate) {
+              get { year }.isEqualTo(1971)
+            }
+          }
+        }
+
+        expectThat(error.message).isEqualTo(
+          """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ year:
           |      ✗ is equal to 1971
           |              found 1947""".trimMargin()
-    )
+        )
+      }
+    }
   }
 }
