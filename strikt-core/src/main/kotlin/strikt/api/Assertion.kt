@@ -217,7 +217,7 @@ interface Assertion {
      * [function].
      */
     fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
-      get(function.describe(), function)
+      get(function.describe("get"), function)
 
     /**
      * Runs a group of assertions on the subject returned by [function].
@@ -322,7 +322,7 @@ interface Assertion {
   }
 }
 
-private fun <Receiver, Result> (Receiver.() -> Result).describe(name: String = "get"): String =
+private fun <Receiver, Result> (Receiver.() -> Result).describe(name: String): String =
   when (this) {
     is KProperty<*> ->
       "value of property ${this.name}"

@@ -6,8 +6,6 @@ import org.junit.jupiter.api.assertThrows
 import strikt.api.expectThat
 import strikt.assertions.*
 import java.time.LocalDate
-import kotlin.jvm.internal.CallableReference
-import kotlin.reflect.KProperty0
 
 @DisplayName("error message formatting")
 internal class Formatting {
@@ -240,5 +238,3 @@ internal class Formatting {
     )
   }
 }
-
-fun Person.lastName() = "$name last"
