@@ -173,7 +173,7 @@ internal class Formatting {
     @DisplayName("when using get")
     inner class Get {
       @Test
-      fun `is the property name when using a lambda`() {
+      fun `is the property name when passing a lambda`() {
         val subject = Person("David", LocalDate.of(1947, 1, 8))
 
         val error = assertThrows<AssertionError> {
@@ -192,7 +192,7 @@ internal class Formatting {
       }
 
       @Test
-      fun `is the property name when using a property`() {
+      fun `is the property name when passing a property`() {
         val subject = Person("David", LocalDate.of(1947, 1, 8))
 
         val error = assertThrows<AssertionError> {
@@ -215,7 +215,7 @@ internal class Formatting {
     @DisplayName("when using with")
     inner class With {
       @Test
-      fun `is the property name when using a lambda`() {
+      fun `is the property name when passing a lambda`() {
         val subject = Person("David", LocalDate.of(1947, 1, 8))
 
         val error = assertThrows<AssertionError> {
@@ -236,7 +236,7 @@ internal class Formatting {
       }
 
       @Test
-      fun `is property name when using a property`() {
+      fun `is property name when passing a property`() {
         val subject = Person("David", LocalDate.of(1947, 1, 8))
 
         val error = assertThrows<AssertionError> {
