@@ -22,7 +22,7 @@ class CapturingSlotAssertions : JUnit5Minutests {
 
   private class Fixture {
     val slot = slot<String>()
-    val mockFunction: Consumer<String> = mockk() {
+    val mockFunction: Consumer<String> = mockk {
       every { accept(capture(slot)) } just Runs
     }
   }

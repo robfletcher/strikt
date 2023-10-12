@@ -14,7 +14,7 @@ internal object Assertions {
       fixture { expectThat(false) }
 
       test("exceptions are suppressed") {
-        expectThrows<AssertionError>() {
+        expectThrows<AssertionError> {
           isEqualTo(true)
         }
           .and {

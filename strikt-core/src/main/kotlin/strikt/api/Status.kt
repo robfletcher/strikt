@@ -9,7 +9,7 @@ internal sealed class Status {
   /**
    * The assertion was not evaluated or has not been evaluated yet.
    */
-  object Pending : Status()
+  data object Pending : Status()
 
   /**
    * The assertion passed.

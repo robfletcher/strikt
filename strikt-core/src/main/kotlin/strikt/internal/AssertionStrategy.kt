@@ -112,9 +112,9 @@ internal sealed class AssertionStrategy {
     cause: Throwable? = null,
   ): Status = Failed(description, comparison, cause)
 
-  object Collecting : AssertionStrategy()
+  data object Collecting : AssertionStrategy()
 
-  object Throwing : AssertionStrategy() {
+  data object Throwing : AssertionStrategy() {
     override fun evaluate(tree: AssertionGroup<*>) {
       if (tree.status is Failed) {
         throw CompoundAssertionFailure(
