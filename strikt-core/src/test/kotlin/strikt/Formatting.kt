@@ -160,7 +160,7 @@ internal class Formatting {
 
   @Test
   fun `property name is used when using a lambda`() {
-    val subject = Mapping.Person("David", LocalDate.of(1947, 1, 8))
+    val subject = Person("David", LocalDate.of(1947, 1, 8))
 
     val error = assertThrows<AssertionError> {
       expectThat(subject).get { birthDate }
@@ -178,8 +178,27 @@ internal class Formatting {
   }
 
   @Test
-  fun `property name is used when nesting using with and a lambda`() {
-    val subject = Mapping.Person("David", LocalDate.of(1947, 1, 8))
+  fun `property name is used when using a property`() {
+    val subject = Person("David", LocalDate.of(1947, 1, 8))
+
+    val error = assertThrows<AssertionError> {
+      expectThat(subject).get(Person::birthDate)
+        .get(LocalDate::getYear)
+        .isEqualTo(1971)
+    }
+
+    expectThat(error.message).isEqualTo(
+      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ value of property birthDate:
+          |    ▼ return value of getYear:
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin()
+    )
+  }
+
+  @Test
+  fun `property name is used when using with and a lambda`() {
+    val subject = Person("David", LocalDate.of(1947, 1, 8))
 
     val error = assertThrows<AssertionError> {
       expectThat(subject) {
@@ -192,6 +211,27 @@ internal class Formatting {
     expectThat(error.message).isEqualTo(
       """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ birthDate:
+          |    ▼ year:
+          |      ✗ is equal to 1971
+          |              found 1947""".trimMargin()
+    )
+  }
+
+  @Test
+  fun `property name is used when using with and a property`() {
+    val subject = Person("David", LocalDate.of(1947, 1, 8))
+
+    val error = assertThrows<AssertionError> {
+      expectThat(subject) {
+        with(Person::birthDate) {
+          get { year }.isEqualTo(1971)
+        }
+      }
+    }
+
+    expectThat(error.message).isEqualTo(
+      """▼ Expect that Person(name=David, birthDate=1947-01-08):
+          |  ▼ value of property birthDate:
           |    ▼ year:
           |      ✗ is equal to 1971
           |              found 1947""".trimMargin()
