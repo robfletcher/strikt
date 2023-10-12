@@ -325,9 +325,9 @@ interface Assertion {
 private fun <Receiver, Result> (Receiver.() -> Result).describe(name: String): String =
   when (this) {
     is KProperty<*> ->
-      "value of property ${this.name}"
+      "value of property $name"
     is KFunction<*> ->
-      "return value of ${this.name}"
+      "return value of $name"
     is CallableReference -> "value of $propertyName"
     else -> {
       try {
