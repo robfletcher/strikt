@@ -43,20 +43,3 @@ jobs:
         run: ./gradlew -Pversion=${GITHUB_REF:11} -Penv=prod :site:orchidDeploy
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-
-  announce:
-    name: Announce release
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Tweet release announcement
-        uses: twwd/twitter-github-action@v1
-        with:
-          tweet_body: |
-            Strikt ${{ github.event.release.tag_name }} ${{ github.event.release.name }} is available. https://strikt.io
-
-            Release notes: https://github.com/${{ github.repository }}/releases/${{ github.event.release.tag_name }}
-          twitter_api_key: ${{ secrets.TWITTER_CONSUMER_KEY }}
-          twitter_api_secret_key: ${{ secrets.TWITTER_CONSUMER_SECRET }}
-          twitter_access_token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-          twitter_access_token_secret: ${{ secrets.TWITTER_ACCESS_SECRET }}

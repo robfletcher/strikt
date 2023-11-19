@@ -28,7 +28,7 @@ fun <T : Any> Assertion.Builder<T>.propertiesAreEqualToIgnoring(
 ): Assertion.Builder<T> =
   compareFieldByField(
     other,
-    ignoredProperties.map(KProperty1<T, Any>::name)
+    ignoredProperties.map(KProperty1<T, Any?>::name)
   )
 
 private fun <T : Any> Assertion.Builder<T>.compareFieldByField(
