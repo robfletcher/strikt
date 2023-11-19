@@ -318,11 +318,12 @@ internal class Block {
 
   fun `failing nested isNotNull does not evaluate following assertion`() {
     assertThrows<AssertionError> {
-      val subject = mapOf(
-        "word1" to "catflap",
-        "word2" to "rubberplant",
-        "word3" to null
-      )
+      val subject =
+        mapOf(
+          "word1" to "catflap",
+          "word2" to "rubberplant",
+          "word3" to null
+        )
       expectThat(subject) {
         getValue("word1").isNotNull().isEqualTo("catflap")
         getValue("word2").isNotNull().isEqualTo("rubberplant")

@@ -15,7 +15,8 @@ inline fun <reified S : Any?> testFactory(noinline builder: TestContextBuilder<U
 fun <S : Any?> assertionTests(builder: TestContextBuilder<Unit, Assertion.Builder<S>>.() -> Unit): Stream<out DynamicNode> =
   testFactory(builder)
 
-fun Any?.quoted(): String = when (this) {
-  null -> "null"
-  else -> "\"$this\""
-}
+fun Any?.quoted(): String =
+  when (this) {
+    null -> "null"
+    else -> "\"$this\""
+  }

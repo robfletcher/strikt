@@ -14,8 +14,7 @@ import java.time.MonthDay
 
 @DisplayName("Snippets used in Orchid docs")
 internal class CustomAssertions {
-
-// custom-assertions.md
+  // custom-assertions.md
 // -----------------------------------------------------------------------------
 
   @Test fun `custom assertions 1, 2`() {
@@ -50,10 +49,11 @@ internal class CustomAssertions {
       assert("is St. Tib's Day") {
         when (MonthDay.from(it)) {
           MonthDay.of(2, 29) -> pass()
-          else -> fail(
-            description = "in fact it is %s",
-            actual = it
-          )
+          else ->
+            fail(
+              description = "in fact it is %s",
+              actual = it
+            )
         }
       }
     // END custom_assertions_3

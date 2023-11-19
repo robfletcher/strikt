@@ -16,11 +16,11 @@ import strikt.assertions.isNull
 import strikt.assertions.isTrue
 
 internal object JsonNodeAssertions : JUnit5Minutests {
-
-  fun tests() = rootContext<JsonNode> {
-    fixture {
-      jacksonObjectMapper().readTree(
-        """
+  fun tests() =
+    rootContext<JsonNode> {
+      fixture {
+        jacksonObjectMapper().readTree(
+          """
         {
           "name": "Joshua Abraham Norton",
           "titles": [
@@ -32,261 +32,261 @@ internal object JsonNodeAssertions : JUnit5Minutests {
           "place-of-birth": null
         }
       """
-      )
-    }
-
-    context("has assertion") {
-      test("passes if the node has the specified field") {
-        expectThat(this).has("name")
+        )
       }
 
-      test("fails if the node does not have the specified field") {
-        assertThrows<AssertionFailedError> {
-          expectThat(this).has("date-of-birth")
+      context("has assertion") {
+        test("passes if the node has the specified field") {
+          expectThat(this).has("name")
+        }
+
+        test("fails if the node does not have the specified field") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this).has("date-of-birth")
+          }
         }
       }
-    }
 
-    context("path mapping") {
-      test("maps the assertion to the specified field") {
-        expectThat(this)
-          .path("name")
-          .textValue()
-          .isEqualTo("Joshua Abraham Norton")
-      }
-
-      test("mapping to a field that does not exist results in a missing node") {
-        expectThat(this)
-          .path("date-of-birth")
-          .isMissing()
-      }
-    }
-
-    context("at mapping") {
-      test("maps the assertion to the specified field") {
-        expectThat(this)
-          .at("/titles/0")
-          .isTextual()
-          .textValue()
-          .isEqualTo("Emperor of the United States")
-      }
-
-      test("mapping to a field that does not exist results in a missing node") {
-        expectThat(this)
-          .at("/titles/2")
-          .isMissing()
-      }
-    }
-
-    context("isObject assertion") {
-      test("passes if the node is an object") {
-        expectThat(this)
-          .isObject()
-      }
-
-      test("fails if the node is not an object") {
-        assertThrows<AssertionFailedError> {
+      context("path mapping") {
+        test("maps the assertion to the specified field") {
           expectThat(this)
             .path("name")
-            .isObject()
+            .textValue()
+            .isEqualTo("Joshua Abraham Norton")
         }
-      }
-    }
 
-    context("isArray assertion") {
-      test("passes if the node is an array") {
-        expectThat(this)
-          .path("titles")
-          .isArray()
-      }
-
-      test("fails if the node is not an array") {
-        assertThrows<AssertionFailedError> {
+        test("mapping to a field that does not exist results in a missing node") {
           expectThat(this)
-            .isArray()
-        }
-      }
-    }
-
-    context("textValues mapping") {
-      test("maps an array to the text values contained inside") {
-        expectThat(this)
-          .path("titles")
-          .isArray()
-          .textValues()
-          .containsExactly("Emperor of the United States", "Protector of Mexico")
-      }
-    }
-
-    context("isTextual assertion") {
-      test("passes if the node is a text node") {
-        expectThat(this)
-          .path("name")
-          .isTextual()
-      }
-
-      test("fails if the node is not a text node") {
-        assertThrows<AssertionFailedError> {
-          expectThat(this)
-            .isTextual()
-        }
-      }
-    }
-
-    context("isNumber assertion") {
-      test("passes if the node is a numeric node") {
-        expectThat(this)
-          .path("year-of-birth")
-          .isNumber()
-      }
-
-      test("fails if the node is not a numeric node") {
-        assertThrows<AssertionFailedError> {
-          expectThat(this)
-            .isNumber()
-        }
-      }
-    }
-
-    context("isBoolean assertion") {
-      test("passes if the node is a boolean node") {
-        expectThat(this)
-          .path("deceased")
-          .isBoolean()
-      }
-
-      test("fails if the node is not a boolean node") {
-        assertThrows<AssertionFailedError> {
-          expectThat(this)
-            .isBoolean()
-        }
-      }
-    }
-
-    context("isMissing assertion") {
-      test("passes if the node is a missing node") {
-        expectThat(this)
-          .path("date-of-birth")
-          .isMissing()
-      }
-
-      test("fails if the node is not a missing node") {
-        assertThrows<AssertionFailedError> {
-          expectThat(this)
+            .path("date-of-birth")
             .isMissing()
         }
       }
-    }
 
-    context("hasNodeType assertion") {
-      test("passes if the node is the specified type") {
-        expectThat(this)
-          .path("place-of-birth")
-          .hasNodeType(NULL)
-      }
-
-      test("fails if the node is a different type") {
-        assertThrows<AssertionFailedError> {
+      context("at mapping") {
+        test("maps the assertion to the specified field") {
           expectThat(this)
-            .hasNodeType(NULL)
+            .at("/titles/0")
+            .isTextual()
+            .textValue()
+            .isEqualTo("Emperor of the United States")
+        }
+
+        test("mapping to a field that does not exist results in a missing node") {
+          expectThat(this)
+            .at("/titles/2")
+            .isMissing()
         }
       }
-    }
 
-    context("hasSize assertion") {
-      test("passes if the array size is as expected") {
-        expectThat(this)
-          .path("titles")
-          .isArray()
-          .hasSize(2)
+      context("isObject assertion") {
+        test("passes if the node is an object") {
+          expectThat(this)
+            .isObject()
+        }
+
+        test("fails if the node is not an object") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .path("name")
+              .isObject()
+          }
+        }
       }
 
-      test("fails if the array size is not as expected") {
-        assertThrows<AssertionFailedError> {
+      context("isArray assertion") {
+        test("passes if the node is an array") {
           expectThat(this)
             .path("titles")
             .isArray()
-            .hasSize(1)
+        }
+
+        test("fails if the node is not an array") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .isArray()
+          }
         }
       }
-    }
 
-    context("textValue mapping") {
-      test("maps a text node to its text value") {
-        expectThat(this)
-          .path("name")
-          .textValue()
-          .isEqualTo("Joshua Abraham Norton")
+      context("textValues mapping") {
+        test("maps an array to the text values contained inside") {
+          expectThat(this)
+            .path("titles")
+            .isArray()
+            .textValues()
+            .containsExactly("Emperor of the United States", "Protector of Mexico")
+        }
       }
 
-      test("maps any other node type to null") {
-        expectThat(this)
-          .path("titles")
-          .textValue()
-          .isNull()
-      }
-    }
+      context("isTextual assertion") {
+        test("passes if the node is a text node") {
+          expectThat(this)
+            .path("name")
+            .isTextual()
+        }
 
-    context("numberValue mapping") {
-      test("maps a numeric node to its number value") {
-        expectThat(this)
-          .path("year-of-birth")
-          .numberValue()
-          .isEqualTo(1818)
-          .isA<Int>()
+        test("fails if the node is not a text node") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .isTextual()
+          }
+        }
       }
 
-      test("maps any other node type to null") {
-        expectThat(this)
-          .path("name")
-          .numberValue()
-          .isNull()
-      }
-    }
+      context("isNumber assertion") {
+        test("passes if the node is a numeric node") {
+          expectThat(this)
+            .path("year-of-birth")
+            .isNumber()
+        }
 
-    context("booleanValue mapping") {
-      test("maps a boolean node to its boolean value") {
-        expectThat(this)
-          .path("deceased")
-          .booleanValue()
-          .isTrue()
+        test("fails if the node is not a numeric node") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .isNumber()
+          }
+        }
       }
 
-      test("maps any other node type to false") {
-        expectThat(this)
-          .path("name")
-          .booleanValue()
-          .isFalse()
-      }
-    }
+      context("isBoolean assertion") {
+        test("passes if the node is a boolean node") {
+          expectThat(this)
+            .path("deceased")
+            .isBoolean()
+        }
 
-    context("size mapping") {
-      test("maps an array node to its size") {
-        expectThat(this)
-          .path("titles")
-          .isArray()
-          .size()
-          .isEqualTo(2)
+        test("fails if the node is not a boolean node") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .isBoolean()
+          }
+        }
       }
-    }
 
-    context("find") {
-      fixture {
-        jacksonObjectMapper().readTree(
-          """
+      context("isMissing assertion") {
+        test("passes if the node is a missing node") {
+          expectThat(this)
+            .path("date-of-birth")
+            .isMissing()
+        }
+
+        test("fails if the node is not a missing node") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .isMissing()
+          }
+        }
+      }
+
+      context("hasNodeType assertion") {
+        test("passes if the node is the specified type") {
+          expectThat(this)
+            .path("place-of-birth")
+            .hasNodeType(NULL)
+        }
+
+        test("fails if the node is a different type") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .hasNodeType(NULL)
+          }
+        }
+      }
+
+      context("hasSize assertion") {
+        test("passes if the array size is as expected") {
+          expectThat(this)
+            .path("titles")
+            .isArray()
+            .hasSize(2)
+        }
+
+        test("fails if the array size is not as expected") {
+          assertThrows<AssertionFailedError> {
+            expectThat(this)
+              .path("titles")
+              .isArray()
+              .hasSize(1)
+          }
+        }
+      }
+
+      context("textValue mapping") {
+        test("maps a text node to its text value") {
+          expectThat(this)
+            .path("name")
+            .textValue()
+            .isEqualTo("Joshua Abraham Norton")
+        }
+
+        test("maps any other node type to null") {
+          expectThat(this)
+            .path("titles")
+            .textValue()
+            .isNull()
+        }
+      }
+
+      context("numberValue mapping") {
+        test("maps a numeric node to its number value") {
+          expectThat(this)
+            .path("year-of-birth")
+            .numberValue()
+            .isEqualTo(1818)
+            .isA<Int>()
+        }
+
+        test("maps any other node type to null") {
+          expectThat(this)
+            .path("name")
+            .numberValue()
+            .isNull()
+        }
+      }
+
+      context("booleanValue mapping") {
+        test("maps a boolean node to its boolean value") {
+          expectThat(this)
+            .path("deceased")
+            .booleanValue()
+            .isTrue()
+        }
+
+        test("maps any other node type to false") {
+          expectThat(this)
+            .path("name")
+            .booleanValue()
+            .isFalse()
+        }
+      }
+
+      context("size mapping") {
+        test("maps an array node to its size") {
+          expectThat(this)
+            .path("titles")
+            .isArray()
+            .size()
+            .isEqualTo(2)
+        }
+      }
+
+      context("find") {
+        fixture {
+          jacksonObjectMapper().readTree(
+            """
           |[
           |  { "word": "catflap" },
           |  { "word": "rubberplant" },
           |  { "word": "marzipan" }
           |]
-        """.trimMargin()
-        )
-      }
-      test("maps to an array of child nodes") {
-        expectThat(this)
-          .findValuesAsText("word")
-          .containsExactly("catflap", "rubberplant", "marzipan")
+            """.trimMargin()
+          )
+        }
+        test("maps to an array of child nodes") {
+          expectThat(this)
+            .findValuesAsText("word")
+            .containsExactly("catflap", "rubberplant", "marzipan")
+        }
       }
     }
-  }
 }

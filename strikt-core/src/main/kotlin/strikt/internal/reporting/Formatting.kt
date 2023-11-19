@@ -44,10 +44,10 @@ internal fun formatValue(value: Any?): Any =
     else -> value.toString()
   }
 
-private fun Class<*>.preferToString(): Boolean =
-  getMethod("toString").declaringClass == this
+private fun Class<*>.preferToString(): Boolean = getMethod("toString").declaringClass == this
 
 private val hexArray = "0123456789ABCDEF".toCharArray()
+
 internal fun ByteArray.toHex(): String {
   val hexChars = CharArray(size * 2)
   for (j in indices) {

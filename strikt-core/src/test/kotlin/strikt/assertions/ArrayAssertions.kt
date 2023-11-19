@@ -12,402 +12,413 @@ import java.util.Random
 
 @DisplayName("assertions on array types")
 internal object ArrayAssertions {
-
   @TestFactory
-  fun `byte arrays`() = assertionTests<ByteArray> {
-    val subject = randomBytes()
+  fun `byte arrays`() =
+    assertionTests<ByteArray> {
+      val subject = randomBytes()
 
-    context("a byte array containing 0x${subject.toHex()}") {
-      fixture { expectThat(subject) }
+      context("a byte array containing 0x${subject.toHex()}") {
+        fixture { expectThat(subject) }
 
-      context("contentEquals assertion") {
-        test("contents are equal to a copy of itself") {
-          contentEquals(subject.copyOf())
-        }
-
-        test("contents are not equal to a different array") {
-          val expected = randomBytes()
-          val error = assertThrows<AssertionError> {
-            contentEquals(expected)
+        context("contentEquals assertion") {
+          test("contents are equal to a copy of itself") {
+            contentEquals(subject.copyOf())
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that 0x${subject.toHex()}:
+
+          test("contents are not equal to a different array") {
+            val expected = randomBytes()
+            val error =
+              assertThrows<AssertionError> {
+                contentEquals(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin()
-          )
-        }
-
-        test("contents are not equal to a sub-array") {
-          val expected = subject.copyOf(subject.size / 2)
-          val error = assertThrows<AssertionError> {
-            contentEquals(expected)
+                .trimMargin()
+            )
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that 0x${subject.toHex()}:
+
+          test("contents are not equal to a sub-array") {
+            val expected = subject.copyOf(subject.size / 2)
+            val error =
+              assertThrows<AssertionError> {
+                contentEquals(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ array content equals 0x${expected.toHex()}"""
-              .trimMargin()
-          )
-        }
-      }
-
-      context("isEqualTo assertion") {
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
-        }
-
-        test("fails for a different array") {
-          val expected = randomBytes()
-          val error = assertThrows<AssertionFailedError> {
-            isEqualTo(expected)
+                .trimMargin()
+            )
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that 0x${subject.toHex()}:
+        }
+
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+
+          test("fails for a different array") {
+            val expected = randomBytes()
+            val error =
+              assertThrows<AssertionFailedError> {
+                isEqualTo(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that 0x${subject.toHex()}:
                 |  ✗ is equal to 0x${expected.toHex()}
                 |          found 0x${subject.toHex()}"""
-              .trimMargin()
-          )
+                .trimMargin()
+            )
+          }
+
+          test("fails if the expected value is null") {
+            assertThrows<AssertionFailedError> {
+              isEqualTo(null)
+            }
+          }
         }
 
-        test("fails if the expected value is null") {
-          assertThrows<AssertionFailedError> {
-            isEqualTo(null)
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
           }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty byte array") {
+        fixture { expectThat(byteArrayOf()) }
+
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
 
-    context("an empty byte array") {
-      fixture { expectThat(byteArrayOf()) }
-
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
-
   @TestFactory
-  fun `character arrays`() = assertionTests<CharArray> {
-    val subject = "fnord".toCharArray()
+  fun `character arrays`() =
+    assertionTests<CharArray> {
+      val subject = "fnord".toCharArray()
 
-    context("a char array containing ${subject.toList().map { "'$it'" }}") {
-      fixture { expectThat(subject) }
+      context("a char array containing ${subject.toList().map { "'$it'" }}") {
+        fixture { expectThat(subject) }
 
-      context("contentEquals assertion") {
-        test("contents are equal to a copy of itself") {
-          contentEquals(subject.copyOf())
-        }
-
-        test("contents are not equal to a different array") {
-          val expected = "discord".toCharArray()
-          val error = assertThrows<AssertionError> {
-            contentEquals(expected)
+        context("contentEquals assertion") {
+          test("contents are equal to a copy of itself") {
+            contentEquals(subject.copyOf())
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that ${subject.toList().map { "'$it'" }}:
+
+          test("contents are not equal to a different array") {
+            val expected = "discord".toCharArray()
+            val error =
+              assertThrows<AssertionError> {
+                contentEquals(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that ${subject.toList().map { "'$it'" }}:
                 |  ✗ array content equals ${expected
-              .toList()
-              .map { "'$it'" }}"""
-              .trimMargin()
-          )
-        }
-
-        test("contents are not equal to a sub-array") {
-          val expected = subject.copyOf(subject.size / 2)
-          val error = assertThrows<AssertionError> {
-            contentEquals(expected)
+                .toList()
+                .map { "'$it'" }}"""
+                .trimMargin()
+            )
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that ${subject.toList().map { "'$it'" }}:
+
+          test("contents are not equal to a sub-array") {
+            val expected = subject.copyOf(subject.size / 2)
+            val error =
+              assertThrows<AssertionError> {
+                contentEquals(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that ${subject.toList().map { "'$it'" }}:
               |  ✗ array content equals ${expected.toList().map { "'$it'" }}"""
-              .trimMargin()
-          )
-        }
-      }
-
-      context("isEqualTo assertion") {
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
-        }
-
-        test("fails for a different array") {
-          val expected = "discord".toCharArray()
-          val error = assertThrows<AssertionFailedError> {
-            isEqualTo(expected)
+                .trimMargin()
+            )
           }
-          expectThat(error.message).isEqualTo(
-            """▼ Expect that ${subject.toList().map { "'$it'" }}:
+        }
+
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+
+          test("fails for a different array") {
+            val expected = "discord".toCharArray()
+            val error =
+              assertThrows<AssertionFailedError> {
+                isEqualTo(expected)
+              }
+            expectThat(error.message).isEqualTo(
+              """▼ Expect that ${subject.toList().map { "'$it'" }}:
                 |  ✗ is equal to ${expected.toList().map { "'$it'" }}
                 |          found ${subject.toList().map { "'$it'" }}"""
-              .trimMargin()
-          )
+                .trimMargin()
+            )
+          }
+
+          test("fails if the expected value is null") {
+            assertThrows<AssertionFailedError> {
+              isEqualTo(null)
+            }
+          }
         }
 
-        test("fails if the expected value is null") {
-          assertThrows<AssertionFailedError> {
-            isEqualTo(null)
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
           }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty character array") {
+        fixture { expectThat(charArrayOf()) }
+
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty character array") {
-      fixture { expectThat(charArrayOf()) }
-
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `boolean arrays`() = assertionTests<BooleanArray> {
-    val subject = BooleanArray(8) { it % 2 == 0 }
+  fun `boolean arrays`() =
+    assertionTests<BooleanArray> {
+      val subject = BooleanArray(8) { it % 2 == 0 }
 
-    context("a boolean array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("a boolean array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
+
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty boolean array") {
+        fixture { expectThat(booleanArrayOf()) }
+
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty boolean array") {
-      fixture { expectThat(booleanArrayOf()) }
-
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `short arrays`() = assertionTests<ShortArray> {
-    val subject = shortArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
+  fun `short arrays`() =
+    assertionTests<ShortArray> {
+      val subject = shortArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    context("a short array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("a short array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
+
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty short array") {
+        fixture { expectThat(shortArrayOf()) }
+
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty short array") {
-      fixture { expectThat(shortArrayOf()) }
-
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `int arrays`() = assertionTests<IntArray> {
-    val subject = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
+  fun `int arrays`() =
+    assertionTests<IntArray> {
+      val subject = intArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    context("an int array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("an int array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
+
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty int array") {
+        fixture { expectThat(intArrayOf()) }
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty int array") {
-      fixture { expectThat(intArrayOf()) }
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `long arrays`() = assertionTests<LongArray> {
-    val subject = longArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
+  fun `long arrays`() =
+    assertionTests<LongArray> {
+      val subject = longArrayOf(1, 2, 4, 8, 16, 32, 64, 128)
 
-    context("a long array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("a long array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
 
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty long array") {
+        fixture { expectThat(longArrayOf()) }
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty long array") {
-      fixture { expectThat(longArrayOf()) }
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `float arrays`() = assertionTests<FloatArray> {
-    val subject = floatArrayOf(4.2f, 128.3f, 64.5f, 32.9f)
+  fun `float arrays`() =
+    assertionTests<FloatArray> {
+      val subject = floatArrayOf(4.2f, 128.3f, 64.5f, 32.9f)
 
-    context("a float array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("a float array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
 
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty float array") {
+        fixture { expectThat(floatArrayOf()) }
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty float array") {
-      fixture { expectThat(floatArrayOf()) }
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `double arrays`() = assertionTests<DoubleArray> {
-    val subject = doubleArrayOf(4.2, 128.3, 64.5, 32.9)
+  fun `double arrays`() =
+    assertionTests<DoubleArray> {
+      val subject = doubleArrayOf(4.2, 128.3, 64.5, 32.9)
 
-    context("a double array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("a double array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
 
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty double array") {
+        fixture { expectThat(doubleArrayOf()) }
+
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty double array") {
-      fixture { expectThat(doubleArrayOf()) }
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @TestFactory
-  fun `object arrays`() = assertionTests<Array<String>> {
-    val subject = arrayOf("catflap", "rubberplant", "marzipan")
+  fun `object arrays`() =
+    assertionTests<Array<String>> {
+      val subject = arrayOf("catflap", "rubberplant", "marzipan")
 
-    context("an object array containing ${subject.contentToString()}") {
-      fixture { expectThat(subject) }
+      context("an object array containing ${subject.contentToString()}") {
+        fixture { expectThat(subject) }
 
-      context("isEqualTo assertion") {
+        context("isEqualTo assertion") {
+          test("passes for a copy of itself") {
+            isEqualTo(subject.copyOf())
+          }
+        }
 
-        test("passes for a copy of itself") {
-          isEqualTo(subject.copyOf())
+        context("isEmpty assertion") {
+          test("fails") {
+            assertThrows<AssertionFailedError> {
+              isEmpty()
+            }
+          }
         }
       }
 
-      context("isEmpty assertion") {
-        test("fails") {
-          assertThrows<AssertionFailedError> {
+      context("an empty object array") {
+        fixture { expectThat(arrayOf()) }
+        context("isEmpty assertion") {
+          test("passes") {
             isEmpty()
           }
         }
       }
     }
-
-    context("an empty object array") {
-      fixture { expectThat(arrayOf()) }
-      context("isEmpty assertion") {
-        test("passes") {
-          isEmpty()
-        }
-      }
-    }
-  }
 
   @Test
   fun `can map an array to a list for easier matching`() {
@@ -416,5 +427,4 @@ internal object ArrayAssertions {
   }
 }
 
-internal fun randomBytes(): ByteArray =
-  ByteArray(8).also(Random(nanoTime())::nextBytes)
+internal fun randomBytes(): ByteArray = ByteArray(8).also(Random(nanoTime())::nextBytes)

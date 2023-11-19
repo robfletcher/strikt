@@ -6,14 +6,12 @@ import strikt.internal.reporting.formatValue
 /**
  * Asserts that the subject map is empty.
  */
-fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() =
-  assertThat("is empty", Map<K, V>::isEmpty)
+fun <T : Map<K, V>, K, V> Builder<T>.isEmpty() = assertThat("is empty", Map<K, V>::isEmpty)
 
 /**
  * Asserts that the subject map is not empty.
  */
-fun <T : Map<K, V>, K, V> Builder<T>.isNotEmpty() =
-  assertThat("is not empty", Map<K, V>::isNotEmpty as (Map<K, V>) -> Boolean)
+fun <T : Map<K, V>, K, V> Builder<T>.isNotEmpty() = assertThat("is not empty", Map<K, V>::isNotEmpty as (Map<K, V>) -> Boolean)
 
 /**
  * Asserts that the subject map has the specified number of entries.
@@ -33,8 +31,7 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.hasSize(expected: Int) =
  * @return An assertion on the value indexed by [key] or `null` if no such entry
  * exists in the subject map.
  */
-operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> =
-  get("entry [${formatValue(key)}]") { this[key] }
+operator fun <T : Map<K, V>, K, V> Builder<T>.get(key: K): Builder<V?> = get("entry [${formatValue(key)}]") { this[key] }
 
 /**
  * Asserts that [key] exists in the subject map and then maps this assertion to
@@ -58,8 +55,7 @@ infix fun <T : Map<K, V>, K, V> Builder<T>.getValue(key: K): Builder<V> =
 fun <T : Map<K, V>, K, V> Builder<T>.withValue(
   key: K,
   block: Builder<V>.() -> Unit
-): Builder<T> =
-  with("entry [${formatValue(key)}]", { getValue(key) }, block)
+): Builder<T> = with("entry [${formatValue(key)}]", { getValue(key) }, block)
 
 /**
  * Asserts that the subject map contains an entry indexed by [key]. Depending on
@@ -108,8 +104,7 @@ fun <T : Map<K, V>, K, V> Builder<T>.doesNotContainKeys(vararg keys: K): Builder
 fun <T : Map<K, V>, K, V> Builder<T>.hasEntry(
   key: K,
   value: V
-): Builder<T> =
-  apply { containsKey(key)[key].isEqualTo(value) }
+): Builder<T> = apply { containsKey(key)[key].isEqualTo(value) }
 
 /**
  * Maps an assertion on a map to an assertion on its keys.

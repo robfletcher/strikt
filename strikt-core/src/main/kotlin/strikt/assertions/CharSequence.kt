@@ -100,9 +100,10 @@ infix fun <T : CharSequence> Builder<T>.matchesIgnoringCase(expected: Regex): Bu
     "matches the regular expression %s (ignoring case)",
     expected
   ) { subject ->
-    val isMatch = Regex(expected.pattern, IGNORE_CASE).let {
-      subject.matches(it)
-    }
+    val isMatch =
+      Regex(expected.pattern, IGNORE_CASE).let {
+        subject.matches(it)
+      }
     if (isMatch) {
       pass(actual = subject)
     } else {
@@ -132,9 +133,10 @@ infix fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: Regex): B
     "contains a match for the regular expression %s (ignoring case)",
     expected
   ) { subject ->
-    val isMatch = Regex(expected.pattern, IGNORE_CASE).let {
-      subject.contains(it)
-    }
+    val isMatch =
+      Regex(expected.pattern, IGNORE_CASE).let {
+        subject.contains(it)
+      }
     if (isMatch) {
       pass(actual = subject)
     } else {
@@ -166,20 +168,20 @@ infix fun <T : CharSequence> Builder<T>.containsIgnoringCase(expected: CharSeque
       fail(actual = it)
     }
   }
-  
+
 /**
  * Asserts that the subject equals the [expected] string, ignoring whitespace.
  */
 infix fun <T : CharSequence> Builder<T>.isEqualToIgnoringWhitespace(expected: T): Builder<T> {
-    val expectedNormalized = expected.filterNot { it.isWhitespace() }
-    return assert("equals %s (ignoring whitespace)", expectedNormalized) {
-        val actualNormalized = it.filterNot { it.isWhitespace() }
-        if (actualNormalized.contentEquals(expectedNormalized)) {
-            pass(actual = actualNormalized)
-        } else {
-            fail(actual = actualNormalized)
-        }
+  val expectedNormalized = expected.filterNot { it.isWhitespace() }
+  return assert("equals %s (ignoring whitespace)", expectedNormalized) {
+    val actualNormalized = it.filterNot { it.isWhitespace() }
+    if (actualNormalized.contentEquals(expectedNormalized)) {
+      pass(actual = actualNormalized)
+    } else {
+      fail(actual = actualNormalized)
     }
+  }
 }
 
 /**
@@ -258,8 +260,7 @@ val <T : CharSequence> Builder<T>.length: Builder<Int>
  *
  * @see CharSequence.trim
  */
-fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> =
-  get(CharSequence::trim)
+fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> = get(CharSequence::trim)
 
 /**
  * Trims the subject string.
@@ -267,5 +268,4 @@ fun <T : CharSequence> Builder<T>.trim(): Builder<CharSequence> =
  * @see String.trim
  */
 @JvmName("trimString")
-fun Builder<String>.trim(): Builder<String> =
-  get(String::trim)
+fun Builder<String>.trim(): Builder<String> = get(String::trim)

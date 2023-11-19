@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(path = ["/"])
 class Controller {
-
   @GetMapping(
     produces = [APPLICATION_JSON_VALUE, APPLICATION_XML_VALUE]
   )

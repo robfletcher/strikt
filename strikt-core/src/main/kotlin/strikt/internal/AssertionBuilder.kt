@@ -29,9 +29,7 @@ internal class AssertionBuilder<T>(
     return this
   }
 
-  override fun and(
-    assertions: Builder<T>.() -> Unit
-  ): Builder<T> {
+  override fun and(assertions: Builder<T>.() -> Unit): Builder<T> {
     if (context.allowChain) {
       AssertionChainedGroup(context, context.subject)
         .let { nestedContext ->
@@ -56,14 +54,16 @@ internal class AssertionBuilder<T>(
     expected: Any?,
     assert: AtomicAssertion.(T) -> Unit
   ): AssertionBuilder<T> {
-    val chain = if (context is AssertionChain<T>) {
-      context
-    } else {
-      AssertionChain(context, context.subject)
-    }
+    val chain =
+      if (context is AssertionChain<T>) {
+        context
+      } else {
+        AssertionChain(context, context.subject)
+      }
     if (chain.allowChain) {
-      val assertion = strategy
-        .appendAtomic(chain, description, expected)
+      val assertion =
+        strategy
+          .appendAtomic(chain, description, expected)
       assertion.assert(chain.subject)
     }
     return AssertionBuilder(chain, strategy)
@@ -75,8 +75,9 @@ internal class AssertionBuilder<T>(
     assertions: Builder<T>.(T) -> Unit
   ): CompoundAssertions<T> =
     if (context.allowChain) {
-      val composedContext = strategy
-        .appendCompound(context, description, expected)
+      val composedContext =
+        strategy
+          .appendCompound(context, description, expected)
       AssertionBuilder(composedContext, Collecting).apply {
         assertions(context.subject)
       }
@@ -139,8 +140,9 @@ internal class AssertionBuilder<T>(
     return this
   }
 
-  override fun not(): Builder<T> = AssertionBuilder(
-    context,
-    Negating(strategy)
-  )
+  override fun not(): Builder<T> =
+    AssertionBuilder(
+      context,
+      Negating(strategy)
+    )
 }

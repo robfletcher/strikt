@@ -20,25 +20,26 @@ import strikt.internal.opentest4j.MappingFailed
 
 @DisplayName("assertions on com.google.protobuf.Any")
 class AnyAssertions {
-
-  val subject: Character = Character
-    .newBuilder()
-    .apply {
-      name = "Crom"
-      role = Role.warrior
-      weapon = Any.pack(Sword.newBuilder().setDamage("1d10").build())
-    }
-    .build()
-
-  @Test
-  fun `can assert that an Any field is empty`() {
-    val subject = Character
+  val subject: Character =
+    Character
       .newBuilder()
       .apply {
         name = "Crom"
         role = Role.warrior
+        weapon = Any.pack(Sword.newBuilder().setDamage("1d10").build())
       }
       .build()
+
+  @Test
+  fun `can assert that an Any field is empty`() {
+    val subject =
+      Character
+        .newBuilder()
+        .apply {
+          name = "Crom"
+          role = Role.warrior
+        }
+        .build()
 
     expectThat(subject)
       .get { weapon }

@@ -7,8 +7,7 @@ import strikt.api.Assertion.Builder
  *
  * @see Iterable.count
  */
-fun Builder<out Iterable<*>>.count(): Builder<Int> =
-  get(Iterable<*>::count)
+fun Builder<out Iterable<*>>.count(): Builder<Int> = get(Iterable<*>::count)
 
 /**
  * Maps this assertion to an assertion over the count of elements matching [predicate].
@@ -18,15 +17,13 @@ fun Builder<out Iterable<*>>.count(): Builder<Int> =
 fun <T : Iterable<E>, E> Builder<T>.count(
   description: String,
   predicate: (E) -> Boolean,
-): Builder<Int> =
-  get("count matching $description") { count(predicate) }
+): Builder<Int> = get("count matching $description") { count(predicate) }
 
 /**
  * Applies [Iterable.map] with [function] to the subject and returns an
  * assertion builder wrapping the result.
  */
-infix fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> =
-  get { map(function) }
+infix fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<Iterable<R>> = get { map(function) }
 
 /**
  * Maps this assertion to an assertion over the first element in the subject
@@ -34,8 +31,7 @@ infix fun <T : Iterable<E>, E, R> Builder<T>.map(function: (E) -> R): Builder<It
  *
  * @see Iterable.first
  */
-fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> =
-  get("first element %s") { first() }
+fun <T : Iterable<E>, E> Builder<T>.first(): Builder<E> = get("first element %s") { first() }
 
 /**
  * Runs a group of assertions on the first element in the subject iterable.
@@ -53,8 +49,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.withFirst(block: Builder<E>.() -> Unit
  *
  * @see Iterable.elementAt
  */
-fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
-  get("element at index $index %s") { elementAt(index) }
+fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> = get("element at index $index %s") { elementAt(index) }
 
 /**
  * Runs a group of assertions on the element at [index] in the subject iterable.
@@ -66,8 +61,7 @@ fun <T : Iterable<E>, E> Builder<T>.elementAt(index: Int): Builder<E> =
 fun <T : Iterable<E>, E> Builder<T>.withElementAt(
   index: Int,
   block: Builder<E>.() -> Unit,
-): Builder<T> =
-  with("element at index $index %s", { elementAt(index) }, block)
+): Builder<T> = with("element at index $index %s", { elementAt(index) }, block)
 
 /**
  * Maps this assertion to an assertion over the single element in the subject
@@ -77,8 +71,11 @@ fun <T : Iterable<E>, E> Builder<T>.withElementAt(
  */
 fun <T : Collection<E>, E> Builder<T>.single(): Builder<E> =
   assert("has only one element") {
-    if (it.size == 1) pass(it.size)
-    else fail(it)
+    if (it.size == 1) {
+      pass(it.size)
+    } else {
+      fail(it)
+    }
   }
     .get("single element %s") { single() }
 
@@ -102,8 +99,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.first(predicate: (E) -> Boolean): Buil
 fun <T : Iterable<E>, E> Builder<T>.withFirst(
   predicate: (E) -> Boolean,
   block: Builder<E>.() -> Unit,
-): Builder<T> =
-  with("first matching element %s", { first(predicate) }, block)
+): Builder<T> = with("first matching element %s", { first(predicate) }, block)
 
 /**
  * Maps this assertion to an assertion over the last element in the subject
@@ -111,8 +107,7 @@ fun <T : Iterable<E>, E> Builder<T>.withFirst(
  *
  * @see Iterable.last
  */
-fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
-  get("last element %s") { last() }
+fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> = get("last element %s") { last() }
 
 /**
  * Runs a group of assertions on the last element in the subject iterable.
@@ -121,8 +116,10 @@ fun <T : Iterable<E>, E> Builder<T>.last(): Builder<E> =
  * be evaluated regardless of whether preceding ones pass or fail.
  * @return this builder, to facilitate chaining.
  */
-fun <T : Iterable<E>, E> Builder<T>.withLast(block: Builder<E>.() -> Unit): Builder<T> =
-  with("last element %s", Iterable<E>::last, block)
+fun <T : Iterable<E>, E> Builder<T>.withLast(block: Builder<E>.() -> Unit): Builder<T> = with("last element %s", Iterable<E>::last, block)
+
+fun <T : Iterable<E>, E> Builder<T>.withSingle(block: Builder<E>.() -> Unit): Builder<T> =
+  with("single element %s", Iterable<E>::single, block)
 
 /**
  * Maps this assertion to an assertion over a flattened list of the results of
@@ -130,32 +127,28 @@ fun <T : Iterable<E>, E> Builder<T>.withLast(block: Builder<E>.() -> Unit): Buil
  *
  * @see Iterable.flatMap
  */
-infix fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> =
-  get { flatMap(transform) }
+infix fun <T : Iterable<E>, E, R> Builder<T>.flatMap(transform: (E) -> Iterable<R>): Builder<List<R>> = get { flatMap(transform) }
 
 /**
  * Maps this assertion to an assertion over a list of all elements of the subject that match `predicate`.
  *
  * @see Iterable.filter
  */
-infix fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<List<E>> =
-  get { filter(predicate) }
+infix fun <T : Iterable<E>, E> Builder<T>.filter(predicate: (E) -> Boolean): Builder<List<E>> = get { filter(predicate) }
 
 /**
  * Maps this assertion to an assertion over a list of all elements of the subject that do not match `predicate`.
  *
  * @see Iterable.filter
  */
-infix fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): Builder<List<E>> =
-  get { filterNot(predicate) }
+infix fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): Builder<List<E>> = get { filterNot(predicate) }
 
 /**
  * Maps this assertion to an assertion over a list of all elements of the subject that are instances of `R`.
  *
  * @see Iterable.filterIsInstance
  */
-inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List<R>> =
-  get { filterIsInstance(R::class.java) }
+inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List<R>> = get { filterIsInstance(R::class.java) }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
@@ -234,8 +227,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.noneIndexed(predicate: Builder<E>.(Int
 /**
  * Asserts that _exactly one_ element of the subject passes the assertions in [predicate].
  */
-infix fun <T : Iterable<E>, E> Builder<T>.one(predicate: Builder<E>.() -> Unit): Builder<T> =
-  exactly(1, predicate)
+infix fun <T : Iterable<E>, E> Builder<T>.one(predicate: Builder<E>.() -> Unit): Builder<T> = exactly(1, predicate)
 
 /**
  * Asserts that at least [count] elements of the subject pass the assertions in
@@ -291,8 +283,7 @@ fun <T : Iterable<E>, E> Builder<T>.exactly(
  * contain further elements that were not specified.
  * If either the subject or [elements] are empty the assertion always fails.
  */
-fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> =
-  contains(elements.toList())
+fun <T : Iterable<E>, E> Builder<T>.contains(vararg elements: E): Builder<T> = contains(elements.toList())
 
 /**
  * Asserts that all [elements] are present in the subject.
@@ -336,8 +327,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.contains(elements: Collection<E>): Bui
  * If [elements] is empty the assertion always fails.
  * If the subject is empty the assertion always passe.
  */
-fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<T> =
-  doesNotContain(elements.toList())
+fun <T : Iterable<E>, E> Builder<T>.doesNotContain(vararg elements: E): Builder<T> = doesNotContain(elements.toList())
 
 /**
  * Asserts that none of [elements] are present in the subject.
@@ -381,8 +371,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.doesNotContain(elements: Collection<E>
  * assertion is probably not appropriate and you should use
  * [containsExactlyInAnyOrder] instead.
  */
-fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder<T> =
-  containsExactly(elements.toList())
+fun <T : Iterable<E>, E> Builder<T>.containsExactly(vararg elements: E): Builder<T> = containsExactly(elements.toList())
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject in the
@@ -429,8 +418,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.containsExactly(elements: Collection<E
  * contains all the same elements with the same cardinality as [elements]
  * regardless of what order they appear in.
  */
-fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E): Builder<T> =
-  containsExactlyInAnyOrder(elements.toList())
+fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(vararg elements: E): Builder<T> = containsExactlyInAnyOrder(elements.toList())
 
 /**
  * Asserts that all [elements] _and no others_ are present in the subject.
@@ -470,14 +458,15 @@ infix fun <T : Iterable<E>, E> Builder<T>.containsExactlyInAnyOrder(elements: Co
  */
 infix fun <T : Iterable<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
   assert("is sorted") { actual ->
-    val failed = (0 until actual.count() - 1).fold(false) { notSorted, index ->
-      if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {
-        notSorted
-      } else {
-        fail(actual, "${actual.elementAt(index)} is greater than ${actual.elementAt(index + 1)}")
-        true
+    val failed =
+      (0 until actual.count() - 1).fold(false) { notSorted, index ->
+        if (notSorted || comparator.compare(actual.elementAt(index), actual.elementAt(index + 1)) <= 0) {
+          notSorted
+        } else {
+          fail(actual, "${actual.elementAt(index)} is greater than ${actual.elementAt(index + 1)}")
+          true
+        }
       }
-    }
     if (!failed) pass()
   }
 
@@ -485,5 +474,4 @@ infix fun <T : Iterable<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
  * Asserts that the subject iterable is sorted according to the natural order of its elements. Empty
  * iterables are considered sorted.
  */
-fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() =
-  isSorted(Comparator.naturalOrder())
+fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() = isSorted(Comparator.naturalOrder())

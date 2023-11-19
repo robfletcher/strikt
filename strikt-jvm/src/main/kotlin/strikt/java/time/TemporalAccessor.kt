@@ -89,8 +89,7 @@ infix fun <T : TemporalAccessor> Assertion.Builder<T>.isSameInstant(expected: Te
  *
  * @see TemporalAccessor.get
  */
-fun <T : TemporalAccessor> Assertion.Builder<T>.get(field: TemporalField): Assertion.Builder<Int> =
-  get(field.toString()) { get(field) }
+fun <T : TemporalAccessor> Assertion.Builder<T>.get(field: TemporalField): Assertion.Builder<Int> = get(field.toString()) { get(field) }
 
 /**
  * Maps an assertion on the subject to an assertion on the value of the

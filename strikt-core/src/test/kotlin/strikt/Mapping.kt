@@ -149,10 +149,11 @@ internal class Mapping {
 
   @Test
   fun `flatMap maps a result iterable to a flattened iterable`() {
-    val subject = listOf(
-      mapOf("words" to listOf("catflap", "rubberplant", "marzipan")),
-      mapOf("words" to listOf("kattenluik", "rubberboom", "marsepein"))
-    )
+    val subject =
+      listOf(
+        mapOf("words" to listOf("catflap", "rubberplant", "marzipan")),
+        mapOf("words" to listOf("kattenluik", "rubberboom", "marsepein"))
+      )
     expectThat(subject)
       .flatMap { it["words"]!! }
       .containsExactly(
@@ -199,15 +200,16 @@ internal class Mapping {
 
     @Test
     fun `can be described`() {
-      val error = assertThrows<AssertionError> {
-        expectThat(subject)
-          .describedAs { "a person named $name" }
-          .and {
-            get { name }.describedAs("name").isEqualTo("Ziggy")
-            get { birthDate.year }.describedAs("birth year")
-              .isEqualTo(1971)
-          }
-      }
+      val error =
+        assertThrows<AssertionError> {
+          expectThat(subject)
+            .describedAs { "a person named $name" }
+            .and {
+              get { name }.describedAs("name").isEqualTo("Ziggy")
+              get { birthDate.year }.describedAs("birth year")
+                .isEqualTo(1971)
+            }
+        }
       expectThat(error.message).isEqualTo(
         """▼ Expect that a person named David:
           |  ▼ name:
@@ -215,31 +217,35 @@ internal class Mapping {
           |            found "David"
           |  ▼ birth year:
           |    ✗ is equal to 1971
-          |            found 1947""".trimMargin()
+          |            found 1947
+        """.trimMargin()
       )
     }
 
     @Test
     fun `descriptions are defaulted when using property references`() {
-      val error = assertThrows<AssertionError> {
-        expectThat(subject).get(Person::name).isEqualTo("Ziggy")
-      }
+      val error =
+        assertThrows<AssertionError> {
+          expectThat(subject).get(Person::name).isEqualTo("Ziggy")
+        }
       expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property name:
           |    ✗ is equal to "Ziggy"
-          |            found "David"""".trimMargin()
+          |            found "David"
+        """.trimMargin()
       )
     }
 
     @Test
     fun `descriptions also default for blocks`() {
-      val error = assertThrows<AssertionError> {
-        expectThat(subject) {
-          get { name }.isEqualTo("Ziggy")
-          get { birthDate.year }.isEqualTo(1971)
+      val error =
+        assertThrows<AssertionError> {
+          expectThat(subject) {
+            get { name }.isEqualTo("Ziggy")
+            get { birthDate.year }.isEqualTo(1971)
+          }
         }
-      }
       expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ name:
@@ -247,27 +253,31 @@ internal class Mapping {
           |            found "David"
           |  ▼ birthDate.year:
           |    ✗ is equal to 1971
-          |            found 1947""".trimMargin()
+          |            found 1947
+        """.trimMargin()
       )
     }
 
     @Test
     fun `descriptions are defaulted when using bean getter references`() {
-      val error = assertThrows<AssertionError> {
-        expectThat(subject).get(Person::birthDate)
-          .get(LocalDate::getYear)
-          .isEqualTo(1971)
-      }
+      val error =
+        assertThrows<AssertionError> {
+          expectThat(subject).get(Person::birthDate)
+            .get(LocalDate::getYear)
+            .isEqualTo(1971)
+        }
       expectThat(error.message).isEqualTo(
         """▼ Expect that Person(name=David, birthDate=1947-01-08):
           |  ▼ value of property birthDate:
           |    ▼ return value of getYear:
           |      ✗ is equal to 1971
-          |              found 1947""".trimMargin()
+          |              found 1947
+        """.trimMargin()
       )
     }
   }
 }
 
 data class Person(val name: String, val birthDate: LocalDate = LocalDate.now())
+
 data class Album(val name: String)

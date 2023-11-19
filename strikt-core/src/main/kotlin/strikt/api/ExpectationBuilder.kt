@@ -5,7 +5,6 @@ package strikt.api
  * create assertion chains or blocks.
  */
 interface ExpectationBuilder {
-
   /**
    * Start a chain of assertions over [subject].
    *

@@ -35,8 +35,7 @@ fun expect(block: suspend ExpectationBuilder.() -> Unit) {
  * @param subject the subject of the chain of assertions.
  * @return an assertion for [subject].
  */
-fun <T> expectThat(subject: T): DescribeableBuilder<T> =
-  AssertionBuilder(AssertionSubject(subject), Throwing)
+fun <T> expectThat(subject: T): DescribeableBuilder<T> = AssertionBuilder(AssertionSubject(subject), Throwing)
 
 /**
  * Evaluate a block of assertions over [subject].
@@ -63,10 +62,7 @@ fun <T> expectThat(
  * @return an assertion over the thrown exception, allowing further assertions
  * about messages, root causes, etc.
  */
-inline fun <reified E : Throwable> expectThrows(
-  noinline action: suspend () -> Any?
-): Builder<E> =
-  expectCatching(action).failedWith()
+inline fun <reified E : Throwable> expectThrows(noinline action: suspend () -> Any?): Builder<E> = expectCatching(action).failedWith()
 
 /**
  * Start a chain of assertions over the result of [action] which may either be

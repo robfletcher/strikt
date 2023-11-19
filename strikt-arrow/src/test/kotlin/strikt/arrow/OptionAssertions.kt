@@ -12,42 +12,42 @@ import strikt.assertions.isEqualTo
 
 @DisplayName("assertions on Option")
 object OptionAssertions : JUnit5Minutests {
+  fun tests() =
+    rootContext<Assertion.Builder<Option<String>>> {
+      context("someOption") {
+        fixture {
+          expectThat(Some("aValue"))
+        }
 
-  fun tests() = rootContext<Assertion.Builder<Option<String>>> {
-    context("someOption") {
-      fixture {
-        expectThat(Some("aValue"))
+        test("can assert on type") {
+          isSome()
+        }
+
+        test("can negate assertion") {
+          not().isNone()
+        }
+
+        test("can assert on type and value equality") {
+          isSome("aValue")
+        }
+
+        test("can assert on type and traverse wrapped value") {
+          isSome().value.isEqualTo("aValue")
+        }
       }
 
-      test("can assert on type") {
-        isSome()
-      }
+      context("noneOption") {
+        fixture {
+          expectThat(None)
+        }
 
-      test("can negate assertion") {
-        not().isNone()
-      }
+        test("can assert on type") {
+          isNone()
+        }
 
-      test("can assert on type and value equality") {
-        isSome("aValue")
-      }
-
-      test("can assert on type and traverse wrapped value") {
-        isSome().value.isEqualTo("aValue")
+        test("can negate assertion") {
+          not().isSome()
+        }
       }
     }
-
-    context("noneOption") {
-      fixture {
-        expectThat(None)
-      }
-
-      test("can assert on type") {
-        isNone()
-      }
-
-      test("can negate assertion") {
-        not().isSome()
-      }
-    }
-  }
 }

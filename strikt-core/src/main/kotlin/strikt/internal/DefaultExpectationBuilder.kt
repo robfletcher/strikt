@@ -23,9 +23,7 @@ internal class DefaultExpectationBuilder(
     block: Assertion.Builder<T>.() -> Unit
   ): DescribeableBuilder<T> = that(subject).apply(block)
 
-  override fun <T> catching(
-    action: suspend () -> T
-  ): DescribeableBuilder<Result<T>> =
+  override fun <T> catching(action: suspend () -> T): DescribeableBuilder<Result<T>> =
     that(
       try {
         runBlocking { action() }
