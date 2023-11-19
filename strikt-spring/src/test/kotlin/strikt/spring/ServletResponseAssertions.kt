@@ -2,6 +2,7 @@ package strikt.spring
 
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import jakarta.servlet.ServletResponse
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.opentest4j.AssertionFailedError
@@ -23,7 +24,6 @@ import strikt.assertions.isA
 import strikt.assertions.isNotNull
 import strikt.spring.app.App
 import strikt.spring.app.Controller
-import jakarta.servlet.ServletResponse
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
@@ -35,42 +35,43 @@ internal class ServletResponseAssertions : JUnit5Minutests {
   @Autowired
   lateinit var mvc: MockMvc
 
-  fun tests() = rootContext<Assertion.Builder<ServletResponse>> {
-    context("a request for JSON") {
-      fixture {
-        mvc
-          .perform(get("/").accept(APPLICATION_JSON))
-          .andExpect(status().isOk)
-          .andReturn()
-          .response
-          .run { expectThat(this) }
-      }
-
-      context("contentType mapping") {
-        test("maps to the response content type") {
-          contentType
-            .isNotNull()
-            .isA<MediaType>()
-            .isCompatibleWith(APPLICATION_JSON)
-        }
-      }
-
-      context("contentTypeIsCompatibleWith assertion") {
-        test("passes if the content type is an exact match") {
-          @Suppress("DEPRECATION")
-          contentTypeIsCompatibleWith(APPLICATION_JSON_UTF8)
+  fun tests() =
+    rootContext<Assertion.Builder<ServletResponse>> {
+      context("a request for JSON") {
+        fixture {
+          mvc
+            .perform(get("/").accept(APPLICATION_JSON))
+            .andExpect(status().isOk)
+            .andReturn()
+            .response
+            .run { expectThat(this) }
         }
 
-        test("passes if the content type is a sub-type") {
-          contentTypeIsCompatibleWith(APPLICATION_JSON)
+        context("contentType mapping") {
+          test("maps to the response content type") {
+            contentType
+              .isNotNull()
+              .isA<MediaType>()
+              .isCompatibleWith(APPLICATION_JSON)
+          }
         }
 
-        test("fails if the content type is not compatible") {
-          assertThrows<AssertionFailedError> {
-            contentTypeIsCompatibleWith(IMAGE_PNG)
+        context("contentTypeIsCompatibleWith assertion") {
+          test("passes if the content type is an exact match") {
+            @Suppress("DEPRECATION")
+            contentTypeIsCompatibleWith(APPLICATION_JSON_UTF8)
+          }
+
+          test("passes if the content type is a sub-type") {
+            contentTypeIsCompatibleWith(APPLICATION_JSON)
+          }
+
+          test("fails if the content type is not compatible") {
+            assertThrows<AssertionFailedError> {
+              contentTypeIsCompatibleWith(IMAGE_PNG)
+            }
           }
         }
       }
     }
-  }
 }

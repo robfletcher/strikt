@@ -6,6 +6,7 @@ import java.nio.charset.Charset
 import java.nio.file.Path
 
 // java.io.File
+
 /**
  * Maps this assertion to an assertion on the name of the file of the subject.
  *
@@ -35,10 +36,10 @@ val <T : File> Builder<T>.parentFile: Builder<File?>
  *
  * @see File.toPath
  */
-fun <T : File> Builder<T>.toPath(): Builder<Path> =
-  get("as Path", File::toPath)
+fun <T : File> Builder<T>.toPath(): Builder<Path> = get("as Path", File::toPath)
 
 // https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/java.io.-file/index.html
+
 /**
  * Maps this assertion to an assertion on the file extension (not including the dot) or empty string if it not have one.
  *
@@ -102,8 +103,7 @@ val <T : File> Builder<T>.childFiles: Builder<List<File>>
 /**
  * Maps this assertion to an assertion on a specific child [name] of the subject.
  */
-fun <T : File> Builder<T>.childFile(name: String): Builder<File> =
-  get("child $name") { File(this, name) }
+fun <T : File> Builder<T>.childFile(name: String): Builder<File> = get("child $name") { File(this, name) }
 
 /**
  * Asserts that the file exists.

@@ -17,9 +17,7 @@ val <T : ServletResponse> Assertion.Builder<T>.contentType: Assertion.Builder<Me
  *
  * @see MediaType.isCompatibleWith
  */
-infix fun <T : ServletResponse> Assertion.Builder<T>.contentTypeIsCompatibleWith(
-  expected: MediaType
-): Assertion.Builder<T> =
+infix fun <T : ServletResponse> Assertion.Builder<T>.contentTypeIsCompatibleWith(expected: MediaType): Assertion.Builder<T> =
   assertThat("content type is compatible with $expected") {
     it.contentType.let(MediaType::parseMediaType).isCompatibleWith(expected)
   }

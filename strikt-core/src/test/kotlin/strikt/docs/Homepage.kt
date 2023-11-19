@@ -63,6 +63,7 @@ internal class Homepage {
     // END homepage_four
   }
 
+  @Suppress("ktlint:standard:no-multi-spaces")
   @Test
   fun `homepage five, six, seven`() {
     val s =
@@ -78,7 +79,6 @@ internal class Homepage {
       """
 
     expectThrows<CompoundAssertionFailure> {
-      /* ktlint-disable no-multi-spaces */
       // START homepage_five
       val subject = "The Enlightened take things Lightly"
       expectThat(subject) {
@@ -87,7 +87,6 @@ internal class Homepage {
         startsWith("T")        // still evaluated and passes
       }
       // END homepage_five
-      /* ktlint-enable no-multi-spaces */
     }
       .message
       .isEqualTo(s.removeSnippetTags().trimIndent().trim())
@@ -105,9 +104,9 @@ internal class Homepage {
     // END homepage_seven
   }
 
+  @Suppress("ktlint:standard:no-multi-spaces")
   @Test
   fun `homepage eight`() {
-    /* ktlint-disable no-multi-spaces */
     // START homepage_eight
     val subject: Any? = "The Enlightened take things Lightly"
     expectThat(subject) // type: Assertion.Builder<Any?>
@@ -116,12 +115,11 @@ internal class Homepage {
       // only available on Assertion.Builder<CharSequence>
       .matches(Regex("[\\w\\s]+"))
     // END homepage_eight
-    /* ktlint-enable no-multi-spaces */
   }
 
+  @Suppress("ktlint:standard:no-multi-spaces")
   @Test
   fun `homepage nine`() {
-    /* ktlint-disable no-multi-spaces */
     // START homepage_nine
     val subject = Pantheon.NORSE
     expectThat(subject)
@@ -129,7 +127,6 @@ internal class Homepage {
       .get { toString() }   // return type of a method call
       .isEqualTo("Odin")
     // END homepage_nine
-    /* ktlint-enable no-multi-spaces */
   }
 
   @Test

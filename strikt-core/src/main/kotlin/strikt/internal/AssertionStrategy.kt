@@ -12,7 +12,6 @@ import strikt.internal.reporting.writePartialToString
 import strikt.internal.reporting.writeToString
 
 internal sealed class AssertionStrategy {
-
   fun <T> appendAtomic(
     context: AssertionGroup<T>,
     description: String,
@@ -23,7 +22,6 @@ internal sealed class AssertionStrategy {
       provideDescription(description),
       expected
     ) {
-
       override var status: Status = Pending
         private set
 
@@ -32,25 +30,37 @@ internal sealed class AssertionStrategy {
         afterStatusSet(this)
       }
 
-      override fun pass(actual: Any?, description: String?) {
-        status = onPass(
-          description = description,
-          comparison = ComparedValues(expected, actual)
-        )
+      override fun pass(
+        actual: Any?,
+        description: String?
+      ) {
+        status =
+          onPass(
+            description = description,
+            comparison = ComparedValues(expected, actual)
+          )
         afterStatusSet(this)
       }
 
-      override fun fail(description: String?, cause: Throwable?) {
+      override fun fail(
+        description: String?,
+        cause: Throwable?
+      ) {
         status = onFail(description = description, cause = cause)
         afterStatusSet(this)
       }
 
-      override fun fail(actual: Any?, description: String?, cause: Throwable?) {
-        status = onFail(
-          description = description,
-          comparison = ComparedValues(expected, actual),
-          cause = cause
-        )
+      override fun fail(
+        actual: Any?,
+        description: String?,
+        cause: Throwable?
+      ) {
+        status =
+          onFail(
+            description = description,
+            comparison = ComparedValues(expected, actual),
+            cause = cause
+          )
         afterStatusSet(this)
       }
     }
@@ -65,7 +75,6 @@ internal sealed class AssertionStrategy {
       provideDescription(description),
       expected
     ) {
-
       override var status: Status = Pending
         private set
 
@@ -74,7 +83,10 @@ internal sealed class AssertionStrategy {
         afterStatusSet(this)
       }
 
-      override fun fail(description: String?, cause: Throwable?) {
+      override fun fail(
+        description: String?,
+        cause: Throwable?
+      ) {
         status = onFail(description = description, cause = cause)
         afterStatusSet(this)
       }
@@ -149,24 +161,27 @@ internal sealed class AssertionStrategy {
 
     override fun evaluate(trees: Collection<AssertionGroup<*>>) {
       if (trees.any { it.status is Failed }) {
-        val failures = trees
-          .filter { it.status is Failed }
-          .map {
-            createAssertionFailedError(
-              it.writeToString(),
-              it.status as Failed
-            )
-          }
+        val failures =
+          trees
+            .filter { it.status is Failed }
+            .map {
+              createAssertionFailedError(
+                it.writeToString(),
+                it.status as Failed
+              )
+            }
         throw CompoundAssertionFailure(trees.writeToString(), failures)
       }
     }
 
     override fun <T> afterStatusSet(result: AssertionResult<T>) {
       val status = result.status
-      if (status is Failed) throw createAssertionFailedError(
-        result.root.writeToString(),
-        status
-      )
+      if (status is Failed) {
+        throw createAssertionFailedError(
+          result.root.writeToString(),
+          status
+        )
+      }
     }
   }
 
@@ -209,22 +224,25 @@ internal sealed class AssertionStrategy {
     message: String,
     failed: Failed?,
   ): AssertionFailedError {
-    val error = if (failed?.comparison != null)
-      AssertionFailed(
-        message,
-        failed.comparison.expected,
-        failed.comparison.actual,
-        failed.cause
-      )
-    else
-      AssertionFailed(
-        message,
-        failed?.cause
-      )
+    val error =
+      if (failed?.comparison != null) {
+        AssertionFailed(
+          message,
+          failed.comparison.expected,
+          failed.comparison.actual,
+          failed.cause
+        )
+      } else {
+        AssertionFailed(
+          message,
+          failed?.cause
+        )
+      }
 
     val stackTrace = error.stackTrace
-    val lastIndex = stackTrace
-      .indexOfLast { it.className.startsWith("strikt") }
+    val lastIndex =
+      stackTrace
+        .indexOfLast { it.className.startsWith("strikt") }
     val suppressedElements = stackTrace.copyOfRange(0, lastIndex)
     val remainingElements = stackTrace.copyOfRange(lastIndex + 1, stackTrace.lastIndex)
     error.stackTrace = remainingElements

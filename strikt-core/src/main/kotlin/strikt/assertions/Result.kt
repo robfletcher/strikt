@@ -14,14 +14,16 @@ import strikt.api.Assertion
 fun <R> Assertion.Builder<Result<R>>.isFailure(): Assertion.Builder<Throwable> =
   assert("is failure") { subject ->
     when {
-      subject.isFailure -> pass(
-        description = "threw %s",
-        actual = subject.exceptionOrNull()
-      )
-      else -> fail(
-        description = "returned %s",
-        actual = subject.getOrThrow()
-      )
+      subject.isFailure ->
+        pass(
+          description = "threw %s",
+          actual = subject.exceptionOrNull()
+        )
+      else ->
+        fail(
+          description = "returned %s",
+          actual = subject.getOrThrow()
+        )
     }
   }
     .get("exception") {
@@ -41,11 +43,12 @@ fun <R> Assertion.Builder<Result<R>>.isSuccess(): Assertion.Builder<R> =
   assert("is success") { subject ->
     when {
       subject.isSuccess -> pass()
-      else -> fail(
-        description = "threw %s",
-        actual = subject.exceptionOrNull(),
-        cause = subject.exceptionOrNull()
-      )
+      else ->
+        fail(
+          description = "threw %s",
+          actual = subject.exceptionOrNull(),
+          cause = subject.exceptionOrNull()
+        )
     }
   }
     .get("value") {
@@ -62,8 +65,7 @@ fun <R> Assertion.Builder<Result<R>>.isSuccess(): Assertion.Builder<R> =
   message = "Replaced with isSuccess()",
   replaceWith = ReplaceWith("isSuccess()")
 )
-fun <T : Any?> Assertion.Builder<Result<T>>.succeeded(): Assertion.Builder<T> =
-  isSuccess()
+fun <T : Any?> Assertion.Builder<Result<T>>.succeeded(): Assertion.Builder<T> = isSuccess()
 
 /**
  * Asserts that the subject is a failed result and maps this assertion to an
@@ -75,8 +77,7 @@ fun <T : Any?> Assertion.Builder<Result<T>>.succeeded(): Assertion.Builder<T> =
   message = "Replaced with isFailure()",
   replaceWith = ReplaceWith("isFailure()")
 )
-fun <T : Any?> Assertion.Builder<Result<T>>.failed(): Assertion.Builder<Throwable> =
-  isFailure()
+fun <T : Any?> Assertion.Builder<Result<T>>.failed(): Assertion.Builder<Throwable> = isFailure()
 
 /**
  * Asserts that the subject is a isFailure result that threw an exception
@@ -85,8 +86,7 @@ fun <T : Any?> Assertion.Builder<Result<T>>.failed(): Assertion.Builder<Throwabl
  *
  * @see [Result.isFailure].
  */
-inline fun <reified E : Throwable> Assertion.Builder<Result<*>>.failedWith() =
-  isFailure().isA<E>()
+inline fun <reified E : Throwable> Assertion.Builder<Result<*>>.failedWith() = isFailure().isA<E>()
 
 /**
  * Deprecated form of [isSuccess]`()`.
@@ -102,11 +102,12 @@ fun <R : Any> Assertion.Builder<Result<R>>.doesNotThrow(): Assertion.Builder<R> 
   assert("did not throw an exception") { subject ->
     when {
       subject.isSuccess -> pass()
-      else -> fail(
-        description = "threw %s",
-        actual = subject.exceptionOrNull(),
-        cause = subject.exceptionOrNull()
-      )
+      else ->
+        fail(
+          description = "threw %s",
+          actual = subject.exceptionOrNull(),
+          cause = subject.exceptionOrNull()
+        )
     }
   }
     .get { requireNotNull(getOrNull()) }

@@ -8,6 +8,7 @@ import java.nio.file.LinkOption
 import java.nio.file.Path
 
 // java.nio.file.Path
+
 /**
  * Asserts that the subject end with the provided path.
  *
@@ -51,8 +52,7 @@ val <T : Path> Builder<T>.fileName: Builder<Path>
  *
  * @see Path.isAbsolute
  */
-fun <T : Path> Builder<T>.isAbsolute(): Builder<T> =
-  assertThat("is absolute", Path::isAbsolute)
+fun <T : Path> Builder<T>.isAbsolute(): Builder<T> = assertThat("is absolute", Path::isAbsolute)
 
 /**
  * Maps this assertion to an assertion on the parent path or `null` if the subject does not have a parent.
@@ -68,8 +68,7 @@ val <T : Path> Builder<T>.parent: Builder<Path?>
  * @param other the path to resolve against this subject's path
  * @see Path.resolve
  */
-infix fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> =
-  get("resolved against $other") { resolve(other) }
+infix fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> = get("resolved against $other") { resolve(other) }
 
 /**
  * Maps this assertion to an assertion of this subject resolved with the provided path.
@@ -77,8 +76,7 @@ infix fun <T : Path> Builder<T>.resolve(other: Path): Builder<Path> =
  * @param other the path string to resolve against this subject's path
  * @see Path.resolve
  */
-infix fun <T : Path> Builder<T>.resolve(other: String): Builder<Path> =
-  get("resolved against $other") { resolve(other) }
+infix fun <T : Path> Builder<T>.resolve(other: String): Builder<Path> = get("resolved against $other") { resolve(other) }
 
 /**
  * Asserts that the subject starts with the provided path.
@@ -103,10 +101,10 @@ infix fun <T : Path> Builder<T>.startsWith(other: String): Builder<T> =
  *
  * @see Path.toFile
  */
-fun <T : Path> Builder<T>.toFile(): Builder<File> =
-  get("as File", Path::toFile)
+fun <T : Path> Builder<T>.toFile(): Builder<File> = get("as File", Path::toFile)
 
 // java.nio.file.Files
+
 /**
  * Asserts that the subject exists, handling symbolic links according to the provided [options]
  *
@@ -130,16 +128,14 @@ fun <T : Path> Builder<T>.isDirectory(vararg options: LinkOption = emptyArray())
  *
  * @see Files.isExecutable
  */
-fun <T : Path> Builder<T>.isExecutable(): Builder<T> =
-  assertThat("is executable") { Files.isExecutable(it) }
+fun <T : Path> Builder<T>.isExecutable(): Builder<T> = assertThat("is executable") { Files.isExecutable(it) }
 
 /**
  * Asserts that the subject is readable.
  *
  * @see Files.isReadable
  */
-fun <T : Path> Builder<T>.isReadable(): Builder<T> =
-  assertThat("is readable") { Files.isReadable(it) }
+fun <T : Path> Builder<T>.isReadable(): Builder<T> = assertThat("is readable") { Files.isReadable(it) }
 
 /**
  * Asserts that the subject is a regular file, handling symbolic links according to the provided [options].
@@ -155,16 +151,14 @@ fun <T : Path> Builder<T>.isRegularFile(vararg options: LinkOption = emptyArray(
  *
  * @see Files.isSymbolicLink
  */
-fun <T : Path> Builder<T>.isSymbolicLink(): Builder<T> =
-  assertThat("is symbolic lnk") { Files.isSymbolicLink(it) }
+fun <T : Path> Builder<T>.isSymbolicLink(): Builder<T> = assertThat("is symbolic lnk") { Files.isSymbolicLink(it) }
 
 /**
  * Maps this assertion to an assertion over all bytes of this subject path .
  *
  * @see Files.readAllBytes
  */
-fun <T : Path> Builder<T>.allBytes(): Builder<ByteArray> =
-  get("all bytes", Files::readAllBytes)
+fun <T : Path> Builder<T>.allBytes(): Builder<ByteArray> = get("all bytes", Files::readAllBytes)
 
 /**
  * Maps this assertion to an assertion over all lines of this subject path decoded using the provided [charset].
@@ -187,7 +181,10 @@ val <T : Path> Builder<T>.size: Builder<Long>
  * Converts a description to another description
  * Useful is methods that take an optional array of [LinkOption]
  */
-private fun descriptionForOptions(description: String, options: Array<out LinkOption>): String =
+private fun descriptionForOptions(
+  description: String,
+  options: Array<out LinkOption>
+): String =
   if (options.isNotEmpty()) {
     "$description with options ${options.contentToString()}"
   } else {

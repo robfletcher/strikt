@@ -10,7 +10,6 @@ import strikt.assertions.isLowerCase
 
 @DisplayName("composed assertions")
 internal class Composition {
-
   @Test
   fun `composed assertions can be negated`() {
     assertThrows<AssertionError> {
@@ -20,9 +19,10 @@ internal class Composition {
         if (allPassed) pass() else fail()
       }
     }.let { error ->
-      val expected = "▼ Expect that \"fnord\":\n" +
-        "  ✗ matches a negated assertion\n" +
-        "    ✗ is not lower case"
+      val expected =
+        "▼ Expect that \"fnord\":\n" +
+          "  ✗ matches a negated assertion\n" +
+          "    ✗ is not lower case"
       expectThat(error.message).isEqualTo(expected)
     }
   }

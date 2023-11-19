@@ -25,16 +25,16 @@ import java.time.LocalDate
 
 @DisplayName("Snippets used in Orchid docs")
 internal class Chaining {
-
-// traversing-subjects.md
+  // traversing-subjects.md
 // -----------------------------------------------------------------------------
 
   @Test fun `traversing subjects 1`() {
     val map = mapOf("count" to 1)
     val list = listOf("fnord")
-    val person = object {
-      val name = "Ziggy"
-    }
+    val person =
+      object {
+        val name = "Ziggy"
+      }
 
     // START traversing_subjects_1
     expectThat(map.size).isEqualTo(1)
@@ -164,11 +164,12 @@ internal class Chaining {
   }
 
   @Test fun `grouping with and 4`() {
-    val albums = listOf(
-      Album("David Bowie"),
-      *((0 until 24).map { Album("$it") }).toTypedArray(),
-      Album("Blackstar")
-    )
+    val albums =
+      listOf(
+        Album("David Bowie"),
+        *((0 until 24).map { Album("$it") }).toTypedArray(),
+        Album("Blackstar")
+      )
     // START grouping_with_and_4
     expectThat(albums)
       .hasSize(26)

@@ -23,8 +23,7 @@ import strikt.internal.opentest4j.CompoundAssertionFailure
 
 @DisplayName("Snippets used in Orchid docs")
 internal class Assertions {
-
-// assertion-styles.md
+  // assertion-styles.md
 // -----------------------------------------------------------------------------
 
   @Test fun `assertion styles 1, 2`() {

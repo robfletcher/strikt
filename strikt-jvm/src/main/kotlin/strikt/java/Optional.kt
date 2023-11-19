@@ -22,5 +22,4 @@ fun <T> Assertion.Builder<Optional<T>>.isAbsent(): Assertion.Builder<Optional<T>
 /**
  * Maps an assertion on a Java `Optional` to a Kotlin nullable type.
  */
-fun <T> Assertion.Builder<Optional<T>>.toNullable(): Assertion.Builder<T?> =
-  get { orElse(null) }
+fun <T> Assertion.Builder<Optional<T>>.toNullable(): Assertion.Builder<T?> = get { orElse(null) }

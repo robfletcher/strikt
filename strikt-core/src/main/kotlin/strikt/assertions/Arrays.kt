@@ -28,8 +28,7 @@ infix fun <T> Assertion.Builder<Array<T>>.hasSize(expected: Int): Assertion.Buil
  * @see Array.isEmpty
  */
 @JvmName("isObjectArrayEmpty")
-fun <T> Assertion.Builder<Array<T>>.isEmpty(): Assertion.Builder<Array<T>> =
-  assertThat("array is empty") { it.isEmpty() }
+fun <T> Assertion.Builder<Array<T>>.isEmpty(): Assertion.Builder<Array<T>> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -57,8 +56,7 @@ infix fun Assertion.Builder<BooleanArray>.hasSize(expected: Int): Assertion.Buil
  * @see Array.isEmpty
  */
 @JvmName("isBooleanArrayEmpty")
-fun Assertion.Builder<BooleanArray>.isEmpty(): Assertion.Builder<BooleanArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<BooleanArray>.isEmpty(): Assertion.Builder<BooleanArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -86,8 +84,7 @@ infix fun Assertion.Builder<ByteArray>.hasSize(expected: Int): Assertion.Builder
  * @see Array.isEmpty
  */
 @JvmName("isByteArrayEmpty")
-fun Assertion.Builder<ByteArray>.isEmpty(): Assertion.Builder<ByteArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<ByteArray>.isEmpty(): Assertion.Builder<ByteArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -115,8 +112,7 @@ infix fun Assertion.Builder<ShortArray>.hasSize(expected: Int): Assertion.Builde
  * @see Array.isEmpty
  */
 @JvmName("isShortArrayEmpty")
-fun Assertion.Builder<ShortArray>.isEmpty(): Assertion.Builder<ShortArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<ShortArray>.isEmpty(): Assertion.Builder<ShortArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -144,8 +140,7 @@ infix fun Assertion.Builder<IntArray>.hasSize(expected: Int): Assertion.Builder<
  * @see Array.isEmpty
  */
 @JvmName("isIntArrayEmpty")
-fun Assertion.Builder<IntArray>.isEmpty(): Assertion.Builder<IntArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<IntArray>.isEmpty(): Assertion.Builder<IntArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -173,8 +168,7 @@ infix fun Assertion.Builder<LongArray>.hasSize(expected: Int): Assertion.Builder
  * @see Array.isEmpty
  */
 @JvmName("isLongArrayEmpty")
-fun Assertion.Builder<LongArray>.isEmpty(): Assertion.Builder<LongArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<LongArray>.isEmpty(): Assertion.Builder<LongArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -202,8 +196,7 @@ infix fun Assertion.Builder<FloatArray>.hasSize(expected: Int): Assertion.Builde
  * @see Array.isEmpty
  */
 @JvmName("isFloatArrayEmpty")
-fun Assertion.Builder<FloatArray>.isEmpty(): Assertion.Builder<FloatArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<FloatArray>.isEmpty(): Assertion.Builder<FloatArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -231,8 +224,7 @@ infix fun Assertion.Builder<DoubleArray>.hasSize(expected: Int): Assertion.Build
  * @see Array.isEmpty
  */
 @JvmName("isDoubleArrayEmpty")
-fun Assertion.Builder<DoubleArray>.isEmpty(): Assertion.Builder<DoubleArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<DoubleArray>.isEmpty(): Assertion.Builder<DoubleArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Asserts that the subject's content is equal to that of [other] according to
@@ -260,11 +252,9 @@ infix fun Assertion.Builder<CharArray>.hasSize(expected: Int): Assertion.Builder
  * @see Array.isEmpty
  */
 @JvmName("is_ArrayEmpty")
-fun Assertion.Builder<CharArray>.isEmpty(): Assertion.Builder<CharArray> =
-  assertThat("array is empty") { it.isEmpty() }
+fun Assertion.Builder<CharArray>.isEmpty(): Assertion.Builder<CharArray> = assertThat("array is empty") { it.isEmpty() }
 
 /**
  * Maps an array to a list to make it possible to use the iterable matchers
  */
-fun <T> Assertion.Builder<Array<T>>.toList(): Assertion.Builder<List<T>> =
-  get("as list") { toList() }
+fun <T> Assertion.Builder<Array<T>>.toList(): Assertion.Builder<List<T>> = get("as list") { toList() }

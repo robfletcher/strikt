@@ -29,5 +29,4 @@ val <T : Any> Assertion.Builder<CapturingSlot<T>>.captured: Assertion.Builder<T>
  */
 fun <T : Any> Assertion.Builder<CapturingSlot<T>>.withCaptured(
   block: Assertion.Builder<T>.() -> Unit
-): Assertion.Builder<CapturingSlot<T>> =
-  with("captured value %s", CapturingSlot<T>::captured, block)
+): Assertion.Builder<CapturingSlot<T>> = with("captured value %s", CapturingSlot<T>::captured, block)

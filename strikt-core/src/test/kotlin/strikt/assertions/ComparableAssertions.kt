@@ -10,7 +10,6 @@ import java.time.Instant
 
 @DisplayName("assertions on Comparable")
 internal object ComparableAssertions {
-
   fun <T : Comparable<T>> TestContextBuilder<*, Assertion.Builder<T>>.supportsComparisonAssertions(
     value: T,
     decrementor: T.() -> T,
@@ -106,79 +105,84 @@ internal object ComparableAssertions {
   }
 
   @TestFactory
-  fun comparableAssertions_Int() = assertionTests<Int> {
-    context("an Int subject") {
-      supportsComparisonAssertions(1, Int::dec, Int::inc)
-    }
-  }
-
-  @TestFactory
-  fun comparableAssertions_Instant() = assertionTests<Instant> {
-    context("an Instant subject") {
-      supportsComparisonAssertions(
-        Instant.now(),
-        { minusMillis(1) },
-        { plusMillis(1) }
-      )
-    }
-  }
-
-  @TestFactory
-  fun comparableAssertions_String() = assertionTests<String> {
-    context("a String subject") {
-      supportsComparisonAssertions("a", { "A" }, { "z" })
-    }
-  }
-
-  @TestFactory
-  fun isIn_Int() = assertionTests<Int> {
-    val range = 1..10
-    range.forEach { i ->
-      context("a value of $i") {
-        fixture { expectThat(i) }
-
-        test("is in the range ${range.start}..${range.endInclusive}") {
-          expectThat(i).isIn(range)
-        }
+  fun comparableAssertions_Int() =
+    assertionTests<Int> {
+      context("an Int subject") {
+        supportsComparisonAssertions(1, Int::dec, Int::inc)
       }
     }
 
-    ((-5..0) + (11..15)).forEach { i ->
-      context("a value of $i") {
-        fixture { expectThat(i) }
+  @TestFactory
+  fun comparableAssertions_Instant() =
+    assertionTests<Instant> {
+      context("an Instant subject") {
+        supportsComparisonAssertions(
+          Instant.now(),
+          { minusMillis(1) },
+          { plusMillis(1) }
+        )
+      }
+    }
 
-        test("$i is not in the range ${range.start}..${range.endInclusive}") {
-          assertThrows<AssertionError> {
+  @TestFactory
+  fun comparableAssertions_String() =
+    assertionTests<String> {
+      context("a String subject") {
+        supportsComparisonAssertions("a", { "A" }, { "z" })
+      }
+    }
+
+  @TestFactory
+  fun isIn_Int() =
+    assertionTests<Int> {
+      val range = 1..10
+      range.forEach { i ->
+        context("a value of $i") {
+          fixture { expectThat(i) }
+
+          test("is in the range ${range.start}..${range.endInclusive}") {
             expectThat(i).isIn(range)
           }
         }
       }
-    }
-  }
 
-  @TestFactory
-  fun isIn_Long() = assertionTests<Long> {
-    val range = 1L..10L
-    range.forEach { i ->
-      context("a value of $i") {
-        fixture { expectThat(i) }
+      ((-5..0) + (11..15)).forEach { i ->
+        context("a value of $i") {
+          fixture { expectThat(i) }
 
-        test("is in the range ${range.start}..${range.endInclusive}") {
-          expectThat(i).isIn(range)
-        }
-      }
-    }
-
-    ((-5L..0L) + (11L..15L)).forEach { i ->
-      context("a value of $i") {
-        fixture { expectThat(i) }
-
-        test("$i is not in the range ${range.start}..${range.endInclusive}") {
-          assertThrows<AssertionError> {
-            expectThat(i).isIn(range)
+          test("$i is not in the range ${range.start}..${range.endInclusive}") {
+            assertThrows<AssertionError> {
+              expectThat(i).isIn(range)
+            }
           }
         }
       }
     }
-  }
+
+  @TestFactory
+  fun isIn_Long() =
+    assertionTests<Long> {
+      val range = 1L..10L
+      range.forEach { i ->
+        context("a value of $i") {
+          fixture { expectThat(i) }
+
+          test("is in the range ${range.start}..${range.endInclusive}") {
+            expectThat(i).isIn(range)
+          }
+        }
+      }
+
+      ((-5L..0L) + (11L..15L)).forEach { i ->
+        context("a value of $i") {
+          fixture { expectThat(i) }
+
+          test("$i is not in the range ${range.start}..${range.endInclusive}") {
+            assertThrows<AssertionError> {
+              expectThat(i).isIn(range)
+            }
+          }
+        }
+      }
+    }
 }
