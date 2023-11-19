@@ -5,6 +5,8 @@ contributors:
   link: https://github.com/abendt
 - name: Jakub Bochenski
   link: https://github.com/jakub-bochenski
+- name: Hubert Braszko
+  link: https://github.com/hubertbraszko
 - name: Bengt Brodersen
   link: https://github.com/qoomon
 - name: Casey Brooks
@@ -53,8 +55,6 @@ contributors:
   link: https://github.com/sullis
 - name: Ramazan Yapparov
   link: https://github.com/Waltorw
-- name: Hubert Braszko
-  link: https://github.com/hubertbraszko
 
 homepageSections:
   - title: 'A powerful fluent API'
