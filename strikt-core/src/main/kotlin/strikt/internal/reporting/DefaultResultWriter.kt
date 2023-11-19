@@ -10,14 +10,18 @@ import strikt.internal.AssertionSubject
 import strikt.internal.DescribedNode
 
 internal open class DefaultResultWriter : ResultWriter {
-
   @Suppress("PlatformExtensionReceiverOfInline")
-
-  override fun writeTo(writer: Appendable, node: AssertionNode<*>) {
+  override fun writeTo(
+    writer: Appendable,
+    node: AssertionNode<*>
+  ) {
     writeIndented(writer, node)
   }
 
-  override fun writePathTo(writer: Appendable, node: AssertionNode<*>) {
+  override fun writePathTo(
+    writer: Appendable,
+    node: AssertionNode<*>
+  ) {
     val tree = mutableListOf<AssertionNode<*>>()
     node.addAncestorsTo(tree)
 
@@ -97,7 +101,10 @@ internal open class DefaultResultWriter : ResultWriter {
       .append(":")
   }
 
-  private fun AssertionResult<*>.writeResult(writer: Appendable, indent: Int) {
+  private fun AssertionResult<*>.writeResult(
+    writer: Appendable,
+    indent: Int
+  ) {
     writeLineStart(writer, this, indent)
     writeStatusIcon(writer, this)
 
@@ -160,7 +167,10 @@ internal open class DefaultResultWriter : ResultWriter {
     }
   }
 
-  protected open fun writeLineEnd(writer: Appendable, node: AssertionNode<*>) {
+  protected open fun writeLineEnd(
+    writer: Appendable,
+    node: AssertionNode<*>
+  ) {
     if (node is DescribedNode) {
       writer.append(EOL)
     }

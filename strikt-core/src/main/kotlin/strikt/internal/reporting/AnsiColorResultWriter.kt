@@ -6,7 +6,11 @@ import strikt.api.Status.Pending
 import strikt.internal.AssertionNode
 
 internal object AnsiColorResultWriter : DefaultResultWriter() {
-  override fun writeLineStart(writer: Appendable, node: AssertionNode<*>, indent: Int) {
+  override fun writeLineStart(
+    writer: Appendable,
+    node: AssertionNode<*>,
+    indent: Int
+  ) {
     super.writeLineStart(writer, node, indent)
     writer.append(
       when (node.status) {
@@ -17,7 +21,10 @@ internal object AnsiColorResultWriter : DefaultResultWriter() {
     )
   }
 
-  override fun writeLineEnd(writer: Appendable, node: AssertionNode<*>) {
+  override fun writeLineEnd(
+    writer: Appendable,
+    node: AssertionNode<*>
+  ) {
     writer.append(ANSI_RESET)
     super.writeLineEnd(writer, node)
   }

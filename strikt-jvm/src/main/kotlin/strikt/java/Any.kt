@@ -13,8 +13,7 @@ import kotlin.reflect.KProperty1
  *
  * Properties are identified using Java beans conventions.
  */
-infix fun <T : Any> Assertion.Builder<T>.propertiesAreEqualTo(other: T): Assertion.Builder<T> =
-  compareFieldByField(other)
+infix fun <T : Any> Assertion.Builder<T>.propertiesAreEqualTo(other: T): Assertion.Builder<T> = compareFieldByField(other)
 
 /**
  * Asserts that all properties of the subject except [ignoredProperties] match
@@ -26,10 +25,11 @@ infix fun <T : Any> Assertion.Builder<T>.propertiesAreEqualTo(other: T): Asserti
 fun <T : Any> Assertion.Builder<T>.propertiesAreEqualToIgnoring(
   other: T,
   vararg ignoredProperties: KProperty1<T, Any>
-): Assertion.Builder<T> = compareFieldByField(
-  other,
-  ignoredProperties.map(KProperty1<T, Any>::name)
-)
+): Assertion.Builder<T> =
+  compareFieldByField(
+    other,
+    ignoredProperties.map(KProperty1<T, Any>::name)
+  )
 
 private fun <T : Any> Assertion.Builder<T>.compareFieldByField(
   other: T,
@@ -41,9 +41,10 @@ private fun <T : Any> Assertion.Builder<T>.compareFieldByField(
         .propertyDescriptors
         .filter { it.name != "class" && it.name !in ignoredPropertyNames }
         .forEach { property ->
-          val mappedAssertion = get("value of property ${property.name}") {
-            property.readMethod(this)
-          }
+          val mappedAssertion =
+            get("value of property ${property.name}") {
+              property.readMethod(this)
+            }
           val otherValue = property.readMethod(other)
           @Suppress("UNCHECKED_CAST")
           when {

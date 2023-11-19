@@ -7,8 +7,7 @@ import java.util.Collections
  * Maps this assertion to an assertion on the element at index [i] in the
  * subject list.
  */
-operator fun <T : List<E>, E> Builder<T>.get(i: Int): Builder<E> =
-  get("element [$i] %s") { this[i] }
+operator fun <T : List<E>, E> Builder<T>.get(i: Int): Builder<E> = get("element [$i] %s") { this[i] }
 
 /**
  * Maps this assertion to an assertion on the elements at the sub-list
@@ -22,8 +21,7 @@ operator fun <T : List<E>, E> Builder<T>.get(range: IntRange): Builder<List<E>> 
 /**
  * Asserts that all [elements] are present in the subject in exactly the same order
  */
-fun <T : List<E>, E> Builder<T>.containsSequence(vararg elements: E) =
-  containsSequence(elements.toList())
+fun <T : List<E>, E> Builder<T>.containsSequence(vararg elements: E) = containsSequence(elements.toList())
 
 /**
  * Asserts that all [elements] are present in the subject in exactly the same order

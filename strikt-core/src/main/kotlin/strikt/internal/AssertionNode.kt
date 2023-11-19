@@ -28,6 +28,7 @@ internal interface DescribedNode<S> : AssertionNode<S> {
 
 internal interface AssertionGroup<S> : AssertionNode<S> {
   fun append(node: AssertionNode<*>) // TODO: not visible outside of this hierarchy
+
   val children: Iterable<AssertionNode<*>>
 }
 
@@ -61,12 +62,13 @@ internal class AssertionSubject<S>(
   }
 
   override val status: Status
-    get() = when {
-      children.isEmpty() -> Pending
-      children.any { it.status is Failed } -> Failed()
-      children.any { it.status is Pending } -> Pending
-      else -> Passed()
-    }
+    get() =
+      when {
+        children.isEmpty() -> Pending
+        children.any { it.status is Failed } -> Failed()
+        children.any { it.status is Pending } -> Pending
+        else -> Passed()
+      }
 }
 
 /**
@@ -93,12 +95,13 @@ internal class AssertionChain<S>(
   }
 
   override val status: Status
-    get() = when {
-      children.isEmpty() -> Pending
-      children.any { it.status is Failed } -> Failed()
-      children.any { it.status is Pending } -> Pending
-      else -> Passed()
-    }
+    get() =
+      when {
+        children.isEmpty() -> Pending
+        children.any { it.status is Failed } -> Failed()
+        children.any { it.status is Pending } -> Pending
+        else -> Passed()
+      }
 
   override val allowChain: Boolean
     get() = children.map { it.status }.all { it is Passed }
@@ -128,12 +131,13 @@ internal class AssertionChainedGroup<S>(
   }
 
   override val status: Status
-    get() = when {
-      children.isEmpty() -> Pending
-      children.any { it.status is Failed } -> Failed()
-      children.any { it.status is Pending } -> Pending
-      else -> Passed()
-    }
+    get() =
+      when {
+        children.isEmpty() -> Pending
+        children.any { it.status is Failed } -> Failed()
+        children.any { it.status is Pending } -> Pending
+        else -> Passed()
+      }
 }
 
 internal abstract class AtomicAssertionNode<S>(
@@ -141,7 +145,6 @@ internal abstract class AtomicAssertionNode<S>(
   override var description: String,
   override val expected: Any? = null
 ) : AssertionResult<S>, AtomicAssertion {
-
   override val subject: S
     get() = parent.subject
 
@@ -159,7 +162,6 @@ internal abstract class CompoundAssertionNode<S>(
   override var description: String,
   override val expected: Any? = null
 ) : AssertionGroup<S>, AssertionResult<S>, CompoundAssertion {
-
   override val subject: S
     get() = parent.subject
 

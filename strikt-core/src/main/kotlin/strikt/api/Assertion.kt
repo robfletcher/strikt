@@ -38,7 +38,6 @@ interface Assertion {
    * @see Assertion
    */
   interface Builder<T> {
-
     val subject: T
 
     /**
@@ -59,8 +58,7 @@ interface Assertion {
     fun assert(
       description: String,
       assert: AtomicAssertion.(T) -> Unit
-    ): Builder<T> =
-      assert(description, null, assert)
+    ): Builder<T> = assert(description, null, assert)
 
     /**
      * Evaluates a condition that may pass or fail.
@@ -123,8 +121,7 @@ interface Assertion {
     fun compose(
       description: String,
       assertions: Builder<T>.(T) -> Unit
-    ): CompoundAssertions<T> =
-      compose(description, null, assertions)
+    ): CompoundAssertions<T> = compose(description, null, assertions)
 
     /**
      * Evaluates a boolean condition.
@@ -140,8 +137,10 @@ interface Assertion {
       "Use assertThat instead",
       replaceWith = ReplaceWith("assertThat(description, assert)")
     )
-    fun passesIf(description: String, assert: (T) -> Boolean): Builder<T> =
-      assertThat(description, assert)
+    fun passesIf(
+      description: String,
+      assert: (T) -> Boolean
+    ): Builder<T> = assertThat(description, assert)
 
     /**
      * Evaluates a boolean condition.
@@ -153,7 +152,10 @@ interface Assertion {
      * `false` (the assertion fails).
      * @return the chained assertion builder, in order to facilitate a fluent API.
      */
-    fun assertThat(description: String, assert: (T) -> Boolean): Builder<T> =
+    fun assertThat(
+      description: String,
+      assert: (T) -> Boolean
+    ): Builder<T> =
       assert(description) {
         if (assert(it)) pass() else fail()
       }
@@ -177,8 +179,7 @@ interface Assertion {
       description: String,
       expected: Any?,
       assert: (T) -> Boolean
-    ): Builder<T> =
-      assertThat(description, expected, assert)
+    ): Builder<T> = assertThat(description, expected, assert)
 
     /**
      * Evaluates a boolean condition.
@@ -273,8 +274,7 @@ interface Assertion {
       "Use get instead",
       replaceWith = ReplaceWith("get(function)")
     )
-    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> =
-      get(function)
+    fun <R> chain(function: (T) -> R): DescribeableBuilder<R> = get(function)
 
     /**
      * Deprecated form of [with]`(String, (T) -> R)`.
@@ -316,9 +316,7 @@ interface Assertion {
      * This method may be used as an infix function which tends to enhance
      * readability when it directly follows a lambda.
      */
-    infix fun and(
-      assertions: Builder<T>.() -> Unit
-    ): Builder<T>
+    infix fun and(assertions: Builder<T>.() -> Unit): Builder<T>
   }
 }
 
@@ -340,9 +338,10 @@ private fun <Receiver, Result> (Receiver.() -> Result).describe(name: String): S
   }
 
 private val CallableReference.propertyName: String
-  get() = "^get(.+)$".toRegex().find(name).let { match ->
-    return when (match) {
-      null -> name
-      else -> match.groupValues[1].replaceFirstChar { it.lowercase(Locale.getDefault()) }
+  get() =
+    "^get(.+)$".toRegex().find(name).let { match ->
+      return when (match) {
+        null -> name
+        else -> match.groupValues[1].replaceFirstChar { it.lowercase(Locale.getDefault()) }
+      }
     }
-  }

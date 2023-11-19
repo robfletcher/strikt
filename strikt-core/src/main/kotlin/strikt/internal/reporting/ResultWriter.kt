@@ -4,15 +4,23 @@ import strikt.internal.AssertionNode
 import java.io.StringWriter
 
 internal interface ResultWriter {
-  fun writeTo(writer: Appendable, node: AssertionNode<*>)
+  fun writeTo(
+    writer: Appendable,
+    node: AssertionNode<*>
+  )
 
-  fun writeTo(writer: Appendable, results: Iterable<AssertionNode<*>>) =
-    results.forEachIndexed { index, it ->
-      if (index > 0) writer.append("\n")
-      writeTo(writer, it)
-    }
+  fun writeTo(
+    writer: Appendable,
+    results: Iterable<AssertionNode<*>>
+  ) = results.forEachIndexed { index, it ->
+    if (index > 0) writer.append("\n")
+    writeTo(writer, it)
+  }
 
-  fun writePathTo(writer: Appendable, node: AssertionNode<*>)
+  fun writePathTo(
+    writer: Appendable,
+    node: AssertionNode<*>
+  )
 }
 
 internal fun AssertionNode<*>.writeToString(resultWriter: ResultWriter = DefaultResultWriter()) =

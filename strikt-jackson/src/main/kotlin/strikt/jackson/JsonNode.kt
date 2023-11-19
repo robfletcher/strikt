@@ -48,8 +48,7 @@ infix fun <T : JsonNode> Assertion.Builder<T>.path(fieldName: String): Assertion
  * subject of the returned assertion builder will be a
  * [com.fasterxml.jackson.databind.node.MissingNode].
  */
-infix fun <T : JsonNode> Assertion.Builder<T>.at(pointer: String): Assertion.Builder<JsonNode> =
-  get("nodes at $pointer") { at(pointer) }
+infix fun <T : JsonNode> Assertion.Builder<T>.at(pointer: String): Assertion.Builder<JsonNode> = get("nodes at $pointer") { at(pointer) }
 
 /**
  * Maps the subject node of the assertion builder to the node accessed by [pointer].
@@ -68,8 +67,7 @@ infix fun <T : JsonNode> Assertion.Builder<T>.at(pointer: JsonPointer): Assertio
  * an [ObjectNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isObject(): Assertion.Builder<ObjectNode> =
-  hasNodeType(OBJECT) as Assertion.Builder<ObjectNode>
+fun <T : JsonNode> Assertion.Builder<T>.isObject(): Assertion.Builder<ObjectNode> = hasNodeType(OBJECT) as Assertion.Builder<ObjectNode>
 
 /**
  * Asserts that the subject node is a JSON array.
@@ -78,8 +76,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isObject(): Assertion.Builder<ObjectNode
  * an [ArrayNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isArray(): Assertion.Builder<ArrayNode> =
-  hasNodeType(ARRAY) as Assertion.Builder<ArrayNode>
+fun <T : JsonNode> Assertion.Builder<T>.isArray(): Assertion.Builder<ArrayNode> = hasNodeType(ARRAY) as Assertion.Builder<ArrayNode>
 
 /**
  * Asserts that the subject node is a JSON text node.
@@ -88,8 +85,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isArray(): Assertion.Builder<ArrayNode> 
  * a [TextNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isTextual(): Assertion.Builder<TextNode> =
-  hasNodeType(STRING) as Assertion.Builder<TextNode>
+fun <T : JsonNode> Assertion.Builder<T>.isTextual(): Assertion.Builder<TextNode> = hasNodeType(STRING) as Assertion.Builder<TextNode>
 
 /**
  * Asserts that the subject node is a JSON numeric node.
@@ -98,8 +94,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isTextual(): Assertion.Builder<TextNode>
  * a [NumericNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isNumber(): Assertion.Builder<NumericNode> =
-  hasNodeType(NUMBER) as Assertion.Builder<NumericNode>
+fun <T : JsonNode> Assertion.Builder<T>.isNumber(): Assertion.Builder<NumericNode> = hasNodeType(NUMBER) as Assertion.Builder<NumericNode>
 
 /**
  * Asserts that the subject node is a JSON boolean node.
@@ -108,8 +103,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isNumber(): Assertion.Builder<NumericNod
  * a [BooleanNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isBoolean(): Assertion.Builder<BooleanNode> =
-  hasNodeType(BOOLEAN) as Assertion.Builder<BooleanNode>
+fun <T : JsonNode> Assertion.Builder<T>.isBoolean(): Assertion.Builder<BooleanNode> = hasNodeType(BOOLEAN) as Assertion.Builder<BooleanNode>
 
 /**
  * Asserts that the subject node is a JSON missing node.
@@ -118,8 +112,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isBoolean(): Assertion.Builder<BooleanNo
  * a [MissingNode].
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : JsonNode> Assertion.Builder<T>.isMissing(): Assertion.Builder<MissingNode> =
-  hasNodeType(MISSING) as Assertion.Builder<MissingNode>
+fun <T : JsonNode> Assertion.Builder<T>.isMissing(): Assertion.Builder<MissingNode> = hasNodeType(MISSING) as Assertion.Builder<MissingNode>
 
 /**
  * Maps the assertion to an assertion on the subject node's text value.
@@ -129,8 +122,7 @@ fun <T : JsonNode> Assertion.Builder<T>.isMissing(): Assertion.Builder<MissingNo
  *
  * @see isTextual
  */
-fun <T : JsonNode> Assertion.Builder<T>.textValue(): Assertion.Builder<String?> =
-  get("text value", JsonNode::textValue)
+fun <T : JsonNode> Assertion.Builder<T>.textValue(): Assertion.Builder<String?> = get("text value", JsonNode::textValue)
 
 /**
  * Maps the assertion to an assertion on the subject node's number value.
@@ -140,8 +132,7 @@ fun <T : JsonNode> Assertion.Builder<T>.textValue(): Assertion.Builder<String?> 
  *
  * @see isNumber
  */
-fun <T : JsonNode> Assertion.Builder<T>.numberValue(): Assertion.Builder<Number?> =
-  get("number value", JsonNode::numberValue)
+fun <T : JsonNode> Assertion.Builder<T>.numberValue(): Assertion.Builder<Number?> = get("number value", JsonNode::numberValue)
 
 /**
  * Maps the assertion to an assertion on the subject node's boolean value.
@@ -151,8 +142,7 @@ fun <T : JsonNode> Assertion.Builder<T>.numberValue(): Assertion.Builder<Number?
  *
  * @see isBoolean
  */
-fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolean> =
-  get("boolean value", JsonNode::booleanValue)
+fun <T : JsonNode> Assertion.Builder<T>.booleanValue(): Assertion.Builder<Boolean> = get("boolean value", JsonNode::booleanValue)
 
 /**
  * Maps the assertion to an assertion on the text values of [fieldName] in each
@@ -176,9 +166,7 @@ fun <T : JsonNode> Assertion.Builder<T>.findValuesAsText(fieldName: String): Ass
  * @see isNumber
  * @see isBoolean
  */
-infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
-  nodeType: JsonNodeType
-): Assertion.Builder<T> =
+infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(nodeType: JsonNodeType): Assertion.Builder<T> =
   assert("is a $nodeType node", nodeType) {
     when (it.nodeType) {
       nodeType -> pass(actual = it.nodeType, description = "found a %s node")
@@ -193,8 +181,11 @@ infix fun <T : JsonNode> Assertion.Builder<T>.hasNodeType(
  */
 infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder<ArrayNode> =
   assert("has $expected elements", expected) { subject ->
-    if (subject.size() == expected) pass(actual = subject.size())
-    else fail(actual = subject.size())
+    if (subject.size() == expected) {
+      pass(actual = subject.size())
+    } else {
+      fail(actual = subject.size())
+    }
   }
 
 /**
@@ -202,11 +193,9 @@ infix fun Assertion.Builder<ArrayNode>.hasSize(expected: Int): Assertion.Builder
  *
  * @see ArrayNode.size
  */
-fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> =
-  get("size", ArrayNode::size)
+fun Assertion.Builder<ArrayNode>.size(): Assertion.Builder<Int> = get("size", ArrayNode::size)
 
 /**
  * Maps an assertion on a JSON array to an assertion on the text values of all nodes in the array.
  */
-fun Assertion.Builder<ArrayNode>.textValues(): Assertion.Builder<Iterable<String>> =
-  map { it.textValue() }
+fun Assertion.Builder<ArrayNode>.textValues(): Assertion.Builder<Iterable<String>> = map { it.textValue() }

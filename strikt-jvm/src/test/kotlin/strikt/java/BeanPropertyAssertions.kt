@@ -13,7 +13,6 @@ import java.time.LocalDate
 import java.util.UUID
 
 internal object BeanPropertyAssertions {
-
   internal data class PersonKotlin(
     val id: UUID = UUID.randomUUID(),
     val name: String,
@@ -35,18 +34,21 @@ internal object BeanPropertyAssertions {
 
   @Test
   fun `can compare a Kotlin data class field-by-field`() {
-    val subject = PersonKotlin(
-      name = "David",
-      dateOfBirth = LocalDate.of(1947, 1, 8),
-      image = "catflap".toByteArray()
-    )
-    val other = subject.copy(
-      name = "Ziggy",
-      dateOfBirth = LocalDate.of(1972, 2, 10)
-    )
-    val error = assertThrows<AssertionError> {
-      expectThat(subject).propertiesAreEqualTo(other)
-    }
+    val subject =
+      PersonKotlin(
+        name = "David",
+        dateOfBirth = LocalDate.of(1947, 1, 8),
+        image = "catflap".toByteArray()
+      )
+    val other =
+      subject.copy(
+        name = "Ziggy",
+        dateOfBirth = LocalDate.of(1972, 2, 10)
+      )
+    val error =
+      assertThrows<AssertionError> {
+        expectThat(subject).propertiesAreEqualTo(other)
+      }
     expectThat(error.message) {
       isNotNull()
       isEqualTo(
@@ -61,30 +63,34 @@ internal object BeanPropertyAssertions {
           |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David"
+        """.trimMargin()
       )
     }
   }
 
   @Test
   fun `ignores excluded properties`() {
-    val subject = PersonKotlin(
-      name = "David",
-      dateOfBirth = LocalDate.of(1947, 1, 8),
-      image = "catflap".toByteArray()
-    )
-    val other = PersonKotlin(
-      name = "Ziggy",
-      dateOfBirth = LocalDate.of(1947, 1, 8),
-      image = "catflap".toByteArray()
-    )
-    val error = assertThrows<AssertionError> {
-      expectThat(subject).propertiesAreEqualToIgnoring(
-        other,
-        PersonKotlin::id,
-        PersonKotlin::image
+    val subject =
+      PersonKotlin(
+        name = "David",
+        dateOfBirth = LocalDate.of(1947, 1, 8),
+        image = "catflap".toByteArray()
       )
-    }
+    val other =
+      PersonKotlin(
+        name = "Ziggy",
+        dateOfBirth = LocalDate.of(1947, 1, 8),
+        image = "catflap".toByteArray()
+      )
+    val error =
+      assertThrows<AssertionError> {
+        expectThat(subject).propertiesAreEqualToIgnoring(
+          other,
+          PersonKotlin::id,
+          PersonKotlin::image
+        )
+      }
     expectThat(error.message) {
       isNotNull()
       isEqualTo(
@@ -94,7 +100,8 @@ internal object BeanPropertyAssertions {
           |      ✓ is equal to 1947-01-08
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David"
+        """.trimMargin()
       )
     }
   }
@@ -114,20 +121,23 @@ internal object BeanPropertyAssertions {
 
   @Test
   fun `can compare a Java POJO field-by-field`() {
-    val subject = PersonJava(
-      "David",
-      LocalDate.of(1947, 1, 8),
-      "catflap".toByteArray()
-    )
-    val other = PersonJava(
-      subject.id,
-      "Ziggy",
-      LocalDate.of(1972, 2, 10),
-      subject.image
-    )
-    val error = assertThrows<AssertionError> {
-      expectThat(subject).propertiesAreEqualTo(other)
-    }
+    val subject =
+      PersonJava(
+        "David",
+        LocalDate.of(1947, 1, 8),
+        "catflap".toByteArray()
+      )
+    val other =
+      PersonJava(
+        subject.id,
+        "Ziggy",
+        LocalDate.of(1972, 2, 10),
+        subject.image
+      )
+    val error =
+      assertThrows<AssertionError> {
+        expectThat(subject).propertiesAreEqualTo(other)
+      }
     expectThat(error.message) {
       isNotNull()
       isEqualTo(
@@ -142,7 +152,8 @@ internal object BeanPropertyAssertions {
           |      ✓ array content equals 0x636174666C6170
           |    ▼ value of property name:
           |      ✗ is equal to "Ziggy"
-          |              found "David"""".trimMargin()
+          |              found "David"
+        """.trimMargin()
       )
     }
   }
@@ -182,7 +193,8 @@ internal object BeanPropertyAssertions {
             |              found "Oreo"
             |    ▼ value of property tails:
             |      ✗ is equal to 1
-            |              found 0""".trimMargin()
+            |              found 0
+          """.trimMargin()
         )
     }
   }
