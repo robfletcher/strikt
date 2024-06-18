@@ -1,4 +1,4 @@
-## 0.34.2 Radiant Factory
+## 0.35.0 Radiant Factory - 2024-06-18
 
 - Drops support for Java < 17.
 - Support Spring Boot 3.
