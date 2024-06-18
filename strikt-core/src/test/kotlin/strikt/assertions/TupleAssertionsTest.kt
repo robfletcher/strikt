@@ -2,12 +2,13 @@ package strikt.assertions
 
 import failgood.Test
 import failgood.describe
+import failgood.testsAbout
 import strikt.api.expectThat
 
 @Test
 class TupleAssertionsTest {
   val context =
-    describe("tuples") {
+    testsAbout("tuples") {
       describe("on an expectation on a pair") {
         val expectation = expectThat("a" to 1)
         test("first maps to component1") {
