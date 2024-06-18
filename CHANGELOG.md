@@ -1,5 +1,7 @@
 ## 0.34.2 Radiant Factory
 
+- Drops support for Java < 17.
+- Support Spring Boot 3.
 - Adds `comparesEqualTo` for comparable subjects.
 - Adds `isEqualToIgnoringWhitespace` for string subjects.
 - Adds `hasSize` assertion for array subjects.
