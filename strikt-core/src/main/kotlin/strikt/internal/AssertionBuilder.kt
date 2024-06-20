@@ -17,14 +17,14 @@ internal class AssertionBuilder<T>(
 
   override fun describedAs(description: String): Builder<T> {
     if (context is DescribedNode<*>) {
-      context.description = description
+      context.description = { description }
     }
     return this
   }
 
   override fun describedAs(descriptor: T.() -> String): Builder<T> {
     if (context is DescribedNode<*>) {
-      context.description = context.subject.descriptor()
+      context.description = { context.subject.descriptor() }
     }
     return this
   }
@@ -99,14 +99,14 @@ internal class AssertionBuilder<T>(
     }
 
   override fun <R> get(
-    description: String,
+    description: () -> String,
     function: (T) -> R
   ): DescribeableBuilder<R> =
     if (context.allowChain) {
       runCatching {
         function(context.subject)
       }
-        .getOrElse { ex -> throw MappingFailed(description, ex) }
+        .getOrElse { ex -> throw MappingFailed(description(), ex) }
         .let {
           AssertionBuilder(
             AssertionSubject(context, it, description),
@@ -122,7 +122,7 @@ internal class AssertionBuilder<T>(
     }
 
   override fun <R> with(
-    description: String,
+    description: () -> String,
     function: T.() -> R,
     block: Builder<R>.() -> Unit
   ): Builder<T> {
@@ -136,7 +136,7 @@ internal class AssertionBuilder<T>(
             strategy.evaluate(nestedContext)
           }
       }
-      .onFailure { ex -> throw MappingFailed(description, ex) }
+      .onFailure { ex -> throw MappingFailed(description(), ex) }
     return this
   }
 
