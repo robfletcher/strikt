@@ -14,13 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation-action@v3
+        uses: gradle/wrapper-validation-action@v3
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: ${{ matrix.java }}
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/setup-gradle@v3
       - name: Build with Gradle
         run: ./gradlew build
