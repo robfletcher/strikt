@@ -12,7 +12,10 @@ publishing {
     maven {
       name = "nexus"
       url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-      credentials(PasswordCredentials::class)
+      credentials {
+        username = findProperty("ossrhToken") as String
+        password = findProperty("ossrhTokenPassword") as String
+      }
     }
   }
 
