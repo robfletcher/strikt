@@ -217,7 +217,8 @@ interface Assertion {
      * @return an assertion builder whose subject is the value returned by
      * [function].
      */
-    fun <R> get(function: T.() -> R): DescribeableBuilder<R> = get(function.describe(), function)
+    fun <R> get(function: T.() -> R): DescribeableBuilder<R> =
+      get(function.describe("get"), function)
 
     /**
      * Runs a group of assertions on the subject returned by [function].
@@ -247,7 +248,7 @@ interface Assertion {
     fun <R> with(
       function: T.() -> R,
       block: Builder<R>.() -> Unit
-    ) = with(function.describe(), function, block)
+    ) = with(function.describe("with"), function, block)
 
     /**
      * Maps the assertion subject to the result of [function].
@@ -319,17 +320,17 @@ interface Assertion {
   }
 }
 
-private fun <Receiver, Result> (Receiver.() -> Result).describe(): String =
+private fun <Receiver, Result> (Receiver.() -> Result).describe(name: String): String =
   when (this) {
     is KProperty<*> ->
-      "value of property $name"
+      "value of property ${this.name}"
     is KFunction<*> ->
-      "return value of $name"
+      "return value of ${this.name}"
     is CallableReference -> "value of $propertyName"
     else -> {
       try {
         val line = FilePeek.filePeek.getCallerFileInfo().line
-        LambdaBody("get", line).body.trim()
+        LambdaBody(name, line).body.trim()
       } catch (e: Exception) {
         "%s"
       }
