@@ -692,8 +692,8 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
     }
 
     val assertNoFurtherElements = builder.expectsNoFurtherElements ||
-      // Check if the last section has a `last` constraint
-      allSections.last().elementsWithConstraints.any { it.constraints.any { it == OrderingConstraint.Last } }
+      // Check if the last section explicitly defines the end element
+      allSections.last().endDefinedBy is SectionAssertionSpec.EndDefinition.DeclaredElement<*>
     if (assertNoFurtherElements) {
       assert("contains no further elements", expected = emptyList<E>()) {
         if (elementsConsumed == it.count()) {
