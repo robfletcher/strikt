@@ -349,7 +349,7 @@ class IterableOrderingConstraintsAssertions {
   }
 
   @Test
-  fun wronglastInPartiallyDeclaredSectionsFails() {
+  fun wrongLastInPartiallyDeclaredSectionsFails() {
     assertThrows<AssertionError> {
       expectThat(listOf("a", "b", "d", "c"))
         .containsWithOrderingConstraints {
