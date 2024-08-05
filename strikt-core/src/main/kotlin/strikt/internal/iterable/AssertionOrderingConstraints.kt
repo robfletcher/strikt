@@ -2,6 +2,7 @@ package strikt.internal.iterable
 
 import strikt.assertions.OrderingConstraintsAssertScope
 import strikt.assertions.OrderingConstraintsBuilder
+import strikt.internal.iterable.SectionAssertionSpec.EndDefinition
 
 internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertScope<E> {
 
@@ -16,7 +17,7 @@ internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertS
         "Use startNewSection if this element is expected to be in the list multiple times. " +
         "Ordering constraints are asserted within each section."
     }
-    val constraintsBuilder = OrderingConstraintsBuilderImpl(currentBuildingSection)
+    val constraintsBuilder = OrderingConstraintsBuilderImpl(element, currentBuildingSection)
     currentBuildingSection.elementsWithConstraints +=
       ElementWithOrderingConstraints(element, constraintsBuilder.constraints)
     return constraintsBuilder
@@ -35,6 +36,7 @@ internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertS
   }
 
   internal class OrderingConstraintsBuilderImpl<E>(
+    private val element: E,
     private val section: SectionAssertionSpec<E>,
   ) : OrderingConstraintsBuilder<E> {
 
@@ -47,6 +49,7 @@ internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertS
 
     override fun last(): OrderingConstraintsBuilderImpl<E> {
       constraints += OrderingConstraint.Last
+      section.endDefinedBy = EndDefinition.DeclaredElement(element)
       return this
     }
 
@@ -84,6 +87,12 @@ internal data class ElementWithOrderingConstraints<E>(val element: E, val constr
 
 internal class SectionAssertionSpec<E> {
   val elementsWithConstraints = mutableListOf<ElementWithOrderingConstraints<E>>()
+  var endDefinedBy: EndDefinition<E> = EndDefinition.DeclaredElementCount
+
+  sealed class EndDefinition<out E> {
+    data object DeclaredElementCount : EndDefinition<Nothing>()
+    data class DeclaredElement<E>(val element: E) : EndDefinition<E>()
+  }
 }
 
 internal sealed class OrderingConstraint<out E> {

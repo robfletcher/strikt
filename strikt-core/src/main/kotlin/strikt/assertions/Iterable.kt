@@ -4,6 +4,7 @@ import strikt.api.Assertion.Builder
 import strikt.internal.iterable.ElementWithOrderingConstraints
 import strikt.internal.iterable.OrderingConstraint
 import strikt.internal.iterable.OrderingConstraintsAssertScopeImpl
+import strikt.internal.iterable.SectionAssertionSpec
 
 /**
  * Maps this assertion to an assertion over the count of elements in the subject.
@@ -657,17 +658,34 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
     } else {
       allSections.forEach { section ->
         val sectionConstraints = section.elementsWithConstraints
-        val sectionElementCount = sectionConstraints.size
-        val sectionIndices = elementsConsumed..<(elementsConsumed + sectionElementCount)
-        get("section %s") { drop(sectionIndices.first).take(sectionElementCount) }.run {
-          assert("has %s elements", sectionElementCount) {
-            if (it.size == sectionElementCount) {
-              pass()
-            } else {
-              fail(it.size, "only %s elements left in list")
-            }
+        val sectionElementCount: Int
+        when (val endDefinedBy = section.endDefinedBy) {
+          SectionAssertionSpec.EndDefinition.DeclaredElementCount -> {
+            // Define the section by the number of elements declared with `expect`
+            sectionElementCount = sectionConstraints.size
+            get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+              .assert("has %s elements", sectionElementCount) {
+                if (it.size == sectionElementCount) {
+                  pass()
+                } else {
+                  fail(it.size, "only %s elements left in list")
+                }
+              }
+              .and { this.assertSectionConstraints(sectionConstraints) }
           }
-            .and { this.assertSectionConstraints(sectionConstraints) }
+          is SectionAssertionSpec.EndDefinition.DeclaredElement -> {
+            // Define the section by taking everything until the end element
+            val remainingElements = subject.drop(elementsConsumed)
+            val indexOfEndElement = remainingElements.indexOf(endDefinedBy.element)
+            sectionElementCount = if (indexOfEndElement == -1) 0 else indexOfEndElement + 1
+            assertThat("contains section ending with %s", endDefinedBy.element) {
+              indexOfEndElement != -1
+            }
+              .and {
+                get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+                  .assertSectionConstraints(sectionConstraints)
+              }
+          }
         }
         elementsConsumed += sectionElementCount
       }

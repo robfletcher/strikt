@@ -337,4 +337,26 @@ class IterableOrderingConstraintsAssertions {
         }
     }
   }
+
+  @Test
+  fun lastInPartiallyDeclaredSections() {
+    expectThat(listOf("a", "b", "c", "d"))
+      .containsWithOrderingConstraints {
+        expect("b").last()
+        startNewSection()
+        expect("d").last()
+      }
+  }
+
+  @Test
+  fun wronglastInPartiallyDeclaredSectionsFails() {
+    assertThrows<AssertionError> {
+      expectThat(listOf("a", "b", "d", "c"))
+        .containsWithOrderingConstraints {
+          expect("b").last()
+          startNewSection()
+          expect("d").last()
+        }
+    }
+  }
 }
