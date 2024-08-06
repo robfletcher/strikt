@@ -225,6 +225,33 @@ class IterableOrderingConstraintsAssertions {
   }
 
   @Test
+  fun failsWithExtraElementAndExpectNoOtherElements() {
+    assertThrows<AssertionError> {
+      expectThat(listOf("a", "b", "c", "d"))
+        .containsWithOrderingConstraints {
+          expect("a")
+          expect("b")
+          expect("c")
+          expectNoOtherElements()
+        }
+    }
+  }
+
+  @Test
+  fun failsWithExtraElementInFirstSectionAndExpectNoOtherElements() {
+    assertThrows<AssertionError> {
+      expectThat(listOf("a", "b", "c", "d"))
+        .containsWithOrderingConstraints {
+          expect("a")
+          expect("c").last()
+          expectNoOtherElements()
+          startNewSection()
+          expect("d")
+        }
+    }
+  }
+
+  @Test
   fun failsWithExtraElementAndExpectNoFurtherElements() {
     assertThrows<AssertionError> {
       expectThat(listOf("a", "b", "c", "d"))
@@ -336,6 +363,14 @@ class IterableOrderingConstraintsAssertions {
           expect("d").last()
         }
     }
+  }
+
+  @Test
+  fun lastInPartiallyDeclaredList() {
+    expectThat(listOf("a", "b"))
+      .containsWithOrderingConstraints {
+        expect("b").last()
+      }
   }
 
   @Test

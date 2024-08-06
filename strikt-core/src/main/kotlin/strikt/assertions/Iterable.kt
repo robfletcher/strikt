@@ -1,5 +1,6 @@
 package strikt.assertions
 
+import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import strikt.internal.iterable.ElementWithOrderingConstraints
 import strikt.internal.iterable.OrderingConstraint
@@ -531,11 +532,13 @@ fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() = isSorted(Compar
  *   // This can be useful if we expect our result to contain duplicates
  *   startNewSection()
  *
- *   // Asserts that "g" is present and appears immediately after everything expected
- *   // in the last section ("a" through "f")
- *   expect("g").first()
+ *   // Asserts that only the elements we'ev declared with `expect` are present, and nothing else.
+ *   // This is optional.
+ *   // If we don't call this, extra elements can still be present anywhere in the iterable
+ *   // (or current section, if using `startNewSection`).
+ *   expectNoOtherElements()
  *
- *   // Asserts that all elements have been declared with `expect` and nothing else is present.
+ *   // Asserts that nothing else is present after the elements we've declared with `expect`.
  *   // This is optional.
  *   // If we don't call this, extra elements can still be present after our last expected element.
  *   expectNoFurtherElements()
@@ -651,44 +654,53 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
     allSections.flatMap { it.elementsWithConstraints.map { it.element } }
   ) {
     var elementsConsumed = 0
-    if (allSections.size == 1) {
-      val onlySection = allSections.single()
-      assertSectionConstraints(onlySection.elementsWithConstraints)
-      elementsConsumed = onlySection.elementsWithConstraints.size
-    } else {
-      allSections.forEach { section ->
-        val sectionConstraints = section.elementsWithConstraints
-        val sectionElementCount: Int
-        when (val endDefinedBy = section.endDefinedBy) {
-          SectionAssertionSpec.EndDefinition.DeclaredElementCount -> {
-            // Define the section by the number of elements declared with `expect`
-            sectionElementCount = sectionConstraints.size
-            get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
-              .assert("has %s elements", sectionElementCount) {
-                if (it.size == sectionElementCount) {
-                  pass()
-                } else {
-                  fail(it.size, "only %s elements left in list")
-                }
+    fun consumeElementsAndAssertSection(section: SectionAssertionSpec<E>): Assertion.Builder<out Iterable<E>> {
+      val sectionElementCount: Int
+      val assertion = when (val endDefinedBy = section.endDefinedBy) {
+        SectionAssertionSpec.EndDefinition.DeclaredElementCount -> {
+          // Define the section by the number of elements declared with `expect`
+          sectionElementCount = section.elementsWithConstraints.size
+          get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+            .assert("has %s elements", sectionElementCount) {
+              if (it.size == sectionElementCount) {
+                pass()
+              } else {
+                fail(it.size, "only %s elements left in list")
               }
-              .and { this.assertSectionConstraints(sectionConstraints) }
-          }
-          is SectionAssertionSpec.EndDefinition.DeclaredElement -> {
-            // Define the section by taking everything until the end element
-            val remainingElements = subject.drop(elementsConsumed)
-            val indexOfEndElement = remainingElements.indexOf(endDefinedBy.element)
-            sectionElementCount = if (indexOfEndElement == -1) 0 else indexOfEndElement + 1
-            assertThat("contains section ending with %s", endDefinedBy.element) {
-              indexOfEndElement != -1
             }
-              .and {
-                get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
-                  .assertSectionConstraints(sectionConstraints)
+        }
+        is SectionAssertionSpec.EndDefinition.DeclaredElement -> {
+          // Define the section by taking everything until the end element
+          val remainingElements = subject.drop(elementsConsumed)
+          val indexOfEndElement = remainingElements.indexOf(endDefinedBy.element)
+          sectionElementCount = if (indexOfEndElement == -1) 0 else indexOfEndElement + 1
+          assertThat("contains section ending with %s", endDefinedBy.element) {
+            indexOfEndElement != -1
+          }
+            .get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+        }
+      }
+        .run {
+          val assertNoOtherElements = section.expectsNoOtherElements
+          if (assertNoOtherElements) {
+            assert("contains no other elements", expected = emptyList<E>()) {
+              if (elementsConsumed == it.count()) {
+                pass()
+              } else {
+                fail(actual = it.drop(elementsConsumed))
               }
+            }
+          } else {
+            this
           }
         }
-        elementsConsumed += sectionElementCount
-      }
+      elementsConsumed += sectionElementCount
+      return assertion
+    }
+
+    allSections.forEach { section ->
+      consumeElementsAndAssertSection(section)
+        .and { this.assertSectionConstraints(section.elementsWithConstraints) }
     }
 
     val assertNoFurtherElements = builder.expectsNoFurtherElements ||
@@ -721,6 +733,16 @@ interface OrderingConstraintsAssertScope<E> {
 
   /**
    * Asserts that all elements have been declared with [expect] and nothing else is present.
+   *
+   * If this is not called, extra elements can still be present anywhere in the iterable
+   * (or current section, if using [startNewSection]).
+   */
+  fun expectNoOtherElements()
+
+  /**
+   * Asserts that the end of the iterable has been declared
+   * (either by the amount of calls to [expect], or by asserting the last element with [last])
+   * and nothing else is present.
    *
    * If this is not called, extra elements can still be present after the last expected element.
    */

@@ -23,6 +23,10 @@ internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertS
     return constraintsBuilder
   }
 
+  override fun expectNoOtherElements() {
+    currentBuildingSection.expectsNoOtherElements = true
+  }
+
   override fun expectNoFurtherElements() {
     expectsNoFurtherElements = true
   }
@@ -88,6 +92,7 @@ internal data class ElementWithOrderingConstraints<E>(val element: E, val constr
 internal class SectionAssertionSpec<E> {
   val elementsWithConstraints = mutableListOf<ElementWithOrderingConstraints<E>>()
   var endDefinedBy: EndDefinition<E> = EndDefinition.DeclaredElementCount
+  var expectsNoOtherElements = false
 
   sealed class EndDefinition<out E> {
     data object DeclaredElementCount : EndDefinition<Nothing>()
