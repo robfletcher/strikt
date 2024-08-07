@@ -684,10 +684,12 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
           val assertNoOtherElements = section.expectsNoOtherElements
           if (assertNoOtherElements) {
             assert("contains no other elements", expected = emptyList<E>()) {
-              if (elementsConsumed == it.count()) {
+              val declaredElements = section.elementsWithConstraints.map { it.element }
+              val undeclaredElements = it - declaredElements
+              if (undeclaredElements.isEmpty()) {
                 pass()
               } else {
-                fail(actual = it.drop(elementsConsumed))
+                fail(actual = undeclaredElements)
               }
             }
           } else {
@@ -704,6 +706,7 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
     }
 
     val assertNoFurtherElements = builder.expectsNoFurtherElements ||
+      allSections.last().expectsNoOtherElements ||
       // Check if the last section explicitly defines the end element
       allSections.last().endDefinedBy is SectionAssertionSpec.EndDefinition.DeclaredElement<*>
     if (assertNoFurtherElements) {
