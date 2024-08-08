@@ -56,7 +56,7 @@ internal class Homepage {
   @Test
   fun `homepage four`() {
     // START homepage_four
-    val subject = Deity.values().map { it.toString() }
+    val subject = Deity.entries.map { it.toString() }
     expectThat(subject)
       .isNotEmpty()
       .any { startsWith("E") }
@@ -104,7 +104,7 @@ internal class Homepage {
     // END homepage_seven
   }
 
-  @Suppress("ktlint:standard:no-multi-spaces")
+  @Suppress("ktlint:standard:no-multi-spaces", "RedundantNullableReturnType")
   @Test
   fun `homepage eight`() {
     // START homepage_eight

@@ -75,6 +75,7 @@ internal class Chained {
       .isEqualTo(expected)
   }
 
+  @Suppress("RedundantNullableReturnType")
   @Test
   fun `can connect a block to a chain with and`() {
     val error =

@@ -3,6 +3,8 @@ import com.adarshr.gradle.testlogger.theme.ThemeType.MOCHA_PARALLEL
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.codearte.gradle.nexus.NexusStagingExtension
 import org.gradle.api.JavaVersion.VERSION_17
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 import kotlin.text.RegexOption.IGNORE_CASE
@@ -10,11 +12,11 @@ import kotlin.text.RegexOption.IGNORE_CASE
 plugins {
   kotlin("jvm") apply false
   id("io.codearte.nexus-staging") version "0.30.0"
-  id("org.jmailen.kotlinter") version "4.4.0" apply false
+  id("org.jmailen.kotlinter") version "4.4.1" apply false
   id("com.adarshr.test-logger") version "4.0.0" apply false
   id("com.github.ben-manes.versions") version "0.51.0"
   id("org.jetbrains.dokka")
-  id("org.jetbrains.kotlinx.kover") version "0.8.1"
+  id("org.jetbrains.kotlinx.kover") version "0.8.3"
 }
 
 repositories {
@@ -53,9 +55,9 @@ subprojects {
       }
 
       tasks.withType<KotlinCompile> {
-        kotlinOptions {
-          jvmTarget = VERSION_17.toString()
-          languageVersion = "1.9"
+        compilerOptions {
+          jvmTarget.set(JVM_17)
+          languageVersion.set(KOTLIN_2_0)
           javaParameters = true
           freeCompilerArgs = listOf("-Xjvm-default=all")
           allWarningsAsErrors = true

@@ -1,7 +1,6 @@
 @file:Suppress("KDocMissingDocumentation")
 
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.net.URL
 
 plugins {
@@ -41,18 +40,11 @@ protobuf {
   }
 }
 
-// This seems to be necessary just to get IntelliJ to notice the proto sources.
-// It works fine from the terminal without this. Also IntelliJ picks up main
-// protos just fine.
-
-val SourceSet.kotlin
-  get() = withConvention(KotlinSourceSet::class) { kotlin }
-
 sourceSets {
   getByName("test") {
     kotlin.srcDirs(
       "src/test/kotlin",
-      "$buildDir/generated/source/proto/test/java"
+      "$buildFile/generated/source/proto/test/java"
     )
   }
 }
