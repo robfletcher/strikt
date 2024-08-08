@@ -24,3 +24,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          ORG_GRADLE_PROJECT_ossrhToken: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_ossrhTokenPassword: ${{ secrets.OSSRH_TOKEN_PASSWORD }}

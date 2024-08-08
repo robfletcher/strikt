@@ -1,5 +1,6 @@
 @file:Suppress("KDocMissingDocumentation")
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_18
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -50,7 +51,7 @@ orchid {
 }
 
 val compileOrchidKotlin by tasks.getting(KotlinCompile::class) {
-  kotlinOptions {
-    jvmTarget = JavaVersion.VERSION_1_8.toString()
+  compilerOptions {
+    jvmTarget.set(JVM_18)
   }
 }
