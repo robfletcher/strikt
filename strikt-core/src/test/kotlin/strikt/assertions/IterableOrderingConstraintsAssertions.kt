@@ -277,6 +277,14 @@ class IterableOrderingConstraintsAssertions {
   }
 
   @Test
+  fun passesWithElementBeforeExpectedElement() {
+    expectThat(listOf("a", "b"))
+      .containsWithOrderingConstraints {
+        expect("b")
+      }
+  }
+
+  @Test
   fun failsWithDuplicateElement() {
     assertThrows<AssertionError> {
       expectThat(listOf("a", "b", "b", "c"))

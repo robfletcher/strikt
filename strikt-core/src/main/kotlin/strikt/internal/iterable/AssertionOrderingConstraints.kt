@@ -29,6 +29,7 @@ internal class OrderingConstraintsAssertScopeImpl<E>: OrderingConstraintsAssertS
 
   override fun expectNoFurtherElements() {
     expectsNoFurtherElements = true
+    currentBuildingSection.expectsNoOtherElements = true
   }
 
   override fun startNewSection() = endSectionIfInProgress()
@@ -91,11 +92,11 @@ internal data class ElementWithOrderingConstraints<E>(val element: E, val constr
 
 internal class SectionAssertionSpec<E> {
   val elementsWithConstraints = mutableListOf<ElementWithOrderingConstraints<E>>()
-  var endDefinedBy: EndDefinition<E> = EndDefinition.DeclaredElementCount
+  var endDefinedBy: EndDefinition<E> = EndDefinition.Undefined
   var expectsNoOtherElements = false
 
   sealed class EndDefinition<out E> {
-    data object DeclaredElementCount : EndDefinition<Nothing>()
+    data object Undefined : EndDefinition<Nothing>()
     data class DeclaredElement<E>(val element: E) : EndDefinition<E>()
   }
 }

@@ -1,6 +1,5 @@
 package strikt.assertions
 
-import strikt.api.Assertion
 import strikt.api.Assertion.Builder
 import strikt.internal.iterable.ElementWithOrderingConstraints
 import strikt.internal.iterable.OrderingConstraint
@@ -654,20 +653,27 @@ fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
     allSections.flatMap { it.elementsWithConstraints.map { it.element } }
   ) {
     var elementsConsumed = 0
-    fun consumeElementsAndAssertSection(section: SectionAssertionSpec<E>): Assertion.Builder<out Iterable<E>> {
+    fun consumeElementsAndAssertSection(section: SectionAssertionSpec<E>): Builder<out Iterable<E>> {
       val sectionElementCount: Int
       val assertion = when (val endDefinedBy = section.endDefinedBy) {
-        SectionAssertionSpec.EndDefinition.DeclaredElementCount -> {
-          // Define the section by the number of elements declared with `expect`
-          sectionElementCount = section.elementsWithConstraints.size
-          get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
-            .assert("has %s elements", sectionElementCount) {
-              if (it.size == sectionElementCount) {
-                pass()
-              } else {
-                fail(it.size, "only %s elements left in list")
+        SectionAssertionSpec.EndDefinition.Undefined -> {
+          if (section === allSections.last()) {
+            // Define the section by taking everything
+            val remainingElements = subject.drop(elementsConsumed)
+            sectionElementCount = remainingElements.size
+            get("section %s") { remainingElements }
+          } else {
+            // Define the section by the number of elements declared with `expect`
+            sectionElementCount = section.elementsWithConstraints.size
+            get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+              .assert("has %s elements", sectionElementCount) {
+                if (it.size == sectionElementCount) {
+                  pass()
+                } else {
+                  fail(it.size, "only %s elements left in list")
+                }
               }
-            }
+          }
         }
         is SectionAssertionSpec.EndDefinition.DeclaredElement -> {
           // Define the section by taking everything until the end element
