@@ -1,5 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
-import java.net.URL
+import java.net.URI
 
 plugins {
   kotlin("jvm")
@@ -24,8 +24,8 @@ tasks.withType<DokkaTaskPartial>().configureEach {
     configureEach {
     "https://fasterxml.github.io/jackson-databind/javadoc/2.12/".also {
       externalDocumentationLink {
-        url.set(URL(it))
-        packageListUrl.set(URL("${it}package-list"))
+        url.set(URI(it).toURL())
+        packageListUrl.set(URI("${it}package-list").toURL())
       }
     }
     }

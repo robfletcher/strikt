@@ -24,6 +24,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  @Suppress("DEPRECATION")
   jcenter()
 }
 

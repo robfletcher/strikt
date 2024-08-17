@@ -22,8 +22,8 @@ tasks.dokka {
   configuration {
     "https://docs.gradle.org/${GradleVersion.current().version}/javadoc/".also {
       externalDocumentationLink {
-        url = URL(it)
-        packageListUrl = URL(it + "package-list")
+        url = URI(it).toURL()
+        packageListUrl = URI(it + "package-list").toURL()
       }
     }
   }

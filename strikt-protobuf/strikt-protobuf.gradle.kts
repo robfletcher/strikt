@@ -1,7 +1,7 @@
 @file:Suppress("KDocMissingDocumentation")
 
 import org.jetbrains.dokka.gradle.DokkaTaskPartial
-import java.net.URL
+import java.net.URI
 
 plugins {
   kotlin("jvm")
@@ -23,8 +23,8 @@ tasks.withType<DokkaTaskPartial>().configureEach {
     configureEach {
       "https://developers.google.com/protocol-buffers/docs/reference/java/".also {
         externalDocumentationLink {
-          url.set(URL(it))
-          packageListUrl.set(URL("${it}package-list"))
+          url.set(URI(it).toURL())
+          packageListUrl.set(URI("${it}package-list").toURL())
         }
       }
     }
