@@ -1,6 +1,10 @@
 package strikt.assertions
 
 import strikt.api.Assertion.Builder
+import strikt.internal.iterable.ElementWithOrderingConstraints
+import strikt.internal.iterable.OrderingConstraint
+import strikt.internal.iterable.OrderingConstraintsAssertScopeImpl
+import strikt.internal.iterable.SectionAssertionSpec
 
 /**
  * Maps this assertion to an assertion over the count of elements in the subject.
@@ -475,3 +479,386 @@ infix fun <T : Iterable<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
  * iterables are considered sorted.
  */
 fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() = isSorted(Comparator.naturalOrder())
+
+/**
+ * Similar to [contains], but allows for asserting elements
+ * based on their ordering in relation to other elements.
+ *
+ * This can be used to match fuzzy ordering rules on the result iterable.
+ * If the exact order is known, consider [containsExactly].
+ * If the order doesn't matter, consider [contains] or [containsExactlyInAnyOrder].
+ *
+ * In [build], assert elements using [expect][OrderingConstraintsAssertScope.expect],
+ * and assert constraints on their positions using the functions in [OrderingConstraintsAssertScope].
+ * Constraints can declare that an element appears somewhere before, after, or adjacent to
+ * another element. Constraints can also declare that an element appears at the beginning or end
+ * of the result iterable.
+ *
+ * Any number of constraints can be asserted on each element.
+ *
+ * Results must not contain duplicates, as equality is used to find elements' positions.
+ * If a result is expected to contain duplicates, consider using
+ * [startNewSection][OrderingConstraintsAssertScope.startNewSection]
+ * to assert another set of elements and constraints after the previous set.
+ *
+ * Examples:
+ * ```kotlin
+ * expectThat(result).containsWithOrderingConstraints {
+ *   // Asserts that "a" is present and is the first element
+ *   expect("a").first()
+ *
+ *   // Asserts that "b" is present and appears immediately after the last expected element, which is "a"
+ *   expect("b").immediatelyAfterPrevious()
+ *
+ *   // Asserts that "c" is present at any position
+ *   expect("c")
+ *
+ *   // Asserts that "d" appears anywhere after "b" and anywhere before "e"
+ *   expect("d")
+ *     .after("b")
+ *     .before("e")
+ *
+ *   // Asserts that "e" appears anywhere immediately between "d" and "f"
+ *   expect("e")
+ *     .immediatelyAfter("d")
+ *     .immediatelyBefore("f")
+ *
+ *   // Asserts that "f" is present and is the final element
+ *   expect("f").last()
+ *
+ *   // If we optionally start a new section, we can assert new elements and constraints
+ *   // that appear after everything we asserted previously, and are completely separate.
+ *   // This can be useful if we expect our result to contain duplicates
+ *   startNewSection()
+ *
+ *   // Asserts that only the elements we'ev declared with `expect` are present, and nothing else.
+ *   // This is optional.
+ *   // If we don't call this, extra elements can still be present anywhere in the iterable
+ *   // (or current section, if using `startNewSection`).
+ *   expectNoOtherElements()
+ *
+ *   // Asserts that nothing else is present after the elements we've declared with `expect`.
+ *   // This is optional.
+ *   // If we don't call this, extra elements can still be present after our last expected element.
+ *   expectNoFurtherElements()
+ * }
+ * ```
+ */
+fun <T: Iterable<E>, E> Builder<T>.containsWithOrderingConstraints(
+  build: OrderingConstraintsAssertScope<E>.() -> Unit,
+): Builder<T> {
+
+  fun Builder<out Iterable<E>>.assertSectionConstraints(
+    sectionConstraints: List<ElementWithOrderingConstraints<E>>,
+  ) {
+    compose("contains no duplicates") {
+      subject.forEach { element ->
+        assertThat("%s has no duplicates", element) { subject.count { it == element } == 1 }
+      }
+    } then { if (allPassed) pass() else fail() }
+
+    val section = subject.toList()
+    sectionConstraints.forEachIndexed { sectionConstraintIndex, (element, constraints) ->
+      val elementIndex = section.indexOf(element)
+      get { element }.run {
+        assertThat("is in list") { elementIndex != -1 }
+        if (elementIndex == -1) {
+          return@run
+        }
+        constraints.forEach { constraint ->
+          when (constraint) {
+            OrderingConstraint.First -> {
+              assertThat("is first") {
+                elementIndex == 0
+              }
+            }
+
+            OrderingConstraint.Last -> {
+              assertThat("is last") {
+                elementIndex == section.lastIndex
+              }
+            }
+
+            is OrderingConstraint.Before -> {
+              assert("is before %s", constraint.target) {
+                val targetIndex = section.indexOf(constraint.target)
+                if (targetIndex == -1) {
+                  fail(constraint.target, "%s not in list")
+                } else if (elementIndex < targetIndex) {
+                  pass()
+                } else {
+                  fail()
+                }
+              }
+            }
+
+            is OrderingConstraint.ImmediatelyBefore -> {
+              assert("is immediately before %s", constraint.target) {
+                val targetIndex = section.indexOf(constraint.target)
+                if (targetIndex == -1) {
+                  fail(constraint.target, "%s not in list")
+                } else if (elementIndex == targetIndex - 1) {
+                  pass()
+                } else {
+                  fail()
+                }
+              }
+            }
+
+            is OrderingConstraint.After -> {
+              assert("is after %s", constraint.target) {
+                val targetIndex = section.indexOf(constraint.target)
+                if (targetIndex == -1) {
+                  fail(constraint.target, "%s not in list")
+                } else if (elementIndex > targetIndex) {
+                  pass()
+                } else {
+                  fail()
+                }
+              }
+            }
+
+            is OrderingConstraint.ImmediatelyAfter -> {
+              assert("is immediately after %s", constraint.target) {
+                val targetIndex = section.indexOf(constraint.target)
+                if (targetIndex == -1) {
+                  fail(constraint.target, "%s not in list")
+                } else if (elementIndex == targetIndex + 1) {
+                  pass()
+                } else {
+                  fail()
+                }
+              }
+            }
+
+            OrderingConstraint.ImmediatelyAfterPrevious -> {
+              val target = sectionConstraints[sectionConstraintIndex - 1].element
+              assertThat("is after %s", target) {
+                elementIndex > section.indexOf(target)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  val builder = OrderingConstraintsAssertScopeImpl<E>()
+  build(builder)
+  builder.endSectionIfInProgress()
+
+  val allSections = builder.sections
+  return compose(
+    "contains the elements %s with custom ordering constraints",
+    allSections.flatMap { it.elementsWithConstraints.map { it.element } }
+  ) {
+    var elementsConsumed = 0
+    fun consumeElementsAndAssertSection(section: SectionAssertionSpec<E>): Builder<out Iterable<E>> {
+      val sectionElementCount: Int
+      val assertion = when (val endDefinedBy = section.endDefinedBy) {
+        SectionAssertionSpec.EndDefinition.Undefined -> {
+          if (section === allSections.last()) {
+            // Define the section by taking everything
+            val remainingElements = subject.drop(elementsConsumed)
+            sectionElementCount = remainingElements.size
+            get("section %s") { remainingElements }
+          } else {
+            // Define the section by the number of elements declared with `expect`
+            sectionElementCount = section.elementsWithConstraints.size
+            get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+              .assert("has %s elements", sectionElementCount) {
+                if (it.size == sectionElementCount) {
+                  pass()
+                } else {
+                  fail(it.size, "only %s elements left in list")
+                }
+              }
+          }
+        }
+        is SectionAssertionSpec.EndDefinition.DeclaredElement -> {
+          // Define the section by taking everything until the end element
+          val remainingElements = subject.drop(elementsConsumed)
+          val indexOfEndElement = remainingElements.indexOf(endDefinedBy.element)
+          sectionElementCount = if (indexOfEndElement == -1) 0 else indexOfEndElement + 1
+          assertThat("contains section ending with %s", endDefinedBy.element) {
+            indexOfEndElement != -1
+          }
+            .get("section %s") { drop(elementsConsumed).take(sectionElementCount) }
+        }
+      }
+        .run {
+          val assertNoOtherElements = section.expectsNoOtherElements
+          if (assertNoOtherElements) {
+            assert("contains no other elements", expected = emptyList<E>()) {
+              val declaredElements = section.elementsWithConstraints.map { it.element }
+              val undeclaredElements = it - declaredElements
+              if (undeclaredElements.isEmpty()) {
+                pass()
+              } else {
+                fail(actual = undeclaredElements)
+              }
+            }
+          } else {
+            this
+          }
+        }
+      elementsConsumed += sectionElementCount
+      return assertion
+    }
+
+    allSections.forEach { section ->
+      consumeElementsAndAssertSection(section)
+        .and { this.assertSectionConstraints(section.elementsWithConstraints) }
+    }
+
+    val assertNoFurtherElements = builder.expectsNoFurtherElements ||
+      allSections.last().expectsNoOtherElements ||
+      // Check if the last section explicitly defines the end element
+      allSections.last().endDefinedBy is SectionAssertionSpec.EndDefinition.DeclaredElement<*>
+    if (assertNoFurtherElements) {
+      assert("contains no further elements", expected = emptyList<E>()) {
+        if (elementsConsumed == it.count()) {
+          pass()
+        } else {
+          fail(actual = it.drop(elementsConsumed))
+        }
+      }
+    }
+  } then {
+    if (allPassed) pass() else fail()
+  }
+}
+
+/** Scope used in [containsWithOrderingConstraints] */
+interface OrderingConstraintsAssertScope<E> {
+
+  /**
+   * Asserts that [element] exists in the subject iterable.
+   *
+   * Assertions on its position relative to other elements
+   * can be made with the returned [OrderingConstraintsBuilder].
+   */
+  fun expect(element: E): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that all elements have been declared with [expect] and nothing else is present.
+   *
+   * If this is not called, extra elements can still be present anywhere in the iterable
+   * (or current section, if using [startNewSection]).
+   */
+  fun expectNoOtherElements()
+
+  /**
+   * Asserts that the end of the iterable has been declared
+   * (either by the amount of calls to [expect], or by asserting the last element with [last])
+   * and nothing else is present.
+   *
+   * If this is not called, extra elements can still be present after the last expected element.
+   */
+  fun expectNoFurtherElements()
+
+  /**
+   * Virtually splits the subject iterable into a new section.
+   * Each section of elements has its elements and constraints asserted separately from other sections,
+   * and they are evaluated sequentially.
+   *
+   * Assertions made with [expect] after this call will function as if they are on a
+   * sub-list of the subject iterable.
+   *
+   * This can be useful if the result is expected to contain duplicates.
+   * For example, consider an iterable that ends with the same element it starts with,
+   * and has various elements in between that don't matter:
+   * ```kotlin
+   * enum class State { Idle, Busy, Unknown }
+   *
+   * expectThat(resultStates).containsWithOrderingConstraints {
+   *   expect(State.Idle).first()
+   *   expect(State.Busy)
+   *
+   *   startNewSection()
+   *   expect(State.Idle).last()
+   * }
+   * ```
+   * This asserts that the list of result states:
+   * - Begins and ends with `Idle`
+   * - Contains `Busy` at least once in between
+   * - Does not contain `Idle` in between
+   */
+  fun startNewSection()
+}
+
+/**
+ * Builder for asserting position constraints on an element.
+ * Retrieved by calling [expect][OrderingConstraintsAssertScope.expect]
+ * inside [containsWithOrderingConstraints].
+ */
+interface OrderingConstraintsBuilder<E> {
+
+  /**
+   * Asserts that this element appears before all other elements.
+   *
+   * If [startNewSection][OrderingConstraintsAssertScope.startNewSection] was previously called,
+   * the assertion will be that this element is the first element in the new section,
+   * implying it appears immediately after the last element of the previous section.
+   */
+  fun first(): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears after all other elements.
+   *
+   * If [startNewSection][OrderingConstraintsAssertScope.startNewSection] is called after this,
+   * the assertion will be that this element is the last element in the entire subject iterable.
+   *
+   * Otherwise, if no calls to [startNewSection][OrderingConstraintsAssertScope.startNewSection]
+   * are made after this,
+   * the assertion will be that this element is the last element of the current section,
+   * implying it appears immediately before the first element of the next section.
+   *
+   * To assert the end of the subject iterable without declaring which element is last,
+   * use [expectNoFurtherElements][OrderingConstraintsAssertScope.expectNoFurtherElements].
+   */
+  fun last(): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears anywhere before [other] in the subject iterable.
+   *
+   * This does not assert that the elements are adjacent. For that, use [immediatelyBefore].
+   *
+   * If [startNewSection][OrderingConstraintsAssertScope.startNewSection] is called,
+   * this will only find instances of [other] within those calls.
+   */
+  fun before(other: E): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears immediately before [other].
+   *
+   * To instead assert that this element appears anywhere before [other], use [before].
+   */
+  fun immediatelyBefore(other: E): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears anywhere after [other] in the subject iterable.
+   *
+   * This does not assert that the elements are adjacent. For that, use [immediatelyAfter].
+   *
+   * If [startNewSection][OrderingConstraintsAssertScope.startNewSection] is called,
+   * this will only find instances of [other] within those calls.
+   */
+  fun after(other: E): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears immediately after [other].
+   *
+   * To instead assert that this element appears anywhere after [other], use [after].
+   */
+  fun immediatelyAfter(other: E): OrderingConstraintsBuilder<E>
+
+  /**
+   * Asserts that this element appears immediately after the element previously asserted
+   * with [expect][OrderingConstraintsAssertScope].
+   * This is a convenience for calling [immediatelyAfter] with the same argument as the last
+   * call to [expect][OrderingConstraintsAssertScope].
+   */
+  fun immediatelyAfterPrevious(): OrderingConstraintsBuilder<E>
+}
+
