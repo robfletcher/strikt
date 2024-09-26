@@ -107,6 +107,36 @@ fun <T : Map<K, V>, K, V> Builder<T>.hasEntry(
 ): Builder<T> = apply { containsKey(key)[key].isEqualTo(value) }
 
 /**
+ * Asserts that all key-value pairs of [expected] _and no others_ are present in
+ * the subject map.
+ */
+infix fun <T : Map<in K, V>, K, V> Assertion.Builder<T>.isSimilarTo(expected: Map<K, V>): Assertion.Builder<T> =
+    compose(
+        "contains exactly the pairs %s in any order",
+        expected
+    ) { subject ->
+        val remaining = subject.toMutableMap()
+        expected.forEach { entry: Map.Entry<K, V> ->
+            assert("contains %s", entry) {
+                if (remaining.remove(entry.key, entry.value)) {
+                    pass()
+                } else {
+                    fail()
+                }
+            }
+        }
+        assert("contains no further pairs") {
+            if (remaining.isEmpty()) {
+                pass()
+            } else {
+                fail(actual = remaining)
+            }
+        }
+    } then {
+        if (allPassed) pass() else fail()
+    }
+
+/**
  * Maps an assertion on a map to an assertion on its keys.
  *
  * @see Map.keys
