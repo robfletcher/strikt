@@ -15,6 +15,7 @@ import strikt.assertions.first
 import strikt.assertions.flatMap
 import strikt.assertions.get
 import strikt.assertions.isEqualTo
+import strikt.assertions.isIn
 import strikt.assertions.isNotNull
 import strikt.assertions.isNull
 import strikt.assertions.last
@@ -22,9 +23,78 @@ import strikt.assertions.map
 import strikt.assertions.message
 import strikt.assertions.single
 import java.time.LocalDate
+import kotlin.random.Random
 
 @DisplayName("mapping assertions")
 internal class Mapping {
+  @Test
+  fun `get perf`() {
+    class Person(
+      val id: Int = Random.nextInt(),
+      val id1: Int = Random.nextInt(),
+      val id2: Int = Random.nextInt(),
+      val id3: Int = Random.nextInt(),
+      val id4: Int = Random.nextInt(),
+      val id5: Int = Random.nextInt(),
+      val id6: Int = Random.nextInt(),
+      val id7: Int = Random.nextInt(),
+      val id8: Int = Random.nextInt(),
+      val id9: Int = Random.nextInt(),
+      val id10: Int = Random.nextInt(),
+      val id11: Int = Random.nextInt(),
+      val id12: Int = Random.nextInt(),
+      val id13: Int = Random.nextInt(),
+      val id14: Int = Random.nextInt(),
+      val id15: Int = Random.nextInt(),
+      val id16: Int = Random.nextInt(),
+      val id17: Int = Random.nextInt(),
+      val id18: Int = Random.nextInt(),
+      val id19: Int = Random.nextInt(),
+      val id20: Int = Random.nextInt(),
+      val id21: Int = Random.nextInt(),
+      val id22: Int = Random.nextInt(),
+      val id23: Int = Random.nextInt(),
+      val id24: Int = Random.nextInt(),
+      val id25: Int = Random.nextInt(),
+      val id26: Int = Random.nextInt(),
+      val id27: Int = Random.nextInt(),
+    )
+    val range = Int.MIN_VALUE..Int.MAX_VALUE
+
+    repeat(10_000) {
+      expectThat(Person(Random.nextInt())) {
+        get { id } isIn range
+        get { id1 } isIn range
+        get { id2 } isIn range
+        get { id3 } isIn range
+        get { id4 } isIn range
+        get { id5 } isIn range
+        get { id6 } isIn range
+        get { id7 } isIn range
+        get { id8 } isIn range
+        get { id9 } isIn range
+        get { id10 } isIn range
+        get { id11 } isIn range
+        get { id12 } isIn range
+        get { id13 } isIn range
+        get { id14 } isIn range
+        get { id15 } isIn range
+        get { id16 } isIn range
+        get { id17 } isIn range
+        get { id18 } isIn range
+        get { id19 } isIn range
+        get { id20 } isIn range
+        get { id21 } isIn range
+        get { id22 } isIn range
+        get { id23 } isIn range
+        get { id24 } isIn range
+        get { id25 } isIn range
+        get { id26 } isIn range
+        get { id27 } isIn range
+      }
+    }
+  }
+
   @Test
   fun `map() on iterable subjects maps to an iterable`() {
     val subject = listOf("catflap", "rubberplant", "marzipan")
