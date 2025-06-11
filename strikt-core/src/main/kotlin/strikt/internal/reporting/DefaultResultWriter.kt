@@ -172,7 +172,7 @@ internal open class DefaultResultWriter : ResultWriter {
     node: AssertionNode<*>
   ) {
     if (node is DescribedNode) {
-      writer.append(EOL)
+      writer.appendLine()
     }
   }
 
@@ -193,5 +193,3 @@ internal open class DefaultResultWriter : ResultWriter {
     writer.append("▼ ")
   }
 }
-
-private val EOL = System.getProperty("line.separator")
