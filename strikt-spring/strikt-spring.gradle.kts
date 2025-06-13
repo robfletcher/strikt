@@ -2,9 +2,9 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URI
 
 plugins {
-  kotlin("jvm")
-  id("published")
-  id("org.jetbrains.kotlin.plugin.spring")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
+  alias(libs.plugins.kotlin.spring)
 }
 
 description = "Extensions for testing code that uses the Spring Framework."
@@ -13,14 +13,14 @@ dependencies {
 
   api(project(":strikt-core"))
 
-  implementation(platform("org.springframework.boot:spring-boot-dependencies:${property("versions.spring-boot")}"))
-  compileOnly("org.springframework:spring-test")
-  compileOnly("org.springframework:spring-web")
-  compileOnly("jakarta.servlet:jakarta.servlet-api")
+  implementation(platform(libs.spring.boot))
+  compileOnly(libs.spring.test)
+  compileOnly(libs.spring.web)
+  compileOnly(libs.jakarta.servlet.api)
 
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
-  testImplementation("org.springframework.boot:spring-boot-starter-web")
+  testImplementation(libs.minutest)
+  testImplementation(libs.spring.boot.starter.test)
+  testImplementation(libs.spring.boot.starter.web)
 }
 
 tasks.withType<DokkaTaskPartial>().configureEach {

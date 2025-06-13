@@ -18,14 +18,8 @@ Commands:
 */
 
 plugins {
-  kotlin("jvm")
-  id("com.eden.orchidPlugin") version "0.21.1"
-}
-
-repositories {
-  mavenCentral()
-  @Suppress("DEPRECATION")
-  jcenter()
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.orchid)
 }
 
 dependencies {

@@ -2,8 +2,8 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URI
 
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "Extensions for assertions and traversals on types Jackson's JsonNode and sub-types."
@@ -11,12 +11,12 @@ description = "Extensions for assertions and traversals on types Jackson's JsonN
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly(platform("com.fasterxml.jackson:jackson-bom:${property("versions.jackson")}"))
-  compileOnly("com.fasterxml.jackson.core:jackson-databind")
+  compileOnly(platform(libs.jackson.bom))
+  compileOnly(libs.jackson.databind)
 
-  testImplementation(platform("com.fasterxml.jackson:jackson-bom:${property("versions.jackson")}"))
-  testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation(platform(libs.jackson.bom))
+  testImplementation(libs.jackson.module.kotlin)
+  testImplementation(libs.minutest)
 }
 
 tasks.withType<DokkaTaskPartial>().configureEach {

@@ -1,6 +1,6 @@
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "Extensions for assertions and traversals on types from the Java standard library."
@@ -8,5 +8,5 @@ description = "Extensions for assertions and traversals on types from the Java s
 dependencies {
   api(project(":strikt-core"))
 
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation(libs.minutest)
 }

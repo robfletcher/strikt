@@ -17,11 +17,17 @@ rootProject.children.forEach {
 }
 
 pluginManagement {
-  plugins {
-    val versions = mapOf<String, String>()
-      .withDefault { extra["versions.$it"].toString() }
+  includeBuild("buildLogic")
+}
 
-    kotlin("jvm") version versions.getValue("kotlin")
-    id("org.jetbrains.kotlin.plugin.spring") version versions.getValue("kotlin")
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    mavenCentral()
+    @Suppress("DEPRECATION")
+    jcenter {
+      content { includeGroup("io.github.javaeden.orchid") }
+    }
   }
 }

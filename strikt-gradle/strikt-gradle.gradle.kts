@@ -2,8 +2,8 @@ import org.gradle.util.GradleVersion
 import java.net.URL
 
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "Extensions for assertions and traversals on Gradle's test kit."
@@ -14,8 +14,8 @@ dependencies {
   compileOnly(gradleTestKit())
 
   testImplementation(gradleTestKit())
-  testImplementation("io.mockk:mockk:${property("versions.mockk")}")
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation(libs.mockk)
+  testImplementation(libs.minutest)
 }
 
 tasks.dokka {

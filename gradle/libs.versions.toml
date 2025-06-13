@@ -1,0 +1,94 @@
+[versions]
+# https://github.com/arrow-kt/arrow/releases
+arrow = "1.2.4"
+# https://github.com/failgood/failgood/releases
+failgood = "0.9.1"
+# https://central.sonatype.com/artifact/com.christophsturm/filepeek
+filepeek = "0.1.3"
+# https://central.sonatype.com/artifact/com.fasterxml.jackson/jackson-bom
+jackson = "2.17.2"
+# https://github.com/junit-team/junit5/releases
+junit = "5.11.0"
+# https://github.com/JetBrains/kotlin/releases
+kotlin = "2.0.10"
+# https://github.com/jeremymailen/kotlinter-gradle/releases
+kotlinter = "4.4.1"
+# https://github.com/Kotlin/kotlinx.coroutines/releases
+kotlinx-coroutines = "1.8.1"
+# https://github.com/Kotlin/kotlinx-kover/releases
+kover = "0.8.3"
+# https://central.sonatype.com/artifact/dev.minutest/minutest
+minutest = "1.13.0"
+# https://github.com/mockk/mockk/releases
+mockk = "1.13.12"
+# https://github.com/Codearte/gradle-nexus-staging-plugin/releases
+nexus-staging = "0.30.0"
+# https://github.com/ota4j-team/opentest4j/releases
+opentest4j = "1.3.0"
+# https://central.sonatype.com/artifact/com.google.protobuf/protobuf-java
+protobuf-java = "4.27.3"
+# https://github.com/google/protobuf-gradle-plugin/releases
+protobuf-plugin = "0.9.4"
+# https://github.com/spring-projects/spring-boot/releases
+spring-boot = "3.3.2"
+# https://github.com/radarsh/gradle-test-logger-plugin/releases
+test-logger = "4.0.0"
+# https://github.com/ben-manes/gradle-versions-plugin/releases
+versions = "0.51.0"
+
+[libraries]
+# https://arrow-kt.io/
+arrow = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+# https://github.com/failgood/failgood
+failgood = { module = "dev.failgood:failgood", version.ref = "failgood" }
+# https://github.com/christophsturm/filepeek
+filepeek = { module = "com.christophsturm:filepeek", version.ref = "filepeek" }
+# https://github.com/FasterXML/jackson-bom
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+# https://junit.org/junit5/docs/current/user-guide/
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+# https://github.com/JetBrains/kotlin
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
+# https://github.com/Kotlin/kotlinx.coroutines
+kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
+# https://github.com/dmcg/minutest
+minutest = { module = "dev.minutest:minutest", version.ref = "minutest" }
+# https://mockk.io/
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+# https://github.com/ota4j-team/opentest4j
+opentest4j = { module = "org.opentest4j:opentest4j", version.ref = "opentest4j" }
+# https://github.com/protocolbuffers/protobuf
+protobuf = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
+# https://spring.io/projects/spring-framework
+spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-test = { module = "org.springframework:spring-test" }
+spring-web = { module = "org.springframework:spring-web" }
+jakarta-servlet-api = { module = "jakarta.servlet:jakarta.servlet-api" }
+
+[plugins]
+# https://github.com/JetBrains/kotlin
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+# https://github.com/jeremymailen/kotlinter-gradle
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+# https://github.com/Kotlin/kotlinx-kover
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+# https://github.com/Codearte/gradle-nexus-staging-plugin
+nexus-staging = { id = "io.codearte.nexus-staging", version.ref = "nexus-staging" }
+# https://github.com/google/protobuf-gradle-plugin
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+# https://github.com/radarsh/gradle-test-logger-plugin
+test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
+# https://github.com/ben-manes/gradle-versions-plugin
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
+# buildLogic/src/main/kotlin/published.gradle.kts
+published = { id = "published" }
+# https://github.com/orchidhq/orchid
+orchid = { id = "com.eden.orchidPlugin", version = "0.21.1" }

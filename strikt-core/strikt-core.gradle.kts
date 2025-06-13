@@ -1,16 +1,16 @@
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "The core API for Strikt."
 
 dependencies {
-  api("org.opentest4j:opentest4j:${property("versions.opentest4j")}")
+  api(libs.opentest4j)
 
-  implementation("com.christophsturm:filepeek:${property("versions.filepeek")}")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+  implementation(libs.filepeek)
+  implementation(libs.kotlinx.coroutines.core)
 
-  testImplementation("dev.failgood:failgood:${property("versions.failgood")}")
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation(libs.failgood)
+  testImplementation(libs.minutest)
 }

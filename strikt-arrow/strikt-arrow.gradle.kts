@@ -3,8 +3,8 @@ import java.net.URI
 import java.net.URL
 
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "Extensions for assertions and traversals on types from the Arrow functional programming library."
@@ -12,10 +12,10 @@ description = "Extensions for assertions and traversals on types from the Arrow 
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.arrow-kt:arrow-core:${property("versions.arrow")}")
-  testImplementation("io.arrow-kt:arrow-core:${property("versions.arrow")}")
+  compileOnly(libs.arrow)
+  testImplementation(libs.arrow)
 
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
+  testImplementation(libs.minutest)
 }
 
 tasks.withType<DokkaTaskPartial>().configureEach {

@@ -4,9 +4,9 @@ import org.jetbrains.dokka.gradle.DokkaTaskPartial
 import java.net.URI
 
 plugins {
-  kotlin("jvm")
-  id("published")
-  id("com.google.protobuf") version "0.9.4"
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
+  alias(libs.plugins.protobuf)
 }
 
 description = "Extensions for testing code that uses Protobuf / gRPC."
@@ -14,8 +14,8 @@ description = "Extensions for testing code that uses Protobuf / gRPC."
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("com.google.protobuf:protobuf-java:${property("versions.protobuf")}")
-  testImplementation("com.google.protobuf:protobuf-java:${property("versions.protobuf")}")
+  compileOnly(libs.protobuf)
+  testImplementation(libs.protobuf)
 }
 
 tasks.withType<DokkaTaskPartial>().configureEach {
@@ -33,7 +33,7 @@ tasks.withType<DokkaTaskPartial>().configureEach {
 
 protobuf {
   protoc {
-    artifact = "com.google.protobuf:protoc:${property("versions.protobuf")}"
+    artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.java.get()}"
   }
   generateProtoTasks {
     ofSourceSet("test")

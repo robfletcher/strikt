@@ -1,0 +1,11 @@
+[versions]
+# https://github.com/Kotlin/dokka/releases
+dokka = "1.9.20"
+# https://github.com/nebula-plugins/nebula-publishing-plugin/releases
+nebula = "21.0.0"
+
+[libraries]
+# https://github.com/Kotlin/dokka
+dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+# https://github.com/nebula-plugins/nebula-publishing-plugin
+nebula-publishing = { module = "com.netflix.nebula:nebula-publishing-plugin", version.ref = "nebula" }

@@ -1,6 +1,6 @@
 plugins {
   `java-platform`
-  id("published")
+  alias(libs.plugins.published)
 }
 
 description =

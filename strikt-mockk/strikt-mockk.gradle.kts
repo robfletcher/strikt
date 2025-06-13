@@ -1,6 +1,6 @@
 plugins {
-  kotlin("jvm")
-  id("published")
+  alias(libs.plugins.kotlin.jvm)
+  alias(libs.plugins.published)
 }
 
 description = "Extensions for assertions and traversals on types from the Mockk mocking and verification library."
@@ -8,8 +8,8 @@ description = "Extensions for assertions and traversals on types from the Mockk 
 dependencies {
   api(project(":strikt-core"))
 
-  compileOnly("io.mockk:mockk:${property("versions.mockk")}")
+  compileOnly(libs.mockk)
 
-  testImplementation("dev.minutest:minutest:${property("versions.minutest")}")
-  testImplementation("io.mockk:mockk:${property("versions.mockk")}")
+  testImplementation(libs.minutest)
+  testImplementation(libs.mockk)
 }
