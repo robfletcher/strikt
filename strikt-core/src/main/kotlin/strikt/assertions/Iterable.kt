@@ -148,7 +148,7 @@ infix fun <T : Iterable<E>, E> Builder<T>.filterNot(predicate: (E) -> Boolean): 
  *
  * @see Iterable.filterIsInstance
  */
-inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List<R>> = get { filterIsInstance(R::class.java) }
+inline fun <reified R> Builder<out Iterable<*>>.filterIsInstance(): Builder<List<R>> = get { filterIsInstance<R>() }
 
 /**
  * Asserts that all elements of the subject pass the assertions in [predicate].
@@ -474,4 +474,4 @@ infix fun <T : Iterable<E>, E> Builder<T>.isSorted(comparator: Comparator<E>) =
  * Asserts that the subject iterable is sorted according to the natural order of its elements. Empty
  * iterables are considered sorted.
  */
-fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() = isSorted(Comparator.naturalOrder())
+fun <T : Iterable<E>, E : Comparable<E>> Builder<T>.isSorted() = isSorted(naturalOrder())

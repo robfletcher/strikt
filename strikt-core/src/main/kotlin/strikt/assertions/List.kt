@@ -1,7 +1,6 @@
 package strikt.assertions
 
 import strikt.api.Assertion.Builder
-import java.util.Collections
 
 /**
  * Maps this assertion to an assertion on the element at index [i] in the
@@ -35,7 +34,7 @@ fun <T : List<E>, E> Builder<T>.containsSequence(elements: List<E>) =
       subjectList.isEmpty() -> fail("subject cannot be empty")
       expectedList.isEmpty() -> fail("expected sequence cannot empty")
       subjectList.size < expectedList.size -> fail("expected sequence cannot be longer than subject")
-      Collections.indexOfSubList(subjectList, expectedList) != -1 -> pass()
+      subjectList.windowed(expectedList.size).any { it == expectedList } -> pass()
       else -> fail()
     }
   }
